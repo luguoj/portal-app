@@ -1,0 +1,11 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Sencha ###
+/build
+/generatedFiles
+/cordova
+/node_modules
