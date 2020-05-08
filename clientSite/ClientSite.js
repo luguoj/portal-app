@@ -15,7 +15,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                         PSR.ClientSite.getAuthorizationHeader();
                         loginSuccess();
                     }
-                }else if(event.data === 'logout_success'){
+                } else if (event.data === 'logout_success') {
                     console.log('logout message got')
                     location.reload();
                 }
@@ -48,9 +48,9 @@ Ext.define('PSR.clientSite.ClientSite', {
             html: '<iframe  src="' + window.clientSite + '/logout" frameborder="0" width="0px" height="0px"></iframe > ',
         }).show();
     },
-    getAuthorizationHeader: function (callback) {
+    getClientToken: function (callback) {
         if (PSR.ClientSite.clientToken) {
-            return PSR.ClientSite.clientToken.authHeader;
+            return PSR.ClientSite.clientToken;
         } else {
             Ext.Ajax.request({
                 method: 'POST',
@@ -63,7 +63,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                             PSR.ClientSite.clientToken = respObj;
                             PSR.ClientSite.clientToken.authHeader = {Authorization: respObj.token_type + ' ' + respObj.access_token};
                             if (callback) {
-                                callback(PSR.ClientSite.clientToken.authHeader);
+                                callback(PSR.ClientSite.clientToken);
                             }
                         } else {
                             console.log(respObj);
@@ -75,5 +75,13 @@ Ext.define('PSR.clientSite.ClientSite', {
             });
             return false;
         }
+    },
+    getAuthorizationHeader: function (callback) {
+        var token = PSR.ClientSite.getClientToken(function (_token) {
+            if (callback) {
+                callback(_token.authHeader);
+            }
+        });
+        return token ? token.authHeader : false;
     }
 });

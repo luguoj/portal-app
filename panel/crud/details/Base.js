@@ -32,6 +32,11 @@ Ext.define('PSR.panel.crud.details.Base', {
                         Ext.toast("保存成功")
                         vm.set('dataChanged', true);
                         v.unmask();
+                        if (respObj) {
+                            c.loadRecord(respObj, true);
+                        } else {
+                            c.hBtnGoback();
+                        }
                     },
                     function () {
                         Ext.toast("保存失败")
@@ -54,10 +59,10 @@ Ext.define('PSR.panel.crud.details.Base', {
         hBtnRefresh: function () {
             this.loadRecord(this.getView().recordId);
         },
-        loadRecord: function (id) {
+        loadRecord: function (id, editing) {
             var c = this, v = this.getView(), vm = this.getViewModel();
             c.setValues({});
-            vm.set('editing', false);
+            vm.set('editing', !!editing);
             vm.set('creating', false);
             if (id) {
                 v.mask({xtype: 'loadmask', message: '加载中...'});
@@ -194,7 +199,7 @@ Ext.define('PSR.panel.crud.details.Base', {
                 bind: {
                     hidden: '{!creating}'
                 }
-            },  {
+            }, {
                 xtype: 'button',
                 text: '保存',
                 iconCls: 'x-fa fa-save',
