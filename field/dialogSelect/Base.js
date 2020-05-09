@@ -50,6 +50,7 @@ Ext.define('PSR.field.dialogSelect.Base', {
     },
     updateDisabled: function (value) {
         this.displayer.setDisabled(value);
+        this.trigger.setDisabled(value);
     },
     constructor: function (config) {
         const me = this;
@@ -65,10 +66,11 @@ Ext.define('PSR.field.dialogSelect.Base', {
                 clearicontap: 'onClearIconTap'
             }
         });
-        me.add({
+        this.trigger = me.add({
             xtype: 'button',
             iconCls: 'x-fa fa-search-location',
-            handler: 'hTriggerExpand'
+            handler: 'hTriggerExpand',
+            disabled: this.getDisabled()
         });
         me.pickerDialog = Ext.create(me.createDialog());
         me.picker = me.pickerDialog.add(me.createPicker());
