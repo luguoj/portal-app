@@ -4,17 +4,17 @@ Ext.define('PSR.view.desktop.Main', {
     mixins: ['PSR.mixin.Storable'],
     controller: {
         routes: {
-            ':moduleId': {action: 'mainRoute'}
+            ':nodeId': {action: 'mainRoute'}
         },
-        mainRoute: function (moduleId) {
+        mainRoute: function (nodeId) {
             var v = this.getView(),
-                modules = v.getStore(),
-                targetModule = modules.findRecord('id', moduleId);
-            if (targetModule == null) {
-                console.log('unmatchedRoute: ' + moduleId);
+                nodes = v.getStore(),
+                targetNode = nodes.findRecord('id', nodeId);
+            if (targetNode == null) {
+                console.log('unmatchedRoute: ' + nodeId);
                 return;
             }
-            v.workspaceView.switchModule(targetModule);
+            v.workspaceView.switchNode(targetNode);
         }
     },
     viewModel: {},
@@ -30,14 +30,14 @@ Ext.define('PSR.view.desktop.Main', {
     },
     onStoreLoad: function (store, records, success) {
         var v = this,
-            modules = [],
+            nodes = [],
             token = Ext.util.History.getToken();
         if (records) {
             for (let i = 0; i < records.length; i++) {
-                modules.push(records[i].data);
+                nodes.push(records[i].data);
             }
         }
-        v.navigationView.initMenu(modules);
+        v.navigationView.initNodes(nodes);
         Ext.route.Router.onStateChange(token);
     },
     updateAppTitle: function (value) {

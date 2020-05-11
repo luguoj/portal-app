@@ -123,7 +123,6 @@ Ext.define('PSR.panel.crud.details.Base', {
                 }
                 page.setAltValues(pageValues);
             }
-            vm.set('dataChanged', false);
         }
     },
     viewModel: {
@@ -150,6 +149,7 @@ Ext.define('PSR.panel.crud.details.Base', {
         } else {
             this.recordId = '';
         }
+        this.getViewModel().set('dataChanged', false);
         this.getController().loadRecord(this.recordId);
     },
     createRecord: function () {

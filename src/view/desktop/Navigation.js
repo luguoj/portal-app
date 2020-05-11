@@ -14,11 +14,11 @@ Ext.define('PSR.view.desktop.Navigation', {
             var vm = this.getViewModel();
             vm.set('micro', !vm.get('micro'));
         },
-        initMenu: function (modules) {
+        initNodes: function (nodes) {
             var vm = this.getViewModel(),
-                menus = vm.getStore('menus');
-            menus.getProxy().setData(modules);
-            menus.load();
+                navigationNodes = vm.getStore('navigationNodes');
+            navigationNodes.getProxy().setData(nodes);
+            navigationNodes.load();
         },
     },
     viewModel: {
@@ -27,21 +27,35 @@ Ext.define('PSR.view.desktop.Navigation', {
             appTitle: '',
         },
         stores: {
-            menus: {
+            navigationNodes: {
                 type: "tree",
                 proxy: {
                     type: 'memory',
                     rootProperty: 'result',
                     reader: {
                         transform: function (data) {
-                            var opt = {
-                                transformNode: function (record, opt) {
-                                    record.text = record.description;
-                                    return PSR.ReaderTransform.transforCatalogedNode(record, opt);
+                            var roots = [];
+                            if (data && data.length > 0) {
+                                var nodeMap = {};
+                                for (let i = 0; i < data.length; i++) {
+                                    var record = data[i];
+                                    if (record.iconCls == null) {
+                                        delete record.iconCls;
+                                    }
+                                    nodeMap[record.id] = Object.assign({leaf: true, result: []}, record);
                                 }
-                            };
-                            var root = PSR.ReaderTransform.pathTree(data, opt);
-                            return root;
+                                for (const nodeMapKey in nodeMap) {
+                                    var node = nodeMap[nodeMapKey];
+                                    if (node.parentId && nodeMap[node.parentId]) {
+                                        var parentNode = nodeMap[node.parentId];
+                                        parentNode.leaf = false
+                                        parentNode.result.push(node);
+                                    } else {
+                                        roots.push(node);
+                                    }
+                                }
+                            }
+                            return roots;
                         }
                     }
                 }
@@ -75,7 +89,7 @@ Ext.define('PSR.view.desktop.Navigation', {
             ui: 'nav',
             bind: {
                 micro: '{micro}',
-                store: '{menus}'
+                store: '{navigationNodes}'
             },
             listeners: {
                 itemclick: 'onMenuItemClick'
@@ -102,7 +116,7 @@ Ext.define('PSR.view.desktop.Navigation', {
     updateSiteIconCls: function (newValue, oldValue) {
         this.setIconCls(newValue + ' psr-title-icon');
     },
-    initMenu: function (modules) {
-        this.getController().initMenu(modules);
+    initNodes: function (nodes) {
+        this.getController().initNodes(nodes);
     }
 });
