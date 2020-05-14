@@ -75,6 +75,8 @@ Ext.define('PSR.data.reader.Transform', {
                         childPathNode.expanded = opt.expand;
                         pathNode = childPathNode;
                     }
+                    pathNode.leaf = false;
+                    pathNode.expanded = opt.expand;
                     pathNode[rootProperty].push(newPathNode);
                 }
             }
@@ -83,5 +85,50 @@ Ext.define('PSR.data.reader.Transform', {
             }
         }
         return rootNodes;
+    },
+    parentTree: function (records, opt) {
+        opt = Object.assign({}, opt);
+        const rootProperty = opt.rootProperty ? opt.rootProperty : 'result';
+        var roots = [];
+        if (records && records.length > 0) {
+            var nodeMap = {};
+            for (let i = 0; i < records.length; i++) {
+                var record = records[i];
+                if (record.iconCls == null) {
+                    delete record.iconCls;
+                }
+                if (record.viewConfig) {
+                    try {
+                        record.viewConfig = JSON.stringify(JSON.parse(record.viewConfig), null, 2);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+                nodeMap[record.id] = Object.assign({leaf: true, [rootProperty]: [], isRecord: true}, record);
+            }
+            for (const nodeMapKey in nodeMap) {
+                var node = nodeMap[nodeMapKey];
+                if (node.parentId && nodeMap[node.parentId]) {
+                    var parentNode = nodeMap[node.parentId];
+                    parentNode.leaf = false
+                    parentNode[rootProperty].push(node);
+                } else {
+                    roots.push(node);
+                }
+            }
+        }
+        if (opt.root) {
+            return {
+                [rootProperty]: [Object.assign(
+                    {leaf: false, expanded: true},
+                    opt.root,
+                    {[rootProperty]: roots}
+                )]
+            };
+        } else {
+            return {
+                [rootProperty]: roots
+            }
+        }
     }
 });
