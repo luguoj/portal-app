@@ -15,6 +15,7 @@ Ext.define('PSR.view.desktop.Main', {
                 return;
             }
             v.workspaceView.switchNode(targetNode);
+            v.navigationView.switchNode(targetNode);
         }
     },
     viewModel: {},

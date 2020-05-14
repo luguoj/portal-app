@@ -20,6 +20,18 @@ Ext.define('PSR.view.desktop.Navigation', {
             navigationNodes.getProxy().setData(nodes);
             navigationNodes.load();
         },
+        switchNode: function (node) {
+            var vm = this.getViewModel(),
+                navigationNodes = vm.getStore('navigationNodes'),
+                navigationNode = navigationNodes.findNode("id", node.data.id);
+            if (navigationNode) {
+                this.getView().getAt(0).getAt(0).setSelection(navigationNode)
+                // while (navigationNode.parentNode) {
+                //     navigationNode.parentNode.expand()
+                //     navigationNode = parentNode;
+                // }
+            }
+        }
     },
     viewModel: {
         data: {
@@ -118,5 +130,8 @@ Ext.define('PSR.view.desktop.Navigation', {
     },
     initNodes: function (nodes) {
         this.getController().initNodes(nodes);
+    },
+    switchNode: function (node) {
+        this.getController().switchNode(node);
     }
 });
