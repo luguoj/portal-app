@@ -93,16 +93,11 @@ Ext.define('PSR.data.reader.Transform', {
         if (records && records.length > 0) {
             var nodeMap = {};
             for (let i = 0; i < records.length; i++) {
-                var record = records[i];
+                const record = Object.assign({},
+                    (opt && opt.transformNode) ?
+                        opt.transformNode(records[i], opt) : records[i]);
                 if (record.iconCls == null) {
                     delete record.iconCls;
-                }
-                if (record.viewConfig) {
-                    try {
-                        record.viewConfig = JSON.stringify(JSON.parse(record.viewConfig), null, 2);
-                    } catch (e) {
-                        console.error(e);
-                    }
                 }
                 nodeMap[record.id] = Object.assign({leaf: true, [rootProperty]: [], isRecord: true}, record);
             }

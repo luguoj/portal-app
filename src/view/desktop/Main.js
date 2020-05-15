@@ -9,7 +9,8 @@ Ext.define('PSR.view.desktop.Main', {
         mainRoute: function (nodeId) {
             var v = this.getView(),
                 nodes = v.getStore(),
-                targetNode = nodes.findRecord('id', nodeId);
+                targetNode = nodes.isTreeStore ?
+                    nodes.findNode('id', nodeId) : nodes.findRecord('id', nodeId);
             if (targetNode == null) {
                 console.log('unmatchedRoute: ' + nodeId);
                 return;
@@ -27,6 +28,9 @@ Ext.define('PSR.view.desktop.Main', {
     updateStore: function (store) {
         if (store) {
             store.load();
+            if (this.navigationView) {
+                this.navigationView.setStore(store);
+            }
         }
     },
     onStoreLoad: function (store, records, success) {
@@ -38,7 +42,6 @@ Ext.define('PSR.view.desktop.Main', {
                 nodes.push(records[i].data);
             }
         }
-        v.navigationView.initNodes(nodes);
         Ext.route.Router.onStateChange(token);
     },
     updateAppTitle: function (value) {
@@ -55,7 +58,8 @@ Ext.define('PSR.view.desktop.Main', {
             xtype: 'psr-view-desktop-navigation',
             border: true,
             appIconCls: this.getAppIconCls(),
-            appTitle: this.getAppTitle()
+            appTitle: this.getAppTitle(),
+            store: this.getStore()
         };
     },
     createWorkspaceView: function (me, config) {
