@@ -8,6 +8,7 @@ Ext.define('PSR.view.desktop.Main', {
         },
         mainRoute: function (nodeId) {
             var v = this.getView(),
+                vm = this.getViewModel(),
                 nodes = v.getStore(),
                 targetNode = nodes.isTreeStore ?
                     nodes.findNode('id', nodeId) : nodes.findRecord('id', nodeId);
@@ -17,9 +18,23 @@ Ext.define('PSR.view.desktop.Main', {
             }
             v.workspaceView.switchNode(targetNode);
             v.navigationView.switchNode(targetNode);
+            vm.set('moduleTitle', targetNode.data.text);
+            vm.set('moduleIconCls', targetNode.data.iconCls);
+        },
+        hBtnResize: function () {
+            var v = this.getView();
+            v.navigationView.toggleMicro();
+        },
+        hBtnLogout: function () {
+            PSR.clientSite.ClientSite.logout();
+        },
+    },
+    viewModel: {
+        data: {
+            moduleTitle: '',
+            moduleIconCls: ''
         }
     },
-    viewModel: {},
     layout: 'card',
     config: {
         appTitle: '',
@@ -27,21 +42,13 @@ Ext.define('PSR.view.desktop.Main', {
     },
     updateStore: function (store) {
         if (store) {
-            store.load();
             if (this.navigationView) {
                 this.navigationView.setStore(store);
             }
         }
     },
     onStoreLoad: function (store, records, success) {
-        var v = this,
-            nodes = [],
-            token = Ext.util.History.getToken();
-        if (records) {
-            for (let i = 0; i < records.length; i++) {
-                nodes.push(records[i].data);
-            }
-        }
+        var token = Ext.util.History.getToken();
         Ext.route.Router.onStateChange(token);
     },
     updateAppTitle: function (value) {
@@ -50,13 +57,30 @@ Ext.define('PSR.view.desktop.Main', {
     constructor: function (config) {
         this.callParent([config]);
         this.navigationView = this.add(this.createNavigationView());
+        this.titleView = this.add({
+            xtype: 'titlebar',
+            ui: 'psr-desktop-title',
+            height: '64px',
+            docked: 'top',
+            bind: {title: '{moduleTitle}'},
+            defaultButtonUI: 'psr-desktop-title-button',
+            items: [{
+                align: 'left',
+                bind: {iconCls: '{moduleIconCls}'},
+                handler: 'hBtnResize'
+            },{
+                xtype: 'button',
+                align: 'right',
+                iconCls: 'x-fa fa-power-off',
+                handler: 'hBtnLogout'
+            }]
+        });
         this.workspaceView = this.add(this.createWorkspaceView());
     },
     createNavigationView: function (me, config) {
         return {
             docked: 'left',
             xtype: 'psr-view-desktop-navigation',
-            border: true,
             appIconCls: this.getAppIconCls(),
             appTitle: this.getAppTitle(),
             store: this.getStore()

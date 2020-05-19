@@ -12,9 +12,9 @@ Ext.define('PSR.view.desktop.workspace', {
             if (!nodeView) {
                 nodeView = v.add(Object.assign({
                     itemId: nodeId,
-                    title: title,
-                    iconCls: iconCls
-                }, viewConfig));
+                    layout: 'fit',
+                    items: [viewConfig]
+                }));
             }
             v.setActiveItem(nodeView);
             return true;

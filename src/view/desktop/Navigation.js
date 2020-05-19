@@ -8,10 +8,7 @@ Ext.define('PSR.view.desktop.Navigation', {
                 this.redirectTo(event.node.get('id'));
             }
         },
-        hBtnLogout: function () {
-            PSR.clientSite.ClientSite.logout();
-        },
-        hBtnMicro: function () {
+        toggleMicro: function () {
             var vm = this.getViewModel();
             vm.set('micro', !vm.get('micro'));
         },
@@ -45,16 +42,19 @@ Ext.define('PSR.view.desktop.Navigation', {
             if (this.navTree) {
                 this.navTree.setStore(store);
             }
+            store.load();
         }
     },
     layout: 'vbox',
+    ui: 'psr-desktop-nav',
     bind: {
-        title: '{micro ? "" : appTitle}',
-        iconCls: '{micro ? "" : appIconCls}',
+        title: '{micro ? "" :"&nbsp" + appTitle}',
+        iconCls: '{appIconCls}',
     },
     constructor: function (config) {
         this.callParent([config]);
         var navBox = this.add({
+            // userCls: 'nav-container',
             flex: 1,
             layout: 'vbox',
             scrollable: 'y',
@@ -65,7 +65,7 @@ Ext.define('PSR.view.desktop.Navigation', {
             expanderOnly: false,
             expanderFirst: false,
             singleExpand: true,
-            ui: 'nav',
+            ui: 'psr-desktop-nav-tree',
             store: this.getStore(),
             bind: {
                 micro: '{micro}'
@@ -76,15 +76,7 @@ Ext.define('PSR.view.desktop.Navigation', {
         });
         this.add({
             layout: 'vbox',
-            items: [{
-                xtype: 'button',
-                iconCls: 'x-fa fa-power-off',
-                handler: 'hBtnLogout'
-            }, {
-                xtype: 'button',
-                iconCls: 'x-fa fa-angle-left',
-                handler: 'hBtnMicro'
-            }]
+            items: []
         });
     },
     toggleMicro: function () {
