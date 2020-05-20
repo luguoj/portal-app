@@ -83,5 +83,30 @@ Ext.define('PSR.clientSite.ClientSite', {
             }
         });
         return token ? token.authHeader : false;
+    },
+    getModuleReady: function (moduleId, callback) {
+        if (window[moduleId]) {
+            return true;
+        } else {
+            Ext.Ajax.request({
+                url: window.clientSite + '/module/' + moduleId + '/index.js',
+                method: 'GET',
+                disableCaching: true,
+                success: function (response) {
+                    var responseText = response.responseText;
+                    try {
+                        (new Function(responseText))();
+                    } catch (err) {
+                        console.log(err);
+                    }
+                    if (!window[moduleId]) {
+                        window[moduleId] = true;
+                    }
+                    if (callback) {
+                        callback();
+                    }
+                }
+            });
+        }
     }
 });

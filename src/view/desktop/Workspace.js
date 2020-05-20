@@ -3,21 +3,31 @@ Ext.define('PSR.view.desktop.workspace', {
     xtype: 'psr-view-desktop-workspace',
     controller: {
         switchNode: function (node) {
-            var v = this.getView(),
+            var c = this,
+                v = c.getView(),
                 nodeId = node.get('id'),
                 title = node.get('text'),
                 iconCls = node.get('iconCls'),
+                moduleId = node.get('moduleId'),
                 viewConfig = node.get('viewConfig'),
                 nodeView = v.getComponent(nodeId);
             if (!nodeView) {
-                nodeView = v.add(Object.assign({
-                    itemId: nodeId,
-                    layout: 'fit',
-                    items: [viewConfig]
-                }));
+                var moduleReady = true;
+                if (moduleId) {
+                    moduleReady = PSR.clientSite.ClientSite.getModuleReady(moduleId, function () {
+                        c.switchNode(node);
+                    });
+                }
+                if (moduleReady) {
+                    nodeView = v.add(Object.assign({
+                        itemId: nodeId,
+                        layout: 'fit',
+                        items: [viewConfig]
+                    }));
+                    v.setActiveItem(nodeView);
+                    return true;
+                }
             }
-            v.setActiveItem(nodeView);
-            return true;
         }
     },
     layout: 'card',

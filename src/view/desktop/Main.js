@@ -38,7 +38,7 @@ Ext.define('PSR.view.desktop.Main', {
     layout: 'card',
     config: {
         appTitle: '',
-        appIconCls: ''
+        appIconCls: 'psr-desktop-nav-app-icon'
     },
     updateStore: function (store) {
         if (store) {

@@ -2,6 +2,15 @@ $panel-navigation-background-color: dynamic(#32404e);
 $panel-navigation-item-line-height: dynamic(64px);
 $panel-navigation-item-text-color: dynamic(#ADB3B8);
 $psr-desktop-title-line-height: dynamic(64px);
+$psr-desktop-nav-header-icon-size: 36px;
+
+.psr-desktop-nav-app-icon:before {
+  content: "";
+  height: $psr-desktop-nav-header-icon-size;
+  width: $psr-desktop-nav-header-icon-size;
+  background: url(desktop/logo.png) no-repeat;
+  background-size: 100% 100%;
+}
 
 @include titlebar-ui(
         $ui: 'psr-desktop-title',
@@ -25,8 +34,8 @@ $psr-desktop-title-line-height: dynamic(64px);
         $header-line-height: $psr-desktop-title-line-height,
         $header-padding: 0px 14px,
         $header-title-padding: 0px,
-        $header-icon-size: 36px,
-        $header-icon-font-size: 36px,
+        $header-icon-size: $psr-desktop-nav-header-icon-size,
+        $header-icon-font-size: $psr-desktop-nav-header-icon-size,
         $header-icon-horizontal-spacing: 0px,
         $header-background-color: darken($panel-navigation-background-color, 10%),
         $body-background-color: darken($panel-navigation-background-color, 10%)
