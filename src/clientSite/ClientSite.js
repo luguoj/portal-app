@@ -9,7 +9,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                     console.log('login message got')
                     PSR.ClientSite.loginSuccess = true;
                     if (PSR.ClientSite.oauth2LoginDialog) {
-                        PSR.ClientSite.oauth2LoginDialog.hide();
+                        PSR.ClientSite.oauth2LoginDialog.close();
                     }
                     if (loginSuccess) {
                         PSR.ClientSite.getAuthorizationHeader();
