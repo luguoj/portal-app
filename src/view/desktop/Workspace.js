@@ -17,6 +17,9 @@ Ext.define('PSR.view.desktop.workspace', {
                     moduleReady = PSR.clientSite.ClientSite.getModuleReady(moduleId, function () {
                         c.switchNode(node);
                     });
+                    if (!moduleReady) {
+                        return false;
+                    }
                 }
                 if (moduleReady) {
                     nodeView = v.add(Object.assign({
@@ -24,10 +27,10 @@ Ext.define('PSR.view.desktop.workspace', {
                         layout: 'fit',
                         items: [viewConfig]
                     }));
-                    v.setActiveItem(nodeView);
-                    return true;
                 }
             }
+            v.setActiveItem(nodeView);
+            return true;
         }
     },
     layout: 'card',
