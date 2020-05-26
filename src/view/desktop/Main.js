@@ -21,9 +21,21 @@ Ext.define('PSR.view.desktop.Main', {
             vm.set('moduleTitle', targetNode.data.text);
             vm.set('moduleIconCls', targetNode.data.iconCls);
         },
-        hBtnResize: function () {
+        hBtnOutdent: function () {
             var v = this.getView();
             v.navigationView.toggleMicro();
+        },
+        hBtnExpand: function () {
+            var v = this.getView();
+            v.titleView.hide(true);
+            v.navigationView.hide(true);
+            v.btnCompress.show(true);
+        },
+        hBtnCompress: function () {
+            var v = this.getView();
+            v.titleView.show(true);
+            v.navigationView.show(true);
+            v.btnCompress.hide(true);
         },
         hBtnLogout: function () {
             PSR.clientSite.ClientSite.logout();
@@ -32,10 +44,11 @@ Ext.define('PSR.view.desktop.Main', {
     viewModel: {
         data: {
             moduleTitle: '',
-            moduleIconCls: ''
+            moduleIconCls: '',
+            workspaceExpanded: false
         }
     },
-    layout: 'card',
+    layout: 'float',
     config: {
         appTitle: '',
         appIconCls: 'psr-desktop-nav-app-icon'
@@ -62,18 +75,46 @@ Ext.define('PSR.view.desktop.Main', {
             ui: 'psr-desktop-title',
             height: '64px',
             docked: 'top',
+            titleAlign: 'center',
+            hideMode: 'clip',
+            hideAnimation: {
+                type: 'slide',
+                direction: 'up',
+                out: true
+            },
+            showAnimation: {
+                type: 'slide',
+                direction: 'down',
+                out: false
+            },
             bind: {title: '{moduleTitle}'},
             defaultButtonUI: 'psr-desktop-title-button',
             items: [{
                 align: 'left',
-                bind: {iconCls: '{moduleIconCls}'},
-                handler: 'hBtnResize'
-            },{
+                iconCls: 'x-fa fa-outdent',
+                handler: 'hBtnOutdent'
+            }, {
+                align: 'left',
+                iconCls: 'x-fa fa-expand',
+                handler: 'hBtnExpand'
+            }, {
                 xtype: 'button',
                 align: 'right',
                 iconCls: 'x-fa fa-power-off',
                 handler: 'hBtnLogout'
             }]
+        });
+        this.btnCompress = this.add({
+            xtype: 'button',
+            hidden: true,
+            iconCls: 'x-fa fa-compress',
+            draggable: true,
+            shadow: true,
+            left: 5,
+            top: 5,
+            width: 36,
+            height: 36,
+            handler: 'hBtnCompress'
         });
         this.workspaceView = this.add(this.createWorkspaceView());
     },
@@ -83,12 +124,24 @@ Ext.define('PSR.view.desktop.Main', {
             xtype: 'psr-view-desktop-navigation',
             appIconCls: this.getAppIconCls(),
             appTitle: this.getAppTitle(),
-            store: this.getStore()
+            store: this.getStore(),
+            hideAnimation: {
+                type: 'slide',
+                direction: 'left',
+                out: true
+            },
+            showAnimation: {
+                type: 'slide',
+                direction: 'right',
+                out: false
+            },
         };
     },
     createWorkspaceView: function (me, config) {
         return {
-            xtype: 'psr-view-desktop-workspace'
+            xtype: 'psr-view-desktop-workspace',
+            width: '100%',
+            height: '100%'
         };
     }
 });
