@@ -119,7 +119,7 @@ Ext.define('PSR.panel.crud.details.Base', {
                 var page = detailsPages[i];
                 var pageValues = page.getAltValues();
                 for (var field in pageValues) {
-                    pageValues[field] = values ? (values[field]) : null;
+                    pageValues[field] = values && values[field] ? (values[field]) : null;
                 }
                 page.setAltValues(pageValues);
             }
