@@ -33,7 +33,10 @@ Ext.define('PSR.view.desktop.workspace', {
             return true;
         }
     },
-    layout: 'card',
+    layout: {
+        type: 'card',
+        animation: 'fade'
+    },
     items: [],
     switchNode: function (node) {
         return this.getController().switchNode(node);

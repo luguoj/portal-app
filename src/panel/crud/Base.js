@@ -26,7 +26,10 @@ Ext.define('PSR.panel.crud.Base', {
         }
     },
     viewModel: {},
-    layout: 'card',
+    layout: {
+        type: 'card',
+        animation: 'slide'
+    },
     config: {
         searchView: {
             lazy: true,
