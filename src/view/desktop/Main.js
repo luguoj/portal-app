@@ -55,6 +55,7 @@ Ext.define('PSR.view.desktop.Main', {
     },
     updateStore: function (store) {
         if (store) {
+            store.setSorters('sort');
             if (this.navigationView) {
                 this.navigationView.setStore(store);
             }
