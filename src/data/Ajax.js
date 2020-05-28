@@ -27,7 +27,7 @@ Ext.define('PSR.data.Ajax', {
             console.log(err);
         }
     },
-    hCallFailure: function (response, opt) {debugger
+    hCallFailure: function (response, opt) {
         console.log(response);
     }
 });
