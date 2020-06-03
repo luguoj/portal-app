@@ -27,13 +27,13 @@ Ext.define('PSR.data.Ajax', {
             console.log(err);
         }
         if (opt.complete) {
-            opt.complete();
+            opt.complete(response, opt);
         }
     },
     hCallFailure: function (response, opt) {
         console.log(response);
         if (opt.complete) {
-            opt.complete();
+            opt.complete(response, opt);
         }
     }
 });
