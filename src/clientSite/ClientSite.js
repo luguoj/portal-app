@@ -65,6 +65,12 @@ Ext.define('PSR.clientSite.ClientSite', {
                             if (callback) {
                                 callback(PSR.ClientSite.clientToken);
                             }
+                        } else if (respObj.success && respObj.result && respObj.result.access_token) {
+                            PSR.ClientSite.clientToken = respObj.result;
+                            PSR.ClientSite.clientToken.authHeader = {Authorization: respObj.result.token_type + ' ' + respObj.result.access_token};
+                            if (callback) {
+                                callback(PSR.ClientSite.clientToken);
+                            }
                         } else {
                             console.log(respObj);
                         }
