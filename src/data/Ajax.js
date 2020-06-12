@@ -23,11 +23,12 @@ Ext.define('PSR.data.Ajax', {
                     opt.bizFailure(respObj);
                 }
             }
+            if (opt.complete) {
+                opt.complete(response, opt);
+            }
         } catch (err) {
             console.log(err);
-        }
-        if (opt.complete) {
-            opt.complete(response, opt);
+            PSR.Ajax.hCallFailure(response, opt);
         }
     },
     hCallFailure: function (response, opt) {
