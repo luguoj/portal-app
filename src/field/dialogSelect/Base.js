@@ -18,7 +18,10 @@ Ext.define('PSR.field.dialogSelect.Base', {
                 valueField = v.getValueField(),
                 displayField = v.getDisplayField(),
                 value = v.getValue();
-
+            if (!store) {
+                vm.set('displayValue', value);
+                return;
+            }
             if (store && !store.isLoading() && !store.isLoaded()) {
                 store.load();
                 return;
@@ -101,6 +104,7 @@ Ext.define('PSR.field.dialogSelect.Base', {
         if (this.picker) {
             this.picker.setStore(store);
         }
+        this.getController().syncSelection();
     },
     onStoreLoad: function (store, records, success) {
         if (success) {
