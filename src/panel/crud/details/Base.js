@@ -27,33 +27,39 @@ Ext.define('PSR.panel.crud.details.Base', {
             v.mask({xtype: 'loadmask', message: '保存中...'});
             if (vm.get('creating')) {
                 // 增加服务
-                v.getApi().create(c.getValues(),
-                    function (respObj) {
+                v.getApi().create({
+                    values: c.getValues(),
+                    success: function (respObj) {
                         Ext.toast("保存成功")
                         vm.set('dataChanged', true);
-                        v.unmask();
                         if (respObj) {
                             c.loadRecord(respObj, true);
                         } else {
                             c.hBtnGoback();
                         }
                     },
-                    function () {
+                    failure: function () {
                         Ext.toast("保存失败")
+                    },
+                    complete: function () {
                         v.unmask();
-                    });
+                    }
+                });
             } else {
                 // 修改服务
-                v.getApi().update(c.getValues(),
-                    function (respObj) {
+                v.getApi().update({
+                    values: c.getValues(),
+                    success: function (respObj) {
                         Ext.toast("保存成功")
                         vm.set('dataChanged', true);
-                        v.unmask();
                     },
-                    function () {
-                        Ext.toast("保存失败")
+                    failure: function () {
+                        Ext.toast("保存失败");
+                    },
+                    complete: function () {
                         v.unmask();
-                    });
+                    }
+                });
             }
         },
         hBtnRefresh: function () {
@@ -67,15 +73,19 @@ Ext.define('PSR.panel.crud.details.Base', {
             if (id) {
                 v.mask({xtype: 'loadmask', message: '加载中...'});
                 // 加载服务
-                v.getApi().load(id,
-                    function (data) {
-                        c.setValues(data)
-                        v.unmask();
+                v.getApi().load({
+                    id: id,
+                    success: function (data) {
+                        c.setValues(data);
                     },
-                    function () {
+                    failure: function () {
                         Ext.toast("加载失败")
                         c.hBtnGoback();
-                    });
+                    },
+                    complete: function () {
+                        v.unmask();
+                    }
+                });
             }
         },
         createRecord: function () {
@@ -92,16 +102,20 @@ Ext.define('PSR.panel.crud.details.Base', {
             if (id) {
                 v.mask({xtype: 'loadmask', message: '加载中...'});
                 // 加载服务
-                v.getApi().load(id,
-                    function (data) {
+                v.getApi().load({
+                    id: id,
+                    success: function (data) {
                         data.id = null;
-                        c.setValues(data)
-                        v.unmask();
+                        c.setValues(data);
                     },
-                    function () {
+                    failure: function () {
                         Ext.toast("加载失败")
                         c.hBtnGoback();
-                    });
+                    },
+                    complete: function () {
+                        v.unmask();
+                    }
+                });
             }
         },
         getValues: function () {

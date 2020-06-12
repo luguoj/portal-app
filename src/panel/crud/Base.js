@@ -42,11 +42,11 @@ Ext.define('PSR.panel.crud.Base', {
             }
         },
         api: {
-            load: function (id, success, failure) {
+            load: function (opt) {
             },
-            create: function (values, success, failure) {
+            create: function (opt) {
             },
-            update: function (values, success, failure) {
+            update: function (opt) {
             }
         },
     },
