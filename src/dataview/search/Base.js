@@ -3,7 +3,7 @@ Ext.define('PSR.dataview.search.Base', {
     xtype: 'psr-dataview-search',
     mixins: ['PSR.mixin.Storable'],
     controller: {
-        hBtnSearch: function () {
+        search: function () {
             var v = this.getView(), vm = this.getViewModel(),
                 store = v.getStore();
             proxy = store.proxy;
@@ -77,7 +77,7 @@ Ext.define('PSR.dataview.search.Base', {
                     xtype: 'button',
                     text: '搜索', iconCls: 'x-fa fa-search',
                     docked: 'top',
-                    handler: 'hBtnSearch'
+                    handler: 'search'
                 }]
             });
             this.searchView = this.searchPanel.add(searchView);
@@ -92,6 +92,6 @@ Ext.define('PSR.dataview.search.Base', {
         return this.getSearchView();
     },
     search: function () {
-        this.getController().hBtnSearch();
+        this.getController().search();
     }
 });
