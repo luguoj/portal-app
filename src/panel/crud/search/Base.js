@@ -37,6 +37,31 @@ Ext.define('PSR.panel.crud.search.Base', {
                 v.fireEvent('copyrecord', selected[0]);
             }
         },
+        hBtnDelete: function () {
+            var v = this.getView(), vm = this.getViewModel(), selected = vm.get('selected');
+            if (selected && selected.length > 0) {
+                Ext.Msg.confirm("确认删除", "即将删除: " + selected[0].data[v.getDisplayField()],
+                    function (buttonId, value, opt) {
+                        if (buttonId == 'yes') {
+                            v.mask();
+                            v.getApi().delete({
+                                id: selected[0].data.id,
+                                success: function (data) {
+                                    Ext.toast('删除成功');
+                                    v.getStore().reload();
+                                },
+                                failure: function () {
+                                    Ext.toast("删除失败");
+                                },
+                                complete: function () {
+                                    v.unmask();
+                                }
+                            });
+                        }
+                    });
+            }
+
+        },
         hToolDetails: function (grid, event) {
             var v = this.getView();
             v.fireEvent('godetails', event.record);
@@ -67,11 +92,15 @@ Ext.define('PSR.panel.crud.search.Base', {
             handler: 'hBtnSync',
             bind: {hidden: '{enableSearcher}'}
         }, '->', {
-            text: '增加', iconCls: 'x-fa fa-file',
+            text: '增加', iconCls: 'x-fa fa-file-medical',
             handler: 'hBtnAdd'
         }, {
             text: '复制', iconCls: 'x-fa fa-copy',
             handler: 'hBtnCopy',
+            bind: {disabled: '{!hasSelected}'},
+        }, {
+            text: '删除', iconCls: 'x-fa fa-file-excel',
+            handler: 'hBtnDelete',
             bind: {disabled: '{!hasSelected}'},
         }]
     }],
