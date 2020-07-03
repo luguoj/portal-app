@@ -5,8 +5,8 @@ Ext.define('PSR.dataview.search.Base', {
     controller: {
         search: function () {
             var v = this.getView(), vm = this.getViewModel(),
-                store = v.getStore();
-            proxy = store.proxy;
+                store = v.getStore(),
+                proxy = store.proxy;
             const params = Object.assign(proxy.getExtraParams(), v.searchView.getValues());
             proxy.setExtraParams(params)
             store.load();

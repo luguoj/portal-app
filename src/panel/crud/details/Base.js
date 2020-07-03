@@ -33,7 +33,7 @@ Ext.define('PSR.panel.crud.details.Base', {
                         Ext.toast("保存成功")
                         vm.set('dataChanged', true);
                         if (respObj) {
-                            c.loadRecord(respObj, true);
+                            c.loadRecord(respObj.id, true);
                         } else {
                             c.hBtnGoback();
                         }
@@ -155,7 +155,8 @@ Ext.define('PSR.panel.crud.details.Base', {
     layout: 'fit',
     config: {
         api: null,
-        pages: []
+        pages: [],
+        actionMenus: []
     },
     loadRecord: function (id) {
         if (id) {
@@ -183,50 +184,64 @@ Ext.define('PSR.panel.crud.details.Base', {
         this.pages = pageCard.add(this.createPages());
     },
     createToolbar: function () {
+        var toolItems = [];
+        toolItems.push({
+            text: '返回', iconCls: 'x-fa fa-arrow-left',
+            handler: 'hBtnGoback'
+        }, {
+            xtype: 'combobox',
+            editable: false,
+            queryMode: 'local',
+            bind: {
+                store: '{pageSelections}',
+                value: '{currentPage}'
+            }
+        }, '->');
+        if (this.getActionMenus() != null && this.getActionMenus().length > 0) {
+            toolItems.push({
+                xtype: 'button',
+                text: '操作',
+                iconCls: 'x-fa fa-bars',
+                menu: this.getActionMenus(),
+                bind: {
+                    hidden: '{creating}'
+                }
+            });
+        }
+        toolItems.push({
+            xtype: 'button',
+            text: '修改',
+            iconCls: 'x-fa fa-edit',
+            handler: 'hBtnModify',
+            bind: {
+                hidden: '{editing}'
+            }
+        }, {
+            xtype: 'button',
+            text: '创建',
+            iconCls: 'x-fa fa-plus',
+            handler: 'hBtnSave',
+            bind: {
+                hidden: '{!creating}'
+            }
+        }, {
+            xtype: 'button',
+            text: '保存',
+            iconCls: 'x-fa fa-save',
+            handler: 'hBtnSave',
+            bind: {
+                hidden: '{!editing || creating}'
+            }
+        }, {
+            xtype: 'button',
+            text: '刷新',
+            iconCls: 'x-fa fa-sync',
+            handler: 'hBtnRefresh'
+        });
         return {
             xtype: 'toolbar',
             docked: 'top',
-            items: [{
-                text: '返回', iconCls: 'x-fa fa-arrow-left',
-                handler: 'hBtnGoback'
-            }, {
-                xtype: 'combobox',
-                editable: false,
-                queryMode: 'local',
-                bind: {
-                    store: '{pageSelections}',
-                    value: '{currentPage}'
-                }
-            }, '->', {
-                xtype: 'button',
-                text: '修改',
-                iconCls: 'x-fa fa-edit',
-                handler: 'hBtnModify',
-                bind: {
-                    hidden: '{editing}'
-                }
-            }, {
-                xtype: 'button',
-                text: '创建',
-                iconCls: 'x-fa fa-plus',
-                handler: 'hBtnSave',
-                bind: {
-                    hidden: '{!creating}'
-                }
-            }, {
-                xtype: 'button',
-                text: '保存',
-                iconCls: 'x-fa fa-save',
-                handler: 'hBtnSave',
-                bind: {
-                    hidden: '{!editing || creating}'
-                }
-            }, {
-                xtype: 'button',
-                text: '刷新',
-                iconCls: 'x-fa fa-sync',
-                handler: 'hBtnRefresh'
-            }]
+            items: toolItems
         };
     },
     createPages: function () {
