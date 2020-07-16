@@ -28,16 +28,16 @@ Ext.define('PSR.field.transfer.Tree', {
         opt = Object.assign(opt, value, {displayProperty: this.getDisplayField()});
         return opt;
     },
-    createDataviewCfg: function (dataview) {
+    createDataviewCfg: function (dataview, header) {
         if (!dataview || !dataview.xtype) {
-            const opt = this.getReaderOption(),
+            var opt = this.getReaderOption(),
                 displayField = this.getDisplayField(),
                 reader = {
                     rootProperty: opt.rootProperty,
                     transform: function (data) {
                         if (data) {
                             for (let i = 0; i < data.length; i++) {
-                                const record = data[i];
+                                var record = data[i];
                                 if (!record[opt.pathProperty]) {
                                     record[opt.pathProperty] = record[displayField];
                                 }
@@ -48,13 +48,12 @@ Ext.define('PSR.field.transfer.Tree', {
                 };
             return Object.assign({
                 xtype: 'tree',
-                hideHeaders: true,
                 selectable: {
                     mode: 'multi'
                 },
                 rootVisible: false,
                 columns: [{
-                    xtype: 'treecolumn',
+                    xtype: 'treecolumn', text: header, sortable: false, menuDisabled: true,
                     dataIndex: this.getDisplayField(),
                     minWidth: 100,
                     flex: 1,
@@ -76,16 +75,19 @@ Ext.define('PSR.field.transfer.Tree', {
                         type: 'memory',
                         data: [],
                         reader: reader
-                    }
+                    },
+                    sorters: [{
+                        property: this.getSortField()
+                    }]
                 }
             }, dataview);
         }
         return dataview;
     },
     applySelectedDataview: function (selectedDataview) {
-        return this.createDataviewCfg(selectedDataview);
+        return this.createDataviewCfg(selectedDataview, '已选项');
     },
     applyUnselectedDataview: function (unselectedDataview) {
-        return this.createDataviewCfg(unselectedDataview);
+        return this.createDataviewCfg(unselectedDataview, '待选项');
     }
 });

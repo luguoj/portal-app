@@ -12,7 +12,7 @@ Ext.define('PSR.field.dialogSelect.Base', {
             this.getView().setValue('');
         },
         syncSelection: function () {
-            const v = this.getView(),
+            var v = this.getView(),
                 vm = this.getViewModel(),
                 store = v.getStore(),
                 valueField = v.getValueField(),
@@ -56,7 +56,7 @@ Ext.define('PSR.field.dialogSelect.Base', {
         this.trigger.setDisabled(value);
     },
     constructor: function (config) {
-        const me = this;
+        var me = this;
         me.callParent([config]);
         this.displayer = me.add({
             xtype: 'textfield',

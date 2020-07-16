@@ -34,7 +34,7 @@ Ext.define('PSR.field.transfer.Base', {
             return selected;
         },
         onSelectionChange: function (grid) {
-            const v = this.getViewModel(),
+            var v = this.getViewModel(),
                 _selected = [],
                 newSelected = this.beforeSelect(grid, grid.getSelectable().getSelections());
             if (newSelected && newSelected.length > 0) {
@@ -50,46 +50,48 @@ Ext.define('PSR.field.transfer.Base', {
                 displayField = v.getDisplayField(),
                 values = v.getValue() ? v.getValue().split(',') : [],
                 valuesMap = {},
-                records,
+                records = [],
                 selectedItems = [],
                 unselectedItems = [];
-
-            if (store && !store.isLoading() && !store.isLoaded()) {
+            if (store && store.isLoading()) {
+                this.getViewModel().set('loadmask', {xtype: 'loadmask', message: '加载中...'});
+                return;
+            }
+            if (store && !store.isLoaded()) {
                 store.load();
                 return;
             }
-            for (var i = 0; i < values.length; i++) {
-                valuesMap[values[i]] = true;
+            vm.set('doingAction', true);
+            setTimeout(function () {
                 if (store) {
-                    var selectedItem = store.findRecord(valueField, values[i]);
-                    if (selectedItem) {
-                        selectedItem = Object.assign({}, selectedItem.data);
+                    records = v.getStore().getData().items;
+                }
+                for (let i = 0; i < records.length; i++) {
+                    let valueIndex = values.indexOf(records[i].data[valueField]);
+                    let item = Object.assign({}, records[i].data);
+                    if (valueIndex >= 0) {
+                        selectedItems.push(item);
+                        values.splice(valueIndex, 1);
                     } else {
-                        selectedItem = {};
-                        selectedItem[displayField] = values[i];
-                        selectedItem[valueField] = values[i];
+                        unselectedItems.push(item);
                     }
+                }
+                for (let i = 0; i < values.length; i++) {
+                    var selectedItem = {};
+                    selectedItem[displayField] = values[i];
+                    selectedItem[valueField] = values[i];
                     selectedItems.push(selectedItem);
                 }
-            }
-            if (store) {
-                records = v.getStore().getData().items;
-            }
-            if (records) {
-                for (var i = 0; i < records.length; i++) {
-                    if (!valuesMap[records[i].data[valueField]]) {
-                        var unselectedItem = Object.assign({}, records[i].data);
-                        unselectedItems.push(unselectedItem);
-                    }
-                }
-            }
-            vm.getStore('selectedItems').loadData(selectedItems);
-            vm.getStore('unselectedItems').loadData(unselectedItems);
-            v.selectedDataview.getStore().getProxy().setData(selectedItems);
-            v.selectedDataview.getStore().load();
-            v.unselectedDataview.getStore().getProxy().setData(unselectedItems)
-            v.unselectedDataview.getStore().load();
-            v.down('searchfield').setValue('');
+                vm.getStore('selectedItems').loadData(selectedItems);
+                vm.getStore('unselectedItems').loadData(unselectedItems);
+                v.selectedDataview.getStore().getProxy().setData(selectedItems);
+                v.selectedDataview.getStore().load();
+                v.unselectedDataview.getStore().getProxy().setData(unselectedItems)
+                v.unselectedDataview.getStore().load();
+                v.down('searchfield').setValue('');
+                vm.set('doingAction', false);
+                vm.set('loadmask', null);
+            }, 50);
         },
         hBtnAdd: function () {
             var v = this.getView(),
@@ -118,7 +120,7 @@ Ext.define('PSR.field.transfer.Base', {
             v.setValue(values.join(','));
         },
         hBtnRemove: function () {
-            const v = this.getView(),
+            var v = this.getView(),
                 vm = this.getViewModel(),
                 valueField = v.getValueField(),
                 selectedItems = vm.getStore('selectedItems').getData().items,
@@ -139,13 +141,14 @@ Ext.define('PSR.field.transfer.Base', {
             v.setValue(values.join(','));
         },
         hBtnRemoveAll: function () {
-            const v = this.getView();
+            var v = this.getView();
             v.setValue('');
         },
     },
     viewModel: {
         data: {
             loadmask: null,
+            doingAction: false,
             fieldLabel: '',
             fieldDisabled: false,
             hasUnselectedItemsSelected: true, // TODO
@@ -159,6 +162,7 @@ Ext.define('PSR.field.transfer.Base', {
     config: {
         valueField: 'value',
         displayField: 'text',
+        sortField: 'text',
         selectedDataview: {
             lazy: true,
             $value: {}
@@ -179,63 +183,42 @@ Ext.define('PSR.field.transfer.Base', {
         this.getController().syncSelection();
     },
     onStoreBeforeLoad: function () {
-        this.getAt(1).disable();
         this.getViewModel().set('loadmask', {xtype: 'loadmask', message: '加载中...'});
-        // this.getAt(2).mask({xtype: 'loadmask', message: '加载中...'});
-        // this.getAt(0).mask({xtype: 'loadmask', message: '加载中...'});
     },
     onStoreLoad: function (store, records, success) {
         if (success) {
             this.getController().syncSelection();
         }
-        this.getViewModel().set('loadmask', null);
-        // this.getAt(2).unmask();
-        // this.getAt(0).unmask();
     },
     minHeight: '300',
-    layout: 'hbox',
+    layout: 'fit',
+    items: [{
+        xtype: 'panel',
+        layout: 'hbox',
+        bind: {masked: '{loadmask}'}
+    }],
     constructor: function (config) {
         this.callParent([config]);
-        this.add([{
+        var panel = this.getAt(0);
+        panel.add([{
             xtype: 'panel',
             flex: 1,
             border: true,
             layout: 'fit',
-            bind: {hidden: '{fieldDisabled}', masked: '{loadmask}'}
-        }, {
-            xtype: 'toolbar',
-            layout: 'vbox',
-            items: ['->', {
-                iconCls: 'x-fa fa-angle-double-right', ui: 'action',
-                handler: 'hBtnAddAll',
-                bind: {disabled: '{!!loadmask}'}
-            }, {
-                iconCls: 'x-fa fa-angle-right', ui: 'action',
-                handler: 'hBtnAdd',
-                bind: {disabled: '{!!loadmask}'}
-            }, {
-                iconCls: 'x-fa fa-angle-left', ui: 'action',
-                handler: 'hBtnRemove',
-                bind: {disabled: '{!!loadmask}'}
-            }, {
-                iconCls: 'x-fa fa-angle-double-left', ui: 'action',
-                handler: 'hBtnRemoveAll',
-                bind: {disabled: '{!!loadmask}'}
-            }, '->'],
             bind: {hidden: '{fieldDisabled}'}
         }, {
             xtype: 'panel',
             flex: 1,
             border: true,
-            layout: 'fit',
-            bind: {masked: '{loadmask}'}
+            layout: 'fit'
         }, {
             xtype: 'toolbar',
             docked: 'top',
             items: [{
-                xtype: 'button', iconCls: 'x-fa fa-sync', text: '刷新',
+                xtype: 'button',
+                iconCls: 'x-fa fa-sync', tooltip: '刷新',
                 handler: 'doRefresh',
-                bind: {disabled: '{!!loadmask}'}
+                bind: {disabled: '{doingAction}'}
             }, {
                 xtype: 'searchfield',
                 flex: 1,
@@ -245,15 +228,32 @@ Ext.define('PSR.field.transfer.Base', {
                     buffer: 300,
                     change: 'doSearch'
                 },
-                bind: {disabled: '{!!loadmask}'}
+                bind: {disabled: '{doingAction}'}
+            }, {
+                iconCls: 'x-fa fa-angle-double-right', ui: 'action',
+                handler: 'hBtnAddAll',
+                bind: {disabled: '{doingAction}', hidden: '{fieldDisabled}'}
+            }, {
+                iconCls: 'x-fa fa-angle-right', ui: 'action',
+                handler: 'hBtnAdd',
+                bind: {disabled: '{doingAction}', hidden: '{fieldDisabled}'}
+            }, {
+                iconCls: 'x-fa fa-angle-left', ui: 'action',
+                handler: 'hBtnRemove',
+                bind: {disabled: '{doingAction}', hidden: '{fieldDisabled}'}
+            }, {
+                iconCls: 'x-fa fa-angle-double-left', ui: 'action',
+                handler: 'hBtnRemoveAll',
+                bind: {disabled: '{doingAction}', hidden: '{fieldDisabled}'}
             }]
         }]);
-        this.selectedDataview = this.getAt(2).add(this.createSelectedDataview());
-        this.selectedDataview.on({
+        this.selectedDataview = panel.getAt(1).add(this.createSelectedDataview());
+        this.unselectedDataview = panel.getAt(0).add(this.createUnselectedDataview());
+        var me = this, vm = me.getViewModel();
+        me.selectedDataview.on({
             selectionchange: 'onSelectionChange'
         });
-        this.unselectedDataview = this.getAt(0).add(this.createUnselectedDataview());
-        this.unselectedDataview.on({
+        me.unselectedDataview.on({
             selectionchange: 'onSelectionChange'
         });
     },

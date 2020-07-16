@@ -7,7 +7,7 @@ Ext.define('PSR.panel.crud.search.Base', {
             return selected;
         },
         onSelectionChange: function (grid) {
-            const v = this.getViewModel(),
+            var v = this.getViewModel(),
                 _selected = [],
                 newSelected = this.beforeSelect(grid, grid.getSelectable().getSelections());
             if (newSelected && newSelected.length > 0) {
@@ -123,7 +123,7 @@ Ext.define('PSR.panel.crud.search.Base', {
         this.getViewModel().set('enableSearcher', !!this.searchDataView.searchView);
     },
     createSearchDataView: function () {
-        const searchDataView = this.getSearchDataView();
+        var searchDataView = this.getSearchDataView();
         return searchDataView;
     },
     updateStore: function (store) {

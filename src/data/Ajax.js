@@ -27,7 +27,7 @@ Ext.define('PSR.data.Ajax', {
                 opt.complete(response, opt);
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
             PSR.Ajax.hCallFailure(response, opt);
         }
     },

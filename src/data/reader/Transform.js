@@ -20,25 +20,25 @@ Ext.define('PSR.data.reader.Transform', {
     },
     pathTree: function (records, opt) {
         opt = PSR.data.reader.Transform.getPathTreeOption(opt);
-        const displayProperty = opt.displayProperty;
-        const pathProperty = opt.pathProperty;
-        const pathSplitter = opt.pathSplitter;
-        const rootProperty = opt.rootProperty;
-        const nodeMap = {};
-        const rootNodes = [];
+        var displayProperty = opt.displayProperty;
+        var pathProperty = opt.pathProperty;
+        var pathSplitter = opt.pathSplitter;
+        var rootProperty = opt.rootProperty;
+        var nodeMap = {};
+        var rootNodes = [];
         for (let index = 0; index < records.length; index++) {
             // 节点赋值
-            const record = Object.assign({isRecord: true},
+            var record = Object.assign({isRecord: true},
                 (opt && opt.transformNode) ?
                     opt.transformNode(records[index], opt) : records[index]);
 
             // 获取路径值
-            const pathValue = record[pathProperty];
+            var pathValue = record[pathProperty];
             // 如果不存在路径值，为无效路径记录，跳过
             if (!pathValue) {
                 continue;
             }
-            const paths = pathValue.split(pathSplitter);
+            var paths = pathValue.split(pathSplitter);
             let newPathNode = nodeMap[pathValue];
             // 如果不存在已创建的节点，则创建路径节点
             if (!newPathNode) {
@@ -88,20 +88,22 @@ Ext.define('PSR.data.reader.Transform', {
     },
     parentTree: function (records, opt) {
         opt = Object.assign({}, opt);
-        const rootProperty = opt.rootProperty ? opt.rootProperty : 'result';
+        var rootProperty = opt.rootProperty ? opt.rootProperty : 'result';
         var roots = [];
         if (records && records.length > 0) {
             var nodeMap = {};
             for (let i = 0; i < records.length; i++) {
-                const record = Object.assign({},
+                var record = Object.assign({},
                     (opt && opt.transformNode) ?
                         opt.transformNode(records[i], opt) : records[i]);
                 if (record.iconCls == null) {
                     delete record.iconCls;
                 }
-                nodeMap[record.id] = Object.assign({leaf: true, [rootProperty]: [], isRecord: true}, record);
+                var tempNode = {leaf: true, isRecord: true};
+                tempNode[rootProperty] = [];
+                nodeMap[record.id] = Object.assign(tempNode, record);
             }
-            for (const nodeMapKey in nodeMap) {
+            for (var nodeMapKey in nodeMap) {
                 var node = nodeMap[nodeMapKey];
                 if (node.parentId && nodeMap[node.parentId]) {
                     var parentNode = nodeMap[node.parentId];
@@ -113,17 +115,15 @@ Ext.define('PSR.data.reader.Transform', {
             }
         }
         if (opt.root) {
-            return {
-                [rootProperty]: [Object.assign(
-                    {leaf: false, expanded: true},
-                    opt.root,
-                    {[rootProperty]: roots}
-                )]
-            };
+            var result = {},
+                root = Object.assign({leaf: false, expanded: true}, opt.root);
+            root[rootProperty] = roots;
+            result[rootProperty] = [root];
+            return result;
         } else {
-            return {
-                [rootProperty]: roots
-            }
+            var result = {};
+            result[rootProperty] = roots;
+            return result;
         }
     }
 });

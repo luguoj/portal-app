@@ -7,7 +7,7 @@ Ext.define('PSR.panel.searchDataviewPicker.Base', {
             return selected;
         },
         onSelectionChange: function (grid) {
-            const v = this.getViewModel(),
+            var v = this.getViewModel(),
                 _selected = [],
                 newSelected = this.beforeSelect(grid, grid.getSelectable().getSelections());
             if (newSelected && newSelected.length > 0) {
