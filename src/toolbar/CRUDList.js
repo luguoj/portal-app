@@ -11,12 +11,6 @@ Ext.define('PSR.toolbar.CRUDList', {
     constructor: function (config) {
         var me = this;
         me.callParent([config]);
-        if (me.getCreateHandler()) {
-            me.add({
-                tooltip: '创建', iconCls: 'x-fa fa-file-medical',
-                handler: me.getCreateHandler()
-            });
-        }
         if (me.getDetailsHandler()) {
             me.btnDetails = me.add({
                 tooltip: '明细', iconCls: 'x-fa fa-file-alt',
@@ -24,6 +18,12 @@ Ext.define('PSR.toolbar.CRUDList', {
                 handler: function (button) {
                     Ext.callback(me.getDetailsHandler(), button.getScope(), [me.getSelection()], 0, button);
                 }
+            });
+        }
+        if (me.getCreateHandler()) {
+            me.add({
+                tooltip: '创建', iconCls: 'x-fa fa-file-medical',
+                handler: me.getCreateHandler()
             });
         }
         if (me.getCloneHandler()) {
