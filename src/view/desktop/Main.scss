@@ -7,7 +7,7 @@ $psr-desktop-nav-header-icon-size: 36px;
 .psr-desktop-nav-app-icon:before {
   content: "";
   height: $psr-desktop-nav-header-icon-size;
-  width: $psr-desktop-nav-header-icon-size;
+  width: $psr-desktop-nav-header-icon-size/16*20;
   background: url(desktop/logo.png) no-repeat;
   background-size: 100% 100%;
 }
@@ -90,3 +90,12 @@ $psr-desktop-nav-header-icon-size: 36px;
         $row-over-background-color: mix(white, $panel-navigation-background-color, 5%),
         $row-selected-background-color: mix(white, $panel-navigation-background-color, 10%)
 );
+.x-button .x-icon-el {
+        width: 20px;
+}
+.x-big .x-button .x-icon-el {
+        width: 30px;
+}
+.x-paneltitle-psr-desktop-nav .x-icon-el {
+        width: 45px;
+}
