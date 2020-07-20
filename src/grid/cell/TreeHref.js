@@ -5,7 +5,7 @@ Ext.define('PSR.grid.cell.TreeHref', {
         handler: null
     },
     isRecord: function (record) {
-        return record && record.data && record.data.isRecord;
+        return record && record.data && !record.data.isPath;
     },
     updateRawValue: function (rawValue) {
         var dom = this.bodyElement.dom,

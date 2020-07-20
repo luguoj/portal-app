@@ -31,7 +31,14 @@ Ext.define('PSR.toolbar.CRUDList', {
                 tooltip: '克隆', iconCls: 'x-fa fa-copy',
                 disabled: !this.getSelection(),
                 handler: function (button) {
-                    Ext.callback(me.getCloneHandler(), button.getScope(), [me.getSelection()], 0, button);
+                    var selection = me.getSelection();
+                    Ext.Msg.confirm("确认克隆",
+                        "克隆对象:" + selection.data.text,
+                        function (buttonId) {
+                            if (buttonId == 'yes') {
+                                Ext.callback(me.getCloneHandler(), button.getScope(), [selection], 0, button);
+                            }
+                        });
                 }
             });
         }
@@ -40,7 +47,14 @@ Ext.define('PSR.toolbar.CRUDList', {
                 tooltip: '删除', iconCls: 'x-fa fa-file-excel',
                 disabled: !this.getSelection(),
                 handler: function (button) {
-                    Ext.callback(me.getDeleteHandler(), button.getScope(), [me.getSelection()], 0, button);
+                    var selection = me.getSelection();
+                    Ext.Msg.confirm("确认删除",
+                        "删除对象:" + selection.data.text,
+                        function (buttonId) {
+                            if (buttonId == 'yes') {
+                                Ext.callback(me.getDeleteHandler(), button.getScope(), [selection], 0, button);
+                            }
+                        });
                 }
             });
         }

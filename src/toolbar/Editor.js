@@ -3,11 +3,13 @@ Ext.define('PSR.toolbar.Editor', {
     xtype: 'psr-toolbar-editor',
     config: {
         editable: true,
-        editing: true,
-        creating: true,
         refreshHandler: null,
         createHandler: null,
         updateHandler: null
+    },
+    eventedConfig: {
+        editing: true,
+        creating: true
     },
     publishes: {editing: true, creating: true},
     constructor: function (config) {
