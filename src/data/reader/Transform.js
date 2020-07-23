@@ -18,7 +18,7 @@ Ext.define('PSR.data.reader.Transform', {
         var rootProperty = opt.rootProperty;
         var nodeMap = {};
         var rootNodes = [];
-        for (var index = 0; index < records.length; index++) {
+        for (var index = 0; records && index < records.length; index++) {
             // 节点赋值
             var record = Object.assign({isPath: false}, records[index]);
             // 获取路径值
