@@ -175,6 +175,9 @@ Ext.define('PSR.field.transfer.Base', {
     updateValue: function (value) {
         this.getController().syncSelection();
     },
+    reset: function () {
+        this.setValue(this.originalValue);
+    },
     updateDisabled: function (value) {
         this.getViewModel().set('fieldDisabled', value);
         this.callParent([value]);

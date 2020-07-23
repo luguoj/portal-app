@@ -91,5 +91,8 @@ Ext.define('PSR.field.TextList', {
     updateDisabled: function (value) {
         this.getViewModel().set('fieldDisabled', value);
         this.callParent([value]);
+    },
+    reset: function () {
+        this.setValue(this.originalValue);
     }
 });

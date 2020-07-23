@@ -19,5 +19,8 @@ Ext.define('PSR.field.Datetime', {
         var datetime = value ? Ext.Date.parse(value, "Y-m-d H:i:s") : null;
         this.getAt(0).setValue(datetime);
         this.getAt(1).setValue(datetime);
+    },
+    reset: function () {
+        this.setValue(this.originalValue);
     }
 });
