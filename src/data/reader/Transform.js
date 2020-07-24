@@ -3,7 +3,7 @@ Ext.define('PSR.data.reader.Transform', {
     singleton: true,
     getPathTreeOption: function (opt) {
         return Object.assign({
-            expand: false,
+            expand: null,
             displayProperty: 'text',
             pathProperty: 'path',
             pathSplitter: '/',
@@ -44,11 +44,17 @@ Ext.define('PSR.data.reader.Transform', {
                     var path = paths[0];
                     var pathNode = nodeMap[path];
                     if (!pathNode) {
-                        pathNode = {leaf: false, expanded: opt.expand, isPath: true};
-                        pathNode[displayProperty] = path;
+                        pathNode = {isPath: true};
+                        pathNode[displayProperty] = paths[0];
                         pathNode[rootProperty] = [];
-                        nodeMap[path] = pathNode;
                         rootNodes.push(pathNode);
+                        nodeMap[path] = pathNode;
+                    }
+                    pathNode.leaf = false;
+                    if (opt.expand === true) {
+                        pathNode.expanded = true;
+                    } else if (opt.expand === false) {
+                        pathNode.expanded = false;
                     }
                     for (var deep = 1; deep < paths.length - 1; deep++) {
                         path = path + '/' + paths[deep];
@@ -61,11 +67,13 @@ Ext.define('PSR.data.reader.Transform', {
                             nodeMap[path] = childPathNode;
                         }
                         childPathNode.leaf = false;
-                        childPathNode.expanded = opt.expand;
+                        if (opt.expand === true) {
+                            childPathNode.expanded = true;
+                        } else if (opt.expand === false) {
+                            childPathNode.expanded = false;
+                        }
                         pathNode = childPathNode;
                     }
-                    pathNode.leaf = false;
-                    pathNode.expanded = opt.expand;
                     pathNode[rootProperty].push(newPathNode);
                 }
             }
@@ -85,6 +93,11 @@ Ext.define('PSR.data.reader.Transform', {
                     delete record.iconCls;
                 }
                 var tempNode = {leaf: true};
+                if (opt.expand === true) {
+                    tempNode.expanded = true;
+                } else if (opt.expand === false) {
+                    tempNode.expanded = false;
+                }
                 tempNode[rootProperty] = [];
                 nodeMap[record.id] = Object.assign(tempNode, record);
             }
