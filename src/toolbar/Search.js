@@ -2,8 +2,9 @@ Ext.define('PSR.toolbar.Search', {
     extend: 'Ext.Toolbar',
     xtype: 'psr-toolbar-search',
     config: {
-        enableSearchFilter: true,
         searchHandler: null,
+        refreshHandler: null,
+        filterHandler: null
     },
     eventedConfig: {
         searchFilterShowed: false
@@ -14,7 +15,7 @@ Ext.define('PSR.toolbar.Search', {
     constructor: function (config) {
         var me = this;
         me.callParent([config]);
-        if (me.getEnableSearchFilter()) {
+        if (me.getSearchHandler()) {
             me.add({
                 tooltip: '过滤器', iconCls: 'x-fa fa-filter',
                 enableToggle: true,
@@ -22,11 +23,25 @@ Ext.define('PSR.toolbar.Search', {
                     me.setSearchFilterShowed(value);
                 }
             });
-        }
-        if (me.getSearchHandler()) {
             me.add({
                 tooltip: '搜索', iconCls: 'x-fa fa-search',
                 handler: me.getSearchHandler()
+            });
+        }
+        if (me.getRefreshHandler()) {
+            me.add({
+                tooltip: '刷新', iconCls: 'x-fa fa-sync',
+                handler: me.getRefreshHandler()
+            });
+        }
+        if (me.getFilterHandler()) {
+            me.add({
+                xtype: 'searchfield',
+                placeholder: '搜索',
+                listeners: {
+                    buffer: 300,
+                    change: me.getFilterHandler()
+                }
             });
         }
     }
