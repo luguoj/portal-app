@@ -3,7 +3,7 @@ Ext.define('PSR.toolbar.Editor', {
     xtype: 'psr-toolbar-editor',
     config: {
         editable: true,
-        refreshHandler: null,
+        resetHandler: null,
         createHandler: null,
         updateHandler: null
     },
@@ -15,11 +15,11 @@ Ext.define('PSR.toolbar.Editor', {
     constructor: function (config) {
         var me = this;
         me.callParent([config]);
-        if (me.getRefreshHandler()) {
+        if (me.getResetHandler()) {
             me.btnRefresh = me.add({
-                tooltip: '刷新', iconCls: 'x-fa fa-sync',
+                tooltip: '重置', iconCls: 'x-fa fa-undo',
                 disabled: me.getCreating(),
-                handler: me.getRefreshHandler()
+                handler: me.getResetHandler()
             });
         }
         if (me.getEditable()) {
