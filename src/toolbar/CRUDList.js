@@ -13,7 +13,7 @@ Ext.define('PSR.toolbar.CRUDList', {
         me.callParent([config]);
         if (me.getDetailsHandler()) {
             me.btnDetails = me.add({
-                tooltip: '明细', iconCls: 'x-fa fa-file-alt',
+                text: '明细', iconCls: 'x-fa fa-file-alt',
                 disabled: !this.getSelection(),
                 handler: function (button) {
                     Ext.callback(me.getDetailsHandler(), button.getScope(), [me.getSelection()], 0, button);
@@ -22,13 +22,13 @@ Ext.define('PSR.toolbar.CRUDList', {
         }
         if (me.getCreateHandler()) {
             me.add({
-                tooltip: '创建', iconCls: 'x-fa fa-file-medical',
+                text: '创建', iconCls: 'x-fa fa-file-medical',
                 handler: me.getCreateHandler()
             });
         }
         if (me.getCloneHandler()) {
             me.btnClone = me.add({
-                tooltip: '克隆', iconCls: 'x-fa fa-copy',
+                text: '克隆', iconCls: 'x-fa fa-copy',
                 disabled: !this.getSelection(),
                 handler: function (button) {
                     var selection = me.getSelection();
@@ -44,7 +44,7 @@ Ext.define('PSR.toolbar.CRUDList', {
         }
         if (me.getDeleteHandler()) {
             me.btnDelete = me.add({
-                tooltip: '删除', iconCls: 'x-fa fa-file-excel',
+                text: '删除', iconCls: 'x-fa fa-file-excel',
                 disabled: !this.getSelection(),
                 handler: function (button) {
                     var selection = me.getSelection();

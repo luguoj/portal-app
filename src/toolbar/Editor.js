@@ -17,14 +17,14 @@ Ext.define('PSR.toolbar.Editor', {
         me.callParent([config]);
         if (me.getResetHandler()) {
             me.btnRefresh = me.add({
-                tooltip: '重置', iconCls: 'x-fa fa-undo',
+                text: '重置', iconCls: 'x-fa fa-undo',
                 disabled: me.getCreating(),
                 handler: me.getResetHandler()
             });
         }
         if (me.getEditable()) {
             me.btnModify = me.add({
-                tooltip: '修改', iconCls: 'x-fa fa-edit',
+                text: '修改', iconCls: 'x-fa fa-edit',
                 enableToggle: true,
                 disabled: !me.getCreating(),
                 pressed: me.getEditing() || me.getCreating(),
@@ -38,14 +38,14 @@ Ext.define('PSR.toolbar.Editor', {
             });
             if (me.getUpdateHandler()) {
                 me.btnUpdate = me.add({
-                    tooltip: '保存', iconCls: 'x-fa fa-save',
+                    text: '保存', iconCls: 'x-fa fa-save',
                     hidden: !me.getEditing() || me.getCreating(),
                     handler: me.getUpdateHandler()
                 });
             }
             if (me.getCreateHandler()) {
                 me.btnCreate = me.add({
-                    tooltip: '创建', iconCls: 'x-fa fa-plus',
+                    text: '创建', iconCls: 'x-fa fa-file-medical',
                     hidden: !me.getCreating(),
                     handler: me.getCreateHandler()
                 });
