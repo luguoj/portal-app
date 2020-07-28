@@ -66,13 +66,11 @@ Ext.define('PSR.view.crud.List', {
             searchFields = this.searchFields,
             actionToolbars = this.actionToolbars,
             actions = this.actions,
-            items = this.config.items,
+            items = [].concat(this.config.items),
             grd, clmns, grdItemController,
             tbsearch, tbcrud, tbcontainer,
             frmSearchFilter;
-        if (!items) {
-            items = this.config.items = [];
-        }
+        this.config.items = items;
         // 创建工具栏容器
         tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
         items.push(tbcontainer);
@@ -138,7 +136,6 @@ Ext.define('PSR.view.crud.List', {
                         }
                     });
                     grdItemController[action] = function (record) {
-                        debugger
                         vThis.fireEvent(action, record);
                     };
                 }
@@ -172,8 +169,10 @@ Ext.define('PSR.view.crud.List', {
         items.push(grd);
     },
     createViewModelConfig: function (config) {
-        var viewModel = this.config.viewModel, formulas, data,
+        var viewModel = Object.assign({}, this.config.viewModel),
+            formulas, data,
             actions = this.actions;
+        this.config.viewModel = viewModel;
         if (!viewModel || !viewModel.stores || !viewModel.stores.entities) {
             PSR.Message.error('CRUD视图缺少entities');
         }

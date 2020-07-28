@@ -31,7 +31,7 @@ Ext.define('PSR.view.crud.Details', {
     },
     loadEntity: function (record) {
         this.getController().loadEntity(record ? record.data.id : null);
-        this.getViewModel().set('text', record ? record.get('displaytext'): '');
+        this.getViewModel().set('text', record ? record.get('displaytext') : '');
     },
     setValues: function (value) {
         var form = this.down('formpanel');
@@ -50,11 +50,9 @@ Ext.define('PSR.view.crud.Details', {
         var actions = this.actions,
             formFields = this.formFields,
             actionToolbars = this.actionToolbars,
-            items = this.config.items,
+            items = [].concat(this.config.items),
             tbtitle, tbcontainer, tbeditor, frm;
-        if (!items) {
-            this.config.items = items = [];
-        }
+        this.config.items = items;
         // 创建表单
         frm = {xtype: 'formpanel', scrollable: 'y', items: formFields};
         items.push(frm);
@@ -83,11 +81,10 @@ Ext.define('PSR.view.crud.Details', {
         }
     },
     createViewModelConfig: function (config) {
-        var viewModel = this.config.viewModel, data,
+        var viewModel = Object.assign({}, this.config.viewModel),
+            data,
             actions = this.actions;
-        if (!viewModel) {
-            this.config.viewModel = viewModel = {};
-        }
+        this.config.viewModel = viewModel;
         // 组装data
         data = {actions: actions, text: '', dirty: false};
         viewModel.data = Object.assign(data, viewModel.data);
@@ -144,7 +141,7 @@ Ext.define('PSR.view.crud.Details', {
                             vm.set('dirty', true);
                             if (actions.update) {
                                 tbeditor.toggleEditing();
-                            }else{
+                            } else {
                                 tbeditor.toggleViewing();
                             }
                             v.setValues(data);
