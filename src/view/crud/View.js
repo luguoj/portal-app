@@ -23,6 +23,7 @@ Ext.define('PSR.view.crud.View', {
         this.callParent([config]);
     },
     createItemsConfig: function (config) {
+        var defaultItems = this.config.items;
         var items = [{
             xtype: this.listViewXtype,
             actions: config.actions,
@@ -42,10 +43,13 @@ Ext.define('PSR.view.crud.View', {
                 }
             }]
         }];
-        if (this.config.items && this.config.items.length > 0) {
-            for (var i = 0; i < this.config.items.length; i++) {
-                items.push(Object.assign({actions: config.actions}, this.config.items[i]));
+        if (defaultItems && defaultItems.length > 0) {
+            for (var i = 0; i < defaultItems.length; i++) {
+                if (defaultItems[i].items && defaultItems[i].items.length > 0) {
+                    defaultItems[i].items[0].actions = config.actions;
+                }
             }
+            items = items.concat(defaultItems);
         }
         this.config.items = items;
     },

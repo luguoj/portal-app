@@ -66,6 +66,7 @@ Ext.define('PSR.view.crud.Details', {
         tbeditor = {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
             resetHandler: 'reset',
+            editable: actions && actions.update,
             createHandler: (actions && actions.create) ? 'createEntity' : null,
             updateHandler: (actions && actions.update) ? 'updateEntity' : null
         };

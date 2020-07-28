@@ -73,7 +73,6 @@ Ext.define('PSR.view.crud.List', {
         this.config.items = items;
         // 创建工具栏容器
         tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
-        items.push(tbcontainer);
         // 创建搜索工具栏
         tbsearch = {xtype: 'psr-toolbar-search', reference: 'tbsearch'};
         if (searchFields && searchFields.length > 0) {
@@ -147,6 +146,7 @@ Ext.define('PSR.view.crud.List', {
                 xtype: 'tree', reference: 'grd',
                 rootVisible: false,
                 columns: clmns,
+                items:[tbcontainer],
                 bind: {store: '{entities}'},
                 itemConfig: {
                     viewModel: {},
@@ -157,6 +157,7 @@ Ext.define('PSR.view.crud.List', {
             grd = {
                 xtype: 'grid', reference: 'grd',
                 columns: clmns,
+                items:[tbcontainer],
                 bind: {store: '{entities}'},
                 itemConfig: {
                     viewModel: {},
@@ -221,7 +222,7 @@ Ext.define('PSR.view.crud.List', {
                     store = vm.getStore('entities');
                 if (value && value.length > 0) {
                     store.getFilters().replaceAll({
-                        property: 'text',
+                        property: 'displaytext',
                         value: new RegExp(Ext.String.escapeRegex(value), 'i')
                     });
                 } else {

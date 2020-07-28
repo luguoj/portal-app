@@ -23,33 +23,33 @@ Ext.define('PSR.toolbar.Editor', {
             });
         }
         if (me.getEditable()) {
-            if (me.getUpdateHandler()) {
-                me.btnModify = me.add({
-                    text: '修改', iconCls: 'x-fa fa-edit',
-                    enableToggle: true,
-                    disabled: !me.getCreating(),
-                    pressed: me.getEditing() || me.getCreating(),
-                    toggleHandler: function (button, pressed) {
-                        if (pressed) {
-                            me.toggleEditing();
-                        } else {
-                            me.toggleViewing();
-                        }
+            me.btnModify = me.add({
+                text: '修改', iconCls: 'x-fa fa-edit',
+                enableToggle: true,
+                disabled: !me.getCreating(),
+                pressed: me.getEditing() || me.getCreating(),
+                toggleHandler: function (button, pressed) {
+                    if (pressed) {
+                        me.toggleEditing();
+                    } else {
+                        me.toggleViewing();
                     }
-                });
+                }
+            });
+            if (me.getUpdateHandler()) {
                 me.btnUpdate = me.add({
                     text: '保存', iconCls: 'x-fa fa-save',
                     hidden: !me.getEditing() || me.getCreating(),
                     handler: me.getUpdateHandler()
                 });
             }
-            if (me.getCreateHandler()) {
-                me.btnCreate = me.add({
-                    text: '创建', iconCls: 'x-fa fa-file-medical',
-                    hidden: !me.getCreating(),
-                    handler: me.getCreateHandler()
-                });
-            }
+        }
+        if (me.getCreateHandler()) {
+            me.btnCreate = me.add({
+                text: '创建', iconCls: 'x-fa fa-file-medical',
+                hidden: !me.getCreating(),
+                handler: me.getCreateHandler()
+            });
         }
     },
     updateEditing: function (value) {
