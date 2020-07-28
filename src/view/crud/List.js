@@ -119,9 +119,10 @@ Ext.define('PSR.view.crud.List', {
         };
         if (actionColumns && actionColumns.length > 0) {
             for (let i = 0; i < actionColumns.length; i++) {
-                var action = actionColumns.action,
-                    text = actionColumns.text,
-                    width = actionColumns.width ? actionColumns.width : 50;
+                var actionColumn = actionColumns[i],
+                    action = actionColumn.action,
+                    text = actionColumn.text,
+                    width = actionColumn.width ? actionColumn.width : 50;
                 if (actions[action]) {
                     clmns.push({
                         xtype: 'psr-grid-column-href',

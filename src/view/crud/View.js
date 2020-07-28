@@ -8,15 +8,24 @@ Ext.define('PSR.view.crud.View', {
     listViewXtype: '',
     listListeners: {},
     detailsViewXtype: '',
+    config: {
+        actions: {
+            create: true,
+            clone: true,
+            delete: true,
+            update: true
+        }
+    },
     constructor: function (config) {
-        this.createItemsConfig();
-        this.createControllerConfig();
-        this.createViewModelConfig();
+        this.createItemsConfig(config);
+        this.createControllerConfig(config);
+        this.createViewModelConfig(config);
         this.callParent([config]);
     },
-    createItemsConfig: function () {
+    createItemsConfig: function (config) {
         var items = [{
             xtype: this.listViewXtype,
+            actions: config.actions,
             listeners: Object.assign({
                 goDetails: 'goDetails'
             }, this.listListeners)
@@ -27,15 +36,20 @@ Ext.define('PSR.view.crud.View', {
             items: [{
                 xtype: this.detailsViewXtype,
                 flex: 1,
+                actions: config.actions,
                 listeners: {
                     goback: 'goBack'
                 }
             }]
         }];
-        items = items.concat(this.config.items);
+        if (this.config.items && this.config.items.length > 0) {
+            for (var i = 0; i < this.config.items.length; i++) {
+                items.push(Object.assign({actions: config.actions}, this.config.items[i]));
+            }
+        }
         this.config.items = items;
     },
-    createControllerConfig: function () {
+    createControllerConfig: function (config) {
         var controller = {
             goBack: function (dirty) {
                 var v = this.getView(),
@@ -66,7 +80,7 @@ Ext.define('PSR.view.crud.View', {
         controller = Object.assign(controller, this.config.controller)
         this.config.controller = controller;
     },
-    createViewModelConfig: function () {
+    createViewModelConfig: function (config) {
         this.config.viewModel = Object.assign({}, this.config.viewModel);
     }
 });

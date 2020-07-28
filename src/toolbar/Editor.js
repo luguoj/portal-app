@@ -23,20 +23,20 @@ Ext.define('PSR.toolbar.Editor', {
             });
         }
         if (me.getEditable()) {
-            me.btnModify = me.add({
-                text: '修改', iconCls: 'x-fa fa-edit',
-                enableToggle: true,
-                disabled: !me.getCreating(),
-                pressed: me.getEditing() || me.getCreating(),
-                toggleHandler: function (button, pressed) {
-                    if (pressed) {
-                        me.toggleEditing();
-                    } else {
-                        me.toggleViewing();
-                    }
-                }
-            });
             if (me.getUpdateHandler()) {
+                me.btnModify = me.add({
+                    text: '修改', iconCls: 'x-fa fa-edit',
+                    enableToggle: true,
+                    disabled: !me.getCreating(),
+                    pressed: me.getEditing() || me.getCreating(),
+                    toggleHandler: function (button, pressed) {
+                        if (pressed) {
+                            me.toggleEditing();
+                        } else {
+                            me.toggleViewing();
+                        }
+                    }
+                });
                 me.btnUpdate = me.add({
                     text: '保存', iconCls: 'x-fa fa-save',
                     hidden: !me.getEditing() || me.getCreating(),
