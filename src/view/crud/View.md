@@ -22,6 +22,10 @@ subView = {
 }
 ```
 注意：子视图需实现loadEntity: function(record)
+- actions: {create: true,clone: true,delete: true,update: true} 操作可用性
+
+此配置将传递给子视图
+
 ## 3. controller
 - goSubView: function (viewindex, record) 跳转到对应序号子视图容器
 
