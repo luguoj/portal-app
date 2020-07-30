@@ -1,0 +1,13 @@
+.p-confirm {
+  color: #7cb342;
+  color: var(--confirm-color);
+}
+
+.p-decline {
+  color: #c62828;
+  color: var(--alert-color);
+}
+
+.x-button .x-icon-el {
+  width: 20px;
+}
