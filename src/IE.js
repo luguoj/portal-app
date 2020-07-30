@@ -2,7 +2,7 @@ Ext.define('PSR.IE', {
     singleton: true,
 });
 if (typeof Object.assign != 'function') {
-    Object.assign = function(target) {
+    Object.assign = function (target) {
         'use strict';
         if (target == null) {
             throw new TypeError('Cannot convert undefined or null to object');
