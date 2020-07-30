@@ -4,6 +4,7 @@ Ext.define('PSR.view.crud.Association', {
     items: [],
     controller: {},
     viewModel: {},
+    isViewClassInit: false,
     // 抽象成员
     isTree: false,
     entitySide: 'left',
@@ -16,20 +17,21 @@ Ext.define('PSR.view.crud.Association', {
         }
     },
     constructor: function (config) {
-        var defaultActions = this.config.actions,
-            configActions = config.actions,
-            actions = this.actions = Object.assign({}, defaultActions);
-        if (configActions) {
-            for (var action in actions) {
-                if (configActions[action] != null) {
-                    actions[action] = configActions[action];
-                }
+        if (!this.isViewClassInit) {
+            this.createItemsConfig();
+            this.createViewModelConfig();
+            this.createControllerConfig();
+            this.isViewClassInit = true;
+        }
+        this.callParent([config]);
+    },
+    updateActions: function (actions) {
+        const vm = this.getViewModel();
+        if (actions) {
+            for (const actionsKey in actions) {
+                vm.set('action_' + actionsKey, actions[actionsKey]);
             }
         }
-        this.createItemsConfig(config);
-        this.createViewModelConfig(config);
-        this.createControllerConfig(config);
-        this.callParent([config]);
     },
     loadEntity: function (record) {
         this.getController().loadEntity(record ? record.data.id : null);
@@ -37,7 +39,6 @@ Ext.define('PSR.view.crud.Association', {
     },
     createItemsConfig: function (config) {
         var vThis = this,
-            actions = this.actions,
             isTree = this.isTree,
             title = this.title,
             updateAction = this.updateAction,
@@ -48,6 +49,7 @@ Ext.define('PSR.view.crud.Association', {
         this.config.items = items;
         // 创建标题
         tbtitle = {xtype: 'psr-toolbar-navigation', bind: {title: title + ': {text}'}, goBackHandler: 'goBack'};
+        items.push(tbtitle);
         // 创建工具栏容器
         tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
         // 创建搜索工具栏
@@ -64,7 +66,7 @@ Ext.define('PSR.view.crud.Association', {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
             flex: 1,
             resetHandler: 'reset',
-            editable: actions && actions[updateAction]
+            bind: {editable: '{action_' + updateAction + '}'}
         };
         tbcontainer.items.push(tbeditor);
         // 创建搜索过滤表单
@@ -86,7 +88,7 @@ Ext.define('PSR.view.crud.Association', {
                     width: 45,
                     bind: {
                         tooltip: '{record.assignFlag?"是":"否"}',
-                        iconCls: '{record.assignFlag?"x-fa fa-check":"x-fa fa-times"}',
+                        iconCls: '{record.assignFlag?"x-fa fa-check p-confirm":"x-fa fa-times p-decline"}',
                         hidden: '{record.isPath}',
                         disabled: '{!tbeditor.editing}',
                         ui: '{record.assignFlag?"confirm":"decline"}'
@@ -114,9 +116,9 @@ Ext.define('PSR.view.crud.Association', {
         if (isTree) {
             grd = {
                 xtype: 'tree', reference: 'grd',
-                rootVisible: false,
+                rootVisible: false, rowLines: true, columnLines: true,
                 columns: clmns,
-                items: [tbtitle, tbcontainer],
+                items: [tbcontainer],
                 bind: {store: '{entities}'},
                 itemConfig: {
                     viewModel: true,
@@ -126,8 +128,9 @@ Ext.define('PSR.view.crud.Association', {
         } else {
             grd = {
                 xtype: 'grid', reference: 'grd',
+                rowLines: true, columnLines: true,
                 columns: clmns,
-                items: [tbtitle, tbcontainer],
+                items: [tbcontainer],
                 bind: {store: '{entities}'},
                 itemConfig: {
                     viewModel: true,
@@ -140,41 +143,48 @@ Ext.define('PSR.view.crud.Association', {
         }
         items.push(grd);
     },
-    createViewModelConfig: function (config) {
+    createViewModelConfig: function () {
         var viewModel = Object.assign({}, this.config.viewModel),
             data,
-            actions = this.actions;
+            actions = this.config.actions;
         this.config.viewModel = viewModel;
         // 组装data
-        data = {actions: actions, text: '', entityId: null, associations: {}};
+        data = {text: '', entityId: null, associations: {}};
+        if (actions) {
+            for (const actionsKey in actions) {
+                data['action_' + actionsKey] = actions[actionsKey];
+            }
+        }
         viewModel.data = Object.assign(data, viewModel.data);
     },
-    createControllerConfig: function (config) {
-        var entitySide = this.entitySide;
+    createControllerConfig: function () {
         if (!this.config.controller || !this.config.controller.getService) {
             PSR.Message.error('CRUD视图缺少getService');
         }
-        var controller = {
+        const entitySide = this.entitySide;
+        const controller = {
             initViewModel: function (vm) {
-                var store = vm.getStore('entities'),
+                const store = vm.getStore('entities'),
                     reader = store.getProxy().getReader(),
                     orignTransform = reader.getTransform();
                 reader.setTransform(function (data) {
-                    var associations = vm.get('associations');
+                    const associations = vm.get('associations');
                     if (data.result && data.result.length > 0) {
                         for (let i = 0; i < data.result.length; i++) {
-                            var record = data.result[i];
+                            const record = data.result[i];
                             record.assignFlag = !!associations[record.id];
                             record.associationId = associations[record.id];
                         }
                     }
-                    data = orignTransform(data);
+                    if (orignTransform) {
+                        data = orignTransform(data);
+                    }
                     return data;
                 });
             },
             goBack: function () {
                 var vm = this.getViewModel(), v = this.getView();
-                this.getView().fireEvent('goback');
+                this.getView().fireEvent('goback', false);
                 v.loadEntity(null);
             },
             reset: function () {

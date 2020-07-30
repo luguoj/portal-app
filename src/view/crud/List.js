@@ -4,6 +4,7 @@ Ext.define('PSR.view.crud.List', {
     items: [],
     controller: {},
     viewModel: {},
+    isViewClassInit: false,
     // 抽象成员
     isTree: false,
     columns: [],
@@ -18,20 +19,21 @@ Ext.define('PSR.view.crud.List', {
         }
     },
     constructor: function (config) {
-        var defaultActions = this.config.actions,
-            configActions = config.actions,
-            actions = this.actions = Object.assign({}, defaultActions);
-        if (configActions) {
-            for (var action in actions) {
-                if (configActions[action] != null) {
-                    actions[action] = configActions[action];
-                }
+        if (!this.isViewClassInit) {
+            this.createItemsConfig();
+            this.createViewModelConfig();
+            this.createControllerConfig();
+            this.isViewClassInit = true;
+        }
+        this.callParent([config]);
+    },
+    updateActions: function (actions) {
+        const vm = this.getViewModel();
+        if (actions) {
+            for (const actionsKey in actions) {
+                vm.set('action_' + actionsKey, actions[actionsKey]);
             }
         }
-        this.createItemsConfig(config);
-        this.createViewModelConfig(config);
-        this.createControllerConfig(config);
-        this.callParent([config]);
     },
     refresh: function () {
         this.getController().refresh();
@@ -58,7 +60,7 @@ Ext.define('PSR.view.crud.List', {
             record.set('catalog', dirty.catalogId ? {id: dirty.catalogId} : null);
         }
     },
-    createItemsConfig: function (config) {
+    createItemsConfig: function () {
         var vThis = this,
             isTree = this.isTree,
             columns = this.columns,
@@ -84,10 +86,13 @@ Ext.define('PSR.view.crud.List', {
         tbcontainer.items.push(tbsearch);
         // 创建增删改查工具栏
         tbcrud = {
-            xtype: 'psr-toolbar-crudlist', detailsHandler: 'details', bind: {selection: '{grdselection}'},
-            createHandler: (actions && actions.create) ? 'create' : null,
-            deleteHandler: (actions && actions.delete) ? 'delete' : null,
-            cloneHandler: (actions && actions.clone) ? 'clone' : null
+            xtype: 'psr-toolbar-crudlist', detailsHandler: 'goDetails',
+            bind: {
+                selection: '{grdselection}',
+                createHandler: '{action_create ? "create" : null}',
+                deleteHandler: '{action_delete ? "delete" : null}',
+                cloneHandler: '{action_clone ? "clone" : null}',
+            }
         };
         tbcontainer.items.push({xtype: 'container', width: 1}, tbcrud);
         // 创建操作工具栏
@@ -118,35 +123,26 @@ Ext.define('PSR.view.crud.List', {
         };
         if (actionColumns && actionColumns.length > 0) {
             for (let i = 0; i < actionColumns.length; i++) {
-                var actionColumn = actionColumns[i],
+                const actionColumn = actionColumns[i],
                     action = actionColumn.action,
-                    text = actionColumn.text,
-                    width = actionColumn.width ? actionColumn.width : 50;
-                if (actions[action]) {
-                    clmns.push({
-                        xtype: 'psr-grid-column-href',
-                        width: width, maxWidth: width, minWidth: width,
-                        menuDisabled: true,
-                        sortable: false,
-                        cell: {
-                            renderer: function (value, record) {
-                                return !record.data.isPath ? text : '';
-                            },
-                            handler: action
-                        }
-                    });
-                    grdItemController[action] = function (record) {
-                        vThis.fireEvent(action, record);
-                    };
-                }
+                    text = actionColumn.text;
+                clmns.push({
+                    xtype: 'psr-grid-column-hrefaction',
+                    text: text,
+                    action: action,
+                    bind: {hidden: '{!action_' + action + '}'}
+                });
+                grdItemController[action] = function (record) {
+                    vThis.getController()[action](record);
+                };
             }
         }
         if (isTree) {
             grd = {
                 xtype: 'tree', reference: 'grd',
-                rootVisible: false,
+                rootVisible: false, rowLines: true, columnLines: true,
                 columns: clmns,
-                items:[tbcontainer],
+                items: [tbcontainer],
                 bind: {store: '{entities}'},
                 itemConfig: {
                     viewModel: {},
@@ -156,8 +152,9 @@ Ext.define('PSR.view.crud.List', {
         } else {
             grd = {
                 xtype: 'grid', reference: 'grd',
+                rowLines: true, columnLines: true,
                 columns: clmns,
-                items:[tbcontainer],
+                items: [tbcontainer],
                 bind: {store: '{entities}'},
                 itemConfig: {
                     viewModel: {},
@@ -170,16 +167,21 @@ Ext.define('PSR.view.crud.List', {
         }
         items.push(grd);
     },
-    createViewModelConfig: function (config) {
+    createViewModelConfig: function () {
         var viewModel = Object.assign({}, this.config.viewModel),
             formulas, data,
-            actions = this.actions;
+            actions = this.config.actions;
         this.config.viewModel = viewModel;
         if (!viewModel || !viewModel.stores || !viewModel.stores.entities) {
             PSR.Message.error('CRUD视图缺少entities');
         }
         // 组装data
-        data = {actions: actions};
+        data = {};
+        if (actions) {
+            for (const actionsKey in actions) {
+                data['action_' + actionsKey] = actions[actionsKey];
+            }
+        }
         viewModel.data = Object.assign(data, viewModel.data);
         // 组装formulas
         formulas = {
@@ -190,13 +192,18 @@ Ext.define('PSR.view.crud.List', {
         };
         viewModel.formulas = Object.assign(formulas, viewModel.formulas);
     },
-    createControllerConfig: function (config) {
+    createControllerConfig: function () {
+        const actionColumns = this.actionColumns;
         if (!this.config.controller || !this.config.controller.getService) {
             PSR.Message.error('CRUD视图缺少getService');
         }
         var controller = {
-            details: function (selection) {
-                this.getView().fireEvent('goDetails', selection);
+            fireActionEvent: function (eventName, record) {
+                var selection = (record && record.isModel) ? record : this.lookup('grd').getSelection();
+                this.getView().fireEvent(eventName, selection);
+            },
+            goDetails: function () {
+                this.fireActionEvent('goDetails');
             },
             search: function () {
                 var vm = this.getViewModel(),
@@ -265,6 +272,15 @@ Ext.define('PSR.view.crud.List', {
                 });
             }
         };
+        if (actionColumns && actionColumns.length > 0) {
+            for (let i = 0; i < actionColumns.length; i++) {
+                const actionColumn = actionColumns[i],
+                    action = actionColumn.action;
+                controller[action] = function (record) {
+                    this.fireActionEvent(action, record);
+                }
+            }
+        }
         this.config.controller = Object.assign(controller, this.config.controller);
     }
 });

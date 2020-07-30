@@ -10,7 +10,7 @@
 
 updateAction指定的操作
 ## 3 viewModel
-- data.actions: {'$updateAction': true} 操作可用性
+- data.action_$updateAction: true 操作可用性
 - stores需实现entities
 
 样例：

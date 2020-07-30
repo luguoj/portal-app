@@ -3,6 +3,15 @@
 - isTree: false 树形清单标识
 - columns: [] 清单列定义
 - actionColumns: [] 操作列定义
+
+根据此项配置热链创建操作列，并在controller自动创建action对应名称的函数
+
+执行操作触发action对应名称的事件，参数1为对应记录/选中的记录
+
+样例：
+```js
+actionColumns:[{action:'goResources',text:'资源'}]
+```
 - searchFields: [] 搜索字段
 
 注意：如果没有搜索字段则会使用过滤器

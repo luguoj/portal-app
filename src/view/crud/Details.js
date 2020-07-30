@@ -4,6 +4,7 @@ Ext.define('PSR.view.crud.Details', {
     items: [],
     controller: {},
     viewModel: {},
+    isViewClassInit: false,
     // 抽象成员
     formFields: [],
     actionToolbars: [],
@@ -14,20 +15,21 @@ Ext.define('PSR.view.crud.Details', {
         }
     },
     constructor: function (config) {
-        var defaultActions = this.config.actions,
-            configActions = config.actions,
-            actions = this.actions = Object.assign({}, defaultActions);
-        if (configActions) {
-            for (var action in actions) {
-                if (configActions[action] != null) {
-                    actions[action] = configActions[action];
-                }
+        if (!this.isViewClassInit) {
+            this.createItemsConfig();
+            this.createViewModelConfig();
+            this.createControllerConfig();
+            this.isViewClassInit = true;
+        }
+        this.callParent([config]);
+    },
+    updateActions: function (actions) {
+        const vm = this.getViewModel();
+        if (actions) {
+            for (const actionsKey in actions) {
+                vm.set('action_' + actionsKey, actions[actionsKey]);
             }
         }
-        this.createItemsConfig(config);
-        this.createViewModelConfig(config);
-        this.createControllerConfig(config);
-        this.callParent([config]);
     },
     loadEntity: function (record) {
         this.getController().loadEntity(record ? record.data.id : null);
@@ -46,9 +48,8 @@ Ext.define('PSR.view.crud.Details', {
         var value = this.down('formpanel').getValues();
         return value;
     },
-    createItemsConfig: function (config) {
-        var actions = this.actions,
-            formFields = this.formFields,
+    createItemsConfig: function () {
+        var formFields = this.formFields,
             actionToolbars = this.actionToolbars,
             items = [].concat(this.config.items),
             tbtitle, tbcontainer, tbeditor, frm;
@@ -66,9 +67,11 @@ Ext.define('PSR.view.crud.Details', {
         tbeditor = {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
             resetHandler: 'reset',
-            editable: actions && actions.update,
-            createHandler: (actions && actions.create) ? 'createEntity' : null,
-            updateHandler: (actions && actions.update) ? 'updateEntity' : null
+            bind: {
+                editable: '{action_update}',
+                createHandler: '{action_create ? "create" : null}',
+                updateHandler: '{action_update ? "update" : null}'
+            }
         };
         tbcontainer.items.push(tbeditor);
         // 创建操作工具栏
@@ -81,17 +84,21 @@ Ext.define('PSR.view.crud.Details', {
             }
         }
     },
-    createViewModelConfig: function (config) {
+    createViewModelConfig: function () {
         var viewModel = Object.assign({}, this.config.viewModel),
             data,
-            actions = this.actions;
+            actions = this.config.actions;
         this.config.viewModel = viewModel;
         // 组装data
-        data = {actions: actions, text: '', dirty: false};
+        data = {text: '', dirty: false};
+        if (actions) {
+            for (const actionsKey in actions) {
+                data['action_' + actionsKey] = actions[actionsKey];
+            }
+        }
         viewModel.data = Object.assign(data, viewModel.data);
     },
-    createControllerConfig: function (config) {
-        var actions = this.actions;
+    createControllerConfig: function () {
         if (!this.config.controller || !this.config.controller.getService) {
             PSR.Message.error('CRUD视图缺少getService');
         }
@@ -127,12 +134,13 @@ Ext.define('PSR.view.crud.Details', {
                     tbeditor.toggleCreating();
                 }
             },
-            createEntity: function () {
-                var me = this,
+            create: function () {
+                const me = this,
                     v = this.getView(),
                     vm = this.getViewModel(),
                     values = v.getValues(),
-                    tbeditor = me.lookup('tbeditor');
+                    tbeditor = me.lookup('tbeditor'),
+                    action_update = vm.get('action_update');
                 v.mask({xtype: 'loadmask', message: '保存中...'});
                 me.getService().create({
                     values: values,
@@ -140,7 +148,7 @@ Ext.define('PSR.view.crud.Details', {
                         if (data) {
                             Ext.toast("保存成功");
                             vm.set('dirty', true);
-                            if (actions.update) {
+                            if (action_update) {
                                 tbeditor.toggleEditing();
                             } else {
                                 tbeditor.toggleViewing();
@@ -156,7 +164,7 @@ Ext.define('PSR.view.crud.Details', {
                     }
                 });
             },
-            updateEntity: function () {
+            update: function () {
                 var me = this,
                     v = this.getView(),
                     vm = this.getViewModel(),

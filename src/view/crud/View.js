@@ -4,6 +4,7 @@ Ext.define('PSR.view.crud.View', {
     items: [],
     controller: {},
     viewModel: {},
+    isViewClassInit: false,
     // 抽象成员
     listViewXtype: '',
     listListeners: {},
@@ -17,27 +18,37 @@ Ext.define('PSR.view.crud.View', {
         }
     },
     constructor: function (config) {
-        this.createItemsConfig(config);
-        this.createControllerConfig(config);
-        this.createViewModelConfig(config);
+        if (!this.isViewClassInit) {
+            this.createItemsConfig();
+            this.createViewModelConfig();
+            this.createControllerConfig();
+            this.isViewClassInit = true;
+        }
         this.callParent([config]);
     },
-    createItemsConfig: function (config) {
+    updateActions: function (actions) {
+        const vm = this.getViewModel(),
+            vmactions = vm.get('actions');
+        if (actions) {
+            for (const actionsKey in actions) {
+                vmactions[actionsKey] = actions[actionsKey];
+            }
+        }
+    },
+    createItemsConfig: function () {
         var defaultItems = this.config.items;
         var items = [{
             xtype: this.listViewXtype,
-            actions: config.actions,
+            bind: {actions: '{actions}'},
             listeners: Object.assign({
                 goDetails: 'goDetails'
             }, this.listListeners)
         }, {
-            xtype: 'dialog',
-            width: 400, maxHeight: '80%',
-            layout: 'hbox', padding: 0,
+            xtype: 'psr-dialog-subview',
             items: [{
                 xtype: this.detailsViewXtype,
                 flex: 1,
-                actions: config.actions,
+                bind: {actions: '{actions}'},
                 listeners: {
                     goback: 'goBack'
                 }
@@ -46,14 +57,27 @@ Ext.define('PSR.view.crud.View', {
         if (defaultItems && defaultItems.length > 0) {
             for (var i = 0; i < defaultItems.length; i++) {
                 if (defaultItems[i].items && defaultItems[i].items.length > 0) {
-                    defaultItems[i].items[0].actions = config.actions;
+                    const subView = defaultItems[i].items[0];
+                    if (!subView.bind) {
+                        subView.bind = {};
+                    }
+                    subView.bind.actions = '{actions}';
                 }
             }
             items = items.concat(defaultItems);
         }
         this.config.items = items;
     },
-    createControllerConfig: function (config) {
+    createViewModelConfig: function () {
+        var viewModel = Object.assign({}, this.config.viewModel),
+            data,
+            actions = this.config.actions;
+        this.config.viewModel = viewModel;
+        // 组装data
+        data = {actions: actions};
+        viewModel.data = Object.assign(data, viewModel.data);
+    },
+    createControllerConfig: function () {
         var controller = {
             goBack: function (dirty) {
                 var v = this.getView(),
@@ -83,8 +107,5 @@ Ext.define('PSR.view.crud.View', {
         };
         controller = Object.assign(controller, this.config.controller)
         this.config.controller = controller;
-    },
-    createViewModelConfig: function (config) {
-        this.config.viewModel = Object.assign({}, this.config.viewModel);
     }
 });
