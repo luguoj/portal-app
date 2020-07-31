@@ -6,10 +6,10 @@ Ext.define('PSR.view.crud.Association', {
     viewModel: {},
     isViewClassInit: false,
     // 抽象成员
+    title: '关系',
     isTree: false,
     entitySide: 'left',
     searchFields: [],
-    title: '关系',
     updateAction: 'updateAssociation',
     config: {
         actions: {
@@ -23,6 +23,7 @@ Ext.define('PSR.view.crud.Association', {
             this.createControllerConfig();
             this.isViewClassInit = true;
         }
+        this._title = this.title;
         this.callParent([config]);
     },
     updateActions: function (actions) {
@@ -33,9 +34,12 @@ Ext.define('PSR.view.crud.Association', {
             }
         }
     },
-    loadEntity: function (record) {
-        this.getController().loadEntity(record ? record.data.id : null);
-        this.getViewModel().set('text', record ? record.get('displaytext') : '');
+    load: function (opt, callback) {
+        this.title = (opt ? opt.displaytext + ' ' : '') + this._title;
+        this.getController().loadEntity(opt ? opt.id : null);
+        if (callback) {
+            callback();
+        }
     },
     createItemsConfig: function (config) {
         var vThis = this,
@@ -44,14 +48,14 @@ Ext.define('PSR.view.crud.Association', {
             updateAction = this.updateAction,
             items = [].concat(this.config.items),
             searchFields = this.searchFields,
-            tbtitle, tbcontainer, tbsearch, tbeditor,
+            tbcontainer, tbnav, tbsearch, tbeditor,
             frmSearchFilter, grd, clmns, grdItemController;
         this.config.items = items;
-        // 创建标题
-        tbtitle = {xtype: 'psr-toolbar-navigation', bind: {title: title + ': {text}'}, goBackHandler: 'goBack'};
-        items.push(tbtitle);
         // 创建工具栏容器
         tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
+        // 创建导航工具栏
+        tbnav = {xtype: 'toolbar', items: [{xtype: 'psr-button-goback', handler: 'goBack'}]};
+        tbcontainer.items.push(tbnav);
         // 创建搜索工具栏
         tbsearch = {xtype: 'psr-toolbar-search', reference: 'tbsearch'};
         if (searchFields && searchFields.length > 0) {
@@ -99,7 +103,7 @@ Ext.define('PSR.view.crud.Association', {
         }, {
             xtype: isTree ? 'treecolumn' : 'column',
             text: title, flex: 1, menuDisabled: true,
-            dataIndex: 'displaytext'
+            dataIndex: 'displaytext',
         }];
         grdItemController = {
             associate: function (button) {
@@ -185,7 +189,7 @@ Ext.define('PSR.view.crud.Association', {
             goBack: function () {
                 var vm = this.getViewModel(), v = this.getView();
                 this.getView().fireEvent('goback', false);
-                v.loadEntity(null);
+                v.load(null);
             },
             reset: function () {
                 var vm = this.getViewModel(), v = this.getView();

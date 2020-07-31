@@ -6,6 +6,7 @@ Ext.define('PSR.view.crud.Details', {
     viewModel: {},
     isViewClassInit: false,
     // 抽象成员
+    title: '明细',
     formFields: [],
     actionToolbars: [],
     config: {
@@ -31,9 +32,8 @@ Ext.define('PSR.view.crud.Details', {
             }
         }
     },
-    loadEntity: function (record) {
-        this.getController().loadEntity(record ? record.data.id : null);
-        this.getViewModel().set('text', record ? record.get('displaytext') : '');
+    load: function (opt, callback) {
+        this.getController().loadEntity(opt ? opt.id : null, null, callback);
     },
     setValues: function (value) {
         var form = this.down('formpanel');
@@ -52,17 +52,18 @@ Ext.define('PSR.view.crud.Details', {
         var formFields = this.formFields,
             actionToolbars = this.actionToolbars,
             items = [].concat(this.config.items),
-            tbtitle, tbcontainer, tbeditor, frm;
+            tbcontainer, tbnav, tbeditor, frm;
         this.config.items = items;
         // 创建表单
         frm = {xtype: 'formpanel', scrollable: 'y', items: formFields};
         items.push(frm);
-        // 创建标题
-        tbtitle = {xtype: 'psr-toolbar-navigation', bind: {title: '明细: {text}'}, goBackHandler: 'goBack'};
-        items.push(tbtitle);
         // 创建工具栏容器
         tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
         items.push(tbcontainer);
+        // 创建导航工具栏
+        tbnav = {xtype: 'toolbar', items: [{xtype: 'psr-button-goback', handler: 'goBack'}]};
+        tbcontainer.items.push(tbnav);
+
         // 创建编辑工具栏
         tbeditor = {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
@@ -103,7 +104,7 @@ Ext.define('PSR.view.crud.Details', {
             PSR.Message.error('CRUD视图缺少getService');
         }
         var controller = {
-            loadEntity: function (entityId, editing) {
+            loadEntity: function (entityId, editing, callback) {
                 var me = this,
                     v = this.getView(),
                     vm = this.getViewModel(),
@@ -120,6 +121,7 @@ Ext.define('PSR.view.crud.Details', {
                     me.getService().load({
                         id: entityId,
                         success: function (data) {
+                            v.title = '明细';
                             v.setValues(data);
                         },
                         failure: function () {
@@ -128,10 +130,17 @@ Ext.define('PSR.view.crud.Details', {
                         },
                         complete: function () {
                             v.unmask();
+                            if (callback) {
+                                callback();
+                            }
                         }
                     });
                 } else {
                     tbeditor.toggleCreating();
+                    v.title = '创建';
+                    if (callback) {
+                        callback();
+                    }
                 }
             },
             create: function () {
@@ -191,7 +200,7 @@ Ext.define('PSR.view.crud.Details', {
             goBack: function () {
                 var vm = this.getViewModel(), v = this.getView();
                 this.getView().fireEvent('goback', vm.get('dirty'));
-                v.loadEntity(null);
+                v.load(null);
             },
             reset: function () {
                 var vm = this.getViewModel(), v = this.getView();

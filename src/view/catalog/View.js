@@ -7,11 +7,22 @@
  * @date 2020/7/23
  */
 Ext.define('PSR.view.catalog.View', {
-    extend: 'PSR.view.crud.View',
+    extend: 'PSR.view.work.View',
     xtype: 'psr-catalog',
     config: {
         getService: undefined
     },
-    listViewXtype: 'psr-catalog-list',
-    detailsViewXtype: 'psr-catalog-details'
+    subViewConfigs: {
+        main: {
+            xtype: 'psr-catalog-list',
+            listeners: {
+                goDetails: 'goDetails',
+                goUsers: 'goUsers',
+                goClients: 'goClients'
+            },
+        },
+        details: {
+            xtype: 'psr-catalog-details'
+        },
+    }
 });

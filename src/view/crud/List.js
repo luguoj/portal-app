@@ -6,6 +6,7 @@ Ext.define('PSR.view.crud.List', {
     viewModel: {},
     isViewClassInit: false,
     // 抽象成员
+    title: '清单',
     isTree: false,
     columns: [],
     actionColumns: [],
@@ -35,29 +36,27 @@ Ext.define('PSR.view.crud.List', {
             }
         }
     },
-    refresh: function () {
-        this.getController().refresh();
-    },
-    refreshRecord: function (dirty) {
-        var store = this.getViewModel().getStore('entities'),
-            record = store.isTreeStore ? store.findNode('id', dirty.id) : store.findRecord('id', dirty.id);
-        if (!record) {
-            this.refresh();
-            return;
+    load: function (dirty, callback) {
+        const store = this.getViewModel().getStore('entities');
+        if (dirty) {
+            let record = dirty ? (store.isTreeStore ? store.findNode('id', dirty.id) : store.findRecord('id', dirty.id)) : null;
+            if (!record) {
+                this.getController().refresh();
+            } else if (!dirty.catalogId && record.data.catalog) {
+                this.getController().refresh();
+            } else if (dirty.catalogId && (!record.data.catalog || record.data.catalog.id != dirty.catalogId)) {
+                this.getController().refresh();
+            } else {
+                for (var dirtyKey in dirty) {
+                    record.set(dirtyKey, dirty[dirtyKey]);
+                }
+                if (record.data.catalog || dirty.catalogId) {
+                    record.set('catalog', dirty.catalogId ? {id: dirty.catalogId} : null);
+                }
+            }
         }
-        if (!dirty.catalogId && record.data.catalog) {
-            this.refresh();
-            return;
-        }
-        if (dirty.catalogId && (!record.data.catalog || record.data.catalog.id != dirty.catalogId)) {
-            this.refresh();
-            return;
-        }
-        for (var dirtyKey in dirty) {
-            record.set(dirtyKey, dirty[dirtyKey]);
-        }
-        if (record.data.catalog || dirty.catalogId) {
-            record.set('catalog', dirty.catalogId ? {id: dirty.catalogId} : null);
+        if (callback) {
+            callback();
         }
     },
     createItemsConfig: function () {
@@ -200,7 +199,10 @@ Ext.define('PSR.view.crud.List', {
         var controller = {
             fireActionEvent: function (eventName, record) {
                 var selection = (record && record.isModel) ? record : this.lookup('grd').getSelection();
-                this.getView().fireEvent(eventName, selection);
+                this.getView().fireEvent(eventName, {
+                    id: selection.get('id'),
+                    displaytext: selection.get('displaytext')
+                });
             },
             goDetails: function () {
                 this.fireActionEvent('goDetails');
