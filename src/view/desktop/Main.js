@@ -42,9 +42,15 @@ Ext.define('PSR.view.desktop.Main', {
         },
     },
     viewModel: {
+        formulas: {
+            title: function (get) {
+                return get('moduleTitle') + '\\' + get('viewTitle');
+            }
+        },
         data: {
             moduleTitle: '',
             moduleIconCls: '',
+            viewTitle: '',
             workspaceExpanded: false
         }
     },
@@ -76,7 +82,7 @@ Ext.define('PSR.view.desktop.Main', {
             ui: 'psr-desktop-title',
             height: '64px',
             docked: 'top',
-            titleAlign: 'center',
+            titleAlign: 'left',
             hideMode: 'clip',
             hideAnimation: {
                 type: 'slide',
@@ -88,7 +94,7 @@ Ext.define('PSR.view.desktop.Main', {
                 direction: 'down',
                 out: false
             },
-            bind: {title: '{moduleTitle}'},
+            bind: {title: '{title}'},
             defaultButtonUI: 'psr-desktop-title-button',
             items: [{
                 align: 'left',
