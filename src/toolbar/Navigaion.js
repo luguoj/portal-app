@@ -10,7 +10,7 @@ Ext.define('PSR.toolbar.Navigation', {
         me.callParent([config]);
         if (me.getGoBackHandler()) {
             me.add({
-                tooltip: '返回', iconCls: 'x-fa fa-arrow-left',
+                xtype: 'psr-button-goback',
                 align: 'left',
                 handler: me.getGoBackHandler()
             });
