@@ -114,5 +114,23 @@ Ext.define('PSR.clientSite.ClientSite', {
                 }
             });
         }
+    },
+    addModuleItem: function (moduleId, config, parent, callback) {
+        let moduleReady = true;
+        // 如果依赖模块，需先加载模块
+        if (moduleId) {
+            moduleReady = PSR.clientSite.ClientSite.getModuleReady(moduleId, function () {
+                PSR.clientSite.ClientSite.addModuleItem(moduleId, config, parent, callback);
+            });
+            if (!moduleReady) {
+                return false;
+            }
+        }
+        if (moduleReady) {
+            const item = parent.add(config)
+            if (callback) {
+                callback(item);
+            }
+        }
     }
 });
