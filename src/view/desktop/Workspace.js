@@ -3,7 +3,7 @@ Ext.define('PSR.view.desktop.workspace', {
     xtype: 'psr-view-desktop-workspace',
     controller: {
         switchNode: function (node) {
-            var c = this,
+            const c = this,
                 v = c.getView(),
                 nodeId = node.get('id'),
                 title = node.get('text'),
@@ -12,25 +12,16 @@ Ext.define('PSR.view.desktop.workspace', {
                 viewConfig = node.get('viewConfig'),
                 nodeView = v.getComponent(nodeId);
             if (!nodeView) {
-                var moduleReady = true;
-                if (moduleId) {
-                    moduleReady = PSR.clientSite.ClientSite.getModuleReady(moduleId, function () {
-                        c.switchNode(node);
+                PSR.clientSite.ClientSite.addModuleItem(
+                    moduleId,
+                    Object.assign({itemId: nodeId}, viewConfig),
+                    v,
+                    function (item) {
+                        v.setActiveItem(item);
                     });
-                    if (!moduleReady) {
-                        return false;
-                    }
-                }
-                if (moduleReady) {
-                    nodeView = v.add(Object.assign({
-                        itemId: nodeId,
-                        layout: 'fit',
-                        items: [viewConfig]
-                    }));
-                }
+            } else {
+                v.setActiveItem(nodeView);
             }
-            v.setActiveItem(nodeView);
-            return true;
         }
     },
     layout: {
@@ -39,6 +30,6 @@ Ext.define('PSR.view.desktop.workspace', {
     },
     items: [],
     switchNode: function (node) {
-        return this.getController().switchNode(node);
+        this.getController().switchNode(node);
     }
 });
