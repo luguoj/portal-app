@@ -56,6 +56,7 @@ Ext.define('PSR.view.crud.Association', {
         // 创建导航工具栏
         tbnav = {xtype: 'toolbar', items: [{xtype: 'psr-button-goback', handler: 'goBack'}]};
         tbcontainer.items.push(tbnav);
+        tbcontainer.items.push({xtype: 'container', width: 1});
         // 创建搜索工具栏
         tbsearch = {xtype: 'psr-toolbar-search', reference: 'tbsearch'};
         if (searchFields && searchFields.length > 0) {
@@ -65,6 +66,7 @@ Ext.define('PSR.view.crud.Association', {
             tbsearch.filterHandler = 'filter';
         }
         tbcontainer.items.push(tbsearch);
+        tbcontainer.items.push({xtype: 'container', width: 1});
         // 创建编辑工具栏
         tbeditor = {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',

@@ -63,7 +63,7 @@ Ext.define('PSR.view.crud.Details', {
         // 创建导航工具栏
         tbnav = {xtype: 'toolbar', items: [{xtype: 'psr-button-goback', handler: 'goBack'}]};
         tbcontainer.items.push(tbnav);
-
+        tbcontainer.items.push({xtype: 'container', width: 1});
         // 创建编辑工具栏
         tbeditor = {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
