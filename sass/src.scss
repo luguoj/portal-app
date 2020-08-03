@@ -8,6 +8,16 @@
   color: var(--alert-color);
 }
 
+.p-confirm-important {
+  color: #7cb342 !important;
+  color: var(--confirm-color) !important;
+}
+
+.p-decline-important {
+  color: #c62828 !important;
+  color: var(--alert-color) !important;
+}
+
 .x-button .x-icon-el {
   width: 20px;
 }
