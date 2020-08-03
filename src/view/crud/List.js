@@ -117,7 +117,7 @@ Ext.define('PSR.view.crud.List', {
         clmns = [].concat(columns);
         grdItemController = {
             goDetails: function (record) {
-                vThis.fireEvent('goDetails', record);
+                vThis.getController().fireActionEvent('goDetails', record);
             }
         };
         if (actionColumns && actionColumns.length > 0) {
@@ -208,7 +208,7 @@ Ext.define('PSR.view.crud.List', {
                 this.fireActionEvent('goDetails');
             },
             create: function (selection) {
-                this.getView().fireActionEvent('create', selection);
+                this.fireActionEvent('create', selection);
             },
             search: function () {
                 var vm = this.getViewModel(),
