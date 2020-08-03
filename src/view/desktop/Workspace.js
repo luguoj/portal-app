@@ -5,6 +5,7 @@ Ext.define('PSR.view.desktop.workspace', {
         switchNode: function (node) {
             const c = this,
                 v = c.getView(),
+                vm = c.getViewModel(),
                 nodeId = node.get('id'),
                 title = node.get('text'),
                 iconCls = node.get('iconCls'),
@@ -16,11 +17,17 @@ Ext.define('PSR.view.desktop.workspace', {
                     moduleId,
                     Object.assign({itemId: nodeId}, viewConfig),
                     v,
-                    function (item) {
-                        v.setActiveItem(item);
+                    function (nodeView) {
+                        v.setActiveItem(nodeView);
+                        if (nodeView.topView) {
+                            vm.set('viewTitle', nodeView.topView.title);
+                        }
                     });
             } else {
                 v.setActiveItem(nodeView);
+                if (nodeView.topView) {
+                    vm.set('viewTitle', nodeView.topView.title);
+                }
             }
         }
     },
