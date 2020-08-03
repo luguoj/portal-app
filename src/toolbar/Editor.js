@@ -16,11 +16,10 @@ Ext.define('PSR.toolbar.Editor', {
         var me = this;
         me.callParent([config]);
         me.btnReset = me.add({
-            text: '重置', iconCls: 'x-fa fa-undo'
+            xtype: 'psr-button-reset'
         });
         me.btnModify = me.add({
-            text: '修改', iconCls: 'x-fa fa-edit',
-            enableToggle: true,
+            xtype: 'psr-button-edit',
             toggleHandler: function (button, pressed) {
                 if (pressed) {
                     me.toggleEditing();
@@ -33,9 +32,7 @@ Ext.define('PSR.toolbar.Editor', {
             xtype: 'psr-button-save'
         });
         me.btnCreate = me.add({
-            text: '创建', iconCls: 'x-fa fa-file-medical',
-            hidden: !me.getCreating(),
-            handler: me.getCreateHandler()
+            xtype: 'psr-button-save'
         });
         me.switchButtonStatus();
     },
