@@ -238,8 +238,8 @@ Ext.define('PSR.view.crud.List', {
                     store.clearFilter();
                 }
             },
-            create: function () {
-                this.getView().fireEvent('goDetails', null);
+            create: function (selection) {
+                this.getView().fireEvent('create', selection);
             },
             clone: function (selection) {
                 var me = this,
