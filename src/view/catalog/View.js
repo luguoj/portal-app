@@ -17,12 +17,19 @@ Ext.define('PSR.view.catalog.View', {
             xtype: 'psr-catalog-list',
             listeners: {
                 goDetails: 'goDetails',
-                goUsers: 'goUsers',
-                goClients: 'goClients'
+                create: 'create'
             },
         },
         details: {
             xtype: 'psr-catalog-details'
         },
+    },
+    controller: {
+        goDetails: function (selection) {
+            this.getView().goSubView('details', {create: false, record: selection});
+        },
+        create: function (selection) {
+            this.getView().goSubView('details', {create: true, record: selection});
+        }
     }
 });

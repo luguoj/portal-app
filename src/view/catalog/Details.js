@@ -26,55 +26,21 @@ Ext.define('PSR.view.catalog.Details', {
     controller: {
         getService: function () {
             return this.getView().up('psr-catalog').getService();
-        },
-        createEntity: function () {
-            var me = this,
-                v = this.getView(),
-                vm = this.getViewModel(),
-                values = v.getValues(),
-                tbeditor = me.lookup('tbeditor');
-            v.mask({xtype: 'loadmask', message: '保存中...'});
-            me.getService().create({
-                values: values,
-                success: function (data) {
-                    if (data) {
-                        Ext.toast("保存成功");
-                        vm.set('dirty', true);
-                        tbeditor.toggleEditing();
-                        v.setValues(data);
-                    }
-                },
-                failure: function () {
-                    Ext.toast("保存失败")
-                },
-                complete: function () {
-                    v.unmask();
+        }
+    },
+    load: function (opt, callback) {
+        const me = this;
+        if (opt == null || opt.record == null) {
+            this.getController().loadEntity(null, null, callback);
+        } else if (opt.create) {
+            this.getController().loadEntity(null, null, function () {
+                me.setValues({path: opt.record.data.path, usage: opt.record.data.usage});
+                if (callback) {
+                    callback();
                 }
             });
-        },
-        updateEntity: function () {
-            var me = this,
-                v = this.getView(),
-                vm = this.getViewModel(),
-                values = v.getValues(),
-                tbeditor = me.lookup('tbeditor');
-            v.mask({xtype: 'loadmask', message: '保存中...'});
-            me.getService().update({
-                values: values,
-                success: function (data) {
-                    if (data) {
-                        Ext.toast("保存成功");
-                        vm.set('dirty', true);
-                        v.setValues(data);
-                    }
-                },
-                failure: function () {
-                    Ext.toast("保存失败")
-                },
-                complete: function () {
-                    v.unmask();
-                }
-            });
+        } else {
+            this.getController().loadEntity(opt.record.data.id, null, callback);
         }
     },
     loadEntity: function (record) {
