@@ -22,7 +22,9 @@ Ext.define('PSR.toolbar.CRUDList', {
         me.btnCreate = me.add({
             text: '创建', iconCls: 'x-fa fa-file-medical',
             hidden: !me.getCreateHandler(),
-            handler: me.getCreateHandler()
+            handler: function (button) {
+                Ext.callback(me.getCreateHandler(), button.getScope(), [me.getSelection()], 0, button);
+            }
         });
         me.btnClone = me.add({
             text: '克隆', iconCls: 'x-fa fa-copy',
@@ -74,7 +76,6 @@ Ext.define('PSR.toolbar.CRUDList', {
     updateCreateHandler: function (handler) {
         if (this.btnCreate) {
             this.btnCreate.setHidden(!handler);
-            this.btnCreate.setHandler(handler);
         }
     },
     updateCloneHandler: function (handler) {
