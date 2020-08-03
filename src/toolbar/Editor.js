@@ -30,7 +30,7 @@ Ext.define('PSR.toolbar.Editor', {
             }
         });
         me.btnUpdate = me.add({
-            text: '保存', iconCls: 'x-fa fa-save'
+            xtype: 'psr-button-save'
         });
         me.btnCreate = me.add({
             text: '创建', iconCls: 'x-fa fa-file-medical',
