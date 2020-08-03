@@ -84,22 +84,10 @@ Ext.define('PSR.view.crud.Association', {
         }
         // 创建表格
         clmns = [{
-            width: 55, menuDisabled: true, align: 'center',
-            cell: {
-                xtype: 'widgetcell',
-                widget: {
-                    xtype: 'button',
-                    width: 45,
-                    bind: {
-                        tooltip: '{record.assignFlag?"是":"否"}',
-                        iconCls: '{record.assignFlag?"x-fa fa-check p-confirm":"x-fa fa-times p-decline"}',
-                        hidden: '{record.isPath}',
-                        disabled: '{!tbeditor.editing}',
-                        ui: '{record.assignFlag?"confirm":"decline"}'
-                    },
-                    handler: 'associate'
-                }
-            }
+            xtype: 'psr-grid-column-toggle',
+            flagIndex: 'assignFlag',
+            disabledBinding: '!tbeditor.editing',
+            toggleHandler: 'associate'
         }, {
             xtype: isTree ? 'treecolumn' : 'column',
             text: title, flex: 1, menuDisabled: true,
