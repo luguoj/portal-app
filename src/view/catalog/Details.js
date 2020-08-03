@@ -8,11 +8,11 @@ Ext.define('PSR.view.catalog.Details', {
         title: '基本信息', instructions: '基本信息',
         items: [{
             xtype: 'combobox', label: '用途', name: 'usage',
-            editable: false,
+            editable: false, required: true,
             queryMode: 'local',
             bind: {store: '{usageSelections}', disabled: '{!tbeditor.creating}'}
         }, {
-            xtype: 'textfield', label: '路径', name: 'path'
+            xtype: 'textfield', label: '路径', name: 'path', required: true
         }],
         bind: {disabled: '{!tbeditor.editing}'}
     }],

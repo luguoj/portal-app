@@ -60,6 +60,9 @@ Ext.define('PSR.view.crud.Details', {
         var value = this.down('formpanel').getValues();
         return value;
     },
+    validate: function () {
+        return this.down('formpanel').validate();
+    },
     createItemsConfig: function () {
         var formFields = this.formFields,
             actionToolbars = this.actionToolbars,
@@ -159,9 +162,13 @@ Ext.define('PSR.view.crud.Details', {
                 const me = this,
                     v = this.getView(),
                     vm = this.getViewModel(),
+                    validate = v.validate(),
                     values = v.getValues(),
                     tbeditor = me.lookup('tbeditor'),
                     action_update = vm.get('action_update');
+                if (!validate) {
+                    return;
+                }
                 v.mask({xtype: 'loadmask', message: '保存中...'});
                 me.getService().create({
                     values: values,
@@ -186,11 +193,14 @@ Ext.define('PSR.view.crud.Details', {
                 });
             },
             update: function () {
-                var me = this,
+                const me = this,
                     v = this.getView(),
                     vm = this.getViewModel(),
-                    values = v.getValues(),
-                    tbeditor = me.lookup('tbeditor');
+                    validate = v.validate(),
+                    values = v.getValues();
+                if (!validate) {
+                    return;
+                }
                 v.mask({xtype: 'loadmask', message: '保存中...'});
                 me.getService().update({
                     values: values,

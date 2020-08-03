@@ -199,10 +199,10 @@ Ext.define('PSR.view.crud.List', {
         var controller = {
             fireActionEvent: function (eventName, record) {
                 var selection = (record && record.isModel) ? record : this.lookup('grd').getSelection();
-                this.getView().fireEvent(eventName, {
+                this.getView().fireEvent(eventName, selection ? {
                     id: selection.get('id'),
                     displaytext: selection.get('displaytext')
-                });
+                } : null);
             },
             goDetails: function () {
                 this.fireActionEvent('goDetails');
