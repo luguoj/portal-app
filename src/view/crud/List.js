@@ -207,6 +207,9 @@ Ext.define('PSR.view.crud.List', {
             goDetails: function () {
                 this.fireActionEvent('goDetails');
             },
+            create: function (selection) {
+                this.getView().fireActionEvent('create', selection);
+            },
             search: function () {
                 var vm = this.getViewModel(),
                     store = vm.getStore('entities'),
@@ -237,9 +240,6 @@ Ext.define('PSR.view.crud.List', {
                 } else {
                     store.clearFilter();
                 }
-            },
-            create: function (selection) {
-                this.getView().fireEvent('create', selection);
             },
             clone: function (selection) {
                 var me = this,

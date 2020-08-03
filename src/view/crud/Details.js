@@ -32,8 +32,20 @@ Ext.define('PSR.view.crud.Details', {
             }
         }
     },
+    /**
+     * @description 如果传入记录，则加载显示记录明细<br/>
+     * 如果传入null或{record:null}或{create:true},则清空记录，切换到创建模式<br/>
+     *
+     * @author ZHOUDD
+     * @date 2020/8/3
+     */
     load: function (opt, callback) {
-        this.getController().loadEntity(opt ? opt.id : null, null, callback);
+        const me = this;
+        if (opt && !opt.create && opt.record) {
+            this.getController().loadEntity(opt.record.id, null, callback);
+        } else {
+            this.getController().loadEntity(null, null, callback);
+        }
     },
     setValues: function (value) {
         var form = this.down('formpanel');

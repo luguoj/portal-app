@@ -27,24 +27,5 @@ Ext.define('PSR.view.catalog.Details', {
         getService: function () {
             return this.getView().up('psr-catalog').getService();
         }
-    },
-    load: function (opt, callback) {
-        const me = this;
-        if (opt == null || opt.record == null) {
-            this.getController().loadEntity(null, null, callback);
-        } else if (opt.create) {
-            this.getController().loadEntity(null, null, function () {
-                me.setValues({path: opt.record.data.path, usage: opt.record.data.usage});
-                if (callback) {
-                    callback();
-                }
-            });
-        } else {
-            this.getController().loadEntity(opt.record.data.id, null, callback);
-        }
-    },
-    loadEntity: function (record) {
-        this.getController().loadEntity(record ? record.data.id : null);
-        this.getViewModel().set('text', record ? record.get('path') : '');
     }
 });
