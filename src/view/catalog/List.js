@@ -27,6 +27,14 @@ Ext.define('PSR.view.catalog.List', {
         clone: false,
         delete: true
     },
+    load: function (opt, callback) {
+        if (opt && opt.id) {
+            this.getController().refresh();
+        }
+        if (callback) {
+            callback();
+        }
+    },
     viewModel: {
         stores: {
             entities: {

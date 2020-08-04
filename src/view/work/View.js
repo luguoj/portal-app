@@ -8,6 +8,7 @@ Ext.define('PSR.view.work.View', {
     },
     constructor: function (config) {
         this.callParent([config]);
+        this.subViewStack = [];
         this.goSubView('main')
     },
     goSubView: function (view, opt) {
@@ -27,21 +28,52 @@ Ext.define('PSR.view.work.View', {
                     v.goSubView(view, opt);
                 });
         } else {
-            v.topView = subView;
+            const stackItem = {view: subView, opt: opt, title: subView.title};
+            v.subViewStack.push(stackItem);
             v.setActiveItem(subView);
             if (subView.load) {
                 subView.load(opt, function () {
-                    vm.set('viewTitle', v.topView.title);
+                    stackItem.title = subView.title;
+                    vm.set('viewTitle', v.getViewTitle());
                 });
             } else {
-                vm.set('viewTitle', v.topView.title);
+                vm.set('viewTitle', v.getViewTitle());
             }
+        }
+    },
+    goBack: function (opt) {
+        const v = this,
+            vm = v.getViewModel(),
+            subViewStack = v.subViewStack;
+        if (subViewStack.length > 1) {
+            subViewStack.length = subViewStack.length - 1;
+            const stackItem = subViewStack[subViewStack.length - 1],
+                subView = stackItem.view,
+                newOpt = Object.assign({}, stackItem.opt, opt);
+            v.setActiveItem(subView);
+            if (subView.load) {
+                subView.load(newOpt, function () {
+                    stackItem.title = subView.title;
+                    vm.set('viewTitle', v.getViewTitle());
+                });
+            } else {
+                vm.set('viewTitle', v.getViewTitle());
+            }
+        }
+    },
+    getViewTitle: function () {
+        const subViewStack = this.subViewStack;
+        if (subViewStack && subViewStack.length > 0) {
+            return subViewStack[subViewStack.length - 1].title;
         }
     },
     viewModel: {},
     controller: {
+        goSubView: function (view, opt) {
+            this.getView().goSubView(view, opt);
+        },
         goBack: function (opt) {
-            this.getView().goSubView('main', opt);
+            this.getView().goBack(opt);
         }
     }
 });

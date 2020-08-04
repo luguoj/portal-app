@@ -175,7 +175,7 @@ Ext.define('PSR.view.crud.Details', {
                     success: function (data) {
                         if (data) {
                             Ext.toast("保存成功");
-                            vm.set('dirty', true);
+                            vm.set('dirty', data);
                             if (action_update) {
                                 tbeditor.toggleEditing();
                             } else {

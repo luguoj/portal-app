@@ -26,10 +26,10 @@ Ext.define('PSR.view.catalog.View', {
     },
     controller: {
         goDetails: function (selection) {
-            this.getView().goSubView('details', {record: selection});
+            this.goSubView('details', {record: selection});
         },
         create: function (selection) {
-            this.getView().goSubView('details');
+            this.goSubView('details');
         }
     }
 });

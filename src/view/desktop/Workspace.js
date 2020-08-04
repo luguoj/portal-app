@@ -19,14 +19,14 @@ Ext.define('PSR.view.desktop.workspace', {
                     v,
                     function (nodeView) {
                         v.setActiveItem(nodeView);
-                        if (nodeView.topView) {
-                            vm.set('viewTitle', nodeView.topView.title);
+                        if (nodeView.getViewTitle) {
+                            vm.set('viewTitle', nodeView.getViewTitle());
                         }
                     });
             } else {
                 v.setActiveItem(nodeView);
-                if (nodeView.topView) {
-                    vm.set('viewTitle', nodeView.topView.title);
+                if (nodeView.getViewTitle) {
+                    vm.set('viewTitle', nodeView.getViewTitle());
                 }
             }
         }

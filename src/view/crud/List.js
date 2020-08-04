@@ -36,22 +36,22 @@ Ext.define('PSR.view.crud.List', {
             }
         }
     },
-    load: function (dirty, callback) {
+    load: function (opt, callback) {
         const store = this.getViewModel().getStore('entities');
-        if (dirty) {
-            let record = dirty ? (store.isTreeStore ? store.findNode('id', dirty.id) : store.findRecord('id', dirty.id)) : null;
+        if (opt) {
+            let record = opt ? (store.isTreeStore ? store.findNode('id', opt.id) : store.findRecord('id', opt.id)) : null;
             if (!record) {
                 this.getController().refresh();
-            } else if (!dirty.catalogId && record.data.catalog) {
+            } else if (!opt.catalogId && record.data.catalog) {
                 this.getController().refresh();
-            } else if (dirty.catalogId && (!record.data.catalog || record.data.catalog.id != dirty.catalogId)) {
+            } else if (opt.catalogId && (!record.data.catalog || record.data.catalog.id != opt.catalogId)) {
                 this.getController().refresh();
             } else {
-                for (var dirtyKey in dirty) {
-                    record.set(dirtyKey, dirty[dirtyKey]);
+                for (var optKey in opt) {
+                    record.set(optKey, opt[optKey]);
                 }
-                if (record.data.catalog || dirty.catalogId) {
-                    record.set('catalog', dirty.catalogId ? {id: dirty.catalogId} : null);
+                if (record.data.catalog || opt.catalogId) {
+                    record.set('catalog', opt.catalogId ? {id: opt.catalogId} : null);
                 }
             }
         }
