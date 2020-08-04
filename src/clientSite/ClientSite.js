@@ -75,6 +75,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                             console.log(respObj);
                         }
                     } catch (err) {
+                        PSR.Message.error(err);
                         console.error(err);
                     }
                 }
@@ -103,6 +104,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                     try {
                         (new Function(responseText))();
                     } catch (err) {
+                        PSR.Message.error(err);
                         console.error(err);
                     }
                     if (!window[moduleId]) {

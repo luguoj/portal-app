@@ -18,6 +18,7 @@ Ext.define('PSR.data.Ajax', {
                     opt.bizSuccess(respObj.result);
                 }
             } else {
+                PSR.Message.error(respObj.message);
                 console.log(respObj.message);
                 if (opt && opt.bizFailure) {
                     opt.bizFailure(respObj);
@@ -27,11 +28,13 @@ Ext.define('PSR.data.Ajax', {
                 opt.complete(response, opt);
             }
         } catch (err) {
+            PSR.Message.error(err);
             console.error(err);
             PSR.Ajax.hCallFailure(response, opt);
         }
     },
     hCallFailure: function (response, opt) {
+        PSR.Message.error(response);
         console.log(response);
         if (opt.complete) {
             opt.complete(response, opt);
