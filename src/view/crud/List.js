@@ -40,6 +40,7 @@ Ext.define('PSR.view.crud.List', {
     load: function (opt, callback) {
         const store = this.getViewModel().getStore('entities');
         if (opt) {
+            this.extraParams = this.getExtraParams(opt);
             if (this.requireRefresh(opt)) {
                 this.getController().refresh();
             } else if (opt.isNew) {
@@ -70,6 +71,9 @@ Ext.define('PSR.view.crud.List', {
     },
     requireRefresh: function (record) {
         return false;
+    },
+    getExtraParams: function (opt) {
+        return {};
     },
     createItemsConfig: function () {
         var vThis = this,
@@ -231,26 +235,32 @@ Ext.define('PSR.view.crud.List', {
                 this.fireActionEvent('create', selection);
             },
             search: function () {
-                var vm = this.getViewModel(),
+                const v = this.getView(),
+                    vm = this.getViewModel(),
                     store = vm.getStore('entities'),
                     proxy = store.getProxy(),
                     searchFilter = this.lookup('searchFilter'),
-                    params;
+                    extraParams = v.extraParams;
+                let params = Object.assign({}, proxy.getExtraParams(), extraParams);
                 if (searchFilter) {
-                    params = Object.assign(proxy.getExtraParams(), searchFilter.getValues());
-                    proxy.setExtraParams(params);
+                    params = Object.assign(params, searchFilter.getValues());
                 }
+                proxy.setExtraParams(params);
                 store.load();
             },
             refresh: function () {
-                var vm = this.getViewModel(),
-                    store = vm.getStore('entities');
-                store.reload();
+                const v = this.getView(),
+                    vm = this.getViewModel(),
+                    store = vm.getStore('entities'),
+                    proxy = store.getProxy(),
+                    extraParams = v.extraParams;
+                let params = Object.assign({}, proxy.getExtraParams(), extraParams);
+                proxy.setExtraParams(params);
+                store.load();
             },
             filter: function (field, value) {
-                var me = this,
-                    v = this.getView(),
-                    vm = this.getViewModel(),
+                const me = this,
+                    vm = me.getViewModel(),
                     store = vm.getStore('entities');
                 if (value && value.length > 0) {
                     store.getFilters().replaceAll({
