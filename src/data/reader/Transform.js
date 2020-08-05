@@ -10,74 +10,79 @@ Ext.define('PSR.data.reader.Transform', {
             rootProperty: 'result'
         }, opt);
     },
-    pathTree: function (records, opt) {
+    catalogTree: function (records, opt) {
         opt = PSR.data.reader.Transform.getPathTreeOption(opt);
-        var displayProperty = opt.displayProperty;
-        var pathProperty = opt.pathProperty;
-        var pathSplitter = opt.pathSplitter;
-        var rootProperty = opt.rootProperty;
-        var nodeMap = {};
-        var rootNodes = [];
-        for (var index = 0; records && index < records.length; index++) {
-            // 节点赋值
-            var record = Object.assign({isPath: false}, records[index]);
-            // 获取路径值
-            var pathValue = record[pathProperty];
-            // 如果不存在路径值，为无效路径记录，跳过
-            if (!pathValue) {
+        const displayProperty = opt.displayProperty,
+            pathProperty = opt.pathProperty,
+            pathSplitter = opt.pathSplitter,
+            rootProperty = opt.rootProperty,
+            rootNode = {},
+            rootNodes = rootNode[rootProperty] = [],
+            nodeMap = {root: rootNode};
+        for (let index = 0; records && index < records.length; index++) {
+            // 节点赋值, 获取路径值
+            const record = Object.assign({isPath: false}, records[index]),
+                pathValue = record[pathProperty],
+                paths = pathValue ? pathValue.split(pathSplitter) : null;
+            // 如果不存在路径值，为根节点
+            if (!pathValue || pathValue == '') {
+                rootNodes.push(record);
                 continue;
             }
-            var paths = pathValue.split(pathSplitter);
-            var newPathNode = nodeMap[pathValue];
-            // 如果不存在已创建的节点，则创建路径节点
-            if (!newPathNode) {
-                newPathNode = {leaf: true, isPath: true};
-                newPathNode[displayProperty] = paths[paths.length - 1];
-                newPathNode[rootProperty] = [];
-                nodeMap[pathValue] = newPathNode;
-                // 构造树结构
-                if (paths.length == 1) {
-                    // 自身为根节点
-                    rootNodes.push(newPathNode);
-                } else {
-                    //自身不为根节点
-                    var path = paths[0];
-                    var pathNode = nodeMap[path];
-                    if (!pathNode) {
-                        pathNode = {isPath: true};
-                        pathNode[displayProperty] = paths[0];
-                        pathNode[rootProperty] = [];
-                        rootNodes.push(pathNode);
-                        nodeMap[path] = pathNode;
-                    }
-                    pathNode.leaf = false;
-                    if (opt.expand === true) {
-                        pathNode.expanded = true;
-                    } else if (opt.expand === false) {
-                        pathNode.expanded = false;
-                    }
-                    for (var deep = 1; deep < paths.length - 1; deep++) {
-                        path = path + '/' + paths[deep];
-                        var childPathNode = nodeMap[path];
-                        if (!childPathNode) {
-                            childPathNode = {isPath: true};
-                            childPathNode[displayProperty] = paths[deep];
-                            childPathNode[rootProperty] = [];
-                            pathNode[rootProperty].push(childPathNode);
-                            nodeMap[path] = childPathNode;
-                        }
-                        childPathNode.leaf = false;
-                        if (opt.expand === true) {
-                            childPathNode.expanded = true;
-                        } else if (opt.expand === false) {
-                            childPathNode.expanded = false;
-                        }
-                        pathNode = childPathNode;
-                    }
-                    pathNode[rootProperty].push(newPathNode);
+            let path = 'root',
+                pathNode = rootNode;
+            for (let deep = 0; deep < paths.length; deep++) {
+                path = path + '/' + paths[deep];
+                let childPathNode = nodeMap[path];
+                if (!childPathNode) {
+                    childPathNode = {isPath: true};
+                    childPathNode[displayProperty] = paths[deep];
+                    childPathNode[rootProperty] = [];
+                    nodeMap[path] = childPathNode;
                 }
+                pathNode.leaf = false;
+                pathNode.expanded = !!opt.expand;
+                pathNode[rootProperty].push(childPathNode);
+                pathNode = childPathNode;
             }
-            Object.assign(newPathNode, record);
+            Object.assign(pathNode, record);
+        }
+        return rootNodes;
+    },
+    pathTree: function (records, opt) {
+        opt = PSR.data.reader.Transform.getPathTreeOption(opt);
+        const displayProperty = opt.displayProperty,
+            pathProperty = opt.pathProperty,
+            pathSplitter = opt.pathSplitter,
+            rootProperty = opt.rootProperty,
+            rootNode = {},
+            rootNodes = rootNode[rootProperty] = [],
+            nodeMap = {root: rootNode};
+        for (let index = 0; records && index < records.length; index++) {
+            // 节点赋值, 获取路径值
+            const record = Object.assign({isPath: false, leaf: true}, records[index]),
+                pathValue = record[pathProperty],
+                paths = pathValue ? pathValue.split(pathSplitter) : null;
+            // 如果不存在路径值，为根节点
+            if (!pathValue || pathValue == '') {
+                rootNodes.push(record);
+                continue;
+            }
+            let path = 'root',
+                pathNode = rootNode;
+            for (let deep = 0; deep < paths.length; deep++) {
+                path = path + '/' + paths[deep];
+                let childPathNode = nodeMap[path];
+                if (!childPathNode) {
+                    childPathNode = {leaf: false, isPath: true, expanded: !!opt.expand};
+                    childPathNode[displayProperty] = paths[deep];
+                    childPathNode[rootProperty] = [];
+                    pathNode[rootProperty].push(childPathNode);
+                    nodeMap[path] = childPathNode;
+                }
+                pathNode = childPathNode;
+            }
+            pathNode[rootProperty].push(record);
         }
         return rootNodes;
     },
