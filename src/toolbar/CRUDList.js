@@ -33,7 +33,7 @@ Ext.define('PSR.toolbar.CRUDList', {
             handler: function (button) {
                 var selection = me.getSelection();
                 Ext.Msg.confirm("确认克隆",
-                    "克隆对象:" + selection.data.text,
+                    "克隆对象:" + selection.get('displaytext'),
                     function (buttonId) {
                         if (buttonId == 'yes') {
                             Ext.callback(me.getCloneHandler(), button.getScope(), [selection], 0, button);
@@ -48,7 +48,7 @@ Ext.define('PSR.toolbar.CRUDList', {
             handler: function (button) {
                 var selection = me.getSelection();
                 Ext.Msg.confirm("确认删除",
-                    "删除对象:" + selection.data.text,
+                    "删除对象:" + selection.get('displaytext'),
                     function (buttonId) {
                         if (buttonId == 'yes') {
                             Ext.callback(me.getDeleteHandler(), button.getScope(), [selection], 0, button);
