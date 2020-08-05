@@ -182,7 +182,7 @@ Ext.define('PSR.view.crud.Association', {
             },
             goBack: function () {
                 var vm = this.getViewModel(), v = this.getView();
-                this.getView().fireEvent('goback', false);
+                this.getView().fireEvent('goback', {isNew: false});
                 v.load(null);
             },
             reset: function () {

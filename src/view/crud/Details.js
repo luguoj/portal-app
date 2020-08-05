@@ -106,7 +106,7 @@ Ext.define('PSR.view.crud.Details', {
             actions = this.config.actions;
         this.config.viewModel = viewModel;
         // 组装data
-        data = {text: '', dirty: false};
+        data = {text: '', dirty: {isNew: false}};
         if (actions) {
             for (const actionsKey in actions) {
                 data['action_' + actionsKey] = actions[actionsKey];
@@ -125,7 +125,7 @@ Ext.define('PSR.view.crud.Details', {
                     vm = this.getViewModel(),
                     tbeditor = me.lookup('tbeditor');
                 v.setValues();
-                vm.set('dirty', false);
+                vm.set('dirty', {isNew: false});
                 if (entityId) {
                     if (editing) {
                         tbeditor.toggleEditing();
@@ -165,7 +165,8 @@ Ext.define('PSR.view.crud.Details', {
                     validate = v.validate(),
                     values = v.getValues(),
                     tbeditor = me.lookup('tbeditor'),
-                    action_update = vm.get('action_update');
+                    action_update = vm.get('action_update'),
+                    dirty = vm.get('dirty');
                 if (!validate) {
                     return;
                 }
@@ -175,7 +176,8 @@ Ext.define('PSR.view.crud.Details', {
                     success: function (data) {
                         if (data) {
                             Ext.toast("保存成功");
-                            vm.set('dirty', data);
+                            dirty.isNew = true;
+                            dirty.record = data;
                             if (action_update) {
                                 tbeditor.toggleEditing();
                             } else {
@@ -197,7 +199,8 @@ Ext.define('PSR.view.crud.Details', {
                     v = this.getView(),
                     vm = this.getViewModel(),
                     validate = v.validate(),
-                    values = v.getValues();
+                    values = v.getValues(),
+                    dirty = vm.get('dirty');
                 if (!validate) {
                     return;
                 }
@@ -207,7 +210,7 @@ Ext.define('PSR.view.crud.Details', {
                     success: function (data) {
                         if (data) {
                             Ext.toast("保存成功");
-                            vm.set('dirty', data);
+                            dirty.record = data;
                             v.setValues(data);
                         }
                     },

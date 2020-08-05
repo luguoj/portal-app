@@ -10,6 +10,11 @@
 - data.actions: {create: true,update: true} 操作可用性
 - tbeditor.creating 创建状态标识
 - tbeditor.editing 编辑状态标识
+- dirty: {isNew: false, record: null} 脏数据标识,goback事件传出此参数
+
+create提交成功将置dirty.isNew=true,dirty.record=$resp.result
+
+update提交成功将置dirty.record=$resp.result
 ## 4 controller
 - 需实现getService:function()
 
@@ -19,4 +24,10 @@ getService = function() {
     return Oauth2ServerManagementDesktopApp.service.Resource;
 }
 ```
+## 5 成员函数
+- load: function(opt,callback)
+参数：
+
+1. opt: {create: false, record: null}
+2. callback
 

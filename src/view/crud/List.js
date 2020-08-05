@@ -6,7 +6,7 @@ Ext.define('PSR.view.crud.List', {
     viewModel: {},
     isViewClassInit: false,
     // 抽象成员
-    title: '清单',
+    title: '',
     isTree: false,
     columns: [],
     actionColumns: [],
@@ -14,6 +14,7 @@ Ext.define('PSR.view.crud.List', {
     actionToolbars: [],
     config: {
         actions: {
+            goBack: false,
             create: true,
             clone: true,
             delete: true
@@ -39,25 +40,36 @@ Ext.define('PSR.view.crud.List', {
     load: function (opt, callback) {
         const store = this.getViewModel().getStore('entities');
         if (opt) {
-            let record = opt ? (store.isTreeStore ? store.findNode('id', opt.id) : store.findRecord('id', opt.id)) : null;
-            if (!record) {
+            if (this.requireRefresh(opt)) {
                 this.getController().refresh();
-            } else if (!opt.catalogId && record.data.catalog) {
+            } else if (opt.isNew) {
                 this.getController().refresh();
-            } else if (opt.catalogId && (!record.data.catalog || record.data.catalog.id != opt.catalogId)) {
-                this.getController().refresh();
+            } else if (opt.isNew != false && opt.record) {
+                const dirtyRecord = opt.record;
+                let record = store.isTreeStore ? store.findNode('id', dirtyRecord.id) : store.findRecord('id', dirtyRecord.id);
+                if (!record) {
+                    this.getController().refresh();
+                } else if (!dirtyRecord.catalogId && record.data.catalog) {
+                    this.getController().refresh();
+                } else if (dirtyRecord.catalogId && (!record.data.catalog || record.data.catalog.id != dirtyRecord.catalogId)) {
+                    this.getController().refresh();
+                } else {
+                    for (var optKey in opt) {
+                        record.set(optKey, opt[optKey]);
+                    }
+                }
             } else {
-                for (var optKey in opt) {
-                    record.set(optKey, opt[optKey]);
-                }
-                if (record.data.catalog || opt.catalogId) {
-                    record.set('catalog', opt.catalogId ? {id: opt.catalogId} : null);
-                }
+                this.getController().refresh();
             }
+        } else {
+            this.getController().refresh();
         }
         if (callback) {
             callback();
         }
+    },
+    requireRefresh: function (record) {
+        return false;
     },
     createItemsConfig: function () {
         var vThis = this,
@@ -69,11 +81,18 @@ Ext.define('PSR.view.crud.List', {
             actions = this.actions,
             items = [].concat(this.config.items),
             grd, clmns, grdItemController,
-            tbsearch, tbcrud, tbcontainer,
+            tbnav, tbsearch, tbcrud, tbcontainer,
             frmSearchFilter;
         this.config.items = items;
         // 创建工具栏容器
         tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
+        // 创建导航工具栏
+        tbnav = {
+            xtype: 'toolbar',
+            items: [{xtype: 'psr-button-goback', handler: 'goBack'}],
+            bind: {hidden: '{!action_goBack}'}
+        };
+        tbcontainer.items.push(tbnav);
         // 创建搜索工具栏
         tbsearch = {xtype: 'psr-toolbar-search', reference: 'tbsearch'};
         if (searchFields && searchFields.length > 0) {
@@ -82,6 +101,7 @@ Ext.define('PSR.view.crud.List', {
             tbsearch.refreshHandler = 'refresh';
             tbsearch.filterHandler = 'filter';
         }
+        tbcontainer.items.push({xtype: 'container', width: 1});
         tbcontainer.items.push(tbsearch);
         // 创建增删改查工具栏
         tbcrud = {
@@ -272,6 +292,9 @@ Ext.define('PSR.view.crud.List', {
                         v.unmask();
                     }
                 });
+            },
+            goBack: function () {
+                this.getView().fireEvent('goback', {dirty: false});
             }
         };
         if (actionColumns && actionColumns.length > 0) {

@@ -66,4 +66,10 @@ getService = function() {
     return Oauth2ServerManagementDesktopApp.service.Resource;
 }
 ```
+## 5 成员函数
+- load: function(opt,callback) 加载数据
+参数：
 
+1. opt: {isNew: false, record: null}
+2. callback
+- requireRefresh: function(record) 校验是否需要刷新数据

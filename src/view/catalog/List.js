@@ -27,13 +27,8 @@ Ext.define('PSR.view.catalog.List', {
         clone: false,
         delete: true
     },
-    load: function (opt, callback) {
-        if (opt && opt.id) {
-            this.getController().refresh();
-        }
-        if (callback) {
-            callback();
-        }
+    requireRefresh: function (opt) {
+        return opt && opt.record;
     },
     viewModel: {
         stores: {
