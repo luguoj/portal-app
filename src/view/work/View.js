@@ -63,9 +63,14 @@ Ext.define('PSR.view.work.View', {
     },
     getViewTitle: function () {
         const subViewStack = this.subViewStack;
-        if (subViewStack && subViewStack.length > 0) {
-            return subViewStack[subViewStack.length - 1].title;
+        if (subViewStack && subViewStack.length > 1) {
+            let title = subViewStack[1].title;
+            for (let i = 2; i < subViewStack.length; i++) {
+                title = title + '\\' + subViewStack[i].title;
+            }
+            return title;
         }
+        return '';
     },
     viewModel: {},
     controller: {
