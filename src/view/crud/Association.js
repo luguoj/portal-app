@@ -157,23 +157,27 @@ Ext.define('PSR.view.crud.Association', {
         }
         const entitySide = this.entitySide;
         const controller = {
+            initAssociation: function (record) {
+                const me = this,
+                    vm = me.getViewModel(),
+                    associations = vm.get('associations');
+                record.set('assignFlag', !!associations[record.id]);
+                record.set('associationId', associations[record.id]);
+                if (record.childNodes && record.childNodes.length > 0) {
+                    for (let i = 0; i < record.childNodes.length; i++) {
+                        me.initAssociation(record.childNodes[i]);
+                    }
+                }
+            },
             initViewModel: function (vm) {
-                const store = vm.getStore('entities'),
-                    reader = store.getProxy().getReader(),
-                    orignTransform = reader.getTransform();
-                reader.setTransform(function (data) {
-                    const associations = vm.get('associations');
-                    if (data.result && data.result.length > 0) {
-                        for (let i = 0; i < data.result.length; i++) {
-                            const record = data.result[i];
-                            record.assignFlag = !!associations[record.id];
-                            record.associationId = associations[record.id];
+                const me = this,
+                    store = vm.getStore('entities');
+                store.on('load', function (store, records, successful, operation) {
+                    if (records && records.length > 0) {
+                        for (let i = 0; i < records.length; i++) {
+                            me.initAssociation(records[i])
                         }
                     }
-                    if (orignTransform) {
-                        data = orignTransform(data);
-                    }
-                    return data;
                 });
             },
             goBack: function () {
