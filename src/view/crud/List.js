@@ -55,7 +55,7 @@ Ext.define('PSR.view.crud.List', {
                 } else if (dirtyRecord.catalogId && (!record.data.catalog || record.data.catalog.id != dirtyRecord.catalogId)) {
                     this.getController().refresh();
                 } else {
-                    for (var optKey in opt) {
+                    for (let optKey in opt) {
                         record.set(optKey, opt[optKey]);
                     }
                 }
@@ -76,15 +76,15 @@ Ext.define('PSR.view.crud.List', {
         return {};
     },
     createItemsConfig: function () {
-        var vThis = this,
+        const vThis = this,
             isTree = this.isTree,
             columns = this.columns,
             actionColumns = this.actionColumns,
             searchFields = this.searchFields,
             actionToolbars = this.actionToolbars,
             actions = this.actions,
-            items = [].concat(this.config.items),
-            grd, clmns, grdItemController,
+            items = [].concat(this.config.items);
+        let grd, clmns, grdItemController,
             tbnav, tbsearch, tbcrud, tbcontainer,
             frmSearchFilter;
         this.config.items = items;
@@ -122,7 +122,7 @@ Ext.define('PSR.view.crud.List', {
         if (!actionToolbars || actionToolbars.length == 0) {
             tbcrud.flex = 1;
         } else {
-            for (var i = 0; i < actionToolbars.length; i++) {
+            for (let i = 0; i < actionToolbars.length; i++) {
                 tbcontainer.items.push({xtype: 'container', width: 1});
                 tbcontainer.items.push(actionToolbars[i]);
             }
@@ -191,9 +191,9 @@ Ext.define('PSR.view.crud.List', {
         items.push(grd);
     },
     createViewModelConfig: function () {
-        var viewModel = Object.assign({}, this.config.viewModel),
-            formulas, data,
-            actions = this.config.actions;
+        const actions = this.config.actions,
+            viewModel = Object.assign({}, this.config.viewModel);
+        let formulas, data;
         this.config.viewModel = viewModel;
         if (!viewModel || !viewModel.stores || !viewModel.stores.entities) {
             PSR.Message.error('CRUD视图缺少entities');
@@ -209,7 +209,7 @@ Ext.define('PSR.view.crud.List', {
         // 组装formulas
         formulas = {
             grdselection: function (get) {
-                var selection = get('grd.selection');
+                const selection = get('grd.selection');
                 return (selection && !selection.data.isPath) ? selection : null;
             }
         };
@@ -220,9 +220,9 @@ Ext.define('PSR.view.crud.List', {
         if (!this.config.controller || !this.config.controller.getService) {
             PSR.Message.error('CRUD视图缺少getService');
         }
-        var controller = {
+        const controller = {
             fireActionEvent: function (eventName, record) {
-                var selection = (record && record.isModel) ? record : this.lookup('grd').getSelection();
+                const selection = (record && record.isModel) ? record : this.lookup('grd').getSelection();
                 this.getView().fireEvent(eventName, selection ? {
                     id: selection.get('id'),
                     displaytext: selection.get('displaytext')
@@ -272,7 +272,7 @@ Ext.define('PSR.view.crud.List', {
                 }
             },
             clone: function (selection) {
-                var me = this,
+                const me = this,
                     v = this.getView(),
                     vm = this.getViewModel(),
                     store = vm.getStore('entities');
@@ -288,7 +288,7 @@ Ext.define('PSR.view.crud.List', {
                 });
             },
             delete: function (selection) {
-                var me = this,
+                const me = this,
                     v = this.getView(),
                     vm = this.getViewModel(),
                     store = vm.getStore('entities');
