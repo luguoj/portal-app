@@ -246,7 +246,7 @@ Ext.define('PSR.view.crud.List', {
                     params = Object.assign(params, searchFilter.getValues());
                 }
                 proxy.setExtraParams(params);
-                store.load();
+                store.loadPage(1);
             },
             refresh: function () {
                 const v = this.getView(),
@@ -256,7 +256,7 @@ Ext.define('PSR.view.crud.List', {
                     extraParams = v.extraParams;
                 let params = Object.assign({}, proxy.getExtraParams(), extraParams);
                 proxy.setExtraParams(params);
-                store.load();
+                store.loadPage(1);
             },
             filter: function (field, value) {
                 const me = this,
