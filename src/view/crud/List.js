@@ -45,7 +45,7 @@ Ext.define('PSR.view.crud.List', {
                 this.getController().refresh();
             } else if (opt.isNew) {
                 this.getController().refresh();
-            } else if (opt.isNew != false && opt.record) {
+            } else if (opt.record) {
                 const dirtyRecord = opt.record;
                 let record = store.isTreeStore ? store.findNode('id', dirtyRecord.id) : store.findRecord('id', dirtyRecord.id);
                 if (!record) {
@@ -59,8 +59,6 @@ Ext.define('PSR.view.crud.List', {
                         record.set(optKey, opt[optKey]);
                     }
                 }
-            } else {
-                this.getController().refresh();
             }
         } else {
             this.getController().refresh();

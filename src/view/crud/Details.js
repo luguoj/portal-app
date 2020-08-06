@@ -41,6 +41,7 @@ Ext.define('PSR.view.crud.Details', {
      */
     load: function (opt, callback) {
         const me = this;
+        this.getViewModel().set('dirty', {isNew: false});
         if (opt && !opt.create && opt.record) {
             this.getController().loadEntity(opt.record.id, null, callback);
         } else {
@@ -120,12 +121,11 @@ Ext.define('PSR.view.crud.Details', {
         }
         var controller = {
             loadEntity: function (entityId, editing, callback) {
+                this.getViewModel();
                 var me = this,
                     v = this.getView(),
-                    vm = this.getViewModel(),
                     tbeditor = me.lookup('tbeditor');
                 v.setValues();
-                vm.set('dirty', {isNew: false});
                 if (entityId) {
                     if (editing) {
                         tbeditor.toggleEditing();
