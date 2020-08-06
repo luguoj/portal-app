@@ -22,15 +22,24 @@ Ext.define('PSR.data.reader.Transform', {
         for (let index = 0; records && index < records.length; index++) {
             // 节点赋值, 获取路径值
             const record = Object.assign({isPath: false}, records[index]),
+                usage = record.usage ? record.usage : 'null-usage',
                 pathValue = record[pathProperty],
                 paths = pathValue ? pathValue.split(pathSplitter) : null;
-            // 如果不存在路径值，为根节点
+            let usageNode = nodeMap[usage];
+            if (!usageNode) {
+                usageNode = {isPath: true};
+                usageNode[displayProperty] = usage;
+                usageNode[rootProperty] = [];
+                nodeMap[usage] = usageNode;
+                rootNodes.push(usageNode);
+            }
+            // 如果不存在路径值，为无效节点，放在根节点
             if (!pathValue || pathValue == '') {
-                rootNodes.push(record);
+                usageNode[rootProperty].push(record);
                 continue;
             }
-            let path = 'root',
-                pathNode = rootNode;
+            let path = usage,
+                pathNode = usageNode;
             for (let deep = 0; deep < paths.length; deep++) {
                 path = path + '/' + paths[deep];
                 let childPathNode = nodeMap[path];
@@ -39,10 +48,10 @@ Ext.define('PSR.data.reader.Transform', {
                     childPathNode[displayProperty] = paths[deep];
                     childPathNode[rootProperty] = [];
                     nodeMap[path] = childPathNode;
+                    pathNode[rootProperty].push(childPathNode);
+                    pathNode.leaf = false;
+                    pathNode.expanded = !!opt.expand;
                 }
-                pathNode.leaf = false;
-                pathNode.expanded = !!opt.expand;
-                pathNode[rootProperty].push(childPathNode);
                 pathNode = childPathNode;
             }
             Object.assign(pathNode, record);
