@@ -45,7 +45,7 @@ Ext.define('PSR.view.crud.List', {
                 this.getController().refresh();
             } else if (opt.isNew) {
                 this.getController().refresh();
-            } else if (opt.record) {
+            } else if (opt.record) {debugger
                 const dirtyRecord = opt.record;
                 let record = store.isTreeStore ? store.findNode('id', dirtyRecord.id) : store.findRecord('id', dirtyRecord.id);
                 if (!record) {
@@ -55,8 +55,8 @@ Ext.define('PSR.view.crud.List', {
                 } else if (dirtyRecord.catalogId && (!record.data.catalog || record.data.catalog.id != dirtyRecord.catalogId)) {
                     this.getController().refresh();
                 } else {
-                    for (let optKey in opt) {
-                        record.set(optKey, opt[optKey]);
+                    for (let dirtyRecordKey in dirtyRecord) {
+                        record.set(dirtyRecordKey, dirtyRecord[dirtyRecordKey]);
                     }
                 }
             }
@@ -251,7 +251,11 @@ Ext.define('PSR.view.crud.List', {
                     vm = this.getViewModel(),
                     store = vm.getStore('entities'),
                     proxy = store.getProxy(),
-                    extraParams = v.extraParams;
+                    extraParams = v.extraParams,
+                    searchfield = v.lookup('tbsearch').down('searchfield');
+                if (searchfield) {
+                    searchfield.setValue('');
+                }
                 let params = Object.assign({}, proxy.getExtraParams(), extraParams);
                 proxy.setExtraParams(params);
                 store.loadPage(1);
@@ -278,7 +282,7 @@ Ext.define('PSR.view.crud.List', {
                 me.getService().clone({
                     id: selection.data.id,
                     success: function () {
-                        store.reload();
+                        me.refresh();
                     },
                     complete: function () {
                         v.unmask();
@@ -294,7 +298,7 @@ Ext.define('PSR.view.crud.List', {
                 me.getService().delete({
                     id: selection.data.id,
                     success: function () {
-                        store.reload();
+                        me.refresh();
                     },
                     complete: function () {
                         v.unmask();
