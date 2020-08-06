@@ -5,15 +5,19 @@ Ext.define('PSR.view.catalog.List', {
     columns: [{
         xtype: 'psr-grid-column-treehref',
         text: '目录', width: 300,
-        menuDisabled: true,
-        dataIndex: 'text',
+        menuDisabled: true, sortable: false,
         cell: {
             handler: 'goDetails'
         },
+        dataIndex: 'displaytext'
     }, {
         text: '用途', width: 85,
-        menuDisabled: true,
+        menuDisabled: true, sortable: false,
         dataIndex: 'usage'
+    }, {
+        text: '路径', width: 300,
+        menuDisabled: true, sortable: false,
+        dataIndex: 'path'
     }],
     searchFields: [{
         xtype: 'combobox', placeholder: '用途', name: 'usage',

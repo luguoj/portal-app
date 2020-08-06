@@ -12,9 +12,10 @@ Ext.define('PSR.view.catalog.Details', {
             queryMode: 'local',
             bind: {store: '{usageSelections}', disabled: '{!tbeditor.creating}'}
         }, {
-            xtype: 'textfield', label: '路径', name: 'path', required: true
-        }],
-        bind: {disabled: '{!tbeditor.editing}'}
+            xtype: 'textfield', label: '路径', name: 'path',
+            required: true,
+            bind: {disabled: '{!tbeditor.editing}'}
+        }]
     }],
     viewModel: {
         stores: {
