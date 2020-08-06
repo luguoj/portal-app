@@ -20,7 +20,7 @@ Ext.define('PSR.grid.cell.TreeHref', {
             dom = dom.firstChild;
             if (handler) {
                 dom.onclick = function () {
-                    Ext.callback(handler, me.getScope(), [record], 0, me);
+                    Ext.callback(handler, me.getScope(), [me.getRecord()], 0, me);
                 };
             }
         }
