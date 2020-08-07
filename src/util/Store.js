@@ -4,7 +4,7 @@ Ext.define('PSR.util.Store', {
         if (text && text.length > 0) {
             store.getFilters().replaceAll({
                 property: property,
-                value: new RegExp(Ext.String.escapeRegex(value), 'i')
+                value: new RegExp(Ext.String.escapeRegex(text), 'i')
             });
         } else {
             store.clearFilter();
