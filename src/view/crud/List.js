@@ -46,7 +46,6 @@ Ext.define('PSR.view.crud.List', {
             } else if (opt.isNew) {
                 this.getController().refresh();
             } else if (opt.record) {
-                debugger
                 const dirtyRecord = opt.record;
                 let record = store.isTreeStore ? store.findNode('id', dirtyRecord.id) : store.findRecord('id', dirtyRecord.id);
                 if (!record) {

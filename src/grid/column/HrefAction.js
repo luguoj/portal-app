@@ -18,7 +18,7 @@ Ext.define('PSR.grid.column.HrefAction', {
             },
             handler: config.action
         };
-        config.width = PSR.util.Grid.getColumnWidth(text);
+        config.width = PSR.util.Grid.getColumnWidth(config.text);
         this.callParent([config]);
     }
 });
