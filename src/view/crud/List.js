@@ -45,7 +45,8 @@ Ext.define('PSR.view.crud.List', {
                 this.getController().refresh();
             } else if (opt.isNew) {
                 this.getController().refresh();
-            } else if (opt.record) {debugger
+            } else if (opt.record) {
+                debugger
                 const dirtyRecord = opt.record;
                 let record = store.isTreeStore ? store.findNode('id', dirtyRecord.id) : store.findRecord('id', dirtyRecord.id);
                 if (!record) {
@@ -264,14 +265,7 @@ Ext.define('PSR.view.crud.List', {
                 const me = this,
                     vm = me.getViewModel(),
                     store = vm.getStore('entities');
-                if (value && value.length > 0) {
-                    store.getFilters().replaceAll({
-                        property: 'displaytext',
-                        value: new RegExp(Ext.String.escapeRegex(value), 'i')
-                    });
-                } else {
-                    store.clearFilter();
-                }
+                PSR.util.Store.filter(value, 'displaytext', store);
             },
             clone: function (selection) {
                 const me = this,

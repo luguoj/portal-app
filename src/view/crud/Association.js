@@ -262,17 +262,9 @@ Ext.define('PSR.view.crud.Association', {
             },
             filter: function (field, value) {
                 var me = this,
-                    v = this.getView(),
-                    vm = this.getViewModel(),
+                    vm = me.getViewModel(),
                     store = vm.getStore('entities');
-                if (value && value.length > 0) {
-                    store.getFilters().replaceAll({
-                        property: 'displaytext',
-                        value: new RegExp(Ext.String.escapeRegex(value), 'i')
-                    });
-                } else {
-                    store.clearFilter();
-                }
+                PSR.util.Store.filter(value, 'displaytext', store);
             },
             create: function (record) {
                 var v = this.getView(),
