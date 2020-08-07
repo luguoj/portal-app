@@ -7,10 +7,12 @@ Ext.define('PSR.toolbar.Search', {
         filterHandler: null
     },
     eventedConfig: {
-        searchFilterShowed: false
+        searchFilterShowed: false,
+        filterText: '',
     },
     publishes: {
-        searchFilterShowed: true
+        searchFilterShowed: true,
+        filterText: true
     },
     constructor: function (config) {
         var me = this;
@@ -38,9 +40,13 @@ Ext.define('PSR.toolbar.Search', {
             me.add({
                 xtype: 'searchfield',
                 placeholder: '搜索',
+                value: me.getFilterText(),
                 listeners: {
                     buffer: 300,
-                    change: me.getFilterHandler()
+                    change: function (field, text) {
+                        me.setFilterText(text);
+                        Ext.callback(me.getFilterHandler(), field.getDefaultListenerScope(), [field, text], 0, field);
+                    }
                 }
             });
         }
