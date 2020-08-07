@@ -7,9 +7,11 @@ Ext.define('PSR.view.catalog.List', {
         text: '目录', width: 300,
         menuDisabled: true, sortable: false,
         cell: {
+            encodeHtml: false,
             handler: 'goDetails'
         },
-        dataIndex: 'displaytext'
+        dataIndex: 'displaytext',
+        renderer: 'filterRenderer'
     }, {
         text: '用途', width: 85,
         menuDisabled: true, sortable: false,
@@ -18,13 +20,6 @@ Ext.define('PSR.view.catalog.List', {
         text: '路径', width: 300,
         menuDisabled: true, sortable: false,
         dataIndex: 'path'
-    }],
-    searchFields: [{
-        xtype: 'combobox', placeholder: '用途', name: 'usage',
-        queryMode: 'local',
-        bind: {store: '{usageSelections}'}
-    }, {
-        xtype: 'textfield', placeholder: '路径', name: 'path'
     }],
     actions: {
         create: true,
@@ -38,7 +33,7 @@ Ext.define('PSR.view.catalog.List', {
         stores: {
             entities: {
                 type: 'catalogtree',
-                autoLoad: true
+                filterer: 'bottomup'
             },
             usageSelections: {
                 type: 'catalogusage'

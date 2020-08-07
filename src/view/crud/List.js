@@ -10,6 +10,7 @@ Ext.define('PSR.view.crud.List', {
     isTree: false,
     columns: [],
     actionColumns: [],
+    itemController: {},
     searchFields: [],
     actionToolbars: [],
     config: {
@@ -78,6 +79,7 @@ Ext.define('PSR.view.crud.List', {
             isTree = this.isTree,
             columns = this.columns,
             actionColumns = this.actionColumns,
+            itemController = this.itemController,
             searchFields = this.searchFields,
             actionToolbars = this.actionToolbars,
             actions = this.actions,
@@ -138,6 +140,13 @@ Ext.define('PSR.view.crud.List', {
         // 创建表格列
         clmns = [].concat(columns);
         grdItemController = {
+            filterRenderer: function (value) {
+                const filterText = vThis.getViewModel().get('tbsearch.filterText');
+                return PSR.util.Grid.filterRenderer(value, filterText);
+            },
+            getListView: function () {
+                return vThis;
+            },
             goDetails: function (record) {
                 vThis.getController().fireActionEvent('goDetails', record);
             }
@@ -158,6 +167,7 @@ Ext.define('PSR.view.crud.List', {
                 };
             }
         }
+        grdItemController = Object.assign(grdItemController, itemController);
         if (isTree) {
             grd = {
                 xtype: 'tree', reference: 'grd',
