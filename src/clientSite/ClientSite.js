@@ -11,8 +11,8 @@ Ext.define('PSR.clientSite.ClientSite', {
                     if (PSR.ClientSite.oauth2LoginDialog) {
                         PSR.ClientSite.oauth2LoginDialog.close();
                     }
+                    PSR.ClientSite.getAuthorizationHeader();
                     if (loginSuccess) {
-                        PSR.ClientSite.getAuthorizationHeader();
                         loginSuccess();
                     }
                 } else if (event.data === 'logout_success') {
@@ -91,44 +91,81 @@ Ext.define('PSR.clientSite.ClientSite', {
         });
         return token ? token.authHeader : false;
     },
-    getModuleReady: function (moduleId, callback) {
-        if (window[moduleId]) {
-            return true;
+    getModuleAction: function (moduleId, callback) {
+        const me = this;
+        if (!me.extModuleAction) {
+            me.extModuleAction = {};
+        }
+        if (!me.extModuleAction[moduleId]) {
+            me.extModuleAction[moduleId] = {loading: true};
+            PSR.clientSite.service.ClientSite.loadModuleAction({
+                moduleId: moduleId,
+                success: function (data) {
+                    const actions = {};
+                    if (data && data.length > 0) {
+                        for (let i = 0; i < data.length; i++) {
+                            actions[data[i].code] = true;
+                        }
+                    }
+                    me.extModuleAction[moduleId] = actions;
+                    me.getModuleAction(moduleId, callback);
+                },
+                complete: function () {
+                    if (me.extModuleAction[moduleId].loading) {
+                        delete me.extModuleAction[moduleId].loading;
+                    }
+                }
+            })
         } else {
-            Ext.Ajax.request({
-                url: window.clientSite + '/module/' + moduleId + '/index.js',
-                method: 'GET',
-                disableCaching: true,
-                success: function (response) {
-                    var responseText = response.responseText;
-                    try {
-                        (new Function(responseText))();
-                    } catch (err) {
-                        PSR.Message.error(err);
-                        console.error(err);
-                    }
-                    if (!window[moduleId]) {
-                        window[moduleId] = true;
-                    }
-                    if (callback) {
-                        callback();
+            const moduleAction = me.extModuleAction[moduleId];
+            if (moduleAction.loading == true) {
+                window.setTimeout(function () {
+                    me.getModuleAction(moduleId, callback);
+                }, 500);
+            } else if (callback) {
+                callback(moduleAction);
+            }
+        }
+    },
+    getModuleReady: function (moduleId, callback) {
+        const me = this;
+        if (!me.extModuleReady) {
+            me.extModuleReady = {};
+        }
+        if (!me.extModuleReady[moduleId]) {
+            me.extModuleReady[moduleId] = {loading: true};
+            PSR.clientSite.service.ClientSite.loadModuleSrc({
+                moduleId: moduleId,
+                success: function () {
+                    me.extModuleReady[moduleId] = true;
+                    me.getModuleReady(moduleId, callback);
+                },
+                complete: function () {
+                    if (me.extModuleReady[moduleId].loading) {
+                        delete me.extModuleReady[moduleId];
                     }
                 }
             });
+        } else {
+            const moduleReady = me.extModuleReady[moduleId];
+            if (moduleReady.loading == true) {
+                window.setTimeout(function () {
+                    me.getModuleReady(moduleId, callback);
+                }, 500);
+            } else {
+                me.getModuleAction(moduleId, callback);
+            }
         }
     },
     addModuleItem: function (moduleId, config, parent, callback) {
-        let moduleReady = true;
-        // 如果依赖模块，需先加载模块
         if (moduleId) {
-            moduleReady = PSR.clientSite.ClientSite.getModuleReady(moduleId, function () {
-                PSR.clientSite.ClientSite.addModuleItem(moduleId, config, parent, callback);
+            PSR.clientSite.ClientSite.getModuleReady(moduleId, function (actions) {
+                const item = parent.add(Object.assign({}, config, {actions: actions}));
+                if (callback) {
+                    callback(item);
+                }
             });
-            if (!moduleReady) {
-                return false;
-            }
-        }
-        if (moduleReady) {
+        } else {
             const item = parent.add(config)
             if (callback) {
                 callback(item);
