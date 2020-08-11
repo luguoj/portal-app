@@ -4,7 +4,7 @@ Ext.define('PSR.view.desktop.Navigation', {
     mixins: ['PSR.mixin.Storable'],
     controller: {
         onMenuItemClick: function (tree, event) {
-            if (event.node.isLeaf()) {
+            if (event.node.isLeaf() && event.node.data.viewConfig) {
                 this.redirectTo(event.node.get('id'));
             }
         },
