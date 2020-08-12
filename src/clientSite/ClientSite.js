@@ -15,6 +15,11 @@ Ext.define('PSR.clientSite.ClientSite', {
                     if (loginSuccess) {
                         loginSuccess();
                     }
+                } else if (event.data === 'login_retry') {
+                    console.log('login retry message got')
+                    if (PSR.ClientSite.oauth2LoginDialog) {
+                        PSR.ClientSite.oauth2LoginDialog.getAt(0).updateSrc(window.clientSite);
+                    }
                 } else if (event.data === 'logout_success') {
                     console.log('logout message got')
                     location.reload();
