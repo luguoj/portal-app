@@ -9,6 +9,7 @@ Ext.define('PSR.view.crud.Details', {
     title: '明细',
     formFields: [],
     actionToolbars: [],
+    actionPrefix: '',
     config: {
         actions: {
             create: true,
@@ -67,6 +68,7 @@ Ext.define('PSR.view.crud.Details', {
     createItemsConfig: function () {
         var formFields = this.formFields,
             actionToolbars = this.actionToolbars,
+            actionPrefix = this.actionPrefix,
             items = [].concat(this.config.items),
             tbcontainer, tbnav, tbeditor, frm;
         this.config.items = items;
@@ -85,9 +87,9 @@ Ext.define('PSR.view.crud.Details', {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
             resetHandler: 'reset',
             bind: {
-                editable: '{action_update}',
-                createHandler: '{action_create ? "create" : null}',
-                updateHandler: '{action_update ? "update" : null}'
+                editable: '{action_' + actionPrefix + 'update}',
+                createHandler: '{action_' + actionPrefix + 'create ? "create" : null}',
+                updateHandler: '{action_' + actionPrefix + 'update ? "update" : null}'
             }
         };
         tbcontainer.items.push(tbeditor);
@@ -165,7 +167,8 @@ Ext.define('PSR.view.crud.Details', {
                     validate = v.validate(),
                     values = v.getValues(),
                     tbeditor = me.lookup('tbeditor'),
-                    action_update = vm.get('action_update'),
+                    actionPrefix = v.actionPrefix,
+                    action_update = vm.get('action_' + actionPrefix + 'update'),
                     dirty = vm.get('dirty');
                 if (!validate) {
                     return;

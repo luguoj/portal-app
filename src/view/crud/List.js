@@ -13,9 +13,10 @@ Ext.define('PSR.view.crud.List', {
     itemController: {},
     searchFields: [],
     actionToolbars: [],
+    actionPrefix: '',
     config: {
+        goBack: false,
         actions: {
-            goBack: false,
             create: true,
             clone: true,
             delete: true
@@ -82,7 +83,7 @@ Ext.define('PSR.view.crud.List', {
             itemController = this.itemController,
             searchFields = this.searchFields,
             actionToolbars = this.actionToolbars,
-            actions = this.actions,
+            actionPrefix = this.actionPrefix,
             items = [].concat(this.config.items);
         let grd, clmns, grdItemController,
             tbnav, tbsearch, tbcrud, tbcontainer,
@@ -94,7 +95,7 @@ Ext.define('PSR.view.crud.List', {
         tbnav = {
             xtype: 'toolbar',
             items: [{xtype: 'psr-button-goback', handler: 'goBack'}],
-            bind: {hidden: '{!action_goBack}'}
+            bind: {hidden: '{!goBack}'}
         };
         tbcontainer.items.push(tbnav);
         // 创建搜索工具栏
@@ -112,9 +113,9 @@ Ext.define('PSR.view.crud.List', {
             xtype: 'psr-toolbar-crudlist', detailsHandler: 'goDetails',
             bind: {
                 selection: '{grdselection}',
-                createHandler: '{action_create ? "create" : null}',
-                deleteHandler: '{action_delete ? "delete" : null}',
-                cloneHandler: '{action_clone ? "clone" : null}',
+                createHandler: '{action_' + actionPrefix + 'create ? "create" : null}',
+                deleteHandler: '{action_' + actionPrefix + 'delete ? "delete" : null}',
+                cloneHandler: '{action_' + actionPrefix + 'clone ? "clone" : null}',
             }
         };
         tbcontainer.items.push({xtype: 'container', width: 1}, tbcrud);
@@ -160,7 +161,7 @@ Ext.define('PSR.view.crud.List', {
                     xtype: 'psr-grid-column-hrefaction',
                     text: text,
                     action: action,
-                    bind: {hidden: '{!action_' + action + '}'}
+                    bind: {hidden: '{!action_' + actionPrefix + action + '}'}
                 });
                 grdItemController[action] = function (record) {
                     vThis.getController()[action](record);
@@ -199,7 +200,8 @@ Ext.define('PSR.view.crud.List', {
         items.push(grd);
     },
     createViewModelConfig: function () {
-        const actions = this.config.actions,
+        const actions = this.config.actions
+        goBack = this.config.goBack,
             viewModel = Object.assign({}, this.config.viewModel);
         let formulas, data;
         this.config.viewModel = viewModel;
@@ -207,7 +209,7 @@ Ext.define('PSR.view.crud.List', {
             PSR.Message.error('CRUD视图缺少entities');
         }
         // 组装data
-        data = {};
+        data = {goBack: goBack ? true : false};
         if (actions) {
             for (const actionsKey in actions) {
                 data['action_' + actionsKey] = actions[actionsKey];
