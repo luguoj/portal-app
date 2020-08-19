@@ -2,7 +2,7 @@ Ext.define('PSR.toolbar.Editor', {
     extend: 'Ext.Toolbar',
     xtype: 'psr-toolbar-editor',
     config: {
-        editable: true,
+        editable: null,
         resetHandler: null,
         createHandler: null,
         updateHandler: null
