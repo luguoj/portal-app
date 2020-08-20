@@ -42,13 +42,13 @@ Ext.define('PSR.view.crud.Association', {
         }
     },
     createItemsConfig: function (config) {
-        var vThis = this,
+        const vThis = this,
             isTree = this.isTree,
             title = this.title,
             updateAction = this.updateAction,
             items = [].concat(this.config.items),
-            searchFields = this.searchFields,
-            tbcontainer, tbnav, tbsearch, tbeditor,
+            searchFields = this.searchFields;
+        let tbcontainer, tbnav, tbsearch, tbeditor,
             frmSearchFilter, grd, clmns, grdItemController;
         this.config.items = items;
         // 创建工具栏容器
@@ -97,7 +97,7 @@ Ext.define('PSR.view.crud.Association', {
         }];
         grdItemController = {
             associate: function (button) {
-                var vm = this.getViewModel(),
+                const vm = this.getViewModel(),
                     c = vThis.getController(),
                     record = vm.get('record');
                 if (!record.data.assignFlag) {
@@ -138,12 +138,11 @@ Ext.define('PSR.view.crud.Association', {
         items.push(grd);
     },
     createViewModelConfig: function () {
-        var viewModel = Object.assign({}, this.config.viewModel),
-            data,
+        const viewModel = Object.assign({}, this.config.viewModel),
             actions = this.config.actions;
         this.config.viewModel = viewModel;
         // 组装data
-        data = {text: '', entityId: null, associations: {}};
+        let data = {text: '', entityId: null, associations: {}};
         if (actions) {
             for (const actionsKey in actions) {
                 data['action_' + actionsKey] = actions[actionsKey];
@@ -181,16 +180,16 @@ Ext.define('PSR.view.crud.Association', {
                 });
             },
             goBack: function () {
-                var vm = this.getViewModel(), v = this.getView();
+                const vm = this.getViewModel(), v = this.getView();
                 this.getView().fireEvent('goback', {isNew: false});
                 v.load(null);
             },
             reset: function () {
-                var vm = this.getViewModel(), v = this.getView();
+                const vm = this.getViewModel(), v = this.getView();
                 this.loadEntity(vm.get('entityId'), vm.get('tbeditor.editing'));
             },
             loadEntity: function (entityId, editing) {
-                var me = this,
+                const me = this,
                     v = this.getView(),
                     vm = this.getViewModel(),
                     tbeditor = me.lookup('tbeditor');
@@ -207,7 +206,7 @@ Ext.define('PSR.view.crud.Association', {
                         me.getService().loadAllByLeftId({
                             leftId: entityId,
                             success: function (respObj) {
-                                var associations = {};
+                                const associations = {};
                                 if (respObj) {
                                     for (let i = 0; i < respObj.length; i++) {
                                         associations[respObj[i].rightId] = respObj[i].id;
@@ -224,7 +223,7 @@ Ext.define('PSR.view.crud.Association', {
                         me.getService().loadAllByRightId({
                             rightId: entityId,
                             success: function (respObj) {
-                                var associations = {};
+                                const associations = {};
                                 if (respObj) {
                                     for (let i = 0; i < respObj.length; i++) {
                                         associations[respObj[i].leftId] = respObj[i].id;
@@ -244,30 +243,29 @@ Ext.define('PSR.view.crud.Association', {
                 }
             },
             search: function () {
-                var vm = this.getViewModel(),
+                const vm = this.getViewModel(),
                     store = vm.getStore('entities'),
                     proxy = store.getProxy(),
-                    searchFilter = this.lookup('searchFilter'),
-                    params;
+                    searchFilter = this.lookup('searchFilter');
                 if (searchFilter) {
-                    params = Object.assign(proxy.getExtraParams(), searchFilter.getValues());
+                    let params = Object.assign(proxy.getExtraParams(), searchFilter.getValues());
                     proxy.setExtraParams(params);
                 }
                 store.load();
             },
             refresh: function () {
-                var vm = this.getViewModel(),
+                const vm = this.getViewModel(),
                     store = vm.getStore('entities');
                 store.reload();
             },
             filter: function (field, value) {
-                var me = this,
+                const me = this,
                     vm = me.getViewModel(),
                     store = vm.getStore('entities');
                 PSR.util.Store.filter(value, 'displaytext', store);
             },
             create: function (record) {
-                var v = this.getView(),
+                const v = this.getView(),
                     vm = this.getViewModel(),
                     entityId = vm.get('entityId'),
                     associations = vm.get('associations'),
@@ -300,9 +298,8 @@ Ext.define('PSR.view.crud.Association', {
                 }
             },
             delete: function (record) {
-                var v = this.getView(),
+                const v = this.getView(),
                     vm = this.getViewModel(),
-                    entityId = vm.get('entityId'),
                     associations = vm.get('associations'),
                     associationId = associations[record.data.id];
                 if (associationId) {
