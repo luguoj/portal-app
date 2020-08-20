@@ -1,7 +1,12 @@
 Ext.define('common.overrides.Ext.form.Panel', {
     override: 'Ext.form.Panel',
+    getTemplate: function () {
+        var template = this.callParent();
+        template.pop();
+        return template;
+    },
     privates: {
-        beforeAjaxSubmit: function(form, options, successFn, failureFn) {
+        beforeAjaxSubmit: function (form, options, successFn, failureFn) {
             var me = this,
                 url = options.url || me.getUrl(),
                 request = Ext.merge({}, {
@@ -34,13 +39,13 @@ Ext.define('common.overrides.Ext.form.Panel', {
                 'Content-Type': 'application/' + contentType
             }, options.headers || {});
 
-            request.callback = function(callbackOptions, success, response) {
+            request.callback = function (callbackOptions, success, response) {
                 var responseText = response.responseText,
                     responseXML = response.responseXML,
                     statusResult = Ext.data.request.Ajax.parseStatus(response.status, response);
 
                 if (form.$fileswap) {
-                    Ext.each(form.$fileswap, function(item) {
+                    Ext.each(form.$fileswap, function (item) {
                         original = item.original;
                         placeholder = item.placeholder;
 
@@ -61,31 +66,26 @@ Ext.define('common.overrides.Ext.form.Panel', {
                 if (success) {
                     if (statusResult && responseText && responseText.length === 0) {
                         success = true;
-                    }
-                    else {
+                    } else {
                         if (!Ext.isEmpty(response.responseBytes)) {
                             success = statusResult.success;
-                        }
-                        else {
+                        } else {
                             if (
                                 Ext.isString(responseText) &&
                                 response.request.options.responseType === 'text'
                             ) {
                                 response.success = true;
-                            }
-                            else if (Ext.isString(responseText)) {
+                            } else if (Ext.isString(responseText)) {
                                 try {
                                     response = Ext.decode(responseText);
-                                }
-                                catch (e) {
+                                } catch (e) {
                                     response.success = false;
                                     response.error = e;
                                     response.message = e.message;
                                 }
-                            }
-                            else if (Ext.isSimpleObject(responseText)) {
+                            } else if (Ext.isSimpleObject(responseText)) {
                                 response = responseText;
-                                Ext.applyIf(response, { success: true });
+                                Ext.applyIf(response, {success: true});
                             }
 
                             if (!Ext.isEmpty(responseXML)) {
@@ -98,12 +98,10 @@ Ext.define('common.overrides.Ext.form.Panel', {
 
                     if (success) {
                         successFn(response, responseText);
-                    }
-                    else {
+                    } else {
                         failureFn(response, responseText);
                     }
-                }
-                else {
+                } else {
                     failureFn(response, responseText);
                 }
             };
@@ -114,13 +112,12 @@ Ext.define('common.overrides.Ext.form.Panel', {
                 formData = request.rawData = new FormData(form);
                 // bug fix end--------------------------------
                 if (request.params) {
-                    Ext.iterate(request.params, function(name, value) {
+                    Ext.iterate(request.params, function (name, value) {
                         if (Ext.isArray(value)) {
-                            Ext.each(value, function(v) {
+                            Ext.each(value, function (v) {
                                 formData.append(name, v);
                             });
-                        }
-                        else {
+                        } else {
                             formData.append(name, value);
                         }
                     });
