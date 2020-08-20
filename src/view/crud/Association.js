@@ -10,7 +10,6 @@ Ext.define('PSR.view.crud.Association', {
     isTree: false,
     entitySide: 'left',
     searchFields: [],
-    actionPrefix: '',
     updateAction: 'updateAssociation',
     config: {
         actions: {
@@ -47,7 +46,6 @@ Ext.define('PSR.view.crud.Association', {
             isTree = this.isTree,
             title = this.title,
             updateAction = this.updateAction,
-            actionPrefix = this.actionPrefix,
             items = [].concat(this.config.items),
             searchFields = this.searchFields,
             tbcontainer, tbnav, tbsearch, tbeditor,
