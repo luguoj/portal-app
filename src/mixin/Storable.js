@@ -21,6 +21,18 @@ Ext.define('PSR.mixin.Storable', {
                     }
                 }
             })
+            if(store.isLoading()){
+                if (me.mask) {
+                    me.mask({xtype: 'loadmask', message: '加载中...'});
+                }
+                me.onStoreBeforeLoad(store);
+            }
+            if (store.isLoaded()) {
+                me.onStoreLoad(store, store.getData().items, true);
+                if (me.unmask) {
+                    me.unmask();
+                }
+            }
         }
         return store;
     },
