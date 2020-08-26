@@ -5,6 +5,7 @@ Ext.define('PSR.dialog.FileUpload', {
     layout: 'fit', padding: 0,
     config: {
         navTitle: '',
+        fileField: 'file',
         params: {},
         accept: null,
         uploadHandler: null
@@ -18,7 +19,10 @@ Ext.define('PSR.dialog.FileUpload', {
             form = {
                 xtype: 'formpanel',
                 items: [{
-                    xtype: 'filefield', placeholder: '选择文件', name: 'packageFile', required: true,
+                    xtype: 'filefield',
+                    placeholder: '选择文件',
+                    name: config.fileField ? config.fileField : 'file',
+                    required: true,
                     accept: config.accept
                 }]
             };
