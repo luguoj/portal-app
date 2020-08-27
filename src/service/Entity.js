@@ -8,7 +8,7 @@ Ext.define('PSR.service.Entity', {
         }
     },
     getUrlPrefix: function () {
-        return window.gatewaySite +this.getContextPath() + this.getApiPath();
+        return window.gatewaySite + this.getContextPath() + this.getApiPath();
     },
     load: function (opt) {
         PSR.clientSite.Ajax.request({
@@ -18,7 +18,8 @@ Ext.define('PSR.service.Entity', {
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
-            complete: opt.complete
+            complete: opt.complete,
+            onErrorMessage: opt.onErrorMessage
         });
     },
     loadByIds: function (opt) {
@@ -29,7 +30,8 @@ Ext.define('PSR.service.Entity', {
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
-            complete: opt.complete
+            complete: opt.complete,
+            onErrorMessage: opt.onErrorMessage
         });
     },
     create: function (opt) {
@@ -40,7 +42,8 @@ Ext.define('PSR.service.Entity', {
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
-            complete: opt.complete
+            complete: opt.complete,
+            onErrorMessage: opt.onErrorMessage
         });
     },
     update: function (opt) {
@@ -51,7 +54,8 @@ Ext.define('PSR.service.Entity', {
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
-            complete: opt.complete
+            complete: opt.complete,
+            onErrorMessage: opt.onErrorMessage
         });
     },
     delete: function (opt) {
@@ -62,7 +66,8 @@ Ext.define('PSR.service.Entity', {
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
-            complete: opt.complete
+            complete: opt.complete,
+            onErrorMessage: opt.onErrorMessage
         });
     },
     clone: function (opt) {
@@ -73,7 +78,8 @@ Ext.define('PSR.service.Entity', {
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
-            complete: opt.complete
+            complete: opt.complete,
+            onErrorMessage: opt.onErrorMessage
         });
     },
 });
