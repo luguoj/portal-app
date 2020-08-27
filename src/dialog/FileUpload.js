@@ -8,6 +8,7 @@ Ext.define('PSR.dialog.FileUpload', {
         fileField: 'file',
         params: {},
         accept: null,
+        multiple: false,
         uploadHandler: null
     },
     updateNavTitle: function (value) {
@@ -23,7 +24,8 @@ Ext.define('PSR.dialog.FileUpload', {
                     placeholder: '选择文件',
                     name: config.fileField ? config.fileField : 'file',
                     required: true,
-                    accept: config.accept
+                    accept: config.accept,
+                    multiple: config.multiple
                 }]
             };
         if (config.params) {
