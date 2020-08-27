@@ -142,7 +142,7 @@ Ext.define('PSR.view.crud.Details', {
                             v.setValues(data);
                         },
                         failure: function () {
-                            Ext.toast("加载失败")
+                            PSR.Message.info("加载失败")
                             me.goBack();
                         },
                         complete: function () {
@@ -178,7 +178,7 @@ Ext.define('PSR.view.crud.Details', {
                     values: values,
                     success: function (data) {
                         if (data) {
-                            Ext.toast("保存成功");
+                            PSR.Message.info("保存成功");
                             dirty.isNew = true;
                             dirty.record = data;
                             if (action_update) {
@@ -190,7 +190,7 @@ Ext.define('PSR.view.crud.Details', {
                         }
                     },
                     failure: function () {
-                        Ext.toast("保存失败")
+                        PSR.Message.info("保存失败")
                     },
                     complete: function () {
                         v.unmask();
@@ -212,13 +212,13 @@ Ext.define('PSR.view.crud.Details', {
                     values: values,
                     success: function (data) {
                         if (data) {
-                            Ext.toast("保存成功");
+                            PSR.Message.info("保存成功");
                             dirty.record = data;
                             v.setValues(data);
                         }
                     },
                     failure: function () {
-                        Ext.toast("保存失败")
+                        PSR.Message.info("保存失败")
                     },
                     complete: function () {
                         v.unmask();
