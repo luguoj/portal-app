@@ -84,7 +84,7 @@ Ext.define('PSR.view.crud.Association', {
             };
             items.push(frmSearchFilter);
         }
-        // 创建表格
+        // 创建表格f
         clmns = [{
             xtype: 'psr-grid-column-toggle',
             flagIndex: 'assignFlag',
@@ -93,9 +93,17 @@ Ext.define('PSR.view.crud.Association', {
         }, {
             xtype: isTree ? 'treecolumn' : 'column',
             text: title, flex: 1, menuDisabled: true,
-            dataIndex: 'displaytext',
+            dataIndex: 'displaytext'
         }];
+        if (!searchFields || searchFields.length <= 0) {
+            clmns[1].cell = {encodeHtml: false};
+            clmns[1].renderer = 'filterRenderer';
+        }
         grdItemController = {
+            filterRenderer: function (value) {
+                const filterText = vThis.getViewModel().get('tbsearch.filterText');
+                return PSR.util.Grid.filterRenderer(value, filterText);
+            },
             associate: function (button) {
                 const vm = this.getViewModel(),
                     c = vThis.getController(),
