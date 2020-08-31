@@ -4,10 +4,6 @@ Ext.define('PSR.Message', {
         Ext.toast(message);
     },
     error: function (message, callback) {
-        Ext.Msg.alert('错误', message, function () {
-            if (callback) {
-                callback();
-            }
-        });
+        Ext.Msg.alert('错误', message, callback);
     }
 });
