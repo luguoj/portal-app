@@ -111,9 +111,6 @@ Ext.define('PSR.clientSite.ClientSite', {
                         }
                     }
                     PSR.Message.error("授权信息无效");
-                },
-                callback: function (opt, success, response) {
-
                 }
             });
             return false;
