@@ -2,18 +2,19 @@ Ext.define('PSR.clientSite.ClientSite', {
     alternateClassName: ['PSR.ClientSite'],
     singleton: true,
     clientTokenEndpoint: window.clientSite + '/token',
-    login: function (loginSuccess) {
+    constructor: function (config) {
+        this.callParent([config]);
         window.addEventListener("message", function (event) {
             if (event.origin === window.clientSite) {
                 if (event.data === 'login_success') {
                     console.log('login message got')
-                    PSR.ClientSite.loginSuccess = true;
                     if (PSR.ClientSite.oauth2LoginDialog) {
                         PSR.ClientSite.oauth2LoginDialog.close();
                     }
                     PSR.ClientSite.getAuthorizationHeader();
-                    if (loginSuccess) {
-                        loginSuccess();
+                    if (PSR.ClientSite.loginSuccess) {
+                        PSR.ClientSite.loginSuccess();
+                        delete PSR.ClientSite.loginSuccess;
                     }
                 } else if (event.data === 'login_retry') {
                     console.log('login retry message got')
@@ -26,6 +27,9 @@ Ext.define('PSR.clientSite.ClientSite', {
                 }
             }
         }, false);
+    },
+    login: function (loginSuccess) {
+        PSR.ClientSite.loginSuccess = loginSuccess;
         PSR.ClientSite.oauth2LoginDialog =
             Ext.create({
                 xtype: 'dialog',
@@ -94,6 +98,22 @@ Ext.define('PSR.clientSite.ClientSite', {
                         PSR.Message.error(err);
                         console.error(err);
                     }
+                },
+                failure: function (response) {
+                    if (response) {
+                        if (response.status == '401') {
+                            PSR.Message.error("授权信息无效，请重新登陆",function(){
+                                PSR.clientSite.ClientSite.login(function () {
+                                    PSR.clientSite.ClientSite.getClientToken(callback);
+                                });
+                            });
+                            return;
+                        }
+                    }
+                    PSR.Message.error("授权信息无效");
+                },
+                callback: function (opt, success, response) {
+
                 }
             });
             return false;
