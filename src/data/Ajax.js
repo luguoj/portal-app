@@ -12,7 +12,7 @@ Ext.define('PSR.data.Ajax', {
     },
     hCallSuccess: function (response, opt) {
         try {
-            var respObj = JSON.parse(response.responseText);
+            const respObj = JSON.parse(response.responseText);
             if (respObj.success) {
                 if (opt && opt.bizSuccess) {
                     opt.bizSuccess(respObj.result);
