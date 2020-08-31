@@ -7,7 +7,7 @@ Ext.define('PSR.clientSite.data.Ajax', {
         });
         if (authHeader) {
             opt.headers = Object.assign({}, authHeader, opt.headers);
-            PSR.Ajax.request(opt);
+            return PSR.Ajax.request(opt);
         }
     }
 });

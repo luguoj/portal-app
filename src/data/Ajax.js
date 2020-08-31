@@ -8,7 +8,7 @@ Ext.define('PSR.data.Ajax', {
         if (!opt.failure) {
             opt.failure = PSR.Ajax.hCallFailure;
         }
-        Ext.Ajax.request(opt);
+        return Ext.Ajax.request(opt);
     },
     hCallSuccess: function (response, opt) {
         try {
