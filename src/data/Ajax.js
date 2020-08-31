@@ -42,7 +42,7 @@ Ext.define('PSR.data.Ajax', {
         }
     },
     hCallFailure: function (response, opt) {
-        PSR.Message.error(response);
+        PSR.Message.error(response.statusText);
         console.log(response);
         if (opt.complete) {
             opt.complete(response, opt);
