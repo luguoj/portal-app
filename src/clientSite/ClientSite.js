@@ -54,7 +54,8 @@ Ext.define('PSR.clientSite.ClientSite', {
         }).show();
     },
     getClientToken: function (callback) {
-        if (PSR.ClientSite.clientToken) {
+        const now = (new Date()).getTime();
+        if (PSR.ClientSite.clientToken && (!PSR.ClientSite.clientToken.expires_at || PSR.ClientSite.clientToken.expires_at > now)) {
             return PSR.ClientSite.clientToken;
         } else {
             Ext.Ajax.request({
@@ -67,12 +68,22 @@ Ext.define('PSR.clientSite.ClientSite', {
                         if (respObj.access_token) {
                             PSR.ClientSite.clientToken = respObj;
                             PSR.ClientSite.clientToken.authHeader = {Authorization: respObj.token_type + ' ' + respObj.access_token};
+                            if (respObj.expires_in) {
+                                PSR.ClientSite.clientToken.expires_at = now + respObj.expires_in * 1000;
+                            } else {
+                                delete PSR.ClientSite.clientToken.expires_at;
+                            }
                             if (callback) {
                                 callback(PSR.ClientSite.clientToken);
                             }
                         } else if (respObj.success && respObj.result && respObj.result.access_token) {
                             PSR.ClientSite.clientToken = respObj.result;
                             PSR.ClientSite.clientToken.authHeader = {Authorization: respObj.result.token_type + ' ' + respObj.result.access_token};
+                            if (respObj.result.expires_in) {
+                                PSR.ClientSite.clientToken.expires_at = now + respObj.result.expires_in * 1000;
+                            } else {
+                                delete PSR.ClientSite.clientToken.expires_at;
+                            }
                             if (callback) {
                                 callback(PSR.ClientSite.clientToken);
                             }
