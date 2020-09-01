@@ -32,10 +32,19 @@ Ext.define('PSR.view.crud.List', {
         this.callParent([config]);
     },
     updateActions: function (actions) {
-        const vm = this.getViewModel();
+        const vm = this.getViewModel(),
+            actionPrefix = this.actionPrefix,
+            isTree = this.isTree;
         if (actions) {
             for (const actionsKey in actions) {
                 vm.set('action_' + actionsKey, actions[actionsKey]);
+            }
+            const action_drag = actions[actionPrefix + 'drag'],
+                grid = this.down('tree');
+            if (grid) {
+                if (action_drag) {
+                    grid.addPlugin(isTree ? 'treedragdrop' : 'gridrowdragdrop').onViewInitialize(grid);
+                }
             }
         }
     },
@@ -180,6 +189,8 @@ Ext.define('PSR.view.crud.List', {
                     viewModel: {},
                     controller: grdItemController
                 },
+                plugins: {},
+                listeners: {beforedrop: 'grdBeforeDrop', drop: 'grdDrop'}
             }
         } else {
             grd = {
@@ -192,16 +203,17 @@ Ext.define('PSR.view.crud.List', {
                     viewModel: {},
                     controller: grdItemController
                 },
+                plugins: {}
             }
             if (this.config.viewModel.stores.entities.pageSize) {
-                grd.plugins = {gridpagingtoolbar: true};
+                grd.plugins.gridpagingtoolbar = true;
             }
         }
         items.push(grd);
     },
     createViewModelConfig: function () {
-        const actions = this.config.actions
-        goBack = this.config.goBack,
+        const actions = this.config.actions,
+            goBack = this.config.goBack,
             viewModel = Object.assign({}, this.config.viewModel);
         let formulas, data;
         this.config.viewModel = viewModel;
@@ -226,7 +238,8 @@ Ext.define('PSR.view.crud.List', {
         viewModel.formulas = Object.assign(formulas, viewModel.formulas);
     },
     createControllerConfig: function () {
-        const actionColumns = this.actionColumns;
+        const actionColumns = this.actionColumns,
+            actionPrefix = this.actionPrefix;
         if (!this.config.controller || !this.config.controller.getService) {
             PSR.Message.error('CRUD视图缺少getService');
         }
@@ -312,6 +325,12 @@ Ext.define('PSR.view.crud.List', {
             },
             goBack: function () {
                 this.getView().fireEvent('goback', {dirty: false});
+            },
+            grdBeforeDrop: function (node, data, overModel, dropPosition) {
+                return true;
+            },
+            grdDrop: function (node, data, overModel, dropPosition) {
+
             }
         };
         if (actionColumns && actionColumns.length > 0) {
