@@ -95,7 +95,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                             console.log(respObj);
                         }
                     } catch (err) {
-                        PSR.Message.error(err);
+                        PSR.Message.error(err.message);
                         console.error(err);
                     }
                 },

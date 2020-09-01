@@ -34,7 +34,7 @@ Ext.define('PSR.data.Ajax', {
             }
         } catch (err) {
             if (opt.onErrorMessage) {
-                opt.onErrorMessage(err);
+                opt.onErrorMessage(err.message);
             } else {
                 PSR.Message.error(err);
             }

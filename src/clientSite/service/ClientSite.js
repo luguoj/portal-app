@@ -24,7 +24,7 @@ Ext.define('PSR.clientSite.service.ClientSite', {
                         opt.success(response);
                     }
                 } catch (err) {
-                    PSR.Message.error(err);
+                    PSR.Message.error(err.message);
                     console.error(err);
                     if (opt.failure) {
                         opt.failure(response, err);
