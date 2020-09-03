@@ -326,11 +326,24 @@ Ext.define('PSR.view.crud.List', {
             goBack: function () {
                 this.getView().fireEvent('goback', {dirty: false});
             },
-            grdBeforeDrop: function (node, data, overModel, dropPosition) {
+            grdBeforeDrop: function (targetNode, draggedData, targetRecord, position) {
                 return true;
             },
-            grdDrop: function (node, data, overModel, dropPosition) {
+            grdDrop: function (targetNode, draggedData, targetRecord, position) {
 
+            },
+            doDrop: function (targetNode, draggedData, targetRecord, position) {
+                const v = this.getView(),
+                    grd = v.lookup('grd'),
+                    dragdrop = v.isTree ? grd.findPlugin('treedragdrop') : grd.findPlugin('gridrowdragdrop'),
+                    dropZone = dragdrop.dropZone,
+                    dragInfo = {
+                        draggedData: draggedData,
+                        targetRecord: targetRecord,
+                        position: position,
+                        targetNode: targetRecord
+                    };
+                dropZone.onNodeDrop(dragInfo);
             }
         };
         if (actionColumns && actionColumns.length > 0) {
