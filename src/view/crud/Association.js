@@ -9,6 +9,8 @@ Ext.define('PSR.view.crud.Association', {
     title: '关系',
     isTree: false,
     entitySide: 'left',
+    columns: [],
+    itemController: {},
     searchFields: [],
     updateAction: 'updateAssociation',
     config: {
@@ -47,6 +49,8 @@ Ext.define('PSR.view.crud.Association', {
             title = this.title,
             updateAction = this.updateAction,
             items = [].concat(this.config.items),
+            columns = this.columns,
+            itemController = this.itemController,
             searchFields = this.searchFields;
         let tbcontainer, tbnav, tbsearch, tbeditor,
             frmSearchFilter, grd, clmns, grdItemController;
@@ -94,7 +98,7 @@ Ext.define('PSR.view.crud.Association', {
             xtype: isTree ? 'treecolumn' : 'column',
             text: title, flex: 1, menuDisabled: true,
             dataIndex: 'displaytext'
-        }];
+        }].concat(columns);// 创建表格列
         if (!searchFields || searchFields.length <= 0) {
             clmns[1].cell = {encodeHtml: false};
             clmns[1].renderer = 'filterRenderer';
@@ -103,6 +107,9 @@ Ext.define('PSR.view.crud.Association', {
             filterRenderer: function (value) {
                 const filterText = vThis.getViewModel().get('tbsearch.filterText');
                 return PSR.util.Grid.filterRenderer(value, filterText);
+            },
+            getListView: function () {
+                return vThis;
             },
             associate: function (button) {
                 const vm = this.getViewModel(),
@@ -115,6 +122,7 @@ Ext.define('PSR.view.crud.Association', {
                 }
             }
         };
+        grdItemController = Object.assign(grdItemController, itemController);
         if (isTree) {
             grd = {
                 xtype: 'tree', reference: 'grd',
@@ -167,9 +175,16 @@ Ext.define('PSR.view.crud.Association', {
             initAssociation: function (record) {
                 const me = this,
                     vm = me.getViewModel(),
-                    associations = vm.get('associations');
-                record.set('assignFlag', !!associations[record.id]);
-                record.set('associationId', associations[record.id]);
+                    associations = vm.get('associations'),
+                    association = associations[record.id];
+                record.set('assignFlag', !!association);
+                if (association) {
+                    record.set('associationId', association.id);
+                    record.set('association', association);
+                } else {
+                    record.set('associationId', null);
+                    record.set('association', null);
+                }
                 if (record.childNodes && record.childNodes.length > 0) {
                     for (let i = 0; i < record.childNodes.length; i++) {
                         me.initAssociation(record.childNodes[i]);
@@ -217,7 +232,7 @@ Ext.define('PSR.view.crud.Association', {
                                 const associations = {};
                                 if (respObj) {
                                     for (let i = 0; i < respObj.length; i++) {
-                                        associations[respObj[i].rightId] = respObj[i].id;
+                                        associations[respObj[i].rightId] = respObj[i];
                                     }
                                 }
                                 vm.set('associations', associations);
@@ -234,7 +249,7 @@ Ext.define('PSR.view.crud.Association', {
                                 const associations = {};
                                 if (respObj) {
                                     for (let i = 0; i < respObj.length; i++) {
-                                        associations[respObj[i].leftId] = respObj[i].id;
+                                        associations[respObj[i].leftId] = respObj[i];
                                     }
                                 }
                                 vm.set('associations', associations);
@@ -277,8 +292,8 @@ Ext.define('PSR.view.crud.Association', {
                     vm = this.getViewModel(),
                     entityId = vm.get('entityId'),
                     associations = vm.get('associations'),
-                    associationId = associations[record.data.id];
-                if (!associationId) {
+                    association = associations[record.data.id];
+                if (!association) {
                     v.mask();
                     /**
                      * @Description: 创建关联
@@ -293,7 +308,8 @@ Ext.define('PSR.view.crud.Association', {
                         success: function (resbObj) {
                             record.set('assignFlag', true);
                             record.set('associationId', resbObj.id);
-                            associations[record.data.id] = resbObj.id;
+                            record.set('association', resbObj);
+                            associations[record.data.id] = resbObj;
                             Ext.toast('保存成功');
                         },
                         failure: function () {
@@ -309,14 +325,15 @@ Ext.define('PSR.view.crud.Association', {
                 const v = this.getView(),
                     vm = this.getViewModel(),
                     associations = vm.get('associations'),
-                    associationId = associations[record.data.id];
-                if (associationId) {
+                    association = associations[record.data.id];
+                if (association) {
                     v.mask();
                     this.getService().delete({
-                        id: associationId,
+                        id: association.id,
                         success: function () {
                             record.set('assignFlag', false);
                             record.set('associationId', null);
+                            record.set('association', null);
                             delete (associations[record.data.id]);
                             Ext.toast('保存成功');
                         },
