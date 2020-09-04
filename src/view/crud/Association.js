@@ -11,7 +11,6 @@ Ext.define('PSR.view.crud.Association', {
     entitySide: 'left',
     columns: [],
     itemController: {},
-    searchFields: [],
     updateAction: 'updateAssociation',
     config: {
         actions: {
@@ -39,9 +38,13 @@ Ext.define('PSR.view.crud.Association', {
     load: function (opt, callback) {
         this.title = (opt ? opt.displaytext + ' ' : '') + this._title;
         this.getController().loadEntity(opt ? opt.id : null);
+        this.extraParams = this.getExtraParams(opt);
         if (callback) {
             callback();
         }
+    },
+    getExtraParams: function (opt) {
+        return {};
     },
     createItemsConfig: function (config) {
         const vThis = this,
@@ -50,10 +53,8 @@ Ext.define('PSR.view.crud.Association', {
             updateAction = this.updateAction,
             items = [].concat(this.config.items),
             columns = this.columns,
-            itemController = this.itemController,
-            searchFields = this.searchFields;
-        let tbcontainer, tbnav, tbsearch, tbeditor,
-            frmSearchFilter, grd, clmns, grdItemController;
+            itemController = this.itemController;
+        let tbcontainer, tbnav, tbsearch, tbeditor, grd, clmns, grdItemController;
         this.config.items = items;
         // 创建工具栏容器
         tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
@@ -62,14 +63,25 @@ Ext.define('PSR.view.crud.Association', {
         tbcontainer.items.push(tbnav);
         tbcontainer.items.push({xtype: 'container', width: 1});
         // 创建搜索工具栏
-        tbsearch = {xtype: 'psr-toolbar-search', reference: 'tbsearch'};
-        if (searchFields && searchFields.length > 0) {
-            tbsearch.searchHandler = 'search';
-        } else {
-            tbsearch.refreshHandler = 'refresh';
-            tbsearch.filterHandler = 'filter';
-        }
+        tbsearch = {
+            xtype: 'psr-toolbar-search',
+            refreshHandler: 'refresh',
+            filterHandler: 'filter',
+            reference: 'tbsearch'
+        };
         tbcontainer.items.push(tbsearch);
+        tbcontainer.items.push({xtype: 'container', width: 1});
+        // 创建选中项过滤工具栏
+        const tbselectionfilter = {
+            xtype: 'toolbar',
+            items: [{
+                xtype: 'segmentedbutton',
+                items: [{reference: 'segbtnAll', text: '所有', ui: '', pressed: true},
+                    {reference: 'segbtnSelected', text: '已选', ui: ''}],
+                listeners: {toggle: 'toggleBtnSelectionFilter'}
+            }]
+        };
+        tbcontainer.items.push(tbselectionfilter);
         tbcontainer.items.push({xtype: 'container', width: 1});
         // 创建编辑工具栏
         tbeditor = {
@@ -79,15 +91,6 @@ Ext.define('PSR.view.crud.Association', {
             bind: {editable: '{action_' + updateAction + '}'}
         };
         tbcontainer.items.push(tbeditor);
-        // 创建搜索过滤表单
-        if (searchFields && searchFields.length > 0) {
-            frmSearchFilter = {
-                xtype: 'psr-panel-form-left', reference: 'searchFilter',
-                items: searchFields,
-                bind: {hidden: '{!tbsearch.searchFilterShowed}'}
-            };
-            items.push(frmSearchFilter);
-        }
         // 创建表格f
         clmns = [{
             xtype: 'psr-grid-column-toggle',
@@ -97,12 +100,10 @@ Ext.define('PSR.view.crud.Association', {
         }, {
             xtype: isTree ? 'treecolumn' : 'column',
             text: title, flex: 1, menuDisabled: true,
-            dataIndex: 'displaytext'
+            dataIndex: 'displaytext',
+            cell: {encodeHtml: false},
+            renderer: 'filterRenderer'
         }].concat(columns);// 创建表格列
-        if (!searchFields || searchFields.length <= 0) {
-            clmns[1].cell = {encodeHtml: false};
-            clmns[1].renderer = 'filterRenderer';
-        }
         grdItemController = {
             filterRenderer: function (value) {
                 const filterText = vThis.getViewModel().get('tbsearch.filterText');
@@ -147,9 +148,7 @@ Ext.define('PSR.view.crud.Association', {
                     controller: grdItemController
                 },
             }
-            if (this.config.viewModel.stores.entities.pageSize) {
-                grd.plugins = {gridpagingtoolbar: true};
-            }
+            this.config.viewModel.stores.entities.pageSize = 0;
         }
         items.push(grd);
     },
@@ -236,7 +235,7 @@ Ext.define('PSR.view.crud.Association', {
                                     }
                                 }
                                 vm.set('associations', associations);
-                                vm.getStore('entities').load();
+                                me.refresh();
                             },
                             complete: function () {
                                 v.unmask();
@@ -253,7 +252,7 @@ Ext.define('PSR.view.crud.Association', {
                                     }
                                 }
                                 vm.set('associations', associations);
-                                vm.getStore('entities').load();
+                                me.refresh();
                             },
                             complete: function () {
                                 v.unmask();
@@ -265,27 +264,36 @@ Ext.define('PSR.view.crud.Association', {
                     tbeditor.toggleViewing();
                 }
             },
-            search: function () {
-                const vm = this.getViewModel(),
+            refresh: function () {
+                const v = this.getView(),
+                    vm = this.getViewModel(),
                     store = vm.getStore('entities'),
                     proxy = store.getProxy(),
-                    searchFilter = this.lookup('searchFilter');
-                if (searchFilter) {
-                    let params = Object.assign(proxy.getExtraParams(), searchFilter.getValues());
-                    proxy.setExtraParams(params);
+                    extraParams = v.extraParams,
+                    searchfield = v.lookup('tbsearch').down('searchfield');
+                if (searchfield) {
+                    searchfield.setValue('');
                 }
-                store.load();
+                let params = Object.assign({}, proxy.getExtraParams(), extraParams);
+                proxy.setExtraParams(params);
+                store.loadPage(1);
             },
-            refresh: function () {
-                const vm = this.getViewModel(),
-                    store = vm.getStore('entities');
-                store.reload();
-            },
-            filter: function (field, value) {
+            filter: function () {
                 const me = this,
+                    searchfield = me.lookup('tbsearch').down('searchfield'),
+                    value = searchfield.getValue(),
+                    segbtnSelected = me.lookup('segbtnSelected'),
+                    pressed = segbtnSelected.getPressed(),
                     vm = me.getViewModel(),
-                    store = vm.getStore('entities');
-                PSR.util.Store.filter(value, 'displaytext', store);
+                    store = vm.getStore('entities'),
+                    filters = [];
+                if (pressed) {
+                    filters.push({property: 'assignFlag', value: true});
+                }
+                if (value) {
+                    filters.push(PSR.util.Store.includeTextFilter('displaytext', value));
+                }
+                PSR.util.Store.filter(store, filters);
             },
             create: function (record) {
                 const v = this.getView(),
@@ -345,6 +353,9 @@ Ext.define('PSR.view.crud.Association', {
                         }
                     });
                 }
+            },
+            toggleBtnSelectionFilter: function (container, button, pressed) {
+                this.filter();
             }
         };
         this.config.controller = Object.assign(controller, this.config.controller);

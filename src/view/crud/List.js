@@ -288,8 +288,12 @@ Ext.define('PSR.view.crud.List', {
             filter: function (field, value) {
                 const me = this,
                     vm = me.getViewModel(),
-                    store = vm.getStore('entities');
-                PSR.util.Store.filter(value, 'displaytext', store);
+                    store = vm.getStore('entities'),
+                    filters =[];
+                if (value) {
+                    filters.push(PSR.util.Store.includeTextFilter('displaytext', value));
+                }
+                PSR.util.Store.filter(store, filters);
             },
             clone: function (selection) {
                 const me = this,

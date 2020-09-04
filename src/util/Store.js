@@ -9,5 +9,18 @@ Ext.define('PSR.util.Store', {
         } else {
             store.clearFilter();
         }
+    },
+    includeTextFilter: function (property, text) {
+        return {
+            property: property,
+            value: new RegExp(Ext.String.escapeRegex(text), 'i')
+        };
+    },
+    filter: function (store, filters) {
+        if (filters) {
+            store.getFilters().replaceAll(filters);
+        } else {
+            store.clearFilter();
+        }
     }
 });
