@@ -26,6 +26,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                     location.reload();
                 }
             }
+            console.log('got message from ' + event.origin + ': ' + event.data);
         }, false);
     },
     login: function (loginSuccess) {
@@ -57,6 +58,13 @@ Ext.define('PSR.clientSite.ClientSite', {
             html: '<iframe  src="' + window.clientSite + '/logout" frameborder="0" width="0px" height="0px"></iframe > ',
         }).show();
     },
+    checkUserChange: function (newToken) {
+        if (PSR.ClientSite.clientToken && PSR.ClientSite.clientToken.userId && PSR.ClientSite.clientToken.userId != newToken.userId) {
+            PSR.Message.error('用户已变更，即将重置工作台。', function () {
+                window.location.reload();
+            });
+        }
+    },
     getClientToken: function (callback) {
         const now = (new Date()).getTime();
         if (PSR.ClientSite.clientToken && (!PSR.ClientSite.clientToken.expires_at || PSR.ClientSite.clientToken.expires_at > now)) {
@@ -70,6 +78,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                     try {
                         var respObj = JSON.parse(response.responseText);
                         if (respObj.access_token) {
+                            PSR.clientSite.ClientSite.checkUserChange(respObj);
                             PSR.ClientSite.clientToken = respObj;
                             PSR.ClientSite.clientToken.authHeader = {Authorization: respObj.token_type + ' ' + respObj.access_token};
                             if (respObj.expires_in) {
@@ -81,6 +90,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                                 callback(PSR.ClientSite.clientToken);
                             }
                         } else if (respObj.success && respObj.result && respObj.result.access_token) {
+                            PSR.clientSite.ClientSite.checkUserChange(respObj.result);
                             PSR.ClientSite.clientToken = respObj.result;
                             PSR.ClientSite.clientToken.authHeader = {Authorization: respObj.result.token_type + ' ' + respObj.result.access_token};
                             if (respObj.result.expires_in) {
@@ -102,7 +112,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                 failure: function (response) {
                     if (response) {
                         if (response.status == '401') {
-                            PSR.Message.error("授权信息无效，请重新登陆",function(){
+                            PSR.Message.error("授权信息无效，请重新登陆", function () {
                                 PSR.clientSite.ClientSite.login(function () {
                                     PSR.clientSite.ClientSite.getClientToken(callback);
                                 });
