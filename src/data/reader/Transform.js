@@ -127,13 +127,13 @@ Ext.define('PSR.data.reader.Transform', {
             }
         }
         if (opt.root) {
-            var result = {isPath: true},
+            var result = {isPath: true, expanded: true},
                 root = Object.assign({leaf: false, expanded: true, isPath: true}, opt.root);
             root[rootProperty] = roots;
             result[rootProperty] = [root];
             return result;
         } else {
-            var result = {isPath: true};
+            var result = {isPath: true, expanded: true};
             result[rootProperty] = roots;
             return result;
         }
