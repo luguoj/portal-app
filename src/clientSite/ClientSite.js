@@ -103,6 +103,9 @@ Ext.define('PSR.clientSite.ClientSite', {
                             }
                         } else {
                             console.log(respObj);
+                            PSR.Message.error("授权信息无效，请重新登陆", function () {
+                                PSR.clientSite.ClientSite.logout();
+                            });
                         }
                     } catch (err) {
                         PSR.Message.error(err.message);
@@ -120,7 +123,9 @@ Ext.define('PSR.clientSite.ClientSite', {
                             return;
                         }
                     }
-                    PSR.Message.error("授权信息无效");
+                    PSR.Message.error("授权信息无效，请重新登陆", function () {
+                        PSR.clientSite.ClientSite.logout();
+                    });
                 }
             });
             return false;
