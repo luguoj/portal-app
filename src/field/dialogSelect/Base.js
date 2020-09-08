@@ -118,8 +118,9 @@ Ext.define('PSR.field.dialogSelect.Base', {
             return value;
         }
     },
-    updateValue: function (value) {
+    updateValue: function (newValue,oldValue) {
         this.getController().syncSelection();
+        this.fireEvent('change', this, newValue, oldValue);
     },
     reset: function () {
         this.setValue(this.originalValue);
