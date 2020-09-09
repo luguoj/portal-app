@@ -11,7 +11,6 @@ Ext.define('PSR.clientSite.ClientSite', {
                     if (PSR.ClientSite.oauth2LoginDialog) {
                         PSR.ClientSite.oauth2LoginDialog.close();
                     }
-                    PSR.ClientSite.getAuthorizationHeader();
                     if (PSR.ClientSite.loginSuccess) {
                         PSR.ClientSite.loginSuccess();
                         delete PSR.ClientSite.loginSuccess;
