@@ -16,6 +16,7 @@ Ext.define('PSR.clientSite.data.Ajax', {
     hCallFailure: function (response, opt) {
         if (response) {
             if (response.status == '401') {
+                PSR.ClientSite.clientToken.expires_at = 1;
                 if (!opt.retryTimes || opt.retryTimes < 5) {
                     opt.retryTimes = opt.retryTimes ? opt.retryTimes + 1 : 1;
                     setTimeout(function () {
