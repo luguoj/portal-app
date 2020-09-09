@@ -55,6 +55,9 @@ Ext.define('PSR.field.dialogSelect.Base', {
         this.displayer.setDisabled(value);
         this.trigger.setDisabled(value);
     },
+    expand: function () {
+        this.getController().hTriggerExpand();
+    },
     constructor: function (config) {
         var me = this;
         me.callParent([config]);
@@ -118,7 +121,7 @@ Ext.define('PSR.field.dialogSelect.Base', {
             return value;
         }
     },
-    updateValue: function (newValue,oldValue) {
+    updateValue: function (newValue, oldValue) {
         this.getController().syncSelection();
         this.fireEvent('change', this, newValue, oldValue);
     },
