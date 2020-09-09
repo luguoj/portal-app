@@ -61,7 +61,7 @@ Ext.define('PSR.field.dialogSelect.Base', {
     },
     constructor: function (config) {
         var me = this;
-        me.callParent([config]);debugger
+        me.callParent([config]);
         this.displayer = me.add({
             xtype: 'textfield',
             flex: 1,
