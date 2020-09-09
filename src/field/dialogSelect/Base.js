@@ -49,7 +49,8 @@ Ext.define('PSR.field.dialogSelect.Base', {
         },
         placeholder: '',
         displayField: 'text',
-        valueField: 'value'
+        valueField: 'value',
+        required: false
     },
     updateDisabled: function (value) {
         this.displayer.setDisabled(value);
@@ -60,13 +61,14 @@ Ext.define('PSR.field.dialogSelect.Base', {
     },
     constructor: function (config) {
         var me = this;
-        me.callParent([config]);
+        me.callParent([config]);debugger
         this.displayer = me.add({
             xtype: 'textfield',
             flex: 1,
             editable: false,
             disabled: this.getDisabled(),
             placeholder: this.getPlaceholder(),
+            required: this.getRequired(),
             bind: '{displayValue}',
             listeners: {
                 clearicontap: 'onClearIconTap'
