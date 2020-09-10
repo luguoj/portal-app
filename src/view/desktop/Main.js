@@ -38,7 +38,13 @@ Ext.define('PSR.view.desktop.Main', {
             v.btnCompress.hide(true);
         },
         hBtnLogout: function () {
-            PSR.clientSite.ClientSite.logout();
+            Ext.Msg.confirm("登出",
+                "是否要登出当前用户",
+                function (buttonId) {
+                    if (buttonId == 'yes') {
+                        PSR.clientSite.ClientSite.logout();
+                    }
+                });
         },
     },
     viewModel: {
@@ -68,8 +74,24 @@ Ext.define('PSR.view.desktop.Main', {
         }
     },
     onStoreLoad: function (store, records, success) {
-        var token = Ext.util.History.getToken();
+        const me = this,
+            vm = me.getViewModel(),
+            token = Ext.util.History.getToken();
         Ext.route.Router.onStateChange(token);
+        PSR.clientSite.Ajax.request({
+            method: 'GET',
+            url: window.gatewaySite + '/organization-api/api/personnel/loadByCurrentUser',
+            disableCaching: true,
+            bizSuccess: function (result) {
+                vm.set('personnel', result.description);
+            },
+            bizFailure: function (result) {
+                vm.set('personnel', PSR.clientSite.ClientSite.clientToken.username);
+            },
+            failure: function () {
+                vm.set('personnel', PSR.clientSite.ClientSite.clientToken.username);
+            }
+        });
     },
     updateAppTitle: function (value) {
         document.title = value;
@@ -107,8 +129,11 @@ Ext.define('PSR.view.desktop.Main', {
             }, {
                 xtype: 'button',
                 align: 'right',
-                iconCls: 'x-fa fa-power-off',
-                handler: 'hBtnLogout'
+                iconCls: 'x-fa fa-power-off', iconAlign: 'right',
+                handler: 'hBtnLogout',
+                bind: {
+                    text: '{personnel}'
+                }
             }]
         });
         this.btnCompress = this.add({
