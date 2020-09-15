@@ -1,15 +1,5 @@
 Ext.define('PSR.service.Entity', {
-    config: {
-        getContextPath: function () {
-            return '';
-        },
-        getApiPath: function () {
-            return '';
-        }
-    },
-    getUrlPrefix: function () {
-        return window.gatewaySite + this.getContextPath() + this.getApiPath();
-    },
+    extend: 'PSR.service.Service',
     load: function (opt) {
         PSR.clientSite.Ajax.request({
             method: 'GET',
