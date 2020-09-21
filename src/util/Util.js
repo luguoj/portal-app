@@ -5,7 +5,7 @@ Ext.define('PSR.Util', {
         const context = this.textMeasureCanvas.getContext("2d");
         context.font = font;
         const metrics = context.measureText(text);
-        return metrics.width;
+        return Math.ceil(metrics.width);
     },
     saveAsElement: document.createElementNS("http://www.w3.org/1999/xhtml", "a"),
     saveAs: function (name, data, type) {
