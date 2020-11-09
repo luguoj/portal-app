@@ -45,9 +45,9 @@ Ext.define('PSR.clientSite.service.ClientSite', {
         });
     },
     loadModuleAction: function (opt) {
-        PSR.Ajax.request({
+        PSR.clientSite.Ajax.request({
             method: 'GET',
-            url: window.clientSite + '/moduleAction',
+            url: window.gatewaySite + '/extapp-api/desktop/moduleAction',
             params: {
                 moduleId: opt.moduleId
             },
