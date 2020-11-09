@@ -21,3 +21,8 @@
 .x-button .x-icon-el {
   width: 20px;
 }
+
+// 处理新版chrome浏览器卡片布局多页面时，grid样式渲染bug
+.x-gridrow .x-cells-el {
+  background-color: unset !important;
+}
