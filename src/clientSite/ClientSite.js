@@ -5,25 +5,23 @@ Ext.define('PSR.clientSite.ClientSite', {
     constructor: function (config) {
         this.callParent([config]);
         window.addEventListener("message", function (event) {
-            if (event.origin === window.clientSite) {
-                if (event.data === 'login_success') {
-                    console.log('login message got')
-                    if (PSR.ClientSite.oauth2LoginDialog) {
-                        PSR.ClientSite.oauth2LoginDialog.close();
-                    }
-                    if (PSR.ClientSite.loginSuccess) {
-                        PSR.ClientSite.loginSuccess();
-                        delete PSR.ClientSite.loginSuccess;
-                    }
-                } else if (event.data === 'login_retry') {
-                    console.log('login retry message got')
-                    if (PSR.ClientSite.oauth2LoginDialog) {
-                        PSR.ClientSite.oauth2LoginDialog.getAt(0).updateSrc(window.clientSite);
-                    }
-                } else if (event.data === 'logout_success') {
-                    console.log('logout message got')
-                    location.reload();
+            if (event.data === 'login_success') {
+                console.log('login message got')
+                if (PSR.ClientSite.oauth2LoginDialog) {
+                    PSR.ClientSite.oauth2LoginDialog.close();
                 }
+                if (PSR.ClientSite.loginSuccess) {
+                    PSR.ClientSite.loginSuccess();
+                    delete PSR.ClientSite.loginSuccess;
+                }
+            } else if (event.data === 'login_retry') {
+                console.log('login retry message got')
+                if (PSR.ClientSite.oauth2LoginDialog) {
+                    PSR.ClientSite.oauth2LoginDialog.getAt(0).updateSrc(window.clientSite);
+                }
+            } else if (event.data === 'logout_success') {
+                console.log('logout message got')
+                location.reload();
             }
             console.log('got message from ' + event.origin + ': ' + event.data);
         }, false);
