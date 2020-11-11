@@ -8,10 +8,21 @@ Ext.define('PSR.view.desktop.Main', {
         },
         mainRoute: function (nodeId) {
             var v = this.getView(),
+                nodes = v.getStore();
+            if (nodes.isLoaded()) {
+                this.switchNode(nodeId);
+            } else {
+                this.switchingNodeId = nodeId;
+            }
+        },
+        switchNode: function (nodeId) {
+            var v = this.getView(),
                 vm = this.getViewModel(),
                 nodes = v.getStore(),
-                targetNode = nodes.isTreeStore ?
-                    nodes.findNode('id', nodeId) : nodes.findRecord('id', nodeId);
+                targetNode;
+            targetNode = nodes.isTreeStore
+                ? nodes.findNode('id', nodeId)
+                : nodes.findRecord('id', nodeId);
             if (targetNode == null) {
                 console.log('unmatchedRoute: ' + nodeId);
                 return;
@@ -76,8 +87,13 @@ Ext.define('PSR.view.desktop.Main', {
     onStoreLoad: function (store, records, success) {
         const me = this,
             vm = me.getViewModel(),
-            token = Ext.util.History.getToken();
-        Ext.route.Router.onStateChange(token);
+            c = me.getController();
+        if (c.switchingNodeId) {
+            c.switchNode(c.switchingNodeId);
+            delete c.switchingNodeId;
+        } else {
+            Ext.route.Router.onStateChange(Ext.util.History.getToken())
+        }
         PSR.clientSite.Ajax.request({
             method: 'GET',
             url: window.gatewaySite + '/organization-api/api/personnel/loadByCurrentUser',
