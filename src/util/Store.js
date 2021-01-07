@@ -2,12 +2,12 @@ Ext.define('PSR.util.Store', {
     singleton: true,
     filter: function (text, property, store) {
         if (text && text.length > 0) {
-            store.getFilters().replaceAll({
+            store.getFilters().add({
                 property: property,
                 value: new RegExp(Ext.String.escapeRegex(text), 'i')
             });
         } else {
-            store.clearFilter();
+            store.getFilters().removeByKey(property)
         }
     },
     includeTextFilter: function (property, text) {

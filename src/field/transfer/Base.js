@@ -8,20 +8,8 @@ Ext.define('PSR.field.transfer.Base', {
                 v = this.getView(),
                 selectedStore = v.selectedDataview.getStore(),
                 unselectedStore = v.unselectedDataview.getStore();
-
-            if (value && value.length > 0) {
-                selectedStore.getFilters().replaceAll({
-                    property: v.getDisplayField(),
-                    value: new RegExp(Ext.String.escapeRegex(value), 'i')
-                });
-                unselectedStore.getFilters().replaceAll({
-                    property: v.getDisplayField(),
-                    value: new RegExp(Ext.String.escapeRegex(value), 'i')
-                });
-            } else {
-                selectedStore.clearFilter();
-                unselectedStore.clearFilter();
-            }
+            PSR.util.Store.filter(value, v.getDisplayField(), selectedStore);
+            PSR.util.Store.filter(value, v.getDisplayField(), unselectedStore);
         },
         doRefresh: function () {
             var v = this.getView(),

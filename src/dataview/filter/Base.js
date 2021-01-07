@@ -13,14 +13,7 @@ Ext.define('PSR.dataview.filter.Base', {
                 v = this.getView(),
                 vm = this.getViewModel(),
                 store = v.getStore();
-            if (value && value.length > 0) {
-                store.getFilters().replaceAll({
-                    property: v.getFilterProperty(),
-                    value: new RegExp(Ext.String.escapeRegex(value), 'i')
-                });
-            } else {
-                store.clearFilter();
-            }
+            PSR.util.Store.filter(value, v.getFilterProperty(), store);
         }
     },
     layout: 'fit',
