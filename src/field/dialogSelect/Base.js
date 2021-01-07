@@ -5,9 +5,11 @@ Ext.define('PSR.field.dialogSelect.Base', {
     width: 150,
     controller: {
         hTriggerExpand: function () {
-            var v = this.getView();
+            const v = this.getView();
             v.pickerDialog.show();
-            v.getStore().reload();
+            if (v.getStore()) {
+                v.getStore().reload();
+            }
         },
         onClearIconTap: function () {
             this.getView().setValue('');
