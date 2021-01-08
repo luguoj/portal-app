@@ -293,7 +293,7 @@ Ext.define('PSR.view.crud.Association', {
                 if (value) {
                     filters.push(PSR.util.Store.includeTextFilter('displaytext', value));
                 }
-                PSR.util.Store.filter(store, filters);
+                PSR.util.Store.filterText(store, filters);
             },
             create: function (record) {
                 const v = this.getView(),

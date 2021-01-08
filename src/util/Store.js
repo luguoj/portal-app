@@ -1,6 +1,6 @@
 Ext.define('PSR.util.Store', {
     singleton: true,
-    filter: function (text, property, store) {
+    filterText: function (text, property, store) {
         if (text && text.length > 0) {
             store.getFilters().add({
                 property: property,

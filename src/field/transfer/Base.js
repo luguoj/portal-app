@@ -8,8 +8,8 @@ Ext.define('PSR.field.transfer.Base', {
                 v = this.getView(),
                 selectedStore = v.selectedDataview.getStore(),
                 unselectedStore = v.unselectedDataview.getStore();
-            PSR.util.Store.filter(value, v.getDisplayField(), selectedStore);
-            PSR.util.Store.filter(value, v.getDisplayField(), unselectedStore);
+            PSR.util.Store.filterText(value, v.getDisplayField(), selectedStore);
+            PSR.util.Store.filterText(value, v.getDisplayField(), unselectedStore);
         },
         doRefresh: function () {
             var v = this.getView(),
