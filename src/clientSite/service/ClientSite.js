@@ -13,7 +13,7 @@ Ext.define('PSR.clientSite.service.ClientSite', {
     },
     loadModuleSrc: function (opt) {
         Ext.Ajax.request({
-            url: window.clientSite + '/module/' + opt.moduleId + '/index.js',
+            url: window.moduleSite + '/module/' + opt.moduleId + '/index.js',
             method: 'GET',
             disableCaching: true,
             success: function (response) {
