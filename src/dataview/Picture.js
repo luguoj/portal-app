@@ -113,7 +113,7 @@ Ext.define('PSR.dataview.Picture', {
             formData.append(uploadField, files[i]);
         }
         if (params) {
-            for (const paramsKey in params) {
+            for (var paramsKey in params) {
                 formData.append(paramsKey, params[paramsKey]);
             }
         }

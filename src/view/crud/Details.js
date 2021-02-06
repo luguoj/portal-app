@@ -28,7 +28,7 @@ Ext.define('PSR.view.crud.Details', {
     updateActions: function (actions) {
         const vm = this.getViewModel();
         if (actions) {
-            for (const actionsKey in actions) {
+            for (var actionsKey in actions) {
                 vm.set('action_' + actionsKey, actions[actionsKey]);
             }
         }
@@ -111,7 +111,7 @@ Ext.define('PSR.view.crud.Details', {
         // 组装data
         data = {text: '', dirty: {isNew: false}};
         if (actions) {
-            for (const actionsKey in actions) {
+            for (var actionsKey in actions) {
                 data['action_' + actionsKey] = actions[actionsKey];
             }
         }

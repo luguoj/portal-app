@@ -29,7 +29,7 @@ Ext.define('PSR.dialog.FileUpload', {
                 }]
             };
         if (config.params) {
-            for (const paramsKey in config.params) {
+            for (var paramsKey in config.params) {
                 form.items.push({xtype: 'hiddenfield', name: paramsKey, value: config.params[paramsKey]});
             }
         }

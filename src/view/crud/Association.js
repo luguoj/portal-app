@@ -30,7 +30,7 @@ Ext.define('PSR.view.crud.Association', {
     updateActions: function (actions) {
         const vm = this.getViewModel();
         if (actions) {
-            for (const actionsKey in actions) {
+            for (var actionsKey in actions) {
                 vm.set('action_' + actionsKey, actions[actionsKey]);
             }
         }
@@ -159,7 +159,7 @@ Ext.define('PSR.view.crud.Association', {
         // 组装data
         let data = {text: '', entityId: null, associations: {}};
         if (actions) {
-            for (const actionsKey in actions) {
+            for (var actionsKey in actions) {
                 data['action_' + actionsKey] = actions[actionsKey];
             }
         }

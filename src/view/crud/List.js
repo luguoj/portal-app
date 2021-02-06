@@ -36,7 +36,7 @@ Ext.define('PSR.view.crud.List', {
             actionPrefix = this.actionPrefix,
             isTree = this.isTree;
         if (actions) {
-            for (const actionsKey in actions) {
+            for (var actionsKey in actions) {
                 vm.set('action_' + actionsKey, actions[actionsKey]);
             }
             const action_drag = actions[actionPrefix + 'drag'],
@@ -223,7 +223,7 @@ Ext.define('PSR.view.crud.List', {
         // 组装data
         data = {goBack: goBack ? true : false};
         if (actions) {
-            for (const actionsKey in actions) {
+            for (var actionsKey in actions) {
                 data['action_' + actionsKey] = actions[actionsKey];
             }
         }
