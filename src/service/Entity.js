@@ -1,10 +1,9 @@
 Ext.define('PSR.service.Entity', {
     extend: 'PSR.service.Service',
-    load: function (opt) {
+    findById: function (opt) {
         PSR.clientSite.Ajax.request({
             method: 'GET',
-            url: this.getUrlPrefix() + '/load',
-            params: {id: opt.id},
+            url: this.getUrlPrefix() + '/' + opt.id,
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
@@ -12,11 +11,11 @@ Ext.define('PSR.service.Entity', {
             onErrorMessage: opt.onErrorMessage
         });
     },
-    loadByIds: function (opt) {
+    search: function (opt) {
         PSR.clientSite.Ajax.request({
             method: 'GET',
-            url: this.getUrlPrefix() + '/load',
-            params: {ids: opt.ids},
+            url: this.getUrlPrefix(),
+            params: {searchParams: opt.searchParams},
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
@@ -27,8 +26,8 @@ Ext.define('PSR.service.Entity', {
     create: function (opt) {
         PSR.clientSite.Ajax.request({
             method: 'POST',
-            url: this.getUrlPrefix() + '/create',
-            params: opt.values,
+            url: this.getUrlPrefix(),
+            jsonData: opt.values,
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
@@ -38,9 +37,28 @@ Ext.define('PSR.service.Entity', {
     },
     update: function (opt) {
         PSR.clientSite.Ajax.request({
-            method: 'POST',
-            url: this.getUrlPrefix() + '/update',
-            params: opt.values,
+            method: 'PUT',
+            url: this.getUrlPrefix() + '/' + opt.values.id,
+            jsonData: opt.values,
+            disableCaching: true,
+            bizSuccess: opt.success,
+            bizFailure: opt.failure,
+            complete: opt.complete,
+            onErrorMessage: opt.onErrorMessage
+        });
+    },
+    patch: function (opt) {
+        let props = [];
+        for (const valueKey in opt.value) {
+            if (valueKey != 'id') {
+                props.push(valueKey);
+            }
+        }
+        PSR.clientSite.Ajax.request({
+            method: 'PATCH',
+            url: this.getUrlPrefix() + '/' + opt.values.id,
+            params: {props: props.join(',')},
+            jsonData: opt.values,
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
@@ -50,26 +68,13 @@ Ext.define('PSR.service.Entity', {
     },
     delete: function (opt) {
         PSR.clientSite.Ajax.request({
-            method: 'POST',
-            url: this.getUrlPrefix() + '/delete',
-            params: {id: opt.id},
+            method: 'DELETE',
+            url: this.getUrlPrefix() + '/' + opt.id,
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
             complete: opt.complete,
             onErrorMessage: opt.onErrorMessage
         });
-    },
-    clone: function (opt) {
-        PSR.clientSite.Ajax.request({
-            method: 'POST',
-            url: this.getUrlPrefix() + '/clone',
-            params: {id: opt.id},
-            disableCaching: true,
-            bizSuccess: opt.success,
-            bizFailure: opt.failure,
-            complete: opt.complete,
-            onErrorMessage: opt.onErrorMessage
-        });
-    },
+    }
 });
