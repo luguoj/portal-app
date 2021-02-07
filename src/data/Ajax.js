@@ -12,22 +12,36 @@ Ext.define('PSR.data.Ajax', {
     },
     hCallSuccess: function (response, opt) {
         try {
+            const respObj = response.responseJson
+                || (response.responseText ? JSON.parse(response.responseText) : null);
+            if (opt && opt.bizSuccess) {
+                opt.bizSuccess(respObj);
+            }
+            if (opt && opt.complete) {
+                opt.complete(response, opt);
+            }
+        } catch (err) {
+            if (opt.onErrorMessage) {
+                opt.onErrorMessage(err.message);
+            } else {
+                PSR.Message.error(err);
+            }
+            console.error(err);
+        }
+    },
+    hCallFailure: function (response, opt) {
+        console.log(response);
+        PSR.Message.error(response.statusText);
+        try {
             const respObj = response.responseJson ? response.responseJson
                 : JSON.parse(response.responseText);
-            if (respObj.success) {
-                if (opt && opt.bizSuccess) {
-                    opt.bizSuccess(respObj.result);
-                }
+            if (opt.onErrorMessage) {
+                opt.onErrorMessage(respObj.message);
             } else {
-                if (opt.onErrorMessage) {
-                    opt.onErrorMessage(respObj.message);
-                } else {
-                    PSR.Message.error(respObj.message);
-                }
-                console.log(respObj.message);
-                if (opt && opt.bizFailure) {
-                    opt.bizFailure(respObj);
-                }
+                PSR.Message.error(respObj.message);
+            }
+            if (opt && opt.bizFailure) {
+                opt.bizFailure(respObj);
             }
             if (opt.complete) {
                 opt.complete(response, opt);
@@ -39,14 +53,6 @@ Ext.define('PSR.data.Ajax', {
                 PSR.Message.error(err);
             }
             console.error(err);
-            PSR.Ajax.hCallFailure(response, opt);
-        }
-    },
-    hCallFailure: function (response, opt) {
-        PSR.Message.error(response.statusText);
-        console.log(response);
-        if (opt.complete) {
-            opt.complete(response, opt);
         }
     }
 });

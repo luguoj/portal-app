@@ -5,8 +5,8 @@ Ext.define('PSR.data.proxy.Ajax', {
     simpleSortMode: true,
     reader: {
         type: 'json',
-        totalProperty: 'totalCount',
-        rootProperty: 'result'
+        totalProperty: 'totalElements',
+        rootProperty: 'content'
     },
     sendRequest: function (request) {
         request.setRawRequest(PSR.Ajax.request(request.getCurrentConfig()));
