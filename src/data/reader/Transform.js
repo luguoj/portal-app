@@ -7,7 +7,7 @@ Ext.define('PSR.data.reader.Transform', {
             displayProperty: 'text',
             pathProperty: 'path',
             pathSplitter: '/',
-            rootProperty: 'result'
+            rootProperty: 'content'
         }, opt);
     },
     catalogTree: function (records, opt) {
@@ -27,7 +27,7 @@ Ext.define('PSR.data.reader.Transform', {
                 paths = pathValue ? pathValue.split(pathSplitter) : null;
             let usageNode = nodeMap[usage];
             if (!usageNode) {
-                usageNode = {isPath: true};
+                usageNode = {isPath: true, id: usage};
                 usageNode[displayProperty] = usage;
                 usageNode[rootProperty] = [];
                 nodeMap[usage] = usageNode;

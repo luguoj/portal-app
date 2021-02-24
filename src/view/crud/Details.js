@@ -52,7 +52,6 @@ Ext.define('PSR.view.crud.Details', {
     setValues: function (value) {
         var form = this.down('formpanel');
         if (value) {
-            value.catalogId = value.catalog ? value.catalog.id : null;
             form.setValues(value);
         } else {
             form.reset();
@@ -135,11 +134,11 @@ Ext.define('PSR.view.crud.Details', {
                         tbeditor.toggleViewing();
                     }
                     v.mask({xtype: 'loadmask', message: '加载中...'});
-                    me.getService().load({
+                    me.getService().findById({
                         id: entityId,
                         success: function (data) {
                             v.title = '明细';
-                            v.setValues(data);
+                            v.setValues(data[0]);
                         },
                         failure: function () {
                             PSR.Message.info("加载失败")
