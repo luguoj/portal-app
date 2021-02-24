@@ -15,6 +15,7 @@ Ext.define('PSR.clientSite.data.Ajax', {
     },
     hCallFailure: function (response, opt) {
         if (response) {
+            console.log(response);
             if (response.status == '401') {
                 PSR.ClientSite.clientToken.expires_at = 1;
                 if (!opt.retryTimes || opt.retryTimes < 5) {
@@ -29,10 +30,11 @@ Ext.define('PSR.clientSite.data.Ajax', {
                 }
             } else if (response.status == '403') {
                 PSR.Message.error("不允许访问")
-            } else {
+            } else if(response.statusText){
                 PSR.Message.error(response.statusText);
+            } else {
+                PSR.Message.error('调用失败');
             }
-            console.log(response);
         }
         if (opt.complete) {
             opt.complete(response, opt);

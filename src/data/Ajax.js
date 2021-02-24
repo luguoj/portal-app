@@ -30,29 +30,20 @@ Ext.define('PSR.data.Ajax', {
         }
     },
     hCallFailure: function (response, opt) {
-        console.log(response);
-        PSR.Message.error(response.statusText);
-        try {
-            const respObj = response.responseJson ? response.responseJson
-                : JSON.parse(response.responseText);
-            if (opt.onErrorMessage) {
-                opt.onErrorMessage(respObj.message);
+        if (response) {
+            console.log(response);
+            if (response.status == '401') {
+                PSR.Message.error('授权信息无效');
+            } else if (response.status == '403') {
+                PSR.Message.error('不允许访问')
+            } else if(response.statusText){
+                PSR.Message.error(response.statusText);
             } else {
-                PSR.Message.error(respObj.message);
+                PSR.Message.error('调用失败');
             }
-            if (opt && opt.bizFailure) {
-                opt.bizFailure(respObj);
-            }
-            if (opt.complete) {
-                opt.complete(response, opt);
-            }
-        } catch (err) {
-            if (opt.onErrorMessage) {
-                opt.onErrorMessage(err.message);
-            } else {
-                PSR.Message.error(err);
-            }
-            console.error(err);
+        }
+        if (opt.complete) {
+            opt.complete(response, opt);
         }
     }
 });
