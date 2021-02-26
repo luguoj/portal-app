@@ -8,7 +8,7 @@ Ext.define('PSR.view.crud.List', {
     // 操作
     actions: {
         create: true,
-        clone: true,
+        clone: false,
         delete: true
     },
     //****** List 配置
