@@ -1,8 +1,14 @@
 Ext.define('PSR.view.catalog.Details', {
     extend: 'PSR.view.crud.Details',
     xtype: 'psr-catalog-details',
+    config: {
+        catalogService: undefined,
+        catalogUsageStore: null
+    },
     formFields: [{
         xtype: 'hiddenfield', name: 'id'
+    }, {
+        xtype: 'hiddenfield', name: 'version'
     }, {
         xtype: 'fieldset',
         title: '基本信息', instructions: '基本信息',
@@ -17,16 +23,18 @@ Ext.define('PSR.view.catalog.Details', {
             bind: {disabled: '{!tbeditor.editing}'}
         }]
     }],
-    viewModel: {
-        stores: {
-            usageSelections: {
-                type: 'catalogusage'
-            }
-        }
-    },
     controller: {
         getService: function () {
-            return this.getView().up('psr-catalog').getService();
+            return this.getView().getCatalogService();
         }
+    },
+    constructor: function (config) {
+        const viewModel = config.viewModel = config.viewModel || {},
+            stores = viewModel.stores = viewModel.stores || {};
+        stores.usageSelections = stores.usageSelections
+            || {
+                type: config.catalogUsageStore || this.config.catalogUsageStore
+            };
+        this.callParent([config]);
     }
 });

@@ -10,26 +10,35 @@ Ext.define('PSR.view.catalog.View', {
     extend: 'PSR.view.work.View',
     xtype: 'psr-catalog',
     config: {
-        getService: undefined
-    },
-    subViewConfigs: {
-        main: {
-            xtype: 'psr-catalog-list',
-            listeners: {
-                goDetails: 'goDetails',
-                create: 'create'
-            },
-        },
-        details: {
-            xtype: 'psr-catalog-details'
-        },
+        catalogStore: null,
+        catalogUsageStore: null,
+        catalogService: undefined
     },
     controller: {
-        goDetails: function (selection) {
-            this.goSubView('details', {record: selection});
+        goDetails: function (opt) {
+            this.goSubView('details', {record: opt.selection});
         },
-        create: function (selection) {
+        create: function (opt) {
             this.goSubView('details');
         }
+    },
+    constructor: function (config) {
+        this.subViewConfigs = config.subViewConfigs || {
+            main: {
+                xtype: 'psr-catalog-list',
+                listeners: {
+                    goDetails: 'goDetails',
+                    create: 'create'
+                },
+                catalogStore: config.catalogStore || this.config.catalogStore,
+                catalogService: config.catalogService || this.config.catalogService
+            },
+            details: {
+                xtype: 'psr-catalog-details',
+                catalogUsageStore: config.catalogUsageStore || this.config.catalogUsageStore,
+                catalogService: config.catalogService || this.config.catalogService
+            },
+        };
+        this.callParent([config]);
     }
 });
