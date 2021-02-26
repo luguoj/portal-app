@@ -15,7 +15,7 @@ Ext.define('PSR.data.Ajax', {
             const respObj = response.responseJson
                 || (response.responseText ? JSON.parse(response.responseText) : null);
             if (opt && opt.bizSuccess) {
-                opt.bizSuccess(respObj);
+                opt.bizSuccess(respObj, response, opt);
             }
             if (opt && opt.complete) {
                 opt.complete(response, opt);
@@ -33,10 +33,20 @@ Ext.define('PSR.data.Ajax', {
         if (response) {
             console.log(response);
             if (response.status == '401') {
-                PSR.Message.error('授权信息无效');
+                if (opt.on401) {
+                    opt.on401(response, opt);
+                } else {
+                    PSR.data.Ajax.on401(response, opt);
+                }
             } else if (response.status == '403') {
                 PSR.Message.error('不允许访问')
-            } else if(response.statusText){
+            } else if (response.status >= 500 && response.status < 600) {
+                if (opt.on50x) {
+                    opt.on50x(response, opt);
+                } else {
+                    PSR.data.Ajax.on50x(response, opt);
+                }
+            } else if (response.statusText) {
                 PSR.Message.error(response.statusText);
             } else {
                 PSR.Message.error('调用失败');
@@ -45,5 +55,17 @@ Ext.define('PSR.data.Ajax', {
         if (opt.complete) {
             opt.complete(response, opt);
         }
-    }
+    },
+    on401: function (response, opt) {
+        PSR.Message.error('授权信息无效');
+    },
+    on50x: function (response, opt) {
+        const respObj = response.responseJson
+            || (response.responseText ? JSON.parse(response.responseText) : null);
+        if (respObj && respObj.message) {
+            PSR.Message.error(respObj.message);
+        } else {
+            PSR.Message.error('服务内部错误');
+        }
+    },
 });
