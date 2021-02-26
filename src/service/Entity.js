@@ -15,7 +15,7 @@ Ext.define('PSR.service.Entity', {
         PSR.clientSite.Ajax.request({
             method: 'GET',
             url: this.getUrlPrefix(),
-            params: {searchParams: opt.searchParams},
+            params: {searchParams: JSON.stringify(opt.searchParams)},
             disableCaching: true,
             bizSuccess: opt.success,
             bizFailure: opt.failure,
