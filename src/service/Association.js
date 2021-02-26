@@ -1,26 +1,22 @@
 Ext.define('PSR.service.Association', {
     extend: 'PSR.service.Entity',
-    loadAllByLeftId: function (opt) {
-        PSR.clientSite.Ajax.request({
-            method: 'GET',
-            url: this.getUrlPrefix() + '/loadAllByLeftId',
-            params: {leftId: opt.leftId},
-            disableCaching: true,
-            bizSuccess: opt.success,
-            bizFailure: opt.failure,
-            complete: opt.complete
-        });
+    searchByLeftId: function (opt) {
+        opt.searchParams = opt.searchParams || {};
+        opt.searchParams.leftId = [{
+            sign: 'INCLUDED',
+            operation: 'EQUAL',
+            from: opt.leftId
+        }];
+        this.search(opt);
     },
-    loadAllByRightId: function (opt) {
-        PSR.clientSite.Ajax.request({
-            method: 'GET',
-            url: this.getUrlPrefix() + '/loadAllByRightId',
-            params: {rightId: opt.rightId},
-            disableCaching: true,
-            bizSuccess: opt.success,
-            bizFailure: opt.failure,
-            complete: opt.complete
-        });
+    searchByRightId: function (opt) {
+        opt.searchParams = opt.searchParams || {};
+        opt.searchParams.rightId = [{
+            sign: 'INCLUDED',
+            operation: 'EQUAL',
+            from: opt.rightId
+        }];
+        this.search(opt);
     },
     saveRightIds: function (opt) {
         PSR.clientSite.Ajax.request({
