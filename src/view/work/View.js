@@ -28,12 +28,12 @@ Ext.define('PSR.view.work.View', {
                     v.goSubView(view, opt);
                 });
         } else {
-            const stackItem = {view: subView, opt: opt, title: subView.title};
+            const stackItem = {view: subView, opt: opt, title: subView.getViewTitle()};
             v.subViewStack.push(stackItem);
             v.setActiveItem(subView);
             if (subView.load) {
                 subView.load(opt, function () {
-                    stackItem.title = subView.title;
+                    stackItem.title = subView.getViewTitle();
                     vm.set('viewTitle', v.getViewTitle());
                 });
             } else {
@@ -53,7 +53,7 @@ Ext.define('PSR.view.work.View', {
             v.setActiveItem(subView);
             if (subView.load) {
                 subView.load(newOpt, function () {
-                    stackItem.title = subView.title;
+                    stackItem.title = subView.getViewTitle();
                     vm.set('viewTitle', v.getViewTitle());
                 });
             } else {
@@ -63,9 +63,9 @@ Ext.define('PSR.view.work.View', {
     },
     getViewTitle: function () {
         const subViewStack = this.subViewStack;
-        if (subViewStack && subViewStack.length > 1) {
-            let title = subViewStack[1].title;
-            for (let i = 2; i < subViewStack.length; i++) {
+        if (subViewStack && subViewStack.length > 0) {
+            let title = subViewStack[0].title;
+            for (let i = 1; i < subViewStack.length; i++) {
                 title = title + '\\' + subViewStack[i].title;
             }
             return title;
