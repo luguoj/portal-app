@@ -6,7 +6,7 @@ Ext.define('PSR.field.transfer.Tree', {
             var _selected = [], deselect = [];
             if (selected) {
                 for (var i = 0; i < selected.length; i++) {
-                    if (!selected[i].data.isPath) {
+                    if (selected[i].data.isRecord) {
                         _selected.push(selected[i]);
                     } else {
                         deselect.push(selected[i]);
@@ -61,7 +61,7 @@ Ext.define('PSR.field.transfer.Tree', {
                         encodeHtml: false,
                     },
                     renderer: function (value, record) {
-                        if (!record.data.isPath) {
+                        if (record.data.isRecord) {
                             return '<b><u>' + value + '</u></b>';
                         } else {
                             return value;

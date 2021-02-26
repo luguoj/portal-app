@@ -6,7 +6,7 @@ Ext.define('PSR.panel.filterDataviewPicker.Tree', {
             var _selected = [], deselect = [];
             if (selected) {
                 for (var i = 0; i < selected.length; i++) {
-                    if (!selected[i].data.isPath) {
+                    if (selected[i].data.isRecord) {
                         _selected.push(selected[i]);
                     } else {
                         deselect.push(selected[i]);
@@ -37,7 +37,7 @@ Ext.define('PSR.panel.filterDataviewPicker.Tree', {
                         minWidth: 100,
                         flex: 1,
                         renderer: function (value, record) {
-                            if (!record.data.isPath) {
+                            if (record.data.isRecord) {
                                 return '<b><u>' + value + '</u></b>';
                             } else {
                                 return value;

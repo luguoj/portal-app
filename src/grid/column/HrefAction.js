@@ -14,7 +14,7 @@ Ext.define('PSR.grid.column.HrefAction', {
         this.config.cell = {
             xtype: 'psr-grid-cell-href',
             renderer: function (value, record) {
-                return !record.data.isPath ? config.text : '';
+                return record.data.isRecord ? config.text : '';
             },
             handler: config.action
         };

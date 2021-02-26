@@ -20,7 +20,7 @@ Ext.define('PSR.grid.column.Toggle', {
                 bind: {
                     tooltip: '{record.' + flagIndex + '?"是":"否"}',
                     iconCls: '{record.' + flagIndex + '?"x-fa fa-check p-confirm-important":"x-fa fa-times p-decline-important"}',
-                    hidden: '{record.isPath}',
+                    hidden: '{!record.isRecord}',
                     disabled: '{' + disabledBinding + '}',
                     ui: '{(' + disabledBinding + '?"alt ":"") + (record.' + flagIndex + '?"confirm":"decline")}'
                 },
