@@ -48,16 +48,10 @@ Ext.define('PSR.service.Entity', {
         });
     },
     patch: function (opt) {
-        let props = [];
-        for (const valueKey in opt.value) {
-            if (valueKey != 'id') {
-                props.push(valueKey);
-            }
-        }
         PSR.clientSite.Ajax.request({
             method: 'PATCH',
             url: this.getUrlPrefix() + '/' + opt.values.id,
-            params: {props: props.join(',')},
+            params: {version: opt.values.version, props: opt.props.join(',')},
             jsonData: opt.values,
             disableCaching: true,
             bizSuccess: opt.success,
