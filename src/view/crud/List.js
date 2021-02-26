@@ -1,44 +1,42 @@
 Ext.define('PSR.view.crud.List', {
-    extend: 'Ext.Container',
-    layout: 'fit',
-    items: [],
-    controller: {},
-    viewModel: {},
-    isViewClassInit: false,
-    // 抽象成员
-    title: '',
-    isTree: false,
-    columns: [],
-    actionColumns: [],
-    itemController: {},
-    searchFields: [],
-    actionToolbars: [],
-    actionPrefix: '',
-    config: {
-        goBack: false,
-        actions: {
-            create: true,
-            clone: true,
-            delete: true
-        }
+    extend: 'PSR.view.work.SubView',
+    //****** SubView 配置默认值
+    // 视图标题
+    viewTitle: '清单',
+    // 是否支持返回上一视图操作
+    goBack: false,
+    // 操作
+    actions: {
+        create: true,
+        clone: true,
+        delete: true
     },
-    constructor: function (config) {
-        if (!this.isViewClassInit) {
-            this.createItemsConfig();
-            this.createViewModelConfig();
-            this.createControllerConfig();
-            this.isViewClassInit = true;
-        }
-        this.callParent([config]);
+    //****** List 配置
+    config: {
+        // 是否树形清单
+        isTree: false,
+        // 数据列
+        columns: [],
+        // 操作列
+        actionColumns: [],
+        // 清单元素Controller
+        itemController: {},
+        // 搜索字段
+        searchFields: []
+    },
+    // 是否需要刷新
+    requireRefresh: function (opt) {
+        return false;
+    },
+    // 获取额外参数
+    getExtraParams: function (opt) {
+        return {};
     },
     updateActions: function (actions) {
         const vm = this.getViewModel(),
-            actionPrefix = this.actionPrefix,
-            isTree = this.isTree;
+            actionPrefix = this.getActionPrefix(),
+            isTree = this.getIsTree();
         if (actions) {
-            for (var actionsKey in actions) {
-                vm.set('action_' + actionsKey, actions[actionsKey]);
-            }
             const action_drag = actions[actionPrefix + 'drag'],
                 grid = this.down('tree');
             if (grid) {
@@ -61,9 +59,9 @@ Ext.define('PSR.view.crud.List', {
                 let record = store.isTreeStore ? store.findNode('id', dirtyRecord.id) : store.findRecord('id', dirtyRecord.id);
                 if (!record) {
                     this.getController().refresh();
-                } else if (!dirtyRecord.catalogId && record.data.catalog) {
+                } else if (!dirtyRecord.catalogId && record.data.catalogId) {
                     this.getController().refresh();
-                } else if (dirtyRecord.catalogId && (!record.data.catalog || record.data.catalog.id != dirtyRecord.catalogId)) {
+                } else if (dirtyRecord.catalogId && (!record.data.catalogId || record.data.catalogId != dirtyRecord.catalogId)) {
                     this.getController().refresh();
                 } else {
                     for (let dirtyRecordKey in dirtyRecord) {
@@ -78,47 +76,27 @@ Ext.define('PSR.view.crud.List', {
             callback();
         }
     },
-    requireRefresh: function (record) {
-        return false;
-    },
-    getExtraParams: function (opt) {
-        return {};
-    },
-    createItemsConfig: function () {
+    createItemsConfig: function (config) {
         const vThis = this,
-            isTree = this.isTree,
-            columns = this.columns,
-            actionColumns = this.actionColumns,
-            itemController = this.itemController,
-            searchFields = this.searchFields,
-            actionToolbars = this.actionToolbars,
-            actionPrefix = this.actionPrefix,
-            items = [].concat(this.config.items);
-        let grd, clmns, grdItemController,
-            tbnav, tbsearch, tbcrud, tbcontainer,
-            frmSearchFilter;
-        this.config.items = items;
-        // 创建工具栏容器
-        tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
-        // 创建导航工具栏
-        tbnav = {
-            xtype: 'toolbar',
-            items: [{xtype: 'psr-button-goback', handler: 'goBack'}],
-            bind: {hidden: '{!goBack}'}
-        };
-        tbcontainer.items.push(tbnav);
-        // 创建搜索工具栏
-        tbsearch = {xtype: 'psr-toolbar-search', reference: 'tbsearch'};
+            actionPrefix = config.actionPrefix || this.config.actionPrefix,
+            searchFields = [].concat(config.searchFields || this.config.searchFields || []),
+            isTree = config.isTree || this.config.isTree,
+            columns = [].concat(config.columns || this.config.columns || []),
+            actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []),
+            itemController = config.itemController || this.config.itemController;
+        //*** 创建工具栏
+        const listToolbars = [];
+        // 搜索工具栏
+        const tbsearch = {xtype: 'psr-toolbar-search', reference: 'tbsearch'};
         if (searchFields && searchFields.length > 0) {
             tbsearch.searchHandler = 'search';
         } else {
             tbsearch.refreshHandler = 'refresh';
             tbsearch.filterHandler = 'filter';
         }
-        tbcontainer.items.push({xtype: 'container', width: 1});
-        tbcontainer.items.push(tbsearch);
-        // 创建增删改查工具栏
-        tbcrud = {
+        listToolbars.push(tbsearch);
+        // CRUD工具栏
+        const tbcrud = {
             xtype: 'psr-toolbar-crudlist', detailsHandler: 'goDetails',
             bind: {
                 selection: '{grdselection}',
@@ -127,46 +105,50 @@ Ext.define('PSR.view.crud.List', {
                 cloneHandler: '{action_' + actionPrefix + 'clone ? "clone" : null}',
             }
         };
-        tbcontainer.items.push({xtype: 'container', width: 1}, tbcrud);
-        // 创建操作工具栏
-        if (!actionToolbars || actionToolbars.length == 0) {
-            tbcrud.flex = 1;
-        } else {
-            for (let i = 0; i < actionToolbars.length; i++) {
-                tbcontainer.items.push({xtype: 'container', width: 1});
-                tbcontainer.items.push(actionToolbars[i]);
-            }
-        }
-        tbcontainer.items[tbcontainer.items.length - 1].flex = 1;
-        // 创建搜索过滤表单
+        listToolbars.push(tbcrud);
+        // 合并工具栏配置
+        config.toolbars = listToolbars.concat(config.toolbars || this.config.toolbars || []);
+        //*** 创建界面元素
+        const listItems = [];
+        // 搜索过滤表单
         if (searchFields && searchFields.length > 0) {
-            frmSearchFilter = {
+            const frmSearchFilter = {
                 xtype: 'psr-panel-form-left', reference: 'searchFilter',
                 items: searchFields,
                 bind: {hidden: '{!tbsearch.searchFilterShowed}'}
             };
-            items.push(frmSearchFilter);
+            listItems.push(frmSearchFilter);
         }
-        // 创建表格列
-        clmns = [].concat(columns);
-        grdItemController = {
-            filterRenderer: function (value) {
-                const filterText = vThis.getViewModel().get('tbsearch.filterText');
-                return PSR.util.Grid.filterRenderer(value, filterText);
+        // 清单表格
+        const grdItemController = {
+                filterRenderer: function (value) {
+                    const filterText = vThis.getViewModel().get('tbsearch.filterText');
+                    return PSR.util.Grid.filterRenderer(value, filterText);
+                },
+                getListView: function () {
+                    return vThis;
+                },
+                goDetails: function (record) {
+                    vThis.getController().fireActionEvent('goDetails', {record: record});
+                }
             },
-            getListView: function () {
-                return vThis;
-            },
-            goDetails: function (record) {
-                vThis.getController().fireActionEvent('goDetails', record);
-            }
-        };
-        if (actionColumns && actionColumns.length > 0) {
+            grd = {
+                reference: 'grd',
+                rowLines: true, columnLines: true,
+                columns: columns,
+                bind: {store: '{entities}'},
+                itemConfig: {
+                    viewModel: {},
+                    controller: grdItemController
+                },
+                plugins: {}
+            };
+        if (actionColumns.length > 0) {
             for (let i = 0; i < actionColumns.length; i++) {
                 const actionColumn = actionColumns[i],
                     action = actionColumn.action,
                     text = actionColumn.text;
-                clmns.push({
+                columns.push({
                     xtype: 'psr-grid-column-hrefaction',
                     text: text,
                     action: action,
@@ -177,79 +159,54 @@ Ext.define('PSR.view.crud.List', {
                 };
             }
         }
-        grdItemController = Object.assign(grdItemController, itemController);
+        Object.assign(grdItemController, itemController);
         if (isTree) {
-            grd = {
-                xtype: 'tree', reference: 'grd',
-                rootVisible: false, rowLines: true, columnLines: true,
-                columns: clmns,
-                items: [tbcontainer],
-                bind: {store: '{entities}'},
-                itemConfig: {
-                    viewModel: {},
-                    controller: grdItemController
-                },
-                plugins: {},
+            Object.assign(grd, {
+                xtype: 'tree',
+                rootVisible: false,
                 listeners: {beforedrop: 'grdBeforeDrop', drop: 'grdDrop'}
-            }
+            });
         } else {
-            grd = {
-                xtype: 'grid', reference: 'grd',
-                rowLines: true, columnLines: true,
-                columns: clmns,
-                items: [tbcontainer],
-                bind: {store: '{entities}'},
-                itemConfig: {
-                    viewModel: {},
-                    controller: grdItemController
-                },
-                plugins: {}
-            }
-            if (this.config.viewModel.stores.entities.pageSize) {
+            Object.assign(grd, {
+                xtype: 'grid'
+            });
+            if (config.viewModel && config.viewModel.stores && config.viewModel.stores.entities.pageSize) {
+                grd.plugins.gridpagingtoolbar = true;
+            } else if (this.config.viewModel && this.config.viewModel.stores && this.config.viewModel.stores.entities.pageSize) {
                 grd.plugins.gridpagingtoolbar = true;
             }
         }
-        items.push(grd);
+        listItems.push(grd);
+        // 合并界面元素配置
+        config.items = listItems.concat(config.items || this.config.items || []);
+        this.callParent([config]);
     },
-    createViewModelConfig: function () {
-        const actions = this.config.actions,
-            goBack = this.config.goBack,
-            viewModel = Object.assign({}, this.config.viewModel);
-        let formulas, data;
-        this.config.viewModel = viewModel;
-        if (!viewModel || !viewModel.stores || !viewModel.stores.entities) {
-            PSR.Message.error('CRUD视图缺少entities');
+    createViewModelConfig: function (config) {
+        // 校验entities store
+        if (!(config.viewModel && config.viewModel.stores && config.viewModel.stores.entities)
+            && !(this.config.viewModel && this.config.viewModel.stores && this.config.viewModel.stores.entities)) {
+            PSR.Message.error('CRUD视图缺少vm.store.entities');
         }
-        // 组装data
-        data = {goBack: goBack ? true : false};
-        if (actions) {
-            for (var actionsKey in actions) {
-                data['action_' + actionsKey] = actions[actionsKey];
-            }
-        }
-        viewModel.data = Object.assign(data, viewModel.data);
-        // 组装formulas
-        formulas = {
-            grdselection: function (get) {
-                const selection = get('grd.selection');
-                return (selection && !selection.data.isPath) ? selection : null;
-            }
+        // 清单选中项
+        const viewModel = config.viewModel = config.viewModel || {},
+            formulas = viewModel.formulas = viewModel.formulas || {};
+        formulas.grdselection = function (get) {
+            const selection = get('grd.selection');
+            return (selection && selection.data.isRecord) ? selection : null;
         };
-        viewModel.formulas = Object.assign(formulas, viewModel.formulas);
+        this.callParent([config]);
     },
-    createControllerConfig: function () {
-        const actionColumns = this.actionColumns,
-            actionPrefix = this.actionPrefix;
-        if (!this.config.controller || !this.config.controller.getService) {
-            PSR.Message.error('CRUD视图缺少getService');
+    createControllerConfig: function (config) {
+        const actionPrefix = config.actionPrefix || this.config.actionPrefix,
+            actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []);
+        if (!(config.controller && config.controller.getService)
+            && !(this.config.controller && this.config.controller.getService)) {
+            PSR.Message.error('CRUD视图缺少controller.getService');
         }
         const controller = {
             fireActionEvent: function (eventName, record) {
                 const selection = (record && record.isModel) ? record : this.lookup('grd').getSelection();
-                this.getView().fireEvent(eventName, selection ? {
-                    id: selection.get('id'),
-                    displaytext: selection.get('displaytext')
-                } : null);
+                this.getView().fireEvent(eventName, {selection: selection ? selection.data : null});
             },
             goDetails: function () {
                 this.fireActionEvent('goDetails');
@@ -288,12 +245,8 @@ Ext.define('PSR.view.crud.List', {
             filter: function (field, value) {
                 const me = this,
                     vm = me.getViewModel(),
-                    store = vm.getStore('entities'),
-                    filters =[];
-                if (value) {
-                    filters.push(PSR.util.Store.includeTextFilter('displaytext', value));
-                }
-                PSR.util.Store.filterText(store, filters);
+                    store = vm.getStore('entities');
+                PSR.util.Store.filterText(store, 'displaytext', value);
             },
             clone: function (selection) {
                 const me = this,
@@ -359,6 +312,7 @@ Ext.define('PSR.view.crud.List', {
                 }
             }
         }
-        this.config.controller = Object.assign(controller, this.config.controller);
+        config.controller = Object.assign(controller, config.controller);
+        this.callParent([config]);
     }
 });

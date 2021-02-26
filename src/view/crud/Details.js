@@ -1,37 +1,17 @@
 Ext.define('PSR.view.crud.Details', {
-    extend: 'Ext.Container',
-    layout: 'fit',
-    items: [],
-    controller: {},
-    viewModel: {},
-    isViewClassInit: false,
-    // 抽象成员
-    title: '明细',
-    formFields: [],
-    actionToolbars: [],
-    actionPrefix: '',
+    extend: 'PSR.view.work.SubView',
+    //****** SubView 配置默认值
+    // 视图标题
+    viewTitle: '明细',
+    // 是否支持返回上一视图操作
+    goBack: {isNew: false},
+    // 操作
+    actions: {
+        create: true,
+        update: true
+    },
     config: {
-        actions: {
-            create: true,
-            update: true
-        }
-    },
-    constructor: function (config) {
-        if (!this.isViewClassInit) {
-            this.createItemsConfig();
-            this.createViewModelConfig();
-            this.createControllerConfig();
-            this.isViewClassInit = true;
-        }
-        this.callParent([config]);
-    },
-    updateActions: function (actions) {
-        const vm = this.getViewModel();
-        if (actions) {
-            for (var actionsKey in actions) {
-                vm.set('action_' + actionsKey, actions[actionsKey]);
-            }
-        }
+        formFields: []
     },
     /**
      * @description 如果传入记录，则加载显示记录明细<br/>
@@ -56,33 +36,25 @@ Ext.define('PSR.view.crud.Details', {
         } else {
             form.reset();
         }
+        this.setViewTitle((value ? this.getEntityTitle(value) : '') + '明细');
     },
     getValues: function () {
-        var value = this.down('formpanel').getValues();
+        var value = this.down('formpanel').getValues({enabled: true});
         return value;
     },
     validate: function () {
         return this.down('formpanel').validate();
     },
-    createItemsConfig: function () {
-        var formFields = this.formFields,
-            actionToolbars = this.actionToolbars,
-            actionPrefix = this.actionPrefix,
-            items = [].concat(this.config.items),
-            tbcontainer, tbnav, tbeditor, frm;
-        this.config.items = items;
-        // 创建表单
-        frm = {xtype: 'formpanel', scrollable: 'y', items: formFields};
-        items.push(frm);
-        // 创建工具栏容器
-        tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
-        items.push(tbcontainer);
-        // 创建导航工具栏
-        tbnav = {xtype: 'toolbar', items: [{xtype: 'psr-button-goback', handler: 'goBack'}]};
-        tbcontainer.items.push(tbnav);
-        tbcontainer.items.push({xtype: 'container', width: 1});
-        // 创建编辑工具栏
-        tbeditor = {
+    getEntityTitle: function (data) {
+        return '';
+    },
+    createItemsConfig: function (config) {
+        const formFields = [].concat(config.formFields || this.config.formFields || []),
+            actionPrefix = config.actionPrefix || this.config.actionPrefix;
+        //*** 创建工具栏
+        const detailsToolbars = [];
+        // CRUD工具栏
+        tbcrud = {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
             resetHandler: 'reset',
             bind: {
@@ -91,36 +63,28 @@ Ext.define('PSR.view.crud.Details', {
                 updateHandler: '{action_' + actionPrefix + 'update ? "update" : null}'
             }
         };
-        tbcontainer.items.push(tbeditor);
-        // 创建操作工具栏
-        if (!actionToolbars || actionToolbars.length == 0) {
-            tbeditor.flex = 1;
-        } else {
-            for (var i = 0; i < actionToolbars.length; i++) {
-                tbcontainer.items.push({xtype: 'container', width: 1});
-                tbcontainer.items.push(actionToolbars[i]);
-            }
-        }
+        detailsToolbars.push(tbcrud);
+        // 合并工具栏配置
+        config.toolbars = detailsToolbars.concat(config.toolbars || this.config.toolbars || []);
+        //*** 创建界面元素
+        const detailsItems = [];
+        // 表单
+        const frm = {xtype: 'formpanel', scrollable: 'y', items: formFields};
+        detailsItems.push(frm);
+        // 合并界面元素配置
+        config.items = detailsItems.concat(config.items || this.config.items || []);
+        this.callParent([config]);
     },
-    createViewModelConfig: function () {
-        var viewModel = Object.assign({}, this.config.viewModel),
-            data,
-            actions = this.config.actions;
-        this.config.viewModel = viewModel;
-        // 组装data
-        data = {text: '', dirty: {isNew: false}};
-        if (actions) {
-            for (var actionsKey in actions) {
-                data['action_' + actionsKey] = actions[actionsKey];
-            }
-        }
-        viewModel.data = Object.assign(data, viewModel.data);
+    createViewModelConfig: function (config) {
+        const viewModel = config.viewModel = config.viewModel || {},
+            data = viewModel.data = viewModel.data || {};
+        this.callParent([config]);
     },
-    createControllerConfig: function () {
+    createControllerConfig: function (config) {
         if (!this.config.controller || !this.config.controller.getService) {
             PSR.Message.error('CRUD视图缺少getService');
         }
-        var controller = {
+        const controller = {
             loadEntity: function (entityId, editing, callback) {
                 this.getViewModel();
                 var me = this,
@@ -137,7 +101,6 @@ Ext.define('PSR.view.crud.Details', {
                     me.getService().findById({
                         id: entityId,
                         success: function (data) {
-                            v.title = '明细';
                             v.setValues(data[0]);
                         },
                         failure: function () {
@@ -153,7 +116,7 @@ Ext.define('PSR.view.crud.Details', {
                     });
                 } else {
                     tbeditor.toggleCreating();
-                    v.title = '创建';
+                    v.setViewTitle('创建');
                     if (callback) {
                         callback();
                     }
@@ -168,7 +131,7 @@ Ext.define('PSR.view.crud.Details', {
                     tbeditor = me.lookup('tbeditor'),
                     actionPrefix = v.actionPrefix,
                     action_update = vm.get('action_' + actionPrefix + 'update'),
-                    dirty = vm.get('dirty');
+                    goBackOpt = vm.get('goBack');
                 if (!validate) {
                     return;
                 }
@@ -178,8 +141,8 @@ Ext.define('PSR.view.crud.Details', {
                     success: function (data) {
                         if (data) {
                             PSR.Message.info("保存成功");
-                            dirty.isNew = true;
-                            dirty.record = data;
+                            goBackOpt.isNew = true;
+                            goBackOpt.record = data;
                             if (action_update) {
                                 tbeditor.toggleEditing();
                             } else {
@@ -202,17 +165,22 @@ Ext.define('PSR.view.crud.Details', {
                     vm = this.getViewModel(),
                     validate = v.validate(),
                     values = v.getValues(),
-                    dirty = vm.get('dirty');
+                    goBackOpt = vm.get('goBack'),
+                    props = [];
                 if (!validate) {
                     return;
                 }
+                for (const valuesKey in values) {
+                    props.push(valuesKey);
+                }
                 v.mask({xtype: 'loadmask', message: '保存中...'});
-                me.getService().update({
+                me.getService().patch({
+                    props: props,
                     values: values,
                     success: function (data) {
                         if (data) {
                             PSR.Message.info("保存成功");
-                            dirty.record = data;
+                            goBackOpt.record = data;
                             v.setValues(data);
                         }
                     },
@@ -224,16 +192,12 @@ Ext.define('PSR.view.crud.Details', {
                     }
                 });
             },
-            goBack: function () {
-                var vm = this.getViewModel(), v = this.getView();
-                this.getView().fireEvent('goback', vm.get('dirty'));
-                v.load(null);
-            },
             reset: function () {
                 var vm = this.getViewModel(), v = this.getView();
                 this.loadEntity(v.getValues().id, vm.get('tbeditor.editing'));
             }
         };
-        this.config.controller = Object.assign(controller, this.config.controller);
+        config.controller = Object.assign(controller, config.controller);
+        this.callParent([config]);
     }
 });

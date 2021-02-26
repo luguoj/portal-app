@@ -1,43 +1,34 @@
 Ext.define('PSR.view.crud.Association', {
-    extend: 'Ext.Container',
-    layout: 'fit',
-    items: [],
-    controller: {},
-    viewModel: {},
-    isViewClassInit: false,
-    // 抽象成员
-    title: '关系',
-    isTree: false,
-    entitySide: 'left',
-    columns: [],
-    itemController: {},
-    updateAction: 'updateAssociation',
+    extend: 'PSR.view.work.SubView',
+    //****** SubView 配置默认值
+    // 视图标题
+    viewTitle: '关系',
+    // 是否支持返回上一视图操作
+    goBack: {},
+    // 操作
+    actions: {
+        updateAssociation: true
+    },
+    //****** Association 配置
     config: {
-        actions: {
-            updateAssociation: true
-        }
-    },
-    constructor: function (config) {
-        if (!this.isViewClassInit) {
-            this.createItemsConfig();
-            this.createViewModelConfig();
-            this.createControllerConfig();
-            this.isViewClassInit = true;
-        }
-        this._title = this.title;
-        this.callParent([config]);
-    },
-    updateActions: function (actions) {
-        const vm = this.getViewModel();
-        if (actions) {
-            for (var actionsKey in actions) {
-                vm.set('action_' + actionsKey, actions[actionsKey]);
-            }
-        }
+        // 关系标题
+        associationTitle: '关系',
+        // 是否树形清单
+        isTree: false,
+        // 实体所属侧
+        entitySide: 'left',
+        // 数据列
+        columns: [],
+        // 操作列
+        actionColumns: [],
+        // 清单元素Controller
+        itemController: {},
+        // 更新操作
+        updateAction: 'association_update',
     },
     load: function (opt, callback) {
-        this.title = (opt ? opt.displaytext + ' ' : '') + this._title;
-        this.getController().loadEntity(opt ? opt.id : null);
+        this.setViewTitle((opt ? this.getEntityTitle(opt) : '') + this.getAssociationTitle());
+        this.getController().loadEntity(opt ? opt.record.id : null);
         this.extraParams = this.getExtraParams(opt);
         if (callback) {
             callback();
@@ -46,32 +37,30 @@ Ext.define('PSR.view.crud.Association', {
     getExtraParams: function (opt) {
         return {};
     },
+    getEntityTitle: function (opt) {
+        return '';
+    },
     createItemsConfig: function (config) {
         const vThis = this,
-            isTree = this.isTree,
-            title = this.title,
-            updateAction = this.updateAction,
-            items = [].concat(this.config.items),
-            columns = this.columns,
-            itemController = this.itemController;
-        let tbcontainer, tbnav, tbsearch, tbeditor, grd, clmns, grdItemController;
-        this.config.items = items;
-        // 创建工具栏容器
-        tbcontainer = {xtype: 'psr-toolbar-topcontainer', items: []};
-        // 创建导航工具栏
-        tbnav = {xtype: 'toolbar', items: [{xtype: 'psr-button-goback', handler: 'goBack'}]};
-        tbcontainer.items.push(tbnav);
-        tbcontainer.items.push({xtype: 'container', width: 1});
-        // 创建搜索工具栏
-        tbsearch = {
+            actionPrefix = config.actionPrefix || this.config.actionPrefix,
+            isTree = config.isTree || this.config.isTree,
+            columns = [].concat(config.columns || this.config.columns || []),
+            actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []),
+            itemController = config.itemController || this.config.itemController,
+            title = config.viewTitle || this.config.viewTitle,
+            updateAction = config.updateAction || this.config.updateAction;
+
+        //*** 创建工具栏
+        const listToolbars = [];
+        // 搜索工具栏
+        const tbsearch = {
             xtype: 'psr-toolbar-search',
             refreshHandler: 'refresh',
             filterHandler: 'filter',
             reference: 'tbsearch'
         };
-        tbcontainer.items.push(tbsearch);
-        tbcontainer.items.push({xtype: 'container', width: 1});
-        // 创建选中项过滤工具栏
+        listToolbars.push(tbsearch);
+        // 选中项过滤工具栏
         const tbselectionfilter = {
             xtype: 'toolbar',
             items: [{
@@ -81,95 +70,118 @@ Ext.define('PSR.view.crud.Association', {
                 listeners: {toggle: 'toggleBtnSelectionFilter'}
             }]
         };
-        tbcontainer.items.push(tbselectionfilter);
-        tbcontainer.items.push({xtype: 'container', width: 1});
-        // 创建编辑工具栏
+        listToolbars.push(tbselectionfilter);
+        // 编辑工具栏
         tbeditor = {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
             flex: 1,
             resetHandler: 'reset',
             bind: {editable: '{action_' + updateAction + '}'}
         };
-        tbcontainer.items.push(tbeditor);
-        // 创建表格f
-        clmns = [{
-            xtype: 'psr-grid-column-toggle',
-            flagIndex: 'assignFlag',
-            disabledBinding: '!tbeditor.editing',
-            toggleHandler: 'associate'
-        }, {
-            xtype: isTree ? 'treecolumn' : 'column',
-            text: title, flex: 1, menuDisabled: true,
-            dataIndex: 'displaytext',
-            cell: {encodeHtml: false},
-            renderer: 'filterRenderer'
-        }].concat(columns);// 创建表格列
-        grdItemController = {
-            filterRenderer: function (value) {
-                const filterText = vThis.getViewModel().get('tbsearch.filterText');
-                return PSR.util.Grid.filterRenderer(value, filterText);
-            },
-            getListView: function () {
-                return vThis;
-            },
-            associate: function (button) {
-                const vm = this.getViewModel(),
-                    c = vThis.getController(),
-                    record = vm.get('record');
-                if (!record.data.assignFlag) {
-                    c.create(record);
-                } else {
-                    c.delete(record);
+        listToolbars.push(tbeditor);
+        // 合并工具栏配置
+        config.toolbars = listToolbars.concat(config.toolbars || this.config.toolbars || []);
+        //*** 创建界面元素
+        const listItems = [];
+        // 清单表格
+        const grdColumn = [{
+                xtype: 'psr-grid-column-toggle',
+                flagIndex: 'assignFlag',
+                disabledBinding: '!tbeditor.editing',
+                toggleHandler: 'associate'
+            }, {
+                xtype: isTree ? 'treecolumn' : 'column',
+                text: title, flex: 1, menuDisabled: true,
+                dataIndex: 'displaytext',
+                cell: {encodeHtml: false},
+                renderer: 'filterRenderer'
+            }].concat(columns),
+            grdItemController = {
+                filterRenderer: function (value) {
+                    const filterText = vThis.getViewModel().get('tbsearch.filterText');
+                    return PSR.util.Grid.filterRenderer(value, filterText);
+                },
+                getListView: function () {
+                    return vThis;
+                },
+                goDetails: function (record) {
+                    vThis.getController().fireActionEvent('goDetails', record);
+                },
+                associate: function (button) {
+                    const vm = this.getViewModel(),
+                        c = vThis.getController(),
+                        record = vm.get('record');
+                    if (!record.data.assignFlag) {
+                        c.create(record);
+                    } else {
+                        c.delete(record);
+                    }
                 }
-            }
-        };
-        grdItemController = Object.assign(grdItemController, itemController);
-        if (isTree) {
+            },
             grd = {
-                xtype: 'tree', reference: 'grd',
-                rootVisible: false, rowLines: true, columnLines: true,
-                columns: clmns,
-                items: [tbcontainer],
-                bind: {store: '{entities}'},
-                itemConfig: {
-                    viewModel: true,
-                    controller: grdItemController
-                }
-            }
-        } else {
-            grd = {
-                xtype: 'grid', reference: 'grd',
+                reference: 'grd',
                 rowLines: true, columnLines: true,
-                columns: clmns,
-                items: [tbcontainer],
+                columns: grdColumn,
                 bind: {store: '{entities}'},
                 itemConfig: {
-                    viewModel: true,
+                    viewModel: {},
                     controller: grdItemController
                 },
+                plugins: {}
+            };
+        if (actionColumns.length > 0) {
+            for (let i = 0; i < actionColumns.length; i++) {
+                const actionColumn = actionColumns[i],
+                    action = actionColumn.action,
+                    text = actionColumn.text;
+                columns.push({
+                    xtype: 'psr-grid-column-hrefaction',
+                    text: text,
+                    action: action,
+                    bind: {hidden: '{!action_' + actionPrefix + action + '}'}
+                });
+                grdItemController[action] = function (record) {
+                    vThis.getController()[action](record);
+                };
             }
-            this.config.viewModel.stores.entities.pageSize = 0;
         }
-        items.push(grd);
+        Object.assign(grdItemController, itemController);
+        if (isTree) {
+            Object.assign(grd, {
+                xtype: 'tree',
+                rootVisible: false,
+                listeners: {beforedrop: 'grdBeforeDrop', drop: 'grdDrop'}
+            });
+        } else {
+            Object.assign(grd, {
+                xtype: 'grid'
+            });
+            if (config.viewModel && config.viewModel.stores && config.viewModel.stores.entities.pageSize) {
+                grd.plugins.gridpagingtoolbar = true;
+            } else if (this.config.viewModel && this.config.viewModel.stores && this.config.viewModel.stores.entities.pageSize) {
+                grd.plugins.gridpagingtoolbar = true;
+            }
+        }
+        listItems.push(grd);
+        // 合并界面元素配置
+        config.items = listItems.concat(config.items || this.config.items || []);
+        this.callParent([config]);
     },
-    createViewModelConfig: function () {
-        const viewModel = Object.assign({}, this.config.viewModel),
-            actions = this.config.actions;
-        this.config.viewModel = viewModel;
+    createViewModelConfig: function (config) {
         // 组装data
-        let data = {text: '', entityId: null, associations: {}};
-        if (actions) {
-            for (var actionsKey in actions) {
-                data['action_' + actionsKey] = actions[actionsKey];
-            }
-        }
-        viewModel.data = Object.assign(data, viewModel.data);
+        const viewModel = config.viewModel = config.viewModel || {},
+            data = viewModel.data = viewModel.data || {};
+        data.entityId = null;
+        data.associations = {};
+        this.callParent([config]);
     },
-    createControllerConfig: function () {
+    createControllerConfig: function (config) {
+        const entitySide = config.entitySide || this.config.entitySide,
+            actionPrefix = config.actionPrefix || this.config.actionPrefix,
+            actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []);
         if (!this.config.controller || !this.config.controller.getService) {
             PSR.Message.error('CRUD视图缺少getService');
         }
-        const entitySide = this.entitySide;
         const controller = {
             initAssociation: function (record) {
                 const me = this,
@@ -193,6 +205,7 @@ Ext.define('PSR.view.crud.Association', {
             initViewModel: function (vm) {
                 const me = this,
                     store = vm.getStore('entities');
+                PSR.util.Store.filterRecord(store);
                 store.on('load', function (store, records, successful, operation) {
                     if (records && records.length > 0) {
                         for (let i = 0; i < records.length; i++) {
@@ -200,11 +213,6 @@ Ext.define('PSR.view.crud.Association', {
                         }
                     }
                 });
-            },
-            goBack: function () {
-                const vm = this.getViewModel(), v = this.getView();
-                this.getView().fireEvent('goback', {isNew: false});
-                v.load(null);
             },
             reset: function () {
                 const vm = this.getViewModel(), v = this.getView();
@@ -225,14 +233,13 @@ Ext.define('PSR.view.crud.Association', {
                     }
                     // 查询关联清单
                     if (entitySide == 'left') {
-                        me.getService().loadAllByLeftId({
+                        me.getService().searchByLeftId({
                             leftId: entityId,
                             success: function (respObj) {
-                                const associations = {};
-                                if (respObj) {
-                                    for (let i = 0; i < respObj.length; i++) {
-                                        associations[respObj[i].rightId] = respObj[i];
-                                    }
+                                const associations = {},
+                                    datas = respObj && respObj.content ? respObj.content : [];
+                                for (let i = 0; i < datas.length; i++) {
+                                    associations[datas[i].rightId] = datas[i];
                                 }
                                 vm.set('associations', associations);
                                 me.refresh();
@@ -242,14 +249,13 @@ Ext.define('PSR.view.crud.Association', {
                             }
                         });
                     } else {
-                        me.getService().loadAllByRightId({
+                        me.getService().searchByRightId({
                             rightId: entityId,
                             success: function (respObj) {
-                                const associations = {};
-                                if (respObj) {
-                                    for (let i = 0; i < respObj.length; i++) {
-                                        associations[respObj[i].leftId] = respObj[i];
-                                    }
+                                const associations = {},
+                                    datas = respObj && respObj.content ? respObj.content : [];
+                                for (let i = 0; i < datas.length; i++) {
+                                    associations[datas[i].leftId] = datas[i];
                                 }
                                 vm.set('associations', associations);
                                 me.refresh();
@@ -288,12 +294,11 @@ Ext.define('PSR.view.crud.Association', {
                     store = vm.getStore('entities'),
                     filters = [];
                 if (pressed) {
-                    filters.push({property: 'assignFlag', value: true});
+                    PSR.util.Store.filterValue(store, 'assignFlag', true);
+                } else {
+                    PSR.util.Store.filterValue(store, 'assignFlag');
                 }
-                if (value) {
-                    filters.push(PSR.util.Store.includeTextFilter('displaytext', value));
-                }
-                PSR.util.Store.filterText(store, filters);
+                PSR.util.Store.filterText(store, 'displaytext', value);
             },
             create: function (record) {
                 const v = this.getView(),
@@ -358,6 +363,16 @@ Ext.define('PSR.view.crud.Association', {
                 this.filter();
             }
         };
-        this.config.controller = Object.assign(controller, this.config.controller);
+        if (actionColumns && actionColumns.length > 0) {
+            for (let i = 0; i < actionColumns.length; i++) {
+                const actionColumn = actionColumns[i],
+                    action = actionColumn.action;
+                controller[action] = function (record) {
+                    this.fireActionEvent(action, record);
+                }
+            }
+        }
+        config.controller = Object.assign(controller, config.controller);
+        this.callParent([config]);
     }
 });
