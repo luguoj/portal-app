@@ -25,11 +25,11 @@ Ext.define('PSR.field.dialogSelect.Base', {
                 vm.set('displayValue', value);
                 return;
             }
-            if (store && !store.isLoading() && !store.isLoaded()) {
-                store.load();
-                return;
-            }
             if (value) {
+                if (store && !store.isLoading() && !store.isLoaded()) {
+                    store.load();
+                    return;
+                }
                 var record = store.isTreeStore ?
                     store.findNode(valueField, value)
                     : store.findRecord(valueField, value);
