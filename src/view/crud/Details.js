@@ -11,6 +11,8 @@ Ext.define('PSR.view.crud.Details', {
         update: true
     },
     config: {
+        // 明细标题
+        detailsTitle: '明细',
         formFields: []
     },
     /**
@@ -36,7 +38,7 @@ Ext.define('PSR.view.crud.Details', {
         } else {
             form.reset();
         }
-        this.setViewTitle((value ? this.getEntityTitle(value) : '') + '明细');
+        this.setViewTitle((value ? this.getEntityTitle(value) : '') + this.getDetailsTitle());
     },
     getValues: function () {
         var value = this.down('formpanel').getValues({enabled: true});
