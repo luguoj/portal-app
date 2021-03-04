@@ -1,8 +1,7 @@
 Ext.define('PSR.field.dialogSelect.Base', {
     extend: 'Ext.field.Container',
-    xtype: 'psr-field-dialogselect',
     mixins: ['PSR.mixin.Storable'],
-    width: 150,
+    minWidth: 150,
     controller: {
         hTriggerExpand: function () {
             const v = this.getView();
