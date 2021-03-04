@@ -46,7 +46,7 @@ Ext.define('PSR.view.crud.Association', {
             isTree = config.isTree || this.config.isTree,
             columns = [].concat(config.columns || this.config.columns || []),
             actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []),
-            itemController = config.itemController || this.config.itemController,
+            configItemController = Object.assign({}, this.config.itemController, config.itemController),
             title = config.viewTitle || this.config.viewTitle,
             updateAction = config.updateAction || this.config.updateAction;
 
@@ -145,7 +145,7 @@ Ext.define('PSR.view.crud.Association', {
                 };
             }
         }
-        Object.assign(grdItemController, itemController);
+        Object.assign(grdItemController, configItemController);
         if (isTree) {
             Object.assign(grd, {
                 xtype: 'tree',
@@ -178,7 +178,8 @@ Ext.define('PSR.view.crud.Association', {
     createControllerConfig: function (config) {
         const entitySide = config.entitySide || this.config.entitySide,
             actionPrefix = config.actionPrefix || this.config.actionPrefix,
-            actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []);
+            actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []),
+            configController = Object.assign({}, this.config.controller, config.controller);
         if (!this.config.controller || !this.config.controller.getService) {
             PSR.Message.error('CRUD视图缺少getService');
         }
@@ -205,11 +206,12 @@ Ext.define('PSR.view.crud.Association', {
             initViewModel: function (vm) {
                 const me = this,
                     store = vm.getStore('entities');
-                PSR.util.Store.filterRecord(store);
                 store.on('load', function (store, records, successful, operation) {
                     if (records && records.length > 0) {
                         for (let i = 0; i < records.length; i++) {
-                            me.initAssociation(records[i])
+                            if (records[i].get('isRecord')) {
+                                me.initAssociation(records[i])
+                            }
                         }
                     }
                 });
@@ -372,7 +374,7 @@ Ext.define('PSR.view.crud.Association', {
                 }
             }
         }
-        config.controller = Object.assign(controller, config.controller);
+        config.controller = Object.assign(controller, configController);
         this.callParent([config]);
     }
 });
