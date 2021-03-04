@@ -27,7 +27,7 @@ Ext.define('PSR.view.catalog.View', {
             main: {
                 xtype: 'psr-catalog-list',
                 listeners: {
-                    goDetails: 'goDetails',
+                    go_details: 'goDetails',
                     create: 'create'
                 },
                 catalogStore: config.catalogStore || this.config.catalogStore,

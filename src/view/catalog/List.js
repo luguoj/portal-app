@@ -12,7 +12,7 @@ Ext.define('PSR.view.catalog.List', {
         menuDisabled: true, sortable: false,
         cell: {
             encodeHtml: false,
-            handler: 'goDetails'
+            handler: 'go_details'
         },
         dataIndex: 'displaytext',
         renderer: 'filterRenderer'

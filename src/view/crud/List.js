@@ -7,6 +7,7 @@ Ext.define('PSR.view.crud.List', {
     goBack: false,
     // 操作
     actions: {
+        go_details: true,
         create: true,
         clone: false,
         delete: true
@@ -97,9 +98,10 @@ Ext.define('PSR.view.crud.List', {
         listToolbars.push(tbsearch);
         // CRUD工具栏
         const tbcrud = {
-            xtype: 'psr-toolbar-crudlist', detailsHandler: 'goDetails',
+            xtype: 'psr-toolbar-crudlist',
             bind: {
                 selection: '{grdselection}',
+                detailsHandler: '{action_' + actionPrefix + 'go_details ? "go_details" : null}',
                 createHandler: '{action_' + actionPrefix + 'create ? "create" : null}',
                 deleteHandler: '{action_' + actionPrefix + 'delete ? "delete" : null}',
                 cloneHandler: '{action_' + actionPrefix + 'clone ? "clone" : null}',
@@ -128,8 +130,8 @@ Ext.define('PSR.view.crud.List', {
                 getListView: function () {
                     return vThis;
                 },
-                goDetails: function (record) {
-                    vThis.getController().fireActionEvent('goDetails', {record: record});
+                go_details: function (record) {
+                    vThis.getController().fireActionEvent('go_details', {record: record});
                 }
             },
             grd = {
@@ -208,8 +210,8 @@ Ext.define('PSR.view.crud.List', {
                 const selection = (record && record.isModel) ? record : this.lookup('grd').getSelection();
                 this.getView().fireEvent(eventName, {selection: selection ? selection.data : null});
             },
-            goDetails: function () {
-                this.fireActionEvent('goDetails');
+            go_details: function () {
+                this.fireActionEvent('go_details');
             },
             create: function (selection) {
                 this.fireActionEvent('create', selection);
