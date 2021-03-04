@@ -294,7 +294,7 @@ Ext.define('PSR.view.crud.List', {
             doDrop: function (targetNode, draggedData, targetRecord, position) {
                 const v = this.getView(),
                     grd = v.lookup('grd'),
-                    dragdrop = v.isTree ? grd.findPlugin('treedragdrop') : grd.findPlugin('gridrowdragdrop'),
+                    dragdrop = v.getIsTree() ? grd.findPlugin('treedragdrop') : grd.findPlugin('gridrowdragdrop'),
                     dropZone = dragdrop.dropZone,
                     dragInfo = {
                         draggedData: draggedData,
