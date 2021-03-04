@@ -33,6 +33,9 @@ Ext.define('PSR.view.crud.List', {
     getExtraParams: function (opt) {
         return {};
     },
+    paramConverter: function (params) {
+        return params;
+    },
     updateActions: function (actions) {
         const vm = this.getViewModel(),
             actionPrefix = this.getActionPrefix(),
@@ -84,7 +87,7 @@ Ext.define('PSR.view.crud.List', {
             isTree = config.isTree || this.config.isTree,
             columns = [].concat(config.columns || this.config.columns || []),
             actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []),
-            itemController = config.itemController || this.config.itemController;
+            configItemController = Object.assign({}, this.config.itemController, config.itemController);
         //*** 创建工具栏
         const listToolbars = [];
         // 搜索工具栏
@@ -161,7 +164,7 @@ Ext.define('PSR.view.crud.List', {
                 };
             }
         }
-        Object.assign(grdItemController, itemController);
+        Object.assign(grdItemController, configItemController);
         if (isTree) {
             Object.assign(grd, {
                 xtype: 'tree',
@@ -200,7 +203,8 @@ Ext.define('PSR.view.crud.List', {
     },
     createControllerConfig: function (config) {
         const actionPrefix = config.actionPrefix || this.config.actionPrefix,
-            actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []);
+            actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []),
+            configController = Object.assign({}, this.config.controller, config.controller);
         if (!(config.controller && config.controller.getService)
             && !(this.config.controller && this.config.controller.getService)) {
             PSR.Message.error('CRUD视图缺少controller.getService');
@@ -227,7 +231,7 @@ Ext.define('PSR.view.crud.List', {
                 if (searchFilter) {
                     params = Object.assign(params, searchFilter.getValues());
                 }
-                proxy.setExtraParams(params);
+                proxy.setExtraParams(v.paramConverter(params));
                 store.loadPage(1);
             },
             refresh: function () {
@@ -241,7 +245,7 @@ Ext.define('PSR.view.crud.List', {
                     searchfield.setValue('');
                 }
                 let params = Object.assign({}, proxy.getExtraParams(), extraParams);
-                proxy.setExtraParams(params);
+                proxy.setExtraParams(v.paramConverter(params));
                 store.loadPage(1);
             },
             filter: function (field, value) {
@@ -314,7 +318,7 @@ Ext.define('PSR.view.crud.List', {
                 }
             }
         }
-        config.controller = Object.assign(controller, config.controller);
+        config.controller = Object.assign(controller, configController);
         this.callParent([config]);
     }
 });
