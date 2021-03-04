@@ -102,7 +102,7 @@ Ext.define('PSR.data.reader.Transform', {
     },
     parentTree: function (records, opt) {
         opt = Object.assign({}, opt);
-        var rootProperty = opt.rootProperty ? opt.rootProperty : 'result';
+        var rootProperty = opt.rootProperty ? opt.rootProperty : 'content';
         var roots = [];
         if (records && records.length > 0) {
             var nodeMap = {};
