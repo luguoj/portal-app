@@ -66,7 +66,7 @@ Ext.define('PSR.view.work.View', {
         if (subViewStack && subViewStack.length > 0) {
             let title = subViewStack[0].title;
             for (let i = 1; i < subViewStack.length; i++) {
-                title = title + '\\' + subViewStack[i].title;
+                title = title + ' > ' + subViewStack[i].title;
             }
             return title;
         }
