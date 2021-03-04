@@ -3,7 +3,8 @@ Ext.define('PSR.view.catalog.List', {
     xtype: 'psr-catalog-list',
     config: {
         catalogService: undefined,
-        catalogStore: null
+        catalogStore: null,
+        catalogUsageStore: null
     },
     isTree: true,
     columns: [{
@@ -31,12 +32,28 @@ Ext.define('PSR.view.catalog.List', {
         }
     },
     constructor: function (config) {
-        const viewModel = config.viewModel = config.viewModel || {},
+        const me = this,
+            viewModel = config.viewModel = config.viewModel || {},
             stores = viewModel.stores = viewModel.stores || {};
         stores.entities = stores.entities
             || {
                 type: config.catalogStore || this.config.catalogStore,
-                filterer: 'bottomup'
+                filterer: 'bottomup',
+                listeners: {
+                    load: function (store) {
+                        const usages = me.getViewModel().getStore('usages').data.items;
+                        for (let i = 0; i < usages.length; i++) {
+                            const usageNode = store.byIdMap[usages[i].get('value')];
+                            if (usageNode) {
+                                usageNode.set('text', usages[i].get('text'));
+                            }
+                        }
+                    }
+                }
+            };
+        stores.usages = stores.usages
+            || {
+                type: config.catalogUsageStore || this.config.catalogUsageStore
             };
         this.callParent([config]);
     }

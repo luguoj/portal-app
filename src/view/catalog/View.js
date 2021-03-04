@@ -31,6 +31,7 @@ Ext.define('PSR.view.catalog.View', {
                     create: 'create'
                 },
                 catalogStore: config.catalogStore || this.config.catalogStore,
+                catalogUsageStore: config.catalogUsageStore || this.config.catalogUsageStore,
                 catalogService: config.catalogService || this.config.catalogService
             },
             details: {
