@@ -61,7 +61,7 @@ Ext.define('PSR.view.desktop.Main', {
     viewModel: {
         formulas: {
             title: function (get) {
-                return get('moduleTitle') + '\\' + get('viewTitle');
+                return get('moduleTitle') + ' ' + get('viewTitle');
             }
         },
         data: {
