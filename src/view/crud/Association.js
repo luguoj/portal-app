@@ -209,9 +209,7 @@ Ext.define('PSR.view.crud.Association', {
                 store.on('load', function (store, records, successful, operation) {
                     if (records && records.length > 0) {
                         for (let i = 0; i < records.length; i++) {
-                            if (records[i].get('isRecord')) {
-                                me.initAssociation(records[i])
-                            }
+                            me.initAssociation(records[i])
                         }
                     }
                 });
