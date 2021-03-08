@@ -96,7 +96,7 @@ Ext.define('PSR.view.desktop.Main', {
         }
         PSR.clientSite.Ajax.request({
             method: 'GET',
-            url: window.gatewaySite + '/organization-api/api/personnel/loadByCurrentUser',
+            url: window.gatewaySite + '/organization-api/api/user/personnel',
             disableCaching: true,
             bizSuccess: function (result) {
                 vm.set('personnel', result.description);
