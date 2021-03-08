@@ -105,7 +105,7 @@ Ext.define('PSR.view.crud.Association', {
                     return vThis;
                 },
                 goDetails: function (record) {
-                    vThis.getController().fireActionEvent('goDetails', record);
+                    vThis.getController().fireActionEvent('go_details', record);
                 },
                 associate: function (button) {
                     const vm = this.getViewModel(),
