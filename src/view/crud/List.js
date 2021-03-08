@@ -7,10 +7,10 @@ Ext.define('PSR.view.crud.List', {
     goBack: false,
     // 操作
     actions: {
-        go_details: true,
-        create: true,
+        go_details: false,
+        create: false,
         clone: false,
-        delete: true
+        delete: false
     },
     //****** List 配置
     config: {
@@ -134,7 +134,10 @@ Ext.define('PSR.view.crud.List', {
                     return vThis;
                 },
                 go_details: function (record) {
-                    vThis.getController().fireActionEvent('go_details', {record: record});
+                    const action_go_details = vThis.getViewModel().get('action_' + actionPrefix + 'go_details');
+                    if (action_go_details) {
+                        vThis.getController().fireActionEvent('go_details', {record: record});
+                    }
                 }
             },
             grd = {
@@ -215,7 +218,10 @@ Ext.define('PSR.view.crud.List', {
                 this.getView().fireEvent(eventName, {selection: selection ? selection.data : null});
             },
             go_details: function () {
-                this.fireActionEvent('go_details');
+                const action_go_details = this.getViewModel().get('action_' + actionPrefix + 'go_details');
+                if (action_go_details) {
+                    this.fireActionEvent('go_details');
+                }
             },
             create: function (selection) {
                 this.fireActionEvent('create', selection);
