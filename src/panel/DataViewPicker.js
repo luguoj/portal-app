@@ -70,11 +70,14 @@ Ext.define('PSR.panel.DataviewPicker', {
         }];
         me.callParent([config]);
         me.searchForm = me.down('psr-panel-form-left');
-
     },
     updateStore: function (store) {
         this.applyStoreProxyParams();
-        this.down(this.getIsTree() ? 'tree' : 'grid').setStore(store);
+        const grd = this.down(this.getIsTree() ? 'tree' : 'grid');
+        grd.setStore(store);
+        if (store.getPageSize() && this.getIsTree() != true) {
+            grd.addPlugin('gridpagingtoolbar');
+        }
     },
     expandFilter: function (expanded) {
         const searchCmp = this.down(this.remoteFilter ? 'psr-panel-form-left' : 'toolbar');
