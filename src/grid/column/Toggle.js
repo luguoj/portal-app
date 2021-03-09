@@ -6,10 +6,12 @@ Ext.define('PSR.grid.column.Toggle', {
     config: {
         flagIndex: '',
         toggleHandler: 'toggle',
-        disabledBinding: ''
+        disabledBinding: '',
+        recordIndex: 'isRecord'
     },
     constructor: function (config) {
-        const flagIndex = config.flagIndex,
+        const recordIndex = config.recordIndex || this.config.recordIndex,
+            flagIndex = config.flagIndex,
             disabledBinding = config.disabledBinding,
             toggleHandler = config.toggleHandler;
         config.cell = {
@@ -20,13 +22,16 @@ Ext.define('PSR.grid.column.Toggle', {
                 bind: {
                     tooltip: '{record.' + flagIndex + '?"是":"否"}',
                     iconCls: '{record.' + flagIndex + '?"x-fa fa-check p-confirm-important":"x-fa fa-times p-decline-important"}',
-                    hidden: '{!record.isRecord}',
+                    hidden: '{!record.' + recordIndex + '}',
                     disabled: '{' + disabledBinding + '}',
                     ui: '{(' + disabledBinding + '?"alt ":"") + (record.' + flagIndex + '?"confirm":"decline")}'
                 },
                 handler: toggleHandler
             }
         };
+        if (config.text) {
+            config.minWidth = config.maxWidth = config.width = PSR.util.Grid.getColumnWidth(config.text);
+        }
         this.callParent([config]);
     }
 });
