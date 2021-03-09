@@ -189,7 +189,7 @@ Ext.define('PSR.view.crud.Association', {
             PSR.Message.error('CRUD视图缺少getService');
         }
         const controller = {
-            initAssociation: function (record) {
+            initAssociation: function (record, initchildren) {
                 const me = this,
                     vm = me.getViewModel(),
                     associations = vm.get('associations'),
