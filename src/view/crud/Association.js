@@ -27,8 +27,13 @@ Ext.define('PSR.view.crud.Association', {
         updateAction: 'association_update',
     },
     load: function (opt, callback) {
-        this.setViewTitle((opt ? this.getEntityTitle(opt) : '') + this.getAssociationTitle());
-        this.getController().loadEntity(opt ? opt.record.id : null);
+        if (opt && opt.record) {
+            this.getController().loadEntity(opt.record.id);
+            this.setViewTitle(this.getEntityTitle(opt.record) + this.getAssociationTitle());
+        } else {
+            this.getController().loadEntity(null);
+            this.setViewTitle(this.getAssociationTitle());
+        }
         this.extraParams = this.getExtraParams(opt);
         if (callback) {
             callback();
@@ -37,7 +42,7 @@ Ext.define('PSR.view.crud.Association', {
     getExtraParams: function (opt) {
         return {};
     },
-    getEntityTitle: function (opt) {
+    getEntityTitle: function (data) {
         return '';
     },
     createItemsConfig: function (config) {
