@@ -196,15 +196,19 @@ Ext.define('PSR.view.crud.Association', {
                     association = associations[record.id];
                 record.set('assignFlag', !!association);
                 if (association) {
-                    record.set('associationId', association.id);
-                    record.set('association', association);
+                    for (const associationKey in association) {
+                        record.set('association_' + associationKey, association[associationKey]);
+                    }
                 } else {
-                    record.set('associationId', null);
-                    record.set('association', null);
+                    for (const dataKey in record.data) {
+                        if (dataKey.startsWith('association_')) {
+                            record.set(dataKey, null);
+                        }
+                    }
                 }
-                if (record.childNodes && record.childNodes.length > 0) {
+                if (initchildren && record.childNodes && record.childNodes.length > 0) {
                     for (let i = 0; i < record.childNodes.length; i++) {
-                        me.initAssociation(record.childNodes[i]);
+                        me.initAssociation(record.childNodes[i], initchildren);
                     }
                 }
             },
@@ -214,7 +218,7 @@ Ext.define('PSR.view.crud.Association', {
                 store.on('load', function (store, records, successful, operation) {
                     if (records && records.length > 0) {
                         for (let i = 0; i < records.length; i++) {
-                            me.initAssociation(records[i])
+                            me.initAssociation(records[i], true)
                         }
                     }
                 });
@@ -306,7 +310,8 @@ Ext.define('PSR.view.crud.Association', {
                 PSR.util.Store.filterText(store, 'displaytext', value);
             },
             create: function (record) {
-                const v = this.getView(),
+                const me = this,
+                    v = this.getView(),
                     vm = this.getViewModel(),
                     entityId = vm.get('entityId'),
                     associations = vm.get('associations'),
@@ -324,10 +329,8 @@ Ext.define('PSR.view.crud.Association', {
                             rightId: entitySide == 'left' ? record.data.id : entityId
                         },
                         success: function (resbObj) {
-                            record.set('assignFlag', true);
-                            record.set('associationId', resbObj.id);
-                            record.set('association', resbObj);
                             associations[record.data.id] = resbObj;
+                            me.initAssociation(record);
                             Ext.toast('保存成功');
                         },
                         failure: function () {
@@ -340,7 +343,8 @@ Ext.define('PSR.view.crud.Association', {
                 }
             },
             delete: function (record) {
-                const v = this.getView(),
+                const me = this,
+                    v = this.getView(),
                     vm = this.getViewModel(),
                     associations = vm.get('associations'),
                     association = associations[record.data.id];
@@ -349,10 +353,8 @@ Ext.define('PSR.view.crud.Association', {
                     this.getService().delete({
                         id: association.id,
                         success: function () {
-                            record.set('assignFlag', false);
-                            record.set('associationId', null);
-                            record.set('association', null);
                             delete (associations[record.data.id]);
+                            me.initAssociation(record);
                             Ext.toast('保存成功');
                         },
                         failure: function () {
