@@ -14,10 +14,23 @@ Ext.define('PSR.dialog.Form', {
     },
     constructor: function (config) {
         const me = this,
-            navbar = me.createNavbarConfig(config),
+            navbar = {
+                xtype: 'psr-toolbar-navigation',
+                title: config.navTitle || this.config.navTitle,
+                items: [{
+                    xtype: 'psr-button-save',
+                    align: 'right',
+                    handler: function () {
+                        me.onSave()
+                    }
+                }],
+                goBackHandler: function () {
+                    me.close();
+                }
+            },
             form = {
                 xtype: 'formpanel',
-                items: config.formFields
+                items: [].concat(config.formFields || this.config.formFields || [])
             };
         if (config.params) {
             for (var paramsKey in config.params) {
@@ -26,23 +39,6 @@ Ext.define('PSR.dialog.Form', {
         }
         config.items = [navbar, form];
         this.callParent([config]);
-    },
-    createNavbarConfig: function (config) {
-        const me = this;
-        return {
-            xtype: 'psr-toolbar-navigation',
-            title: config.navTitle,
-            items: [{
-                xtype: 'psr-button-save',
-                align: 'right',
-                handler: function () {
-                    me.onSave()
-                }
-            }],
-            goBackHandler: function () {
-                me.close();
-            }
-        };
     },
     onSave: function () {
         const me = this,
