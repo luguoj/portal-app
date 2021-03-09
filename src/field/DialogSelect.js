@@ -12,6 +12,7 @@ Ext.define('PSR.field.dialogSelect', {
         placeholder: '',
         displayField: 'displaytext',
         valueField: 'value',
+        valueFieldName: '',
         filterFields: [],
         extraParams: {},
         paramConverter: function (values) {
@@ -47,16 +48,16 @@ Ext.define('PSR.field.dialogSelect', {
             extraParams = config.extraParams || this.config.extraParams,
             paramConverter = config.paramConverter || this.config.paramConverter,
             required = config.required || this.config.required,
-            name = config.name || this.config.name,
+            valueFieldName = config.valueFieldName || this.config.valueFieldName,
             valueHolder = {
-                xtype: 'textfield',
+                xtype: 'textfield', reference: 'fValueHolder',
                 width: 0,
                 editable: false,
                 required: required,
-                name: name
+                name: valueFieldName
             },
             displayer = {
-                xtype: 'textfield',
+                xtype: 'textfield', reference: 'fDisplayer',
                 flex: 1,
                 editable: false,
                 placeholder: placeholder,
@@ -74,7 +75,6 @@ Ext.define('PSR.field.dialogSelect', {
                     me.expand();
                 }
             };
-        config.name = name + '_sel';
         config.items = [valueHolder, displayer, trigger];
         me.pickerDialog = Ext.create({
             xtype: 'dialog',
@@ -119,7 +119,7 @@ Ext.define('PSR.field.dialogSelect', {
                 paramConverter: paramConverter,
                 listeners: {
                     selectionchange: function (picker, selections) {
-                        const btnOK = picker.up('dialog').down('button[text="确认"]');
+                        const btnOK = picker.up('dialog').down('button[reference="btnOK"]');
                         if (selections && selections.length > 0 && selections[0].get('isRecord')) {
                             btnOK.setDisabled(false);
                             btnOK.selection = selections[0];
@@ -132,8 +132,8 @@ Ext.define('PSR.field.dialogSelect', {
         });
         me.picker = me.pickerDialog.down('psr-panel-dataviewpicker');
         me.callParent([config]);
-        me.valueHolder = me.down('textfield[width=0]');
-        me.displayer = me.down('textfield[flex=1]');
+        me.valueHolder = me.down('textfield[reference="fValueHolder"]');
+        me.displayer = me.down('textfield[reference="fDisplayer"]');
         me.trigger = me.down('button');
         me.picker.on({
             confirm: function (record) {
