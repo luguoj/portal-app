@@ -86,26 +86,27 @@ Ext.define('PSR.field.dialogSelect', {
                 xtype: 'toolbar',
                 docked: 'top',
                 items: [{
-                    text: '刷新', iconCls: 'x-fa fa-sync',
-                    handler: function () {
-                        me.picker.refresh();
-                    }
-                }, {
-                    text: '查找', iconCls: 'x-fa fa-filter',
+                    tooltip: '过滤', iconCls: 'x-fa fa-filter',
                     enableToggle: true,
                     toggleHandler: function (btn, pressed) {
                         me.picker.expandFilter(pressed);
                     }
+                }, {
+                    tooltip: '搜索', iconCls: 'x-fa fa-search',
+                    handler: function () {
+                        me.picker.refresh();
+                    }
                 }, '->', {
-                    text: '确认',
+                    tooltip: '确认', iconCls: 'x-fa fa-check', reference: 'btnOK',
+                    ui: 'confirm',
                     handler: function (btn) {
                         me.setValue(btn.selection.get(valueField));
                         me.pickerDialog.hide();
                     },
                     disabled: true,
                 }, {
-                    text: '取消',
-                    ui: 'back',
+                    tooltip: '取消', iconCls: 'x-fa fa-times',
+                    ui: 'decline',
                     handler: function () {
                         me.pickerDialog.hide();
                     }
