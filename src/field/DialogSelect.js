@@ -6,13 +6,14 @@ Ext.define('PSR.field.dialogSelect', {
     layout: 'hbox',
     config: {
         required: false,
+        isTree: false,
         picker: {
             xtype: 'psr-panel-dataviewpicker'
         },
         placeholder: '',
         displayField: 'displaytext',
         valueField: 'value',
-        valueFieldName: '',
+        valueFieldName: null,
         filterFields: [],
         extraParams: {},
         paramConverter: function (values) {
@@ -21,9 +22,16 @@ Ext.define('PSR.field.dialogSelect', {
         selectionReader: function (field, value, success) {
             const valueField = field.getValueField(),
                 displayField = field.getDisplayField(),
+                store = field.getStore(),
                 selection = {};
             selection[valueField] = value;
             selection[displayField] = value;
+            if (store) {
+                const record = store.findRecord(valueField, value);
+                if (record) {
+                    Object.assign(selection, record.data);
+                }
+            }
             success(selection);
         }
     },
@@ -32,15 +40,11 @@ Ext.define('PSR.field.dialogSelect', {
         this.trigger.setDisabled(value);
     },
     expand: function () {
-        const pickerDialog = this.pickerDialog,
-            store = this.getStore();
-        pickerDialog.show();
-        if (store) {
-            store.reload();
-        }
+        this.pickerDialog.show();
     },
     constructor: function (config) {
         const me = this,
+            isTree = config.isTree || this.config.isTree,
             placeholder = config.placeholder || this.config.placeholder,
             displayField = config.displayField || this.config.displayField,
             valueField = config.valueField || this.config.valueField,
@@ -113,6 +117,7 @@ Ext.define('PSR.field.dialogSelect', {
                 }]
             }, {
                 xtype: 'psr-panel-dataviewpicker',
+                isTree: isTree,
                 fieldTitle: placeholder,
                 displayField: displayField,
                 filterFields: filterFields,
@@ -129,7 +134,12 @@ Ext.define('PSR.field.dialogSelect', {
                         }
                     }
                 }
-            }]
+            }],
+            listeners: {
+                show: function () {
+                    me.picker.refresh();
+                }
+            }
         });
         me.picker = me.pickerDialog.down('psr-panel-dataviewpicker');
         me.callParent([config]);
