@@ -29,8 +29,11 @@ Ext.define('PSR.panel.DataviewPicker', {
             reference: 'grd',
             rowLines: true, columnLines: true,
             columns: [{
+                xtype: isTree ? 'treecolumn' : 'column',
                 text: fieldTitle, dataIndex: displayField, flex: 1,
-                menuDisabled: true
+                menuDisabled: true,
+                cell: {encodeHtml: false},
+                renderer: 'filterRenderer'
             }],
             listeners: {
                 selectionchange: function (grid) {
@@ -46,6 +49,15 @@ Ext.define('PSR.panel.DataviewPicker', {
                     }
                     grid.getSelectable().deselect(notRecords, true);
                     me.setSelection(records);
+                }
+            },
+            itemConfig: {
+                viewModel: {},
+                controller: {
+                    filterRenderer: function (value) {
+                        const filterText = me.filterField.getValue();
+                        return PSR.util.Grid.filterRenderer(value, filterText);
+                    }
                 }
             }
         };
@@ -65,11 +77,18 @@ Ext.define('PSR.panel.DataviewPicker', {
         }, {
             xtype: 'toolbar', docked: 'top', hidden: true,
             items: [{
-                xtype: 'textfield', flex: 1
+                xtype: 'textfield', flex: 1, reference: 'fdFilter',
+                listeners: {
+                    buffer: 300,
+                    change: function (field, text) {
+                        me.filter(text);
+                    }
+                }
             }]
         }];
         me.callParent([config]);
         me.searchForm = me.down('psr-panel-form-left');
+        me.filterField = me.down('textfield[reference="fdFilter"]');
     },
     updateStore: function (store) {
         this.applyStoreProxyParams();
@@ -100,8 +119,16 @@ Ext.define('PSR.panel.DataviewPicker', {
             searchParams = searchForm ? searchForm.getValues() : {},
             extraParams = this.getExtraParams(),
             paramConverter = this.getParamConverter();
-        if (store) {
+        if (store && store.proxy && store.proxy.setExtraParams) {
             store.proxy.setExtraParams(paramConverter(Object.assign({}, extraParams, searchParams)));
+        }
+    },
+    filter: function (text) {
+        const me = this,
+            store = me.getStore(),
+            displayField = me.getDisplayField();
+        if (store) {
+            PSR.util.Store.filterText(store, displayField, text);
         }
     }
 });
