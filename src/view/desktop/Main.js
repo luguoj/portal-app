@@ -94,28 +94,29 @@ Ext.define('PSR.view.desktop.Main', {
         } else {
             Ext.route.Router.onStateChange(Ext.util.History.getToken())
         }
-        PSR.clientSite.Ajax.request({
-            method: 'GET',
-            url: window.gatewaySite + '/organization-api/api/user/personnel',
-            disableCaching: true,
-            bizSuccess: function (result) {
-                vm.set('personnel', result.description);
-            },
-            bizFailure: function (result) {
-                vm.set('personnel', PSR.clientSite.ClientSite.clientToken.username);
-            },
-            failure: function () {
-                vm.set('personnel', PSR.clientSite.ClientSite.clientToken.username);
-            }
-        });
     },
     updateAppTitle: function (value) {
         document.title = value;
     },
     constructor: function (config) {
-        this.callParent([config]);
-        this.navigationView = this.add(this.createNavigationView());
-        this.titleView = this.add({
+        const appIconCls = config.appIconCls || this.config.appIconCls,
+            appTitle = config.appTitle || this.config.appTitle;
+        config.items = [{
+            docked: 'left',
+            xtype: 'psr-view-desktop-navigation',
+            appIconCls: appIconCls,
+            appTitle: appTitle,
+            hideAnimation: {
+                type: 'slide',
+                direction: 'left',
+                out: true
+            },
+            showAnimation: {
+                type: 'slide',
+                direction: 'right',
+                out: false
+            },
+        }, {
             xtype: 'titlebar',
             ui: 'psr-desktop-title',
             height: '64px',
@@ -148,12 +149,11 @@ Ext.define('PSR.view.desktop.Main', {
                 iconCls: 'x-fa fa-power-off', iconAlign: 'right',
                 handler: 'hBtnLogout',
                 bind: {
-                    text: '{personnel}'
+                    text: '{personnel_description}'
                 }
             }]
-        });
-        this.btnCompress = this.add({
-            xtype: 'button',
+        }, {
+            xtype: 'button', reference: 'btnCompress',
             hidden: true,
             iconCls: 'x-fa fa-compress',
             draggable: true,
@@ -163,33 +163,50 @@ Ext.define('PSR.view.desktop.Main', {
             width: 36,
             height: 36,
             handler: 'hBtnCompress'
-        });
-        this.workspaceView = this.add(this.createWorkspaceView());
-    },
-    createNavigationView: function (me, config) {
-        return {
-            docked: 'left',
-            xtype: 'psr-view-desktop-navigation',
-            appIconCls: this.getAppIconCls(),
-            appTitle: this.getAppTitle(),
-            store: this.getStore(),
-            hideAnimation: {
-                type: 'slide',
-                direction: 'left',
-                out: true
-            },
-            showAnimation: {
-                type: 'slide',
-                direction: 'right',
-                out: false
-            },
-        };
-    },
-    createWorkspaceView: function (me, config) {
-        return {
+        }, {
             xtype: 'psr-view-desktop-workspace',
             width: '100%',
             height: '100%'
-        };
+        }];
+        this.callParent([config]);
+        const vm = this.getViewModel();
+        this.navigationView = this.down('psr-view-desktop-navigation');
+        this.navigationView.setStore(this.getStore());
+        this.titleView = this.down('titlebar');
+        this.btnCompress = this.down('button[reference="btnCompress"]');
+        this.workspaceView = this.down('psr-view-desktop-workspace');
+        PSR.view.desktop.Main.loadPersonnel(function (result) {
+            if (result) {
+                vm.set('personnel_description', result.description);
+            } else {
+                vm.set('personnel_description', PSR.clientSite.ClientSite.clientToken.username);
+            }
+        });
+    },
+    statics: {
+        loadPersonnel: function (callback) {
+            PSR.clientSite.Ajax.request({
+                method: 'GET',
+                url: window.gatewaySite + '/organization-api/api/user/personnel',
+                disableCaching: true,
+                bizSuccess: function (result) {
+                    PSR.view.desktop.Main.personnel = result;
+                    if (callback) {
+                        callback(result);
+                    }
+                },
+                bizFailure: function (result) {
+                    if (callback) {
+                        callback(null);
+                    }
+                },
+                failure: function () {
+                    if (callback) {
+                        callback(null);
+                    }
+                }
+            });
+        },
+        personnel: null
     }
 });
