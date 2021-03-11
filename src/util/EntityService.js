@@ -22,6 +22,13 @@ Ext.define('PSR.util.service.Entity', {
                     operation: 'IN',
                     collect: collect
                 };
+            },
+            contain: function (from) {
+                return {
+                    sign: 'INCLUDED',
+                    operation: 'LIKE',
+                    from: '%' + from + '%'
+                };
             }
         }
     }
