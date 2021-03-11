@@ -54,9 +54,14 @@ Ext.define('PSR.panel.DataviewPicker', {
             itemConfig: {
                 viewModel: {},
                 controller: {
-                    filterRenderer: function (value) {
+                    filterRenderer: function (value, record) {
                         const filterText = me.filterField.getValue();
-                        return PSR.util.Grid.filterRenderer(value, filterText);
+                        value = PSR.util.Grid.filterRenderer(value, filterText);
+                        if (record.data.isRecord) {
+                            return PSR.util.Grid.recordRenderer(value);
+                        } else {
+                            return value;
+                        }
                     }
                 }
             }
