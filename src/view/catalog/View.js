@@ -14,6 +14,11 @@ Ext.define('PSR.view.catalog.View', {
         catalogUsageStore: null,
         catalogService: undefined
     },
+    actions: {
+        go_details: true,
+        create: true,
+        delete: true
+    },
     controller: {
         goDetails: function (opt) {
             this.goSubView('details', {record: opt.selection});

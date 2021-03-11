@@ -18,11 +18,6 @@ Ext.define('PSR.view.catalog.List', {
         dataIndex: 'displaytext',
         renderer: 'filterRenderer'
     }],
-    actions: {
-        create: true,
-        clone: false,
-        delete: true
-    },
     requireRefresh: function (opt) {
         return opt && opt.record;
     },
