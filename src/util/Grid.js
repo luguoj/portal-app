@@ -7,12 +7,15 @@ Ext.define('PSR.util.Grid', {
         return this.getCellWidth(text) + 2;
     },
     filterRenderer: function (value, filterText) {
-        if(filterText){
-            const rendererRegExp = new RegExp( '(' + filterText + ')', "gi");
+        if (filterText) {
+            const rendererRegExp = new RegExp('(' + filterText + ')', "gi");
             return value.replace(rendererRegExp, '<span style="color:red;font-weight:bold">$1</span>')
-        }else{
+        } else {
             return value;
         }
         return value;
+    },
+    recordRenderer: function (value) {
+        return '<b><u>' + value + '</u></b>';
     }
 });
