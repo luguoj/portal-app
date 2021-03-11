@@ -7,9 +7,10 @@ Ext.define('PSR.toolbar.CRUDList', {
         createHandler: null,
         cloneHandler: null,
         deleteHandler: null,
+        displayField: 'displaytext'
     },
     constructor: function (config) {
-        var me = this;
+        const me = this;
         me.callParent([config]);
         me.btnDetails = me.add({
             text: '明细', iconCls: 'x-fa fa-file-alt',
@@ -33,7 +34,7 @@ Ext.define('PSR.toolbar.CRUDList', {
             handler: function (button) {
                 var selection = me.getSelection();
                 Ext.Msg.confirm("确认克隆",
-                    "克隆对象:" + selection.get('displaytext'),
+                    "克隆对象:" + selection.get(me.getDisplayField()),
                     function (buttonId) {
                         if (buttonId == 'yes') {
                             Ext.callback(me.getCloneHandler(), button.getScope(), [selection], 0, button);
@@ -48,7 +49,7 @@ Ext.define('PSR.toolbar.CRUDList', {
             handler: function (button) {
                 var selection = me.getSelection();
                 Ext.Msg.confirm("确认删除",
-                    "删除对象:" + selection.get('displaytext'),
+                    "删除对象:" + selection.get(me.getDisplayField()),
                     function (buttonId) {
                         if (buttonId == 'yes') {
                             Ext.callback(me.getDeleteHandler(), button.getScope(), [selection], 0, button);
