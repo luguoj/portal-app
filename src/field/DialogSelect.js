@@ -53,12 +53,14 @@ Ext.define('PSR.field.dialogSelect', {
             paramConverter = config.paramConverter || this.config.paramConverter,
             required = config.required || this.config.required,
             valueFieldName = config.valueFieldName || this.config.valueFieldName,
+            value = config.value || this.config.value,
             valueHolder = {
                 xtype: 'textfield', reference: 'fValueHolder',
                 width: 0,
                 editable: false,
                 required: required,
-                name: valueFieldName
+                name: valueFieldName,
+                value: value
             },
             displayer = {
                 xtype: 'textfield', reference: 'fDisplayer',
@@ -66,6 +68,7 @@ Ext.define('PSR.field.dialogSelect', {
                 editable: false,
                 placeholder: placeholder,
                 required: required,
+                value: value,
                 listeners: {
                     clearicontap: function () {
                         me.setValue(null);
@@ -163,7 +166,9 @@ Ext.define('PSR.field.dialogSelect', {
     },
     updateValue: function (newValue, oldValue) {
         this.selectionSync(newValue);
-        this.valueHolder.setValue(newValue);
+        if (this.valueHolder) {
+            this.valueHolder.setValue(newValue);
+        }
         this.fireEvent('change', this, newValue, oldValue);
     },
     reset: function () {
@@ -172,7 +177,6 @@ Ext.define('PSR.field.dialogSelect', {
     selectionSync: function (value) {
         const field = this,
             displayer = field.displayer,
-            valueField = field.getValueField(),
             displayField = field.getDisplayField(),
             selectionReader = field.getSelectionReader();
         if (!displayer) {
