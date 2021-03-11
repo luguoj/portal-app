@@ -7,6 +7,7 @@ Ext.define('PSR.view.work.View', {
         actions: {}
     },
     constructor: function (config) {
+        config.actions = Object.assign({}, this.config.actions, config.actions);
         this.callParent([config]);
         this.subViewStack = [];
         this.goSubView('main')
