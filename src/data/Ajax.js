@@ -32,7 +32,13 @@ Ext.define('PSR.data.Ajax', {
     hCallFailure: function (response, opt) {
         if (response) {
             console.log(response);
-            if (response.status == '401') {
+            if (response.status == '400') {
+                if (opt.on400) {
+                    opt.on400(response, opt);
+                } else {
+                    PSR.data.Ajax.on400(response, opt);
+                }
+            } else if (response.status == '401') {
                 if (opt.on401) {
                     opt.on401(response, opt);
                 } else {
@@ -56,6 +62,15 @@ Ext.define('PSR.data.Ajax', {
             opt.complete(response, opt);
         }
     },
+    on400: function (response, opt) {
+        const respObj = response.responseJson
+            || (response.responseText ? JSON.parse(response.responseText) : null);
+        if (respObj && respObj.message) {
+            PSR.Message.error('<p><b>错误的请求: </b>' + respObj.exception + '</p><p>' + respObj.message + '</p>');
+        } else {
+            PSR.Message.error('错误的请求');
+        }
+    },
     on401: function (response, opt) {
         PSR.Message.error('授权信息无效');
     },
@@ -63,7 +78,7 @@ Ext.define('PSR.data.Ajax', {
         const respObj = response.responseJson
             || (response.responseText ? JSON.parse(response.responseText) : null);
         if (respObj && respObj.message) {
-            PSR.Message.error(respObj.message);
+            PSR.Message.error('<p><b>服务内部错误: </b>' + respObj.exception + '</p><p>' + respObj.message + '</p>');
         } else {
             PSR.Message.error('服务内部错误');
         }
