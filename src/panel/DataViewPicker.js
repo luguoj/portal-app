@@ -119,13 +119,21 @@ Ext.define('PSR.panel.DataviewPicker', {
         }
     },
     applyStoreProxyParams: function () {
-        const store = this.getStore(),
-            searchForm = this.searchForm,
-            searchParams = searchForm ? searchForm.getValues() : {},
-            extraParams = this.getExtraParams(),
-            paramConverter = this.getParamConverter();
+        const store = this.getStore();
         if (store && store.proxy && store.proxy.setExtraParams) {
-            store.proxy.setExtraParams(paramConverter(Object.assign({}, extraParams, searchParams)));
+            const searchForm = this.searchForm,
+                searchParams = searchForm ? searchForm.getValues() : {},
+                storeExtraParams = store.proxy.getExtraParams(),
+                pickerExtraParams = this.getExtraParams(),
+                paramConverter = this.getParamConverter();
+            store.proxy.setExtraParams(
+                Object.assign(
+                    {},
+                    storeExtraParams,
+                    pickerExtraParams,
+                    paramConverter(searchParams)
+                )
+            );
         }
     },
     filter: function (text) {
