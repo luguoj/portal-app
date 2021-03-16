@@ -46,6 +46,8 @@ Ext.define('PSR.data.Ajax', {
                 }
             } else if (response.status == '403') {
                 PSR.Message.error('不允许访问')
+            } else if (response.status == '503') {
+                PSR.Message.error('服务不可用')
             } else if (response.status >= 500 && response.status < 600) {
                 if (opt.on50x) {
                     opt.on50x(response, opt);
