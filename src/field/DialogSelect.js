@@ -9,7 +9,7 @@ Ext.define('PSR.field.dialogSelect', {
         isTree: false,
         placeholder: '',
         displayField: 'displaytext',
-        pickerDisplayField: 'displaytext',
+        pickerDisplayField: '',
         valueField: 'value',
         valueFieldName: null,
         filterFields: [],
