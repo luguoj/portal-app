@@ -185,27 +185,32 @@ Ext.define('PSR.view.desktop.Main', {
     },
     statics: {
         loadPersonnel: function (callback) {
-            PSR.clientSite.Ajax.request({
-                method: 'GET',
-                url: window.gatewaySite + '/organization-api/api/user/personnel',
-                disableCaching: true,
-                bizSuccess: function (result) {
-                    PSR.view.desktop.Main.personnel = result;
-                    if (callback) {
-                        callback(result);
+            if (PSR.clientSite.ClientSite.clientToken) {
+                PSR.clientSite.Ajax.request({
+                    method: 'GET',
+                    params: {
+                        searchParams: JSON.stringify({userId: [PSR.util.service.Entity.searchParams.include.equal(PSR.clientSite.ClientSite.clientToken.username)]}),
+                    },
+                    url: window.gatewaySite + '/organization/api/personnel',
+                    disableCaching: true,
+                    bizSuccess: function (result) {
+                        PSR.view.desktop.Main.personnel = result.content[0];
+                        if (callback) {
+                            callback(result.content[0]);
+                        }
+                    },
+                    on50x: function (response, opt) {
+                        PSR.Ajax.on50x(response, opt);
+                        if (callback) {
+                            callback(null);
+                        }
                     }
-                },
-                bizFailure: function (result) {
-                    if (callback) {
-                        callback(null);
-                    }
-                },
-                failure: function () {
-                    if (callback) {
-                        callback(null);
-                    }
-                }
-            });
+                });
+            } else {
+                PSR.clientSite.ClientSite.getClientToken(function () {
+                    PSR.view.desktop.Main.loadPersonnel(callback);
+                });
+            }
         },
         personnel: null
     }
