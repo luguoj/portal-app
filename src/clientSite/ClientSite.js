@@ -202,19 +202,27 @@ Ext.define('PSR.clientSite.ClientSite', {
             }
         }
     },
-    addModuleItem: function (moduleId, config, parent, callback) {
-        if (moduleId) {
-            PSR.clientSite.ClientSite.getModuleReady(moduleId, function (actions) {
-                const item = parent.add(Object.assign({}, config, {actions: actions}));
+    addModuleItem: function (opt) {
+        if (opt) {
+            const moduleId = opt.moduleId,
+                config = opt.config,
+                parent = opt.parent,
+                callback = opt.callback;
+            if (moduleId) {
+                PSR.clientSite.ClientSite.getModuleReady(moduleId, function (actions) {
+                    const item = parent.add(Object.assign({}, config, {actions: actions}));
+                    if (callback) {
+                        callback(item);
+                    }
+                });
+            } else {
+                const item = parent.add(config)
                 if (callback) {
                     callback(item);
                 }
-            });
-        } else {
-            const item = parent.add(config)
-            if (callback) {
-                callback(item);
             }
+        } else {
+            PSR.Message.error('启动模块组件失败：缺少参数')
         }
     }
 });

@@ -21,13 +21,14 @@ Ext.define('PSR.view.work.View', {
                 subViewConfigs = v.subViewConfigs,
                 subViewConfig = Object.assign({itemId: view, actions: actions, listeners: {}}, subViewConfigs[view]);
             subViewConfig.listeners.goback = 'goBack';
-            PSR.clientSite.ClientSite.addModuleItem(
-                subViewConfig.moduleId,
-                subViewConfig,
-                v,
-                function (item) {
+            PSR.clientSite.ClientSite.addModuleItem({
+                moduleId: subViewConfig.moduleId,
+                config: subViewConfig,
+                parent: v,
+                callback: function (item) {
                     v.goSubView(view, opt);
-                });
+                }
+            });
         } else {
             const stackItem = {view: subView, opt: opt, title: subView.getViewTitle()};
             v.subViewStack.push(stackItem);

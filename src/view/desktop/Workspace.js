@@ -13,18 +13,19 @@ Ext.define('PSR.view.desktop.workspace', {
                 viewConfig = node.get('viewConfig'),
                 nodeView = v.getComponent(nodeId);
             if (!nodeView) {
-                PSR.clientSite.ClientSite.addModuleItem(
-                    moduleId,
-                    Object.assign({itemId: nodeId}, viewConfig),
-                    v,
-                    function (nodeView) {
+                PSR.clientSite.ClientSite.addModuleItem({
+                    moduleId: moduleId,
+                    config: Object.assign({itemId: nodeId}, viewConfig),
+                    parent: v,
+                    callback: function (nodeView) {
                         v.setActiveItem(nodeView);
                         if (nodeView.getViewTitle) {
                             vm.set('viewTitle', nodeView.getViewTitle());
                         } else {
                             vm.set('viewTitle', '');
                         }
-                    });
+                    }
+                });
             } else {
                 v.setActiveItem(nodeView);
                 if (nodeView.getViewTitle) {
