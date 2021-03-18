@@ -50,8 +50,7 @@ Ext.define('PSR.service.Entity', {
     patch: function (opt) {
         PSR.clientSite.Ajax.request({
             method: 'PATCH',
-            url: this.getUrlPrefix() + '/' + opt.values.id,
-            params: {version: opt.values.version, props: opt.props.join(',')},
+            url: this.getUrlPrefix() + '/' + opt.values.id + '/' + opt.props.join(','),
             jsonData: opt.values,
             disableCaching: true,
             bizSuccess: opt.success,
