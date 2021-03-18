@@ -179,7 +179,11 @@ Ext.define('PSR.field.dialogSelect', {
         }
         if (value) {
             selectionReader(field, value, function (selection) {
-                displayer.setValue(selection[displayField]);
+                if (selection && selection[displayField]) {
+                    displayer.setValue(selection[displayField]);
+                } else {
+                    displayer.setValue(value);
+                }
             });
         } else {
             displayer.setValue(null);
