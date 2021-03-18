@@ -46,7 +46,8 @@ Ext.define('PSR.dialog.Form', {
         if (!form.validate()) {
             return
         }
-        const formData = new FormData(form.element.dom),
+        const values = form.getValues(),
+            formData = new FormData(form.element.dom),
             handler = me.getHandler(),
             dlgprogress = Ext.create({
                 xtype: 'dialog',
@@ -58,6 +59,11 @@ Ext.define('PSR.dialog.Form', {
             }),
             progress = dlgprogress.getAt(0);
         dlgprogress.show();
+        for (const valuesKey in values) {
+            if (!formData.get(valuesKey)) {
+                formData.set(valuesKey, values[valuesKey]);
+            }
+        }
         handler({
             formData: formData,
             success: function (data) {
