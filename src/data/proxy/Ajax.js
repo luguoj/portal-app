@@ -1,7 +1,8 @@
 Ext.define('PSR.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     alias: 'proxy.psr-ajax',
-    limitParam: 'pageSize',
+    limitParam: 'limit',
+    startParam: 'offset',
     simpleSortMode: true,
     reader: {
         type: 'json',
