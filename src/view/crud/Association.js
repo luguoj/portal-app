@@ -90,7 +90,6 @@ Ext.define('PSR.view.crud.Association', {
         // 编辑工具栏
         tbeditor = {
             xtype: 'psr-toolbar-editor', reference: 'tbeditor',
-            flex: 1,
             resetHandler: 'reset',
             bind: {editable: '{action_' + updateAction + '}'}
         };
