@@ -3,6 +3,7 @@ Ext.define('PSR.grid.column.HrefAction', {
     xtype: 'psr-grid-column-hrefaction',
     config: {
         action: null,
+        isRecordProperty: 'isRecord'
     },
     align: 'center',
     menuDisabled: true, sortable: false,
@@ -11,10 +12,11 @@ Ext.define('PSR.grid.column.HrefAction', {
         this.setMinWidth(width);
     },
     constructor: function (config) {
+        const isRecordProperty = config.isRecordProperty || this.config.isRecordProperty;
         this.config.cell = {
             xtype: 'psr-grid-cell-href',
             renderer: function (value, record) {
-                return record.data.isRecord ? config.text : '';
+                return record.data[isRecordProperty] ? config.text : '';
             },
             handler: config.action
         };
