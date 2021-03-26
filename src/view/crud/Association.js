@@ -49,11 +49,22 @@ Ext.define('PSR.view.crud.Association', {
         const vThis = this,
             actionPrefix = config.actionPrefix || this.config.actionPrefix,
             isTree = config.isTree || this.config.isTree,
-            columns = [].concat(config.columns || this.config.columns || []),
             actionColumns = [].concat(config.actionColumns || this.config.actionColumns || []),
             configItemController = Object.assign({}, this.config.itemController, config.itemController),
             title = config.viewTitle || this.config.viewTitle,
-            updateAction = config.updateAction || this.config.updateAction;
+            updateAction = config.updateAction || this.config.updateAction,
+            columns = [{
+                xtype: 'psr-grid-column-toggle',
+                flagIndex: 'assignFlag',
+                disabledBinding: '!tbeditor.editing',
+                toggleHandler: 'associate'
+            }, {
+                xtype: isTree ? 'treecolumn' : 'column',
+                text: title, flex: 1, menuDisabled: true,
+                dataIndex: 'displaytext',
+                cell: {encodeHtml: false},
+                renderer: 'filterRenderer'
+            }].concat(config.columns || this.config.columns || []);
 
         //*** 创建工具栏
         const listToolbars = [];
@@ -89,19 +100,7 @@ Ext.define('PSR.view.crud.Association', {
         //*** 创建界面元素
         const listItems = [];
         // 清单表格
-        const grdColumn = [{
-                xtype: 'psr-grid-column-toggle',
-                flagIndex: 'assignFlag',
-                disabledBinding: '!tbeditor.editing',
-                toggleHandler: 'associate'
-            }, {
-                xtype: isTree ? 'treecolumn' : 'column',
-                text: title, flex: 1, menuDisabled: true,
-                dataIndex: 'displaytext',
-                cell: {encodeHtml: false},
-                renderer: 'filterRenderer'
-            }].concat(columns),
-            grdItemController = {
+        const grdItemController = {
                 filterRenderer: function (value) {
                     const filterText = vThis.getViewModel().get('tbsearch.filterText');
                     return PSR.util.Grid.filterRenderer(value, filterText);
@@ -126,7 +125,7 @@ Ext.define('PSR.view.crud.Association', {
             grd = {
                 reference: 'grd',
                 rowLines: true, columnLines: true,
-                columns: grdColumn,
+                columns: columns,
                 bind: {store: '{entities}'},
                 itemConfig: {
                     viewModel: {},
@@ -143,6 +142,8 @@ Ext.define('PSR.view.crud.Association', {
                     xtype: 'psr-grid-column-hrefaction',
                     text: text,
                     action: action,
+                    isRecordProperty: 'assignFlag',
+                    dataIndex: 'assignFlag',
                     bind: {hidden: '{!action_' + actionPrefix + action + '}'}
                 });
                 grdItemController[action] = function (record) {
@@ -189,6 +190,10 @@ Ext.define('PSR.view.crud.Association', {
             PSR.Message.error('CRUD视图缺少getService');
         }
         const controller = {
+            fireActionEvent: function (eventName, record) {
+                const selection = (record && record.isModel) ? record : this.lookup('grd').getSelection();
+                this.getView().fireEvent(eventName, {selection: selection ? selection.data : null});
+            },
             initAssociation: function (record, initchildren) {
                 const me = this,
                     vm = me.getViewModel(),
