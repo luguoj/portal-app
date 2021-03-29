@@ -6,7 +6,7 @@ Ext.define('PSR.service.Entity', {
             url: this.getUrlPrefix() + '/' + opt.id,
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete,
             onErrorMessage: opt.onErrorMessage
         });
@@ -18,7 +18,7 @@ Ext.define('PSR.service.Entity', {
             params: {searchParams: JSON.stringify(opt.searchParams)},
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete,
             onErrorMessage: opt.onErrorMessage
         });
@@ -30,7 +30,7 @@ Ext.define('PSR.service.Entity', {
             jsonData: opt.values,
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete,
             onErrorMessage: opt.onErrorMessage
         });
@@ -42,7 +42,7 @@ Ext.define('PSR.service.Entity', {
             jsonData: opt.values,
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete,
             onErrorMessage: opt.onErrorMessage
         });
@@ -54,7 +54,7 @@ Ext.define('PSR.service.Entity', {
             jsonData: opt.values,
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete,
             onErrorMessage: opt.onErrorMessage
         });
@@ -65,7 +65,7 @@ Ext.define('PSR.service.Entity', {
             url: this.getUrlPrefix() + '/' + opt.id,
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete,
             onErrorMessage: opt.onErrorMessage
         });

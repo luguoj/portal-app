@@ -7,7 +7,7 @@ Ext.define('PSR.clientSite.service.ClientSite', {
             withCredentials: true,
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete
         });
     },
@@ -33,7 +33,7 @@ Ext.define('PSR.clientSite.service.ClientSite', {
             withCredentials: true,
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete
         });
     }

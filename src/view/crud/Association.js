@@ -337,9 +337,6 @@ Ext.define('PSR.view.crud.Association', {
                             me.initAssociation(record);
                             Ext.toast('保存成功');
                         },
-                        failure: function () {
-                            Ext.toast('保存失败');
-                        },
                         complete: function () {
                             v.unmask();
                         }
@@ -360,9 +357,6 @@ Ext.define('PSR.view.crud.Association', {
                             delete (associations[record.data.id]);
                             me.initAssociation(record);
                             Ext.toast('保存成功');
-                        },
-                        failure: function () {
-                            Ext.toast('保存失败');
                         },
                         complete: function () {
                             v.unmask();

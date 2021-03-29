@@ -123,9 +123,6 @@ Ext.define('PSR.dataview.Picture', {
                 Ext.toast("上传成功");
                 store.load();
             },
-            failure: function () {
-                Ext.toast("上传失败")
-            },
             complete: function () {
                 dlgprogress.close();
                 me.unmask();

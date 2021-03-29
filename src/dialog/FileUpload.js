@@ -76,9 +76,6 @@ Ext.define('PSR.dialog.FileUpload', {
             success: function (data) {
                 Ext.toast("上传成功");
             },
-            failure: function () {
-                Ext.toast("上传失败")
-            },
             complete: function () {
                 dlgprogress.close();
                 me.unmask();

@@ -153,9 +153,6 @@ Ext.define('PSR.view.crud.Details', {
                             v.setValues(data);
                         }
                     },
-                    failure: function () {
-                        PSR.Message.info("保存失败")
-                    },
                     complete: function () {
                         v.unmask();
                     }
@@ -185,9 +182,6 @@ Ext.define('PSR.view.crud.Details', {
                             goBackOpt.record = data;
                             v.setValues(data);
                         }
-                    },
-                    failure: function () {
-                        PSR.Message.info("保存失败")
                     },
                     complete: function () {
                         v.unmask();
