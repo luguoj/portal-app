@@ -4,6 +4,9 @@ Ext.define('PSR.view.dialog.Import', {
     width: 1000, height: '80%',
     layout: 'vbox', padding: 0,
     config: {
+        dataReader: function (readerResult) {
+            return JSON.parse(readerResult);
+        },
         saveHandler: null,
         columns: []
     },
@@ -80,6 +83,7 @@ Ext.define('PSR.view.dialog.Import', {
     },
     onChange: function () {
         const me = this,
+            dataReader = me.getDataReader(),
             grid = me.down('grid'),
             filefield = me.down('filefield'),
             dlgprogress = me.down('psr-dialog-progress'),
@@ -97,7 +101,7 @@ Ext.define('PSR.view.dialog.Import', {
             store.removeAll();
             reader.addEventListener("load", function () {
                 try {
-                    const records = JSON.parse(reader.result);
+                    const records = dataReader(reader.result);
                     if (records && records.length > 0) {
                         for (let i = 0; i < records.length; i++) {
                             const record = Object.assign({}, records[i]);
@@ -166,8 +170,9 @@ Ext.define('PSR.view.dialog.Import', {
                 record.set('importStatus', 'success');
                 record.set('importMessage', '导入成功');
             },
-            failure: function (respObj) {
+            onErrorMessage: function (message, opt) {
                 record.set('importStatus', 'failure');
+                record.set('importMessage', message);
             },
             complete: function () {
                 progress(recordIndex + 1);
@@ -176,9 +181,6 @@ Ext.define('PSR.view.dialog.Import', {
                 } else {
                     complete();
                 }
-            },
-            onErrorMessage: function (message) {
-                record.set('importMessage', message);
             }
         });
     }
