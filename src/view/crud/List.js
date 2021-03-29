@@ -171,7 +171,7 @@ Ext.define('PSR.view.crud.List', {
         if (isTree) {
             Object.assign(grd, {
                 xtype: 'tree',
-                rootVisible: false,
+                rootVisible: true,
                 listeners: {beforedrop: 'grdBeforeDrop', drop: 'grdDrop'}
             });
         } else {
