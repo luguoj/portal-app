@@ -14,14 +14,14 @@ Ext.define('PSR.panel.SplitScreenWebView', {
             const subScreen = subScreens[i],
                 cmpConfig = {items: []};
             subScreen.left = subScreen.left ? subScreen.left : 0;
-            subScreen.right = subScreen.right ? subScreen.right : 0;
+            subScreen.top = subScreen.top ? subScreen.top : 0;
             subScreen.width = subScreen.width ? subScreen.width : '100%';
             subScreen.height = subScreen.height ? subScreen.height : '100%';
             items.push({
                 xtype: 'container',
                 layout: 'fit',
                 left: subScreen.left,
-                right: subScreen.right,
+                top: subScreen.top,
                 width: subScreen.width,
                 height: subScreen.height,
                 items: [cmpConfig, {
@@ -44,14 +44,14 @@ Ext.define('PSR.panel.SplitScreenWebView', {
                         }
                         if (subContainer.subViewMaximized) {
                             subContainer.setLeft(subScreen.left);
-                            subContainer.setRight(subScreen.right);
+                            subContainer.setTop(subScreen.top);
                             subContainer.setWidth(subScreen.width);
                             subContainer.setHeight(subScreen.height);
                             button.setIconCls('x-fa fa-caret-up');
                             subContainer.subViewMaximized = false;
                         } else {
                             subContainer.setLeft(0);
-                            subContainer.setRight(0);
+                            subContainer.setTop(0);
                             subContainer.setWidth('100%');
                             subContainer.setHeight('100%');
                             button.setIconCls('x-fa fa-caret-down');
