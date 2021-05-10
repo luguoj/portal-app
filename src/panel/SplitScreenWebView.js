@@ -26,7 +26,7 @@ Ext.define('PSR.panel.SplitScreenWebView', {
                 height: subScreen.height,
                 items: [cmpConfig, {
                     xtype: 'button',
-                    iconCls: 'x-fa fa-caret-down',
+                    iconCls: 'x-fa fa-caret-up',
                     right: 0,
                     top: 0,
                     width: 36,
@@ -43,17 +43,19 @@ Ext.define('PSR.panel.SplitScreenWebView', {
                             }
                         }
                         if (subContainer.subViewMaximized) {
-                            subContainer.subViewMaximized = false;
                             subContainer.setLeft(subScreen.left);
                             subContainer.setRight(subScreen.right);
                             subContainer.setWidth(subScreen.width);
                             subContainer.setHeight(subScreen.height);
+                            button.setIconCls('x-fa fa-caret-up');
+                            subContainer.subViewMaximized = false;
                         } else {
-                            subContainer.subViewMaximized = true;
                             subContainer.setLeft(0);
                             subContainer.setRight(0);
                             subContainer.setWidth('100%');
                             subContainer.setHeight('100%');
+                            button.setIconCls('x-fa fa-caret-down');
+                            subContainer.subViewMaximized = true;
                         }
                     }
                 }]
