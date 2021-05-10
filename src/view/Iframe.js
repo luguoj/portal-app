@@ -8,6 +8,7 @@ Ext.define('PSR.view.Iframe', {
         reference: 'element',
         children: [{
             reference: 'iframe',
+            scrolling: 'no',
             tag: 'iframe',
             frameborder: "0",
             width: "100%",
