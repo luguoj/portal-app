@@ -13,11 +13,51 @@ Ext.define('PSR.panel.SplitScreenWebView', {
         for (let i = 0; i < subScreens.length; i++) {
             const subScreen = subScreens[i],
                 cmpConfig = {items: []};
-            items.push(cmpConfig);
-            cmpConfig.left = subScreen.left;
-            cmpConfig.right = subScreen.right;
-            cmpConfig.width = subScreen.width;
-            cmpConfig.height = subScreen.height;
+            subScreen.left = subScreen.left ? subScreen.left : 0;
+            subScreen.right = subScreen.right ? subScreen.right : 0;
+            subScreen.width = subScreen.width ? subScreen.width : '100%';
+            subScreen.height = subScreen.height ? subScreen.height : '100%';
+            items.push({
+                xtype: 'container',
+                layout: 'fit',
+                left: subScreen.left,
+                right: subScreen.right,
+                width: subScreen.width,
+                height: subScreen.height,
+                items: [cmpConfig, {
+                    xtype: 'button',
+                    iconCls: 'x-fa fa-caret-down',
+                    right: 0,
+                    top: 0,
+                    width: 36,
+                    height: 36,
+                    handler: function (button) {
+                        const subContainer = button.up('container');
+                        for (const item of me.items.items) {
+                            if (item != subContainer) {
+                                if (subContainer.subViewMaximized) {
+                                    item.show();
+                                } else {
+                                    item.hide();
+                                }
+                            }
+                        }
+                        if (subContainer.subViewMaximized) {
+                            subContainer.subViewMaximized = false;
+                            subContainer.setLeft(subScreen.left);
+                            subContainer.setRight(subScreen.right);
+                            subContainer.setWidth(subScreen.width);
+                            subContainer.setHeight(subScreen.height);
+                        } else {
+                            subContainer.subViewMaximized = true;
+                            subContainer.setLeft(0);
+                            subContainer.setRight(0);
+                            subContainer.setWidth('100%');
+                            subContainer.setHeight('100%');
+                        }
+                    }
+                }]
+            });
             if (subScreen.urls) {
                 if (subScreen.urls.length > 1) {
                     cmpConfig.xtype = 'carousel';
@@ -32,6 +72,7 @@ Ext.define('PSR.panel.SplitScreenWebView', {
                     };
                 } else {
                     cmpConfig.xtype = 'container';
+                    cmpConfig.layout = 'fit';
                 }
                 for (let j = 0; j < subScreen.urls.length; j++) {
                     const url = subScreen.urls[j];
