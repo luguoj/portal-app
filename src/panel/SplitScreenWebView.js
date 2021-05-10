@@ -80,6 +80,8 @@ Ext.define('PSR.panel.SplitScreenWebView', {
                     const url = subScreen.urls[j];
                     cmpConfig.items.push({xtype: 'psr-iframe', src: url});
                 }
+            } else if (subScreen.cmpConfig) {
+                Object.assign(cmpConfig, subScreen.cmpConfig);
             }
         }
         me.callParent([config]);
