@@ -191,7 +191,7 @@ Ext.define('PSR.view.desktop.Main', {
                     params: {
                         searchParams: JSON.stringify({userId: [PSR.util.service.Entity.searchParams.include.equal(PSR.clientSite.ClientSite.clientToken.username)]}),
                     },
-                    url: window.gatewaySite + '/organization/api/personnel',
+                    url: window.gatewaySite + '/organization/api/entity/personnel',
                     disableCaching: true,
                     bizSuccess: function (result) {
                         PSR.view.desktop.Main.personnel = result.content[0];
