@@ -136,7 +136,7 @@ Ext.define('PSR.view.crud.List', {
                 go_details: function (record) {
                     const action_go_details = vThis.getViewModel().get('action_' + actionPrefix + 'go_details');
                     if (action_go_details) {
-                        vThis.getController().fireActionEvent('go_details', {record: record});
+                        vThis.getController().fireActionEvent('go_details', record);
                     }
                 }
             },
