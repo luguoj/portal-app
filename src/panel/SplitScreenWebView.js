@@ -12,7 +12,11 @@ Ext.define('PSR.panel.SplitScreenWebView', {
         config.items = items;
         for (let i = 0; i < subScreens.length; i++) {
             const subScreen = subScreens[i],
-                cmpConfig = {items: []};
+                cmpConfig = {
+                    xtype: 'container',
+                    layout: {type: 'card', animation: 'fade'},
+                    items: []
+                };
             subScreen.left = subScreen.left ? subScreen.left : 0;
             subScreen.top = subScreen.top ? subScreen.top : 0;
             subScreen.width = subScreen.width ? subScreen.width : '100%';
@@ -26,7 +30,7 @@ Ext.define('PSR.panel.SplitScreenWebView', {
                 height: subScreen.height,
                 items: [cmpConfig, {
                     xtype: 'button',
-                    iconCls: 'x-fa fa-caret-up',
+                    iconCls: 'x-fa fa-caret-up p-color-base-0_3-important',
                     right: 0,
                     top: 0,
                     width: 36,
@@ -47,34 +51,42 @@ Ext.define('PSR.panel.SplitScreenWebView', {
                             subContainer.setTop(subScreen.top);
                             subContainer.setWidth(subScreen.width);
                             subContainer.setHeight(subScreen.height);
-                            button.setIconCls('x-fa fa-caret-up');
+                            button.setIconCls('x-fa fa-caret-up p-color-base-0_3-important');
                             subContainer.subViewMaximized = false;
                         } else {
                             subContainer.setLeft(0);
                             subContainer.setTop(0);
                             subContainer.setWidth('100%');
                             subContainer.setHeight('100%');
-                            button.setIconCls('x-fa fa-caret-down');
+                            button.setIconCls('x-fa fa-caret-down p-color-base-0_3-important');
                             subContainer.subViewMaximized = true;
                         }
+                    }
+                }, {
+                    xtype: 'button',
+                    tooltip: '重置', iconCls: 'x-fa fa-undo p-color-base-0_3-important',
+                    right: 36,
+                    top: 0,
+                    width: 36,
+                    height: 36,
+                    handler: function (button) {
+                        const subContainer = button.up('container'),
+                            cmpContainer = subContainer.getAt(0);
+                        cmpContainer.getActiveItem().refresh();
                     }
                 }]
             });
             if (subScreen.urls) {
                 if (subScreen.urls.length > 1) {
-                    cmpConfig.xtype = 'carousel';
                     cmpConfig.afterRender = function () {
                         Ext.interval(function () {
-                            if (this.getActiveIndex() == this.items.length - 2) {
+                            if (this.getActiveItemIndex() == this.items.length - 1) {
                                 this.setActiveItem(0);
                             } else {
-                                this.next();
+                                this.setActiveItem(this.getActiveItemIndex() + 1);
                             }
                         }, subScreen.interval ? subScreen.interval : 2000, this)
                     };
-                } else {
-                    cmpConfig.xtype = 'container';
-                    cmpConfig.layout = 'fit';
                 }
                 for (let j = 0; j < subScreen.urls.length; j++) {
                     const url = subScreen.urls[j];
