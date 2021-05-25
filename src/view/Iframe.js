@@ -48,5 +48,8 @@ Ext.define('PSR.view.Iframe', {
     },
     onHashChange: function (e) {
         this.fireEvent('hashchange', this, e);
+    },
+    refresh: function () {
+        this.iframe.dom.setAttribute('src', this.getSrc());
     }
 });
