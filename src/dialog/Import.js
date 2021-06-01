@@ -127,11 +127,6 @@ Ext.define('PSR.view.dialog.Import', {
                 loaded++;
                 dlgprogress.setProgress(loaded);
                 if (loaded != total) {
-                    if (readerType == 'json') {
-
-                    } else {
-
-                    }
                     readerDataReader(files[loaded], reader);
                 } else {
                     dlgprogress.setTotal(0);
