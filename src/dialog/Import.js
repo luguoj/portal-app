@@ -4,8 +4,13 @@ Ext.define('PSR.view.dialog.Import', {
     width: 1000, height: '80%',
     layout: 'vbox', padding: 0,
     config: {
-        dataReader: function (readerResult) {
-            return JSON.parse(readerResult);
+        reader: {
+            type: 'json',
+            transform: function (data) {
+                return data;
+            },
+            extractor: null,
+            dataReader: null
         },
         saveHandler: null,
         columns: [],
@@ -52,10 +57,11 @@ Ext.define('PSR.view.dialog.Import', {
     }, {
         xtype: 'psr-dialog-progress'
     }],
-    updateAccept:function (value){
-      this.down('filefield').setAccept(value);
+    updateAccept: function (value) {
+        this.down('filefield').setAccept(value);
     },
     constructor: function (config) {
+        config.reader = Object.assign({}, this.config.reader, config.reader);
         this.callParent([config]);
         const grid = this.down('grid'),
             columns = this.getColumns();
@@ -87,7 +93,11 @@ Ext.define('PSR.view.dialog.Import', {
     },
     onChange: function () {
         const me = this,
-            dataReader = me.getDataReader(),
+            reader = me.getReader(),
+            readerType = reader.type,
+            readerDataReader = reader.dataReader ? reader.dataReader : PSR.view.dialog.Import.dataReaders[readerType],
+            readerExtractor = reader.extractor ? reader.extractor : PSR.view.dialog.Import.extractors[readerType],
+            readerTransform = reader.transform,
             grid = me.down('grid'),
             filefield = me.down('filefield'),
             dlgprogress = me.down('psr-dialog-progress'),
@@ -103,13 +113,12 @@ Ext.define('PSR.view.dialog.Import', {
             dlgprogress.setTotal(total);
             dlgprogress.setProgress(loaded);
             store.removeAll();
-            reader.addEventListener("load", function (e) {debugger
+            reader.addEventListener("load", function (e) {
                 try {
-                    const records = dataReader(reader.result);
-                    if (records && records.length > 0) {
-                        for (let i = 0; i < records.length; i++) {
-                            const record = Object.assign({}, records[i]);
-                            store.add(records[i]);
+                    const data = readerTransform(readerExtractor(reader.result));
+                    if (data && data.length > 0) {
+                        for (let i = 0; i < data.length; i++) {
+                            store.add(data[i]);
                         }
                     }
                 } catch (e) {
@@ -118,13 +127,18 @@ Ext.define('PSR.view.dialog.Import', {
                 loaded++;
                 dlgprogress.setProgress(loaded);
                 if (loaded != total) {
-                    reader.readAsText(files[loaded]);
+                    if (readerType == 'json') {
+
+                    } else {
+
+                    }
+                    readerDataReader(files[loaded], reader);
                 } else {
                     dlgprogress.setTotal(0);
                     dlgprogress.setProgress(0);
                 }
             }, false);
-            reader.readAsText(files[0]);
+            readerDataReader(files[0], reader);
         }
     },
     onSave: function () {
@@ -187,6 +201,23 @@ Ext.define('PSR.view.dialog.Import', {
                 }
             }
         });
+    },
+    statics: {
+        extractors: {
+            json: function (readerResult) {
+                return JSON.parse(readerResult);
+            },
+            xlsx: function (readerResult) {
+                return PSR.util.Xlsx.extractData(readerResult)
+            }
+        },
+        dataReaders: {
+            json: function (file, reader) {
+                return reader.readAsText(file);
+            },
+            xlsx: function (file, reader) {
+                return reader.readAsBinaryString(file);
+            }
+        }
     }
-
 });
