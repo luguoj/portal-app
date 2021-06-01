@@ -8,7 +8,8 @@ Ext.define('PSR.view.dialog.Import', {
             return JSON.parse(readerResult);
         },
         saveHandler: null,
-        columns: []
+        columns: [],
+        accept: null
     },
     items: [{
         xtype: 'psr-toolbar-navigation',
@@ -51,6 +52,9 @@ Ext.define('PSR.view.dialog.Import', {
     }, {
         xtype: 'psr-dialog-progress'
     }],
+    updateAccept:function (value){
+      this.down('filefield').setAccept(value);
+    },
     constructor: function (config) {
         this.callParent([config]);
         const grid = this.down('grid'),
@@ -99,7 +103,7 @@ Ext.define('PSR.view.dialog.Import', {
             dlgprogress.setTotal(total);
             dlgprogress.setProgress(loaded);
             store.removeAll();
-            reader.addEventListener("load", function () {
+            reader.addEventListener("load", function (e) {debugger
                 try {
                     const records = dataReader(reader.result);
                     if (records && records.length > 0) {
