@@ -92,14 +92,14 @@ Ext.define('PSR.panel.BatchExecutor', {
                             dlgprogress.setProgress(dlgprogress.getProgress() + 1);
                             me.executeStatus = 'waiting';
                         } else {
+                            clearInterval(timer);
                             dlgprogress.setTotal(0);
                             dlgprogress.setProgress(0);
                             me.executeStatus = 'complete';
-                            clearInterval(timer);
                         }
                     }
                 }], 0, me);
             }
-        }, 50);
+        }, 10);
     }
 });
