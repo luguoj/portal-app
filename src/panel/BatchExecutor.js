@@ -39,14 +39,30 @@ Ext.define('PSR.panel.BatchExecutor', {
             xtype: 'psr-dialog-progress'
         });
     },
-    execute: function () {
+    executeStatus: 'complete',
+    execute: function (filter) {
+        if (this.executeStatus != 'complete') {
+            return;
+        }
+        this.executeStatus = 'waiting';
         const me = this,
             dlgprogress = me.dlgprocess,
-            params = me.params,
-            store = me.getStore(),
+            handler = me.getHandler(),
+            store = me.getStore();
+        let records = [];
+        if (filter) {
+            for (let i = 0; i < store.getData().items.length; i++) {
+                const item = store.getData().items[i];
+                if (filter(item)) {
+                    records.push(item);
+                }
+            }
+        } else {
             records = store.getData().items;
+        }
         if (!records || records.length == 0) {
             PSR.Message.info("没有任务");
+            this.executeStatus = 'complete';
             return;
         }
         for (let i = 0; i < records.length; i++) {
@@ -55,47 +71,35 @@ Ext.define('PSR.panel.BatchExecutor', {
         }
         dlgprogress.setTotal(records.length);
         dlgprogress.setProgress(0);
-        me.doExecute({
-            records: records,
-            recordIndex: 0,
-            progress: function (progress) {
-                dlgprogress.setProgress(progress);
-            },
-            complete: function () {
-                dlgprogress.setTotal(0);
-                dlgprogress.setProgress(0);
+        let timer = setInterval(function () {
+            if (me.executeStatus == 'waiting') {
+                me.executeStatus = 'executing';
+                const record = records[dlgprogress.getProgress()];
+                record.set('executeStatus', 'executing');
+                record.set('executeMessage', '执行中');
+                Ext.callback(handler, me, [{
+                    values: Object.assign({}, record.data),
+                    success: function () {
+                        record.set('executeStatus', 'success');
+                        record.set('executeMessage', '执行成功');
+                    },
+                    onErrorMessage: function (message) {
+                        record.set('executeStatus', 'failure');
+                        record.set('executeMessage', message);
+                    },
+                    complete: function () {
+                        if (dlgprogress.getProgress() < records.length - 1 && me.executeStatus == 'executing') {
+                            dlgprogress.setProgress(dlgprogress.getProgress() + 1);
+                            me.executeStatus = 'waiting';
+                        } else {
+                            dlgprogress.setTotal(0);
+                            dlgprogress.setProgress(0);
+                            me.executeStatus = 'complete';
+                            clearInterval(timer);
+                        }
+                    }
+                }], 0, me);
             }
-        });
-    },
-    doExecute: function (opt) {
-        const me = this,
-            handler = me.getHandler(),
-            records = opt.records,
-            recordIndex = opt.recordIndex,
-            progress = opt.progress,
-            complete = opt.complete,
-            record = opt.records[recordIndex],
-            values = Object.assign({}, record.data);
-        record.set('executeStatus', 'executing');
-        record.set('executeMessage', '执行中');
-        Ext.callback(handler, me, [{
-            values: values,
-            success: function () {
-                record.set('executeStatus', 'success');
-                record.set('executeMessage', '执行成功');
-            },
-            onErrorMessage: function (message) {
-                record.set('executeStatus', 'failure');
-                record.set('executeMessage', message);
-            },
-            complete: function () {
-                progress(recordIndex + 1);
-                if (recordIndex < records.length - 1) {
-                    me.doExecute(Object.assign({}, opt, {recordIndex: recordIndex + 1}));
-                } else {
-                    complete();
-                }
-            }
-        }], 0, me);
-    },
+        }, 50);
+    }
 });
