@@ -35,7 +35,7 @@ Ext.define('PSR.panel.BatchExecutor', {
             });
         }
         me.callParent([config]);
-        me.dlgprocess = Ext.create({
+        me.dlgprocess = this.add({
             xtype: 'psr-dialog-progress'
         });
     },
