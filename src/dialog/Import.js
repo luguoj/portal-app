@@ -10,83 +10,61 @@ Ext.define('PSR.view.dialog.Import', {
                 return data;
             },
             extractor: null,
-            dataReader: null
+            fileReader: null
         },
-        saveHandler: null,
+        handler: null,
         columns: [],
         accept: null
     },
-    items: [{
-        xtype: 'psr-toolbar-navigation',
-        title: '导入',
-        items: [{
-            xtype: 'psr-button-reset',
-            align: 'right',
-            handler: function () {
-                this.up('psr-dialog-import').onChange();
+    constructor: function (config) {
+        const me = this,
+            accept = config.accept || this.config.accept,
+            column = [].concat(this.config.columns, config.columns),
+            handler = config.handler || this.config.handler;
+        config.items = [{
+            xtype: 'psr-toolbar-navigation',
+            title: '导入',
+            items: [{
+                xtype: 'psr-button-reset',
+                align: 'right',
+                handler: function () {
+                    me.onChange();
+                }
+            }, {
+                xtype: 'psr-button-save',
+                align: 'right',
+                handler: function () {
+                    me.onSave();
+                }
+            }],
+            goBackHandler: function () {
+                me.close();
             }
         }, {
-            xtype: 'psr-button-save',
-            align: 'right',
-            handler: function () {
-                this.up('psr-dialog-import').onSave();
-            }
-        }],
-        goBackHandler: function () {
-            this.up('psr-dialog-import').close();
-        }
-    }, {
-        xtype: 'toolbar', docked: 'top',
-        items: [{
-            xtype: 'filefield', flex: 1,
-            name: 'file',
-            placeholder: '选择文件', required: true, multiple: true,
-            listeners: {
-                change: function () {
-                    this.up('psr-dialog-import').onChange();
-                }
-            }
-        }]
-    }, {
-        xtype: 'grid', flex: 1,
-        border: true, rowLines: true, columnLines: true,
-        columns: [],
-        store: {
-            data: []
-        }
-    }, {
-        xtype: 'psr-dialog-progress'
-    }],
-    updateAccept: function (value) {
-        this.down('filefield').setAccept(value);
-    },
-    constructor: function (config) {
-        config.reader = Object.assign({}, this.config.reader, config.reader);
-        this.callParent([config]);
-        const grid = this.down('grid'),
-            columns = this.getColumns();
-        columns.unshift({
-            text: '导入', dataIndex: 'importStatus', width: 51,
-            menuDisabled: true,
-            cell: {
-                encodeHtml: false
-            },
-            renderer: function (value, record) {
-                let cls = '',
-                    importMessage = record.get('importMessage');
-                if (value) {
-                    if (value == 'importing') {
-                        cls = 'x-fa fa-spinner fa-spin';
-                    } else if (value == 'success') {
-                        cls = 'x-fa fa-check-circle p-confirm';
-                    } else if (value == 'failure') {
-                        cls = 'x-fa fa-times-circle p-decline';
+            xtype: 'toolbar', docked: 'top',
+            items: [{
+                xtype: 'filefield', flex: 1,
+                name: 'file', accept: accept,
+                placeholder: '选择文件', required: true, multiple: true,
+                listeners: {
+                    change: function () {
+                        me.onChange();
                     }
                 }
-                return '<div class="x-treecell x-icon-el x-font-icon ' + cls + '"></div>' + (importMessage ? importMessage : '');
-            }
-        });
-        grid.setColumns(columns);
+            }]
+        }, {
+            xtype: 'psr-panel-batchexecutor', flex: 1,
+            border: true,
+            columns: column,
+            store: {
+                data: []
+            },
+            handler: handler
+        }, {
+            xtype: 'psr-dialog-progress'
+        }];
+        config.reader = Object.assign({}, this.config.reader, config.reader);
+        this.callParent([config]);
     },
     load: function (opt) {
         this.params = opt.params;
@@ -95,10 +73,10 @@ Ext.define('PSR.view.dialog.Import', {
         const me = this,
             reader = me.getReader(),
             readerType = reader.type,
-            readerDataReader = reader.dataReader ? reader.dataReader : PSR.view.dialog.Import.dataReaders[readerType],
+            readerFileReader = reader.fileReader ? reader.fileReader : PSR.view.dialog.Import.fileReaders[readerType],
             readerExtractor = reader.extractor ? reader.extractor : PSR.view.dialog.Import.extractors[readerType],
             readerTransform = reader.transform,
-            grid = me.down('grid'),
+            grid = me.down('psr-panel-batchexecutor'),
             filefield = me.down('filefield'),
             dlgprogress = me.down('psr-dialog-progress'),
             store = grid.getStore(),
@@ -127,75 +105,23 @@ Ext.define('PSR.view.dialog.Import', {
                 loaded++;
                 dlgprogress.setProgress(loaded);
                 if (loaded != total) {
-                    readerDataReader(files[loaded], reader);
+                    readerFileReader(files[loaded], reader);
                 } else {
                     dlgprogress.setTotal(0);
                     dlgprogress.setProgress(0);
                 }
             }, false);
-            readerDataReader(files[0], reader);
+            readerFileReader(files[0], reader);
         }
     },
     onSave: function () {
         const me = this,
-            grid = me.down('grid'),
+            grid = me.down('psr-panel-batchexecutor'),
             dlgprogress = me.down('psr-dialog-progress'),
             params = me.params,
             store = grid.getStore(),
             records = store.getData().items;
-        if (!records || records.length == 0) {
-            PSR.Message.info("没有数据");
-            return;
-        }
-        for (let i = 0; i < records.length; i++) {
-            records[i].set('importStatus', 'importing');
-            records[i].set('importMessage', '导入中');
-        }
-        dlgprogress.setTotal(records.length);
-        dlgprogress.setProgress(0);
-        me.doSave({
-            records: records,
-            params: params,
-            recordIndex: 0,
-            progress: function (progress) {
-                dlgprogress.setProgress(progress);
-            },
-            complete: function () {
-                dlgprogress.setTotal(0);
-                dlgprogress.setProgress(0);
-            }
-        });
-    },
-    doSave: function (opt) {
-        const me = this,
-            saveHandler = me.getSaveHandler(),
-            records = opt.records,
-            params = opt.params,
-            recordIndex = opt.recordIndex,
-            progress = opt.progress,
-            complete = opt.complete,
-            record = opt.records[recordIndex],
-            values = Object.assign({}, record.data, params);
-        record.set('importStatus', 'importing');
-        saveHandler({
-            values: values,
-            success: function (respObj) {
-                record.set('importStatus', 'success');
-                record.set('importMessage', '导入成功');
-            },
-            onErrorMessage: function (message, opt) {
-                record.set('importStatus', 'failure');
-                record.set('importMessage', message);
-            },
-            complete: function () {
-                progress(recordIndex + 1);
-                if (recordIndex < records.length - 1) {
-                    me.doSave(Object.assign({}, opt, {recordIndex: recordIndex + 1}));
-                } else {
-                    complete();
-                }
-            }
-        });
+        grid.execute();
     },
     statics: {
         extractors: {
@@ -206,7 +132,7 @@ Ext.define('PSR.view.dialog.Import', {
                 return PSR.util.Xlsx.extractData(readerResult)
             }
         },
-        dataReaders: {
+        fileReaders: {
             json: function (file, reader) {
                 return reader.readAsText(file);
             },
