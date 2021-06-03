@@ -1,8 +1,25 @@
-# 配置项
-## 1. handler 记录处理函数
-### 1.1.  参数清单
-opt 处理选项对象
-- opt.values 当前记录值对象
-- opt.success:function() 当前记录处理成功回调
-- opt.onErrorMessage:function(message) 当前记录失败消息回调
-- opt.complete:function() 当前记录处理完成回调(无论成功/失败/异常)
+# 方法
+
+## 1. execute 执行批量处理
+使用案例
+```js
+batchExecutor.execute({
+    // 过滤需要执行的任务记录条目
+    filter: function (record) {
+        return record.get('flag');
+    },
+    // 执行处理逻辑
+    handler: function (opt) {
+        // opt.values 当前任务记录的数据值对象
+        let errorMsg = doSomething(opt.values)
+        // 根据执行成功与否标记当前任务记录的处理状态
+        if (errorMsg) {
+            opt.onErrorMessage(errorMsg);
+        } else {
+            opt.success();
+        }
+        // 执行完成执行下一个任务记录
+        opt.complete();
+    }
+});
+```
