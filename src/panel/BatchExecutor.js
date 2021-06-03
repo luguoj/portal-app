@@ -1,9 +1,6 @@
 Ext.define('PSR.panel.BatchExecutor', {
     xtype: 'psr-panel-batchexecutor',
     extend: 'Ext.grid.Grid',
-    config: {
-        handler: null
-    },
     rowLines: true, columnLines: true,
     constructor: function (config) {
         const me = this,
@@ -35,19 +32,22 @@ Ext.define('PSR.panel.BatchExecutor', {
             });
         }
         me.callParent([config]);
-        me.dlgprocess = this.add({
+        me.dlgProcess = this.add({
             xtype: 'psr-dialog-progress'
         });
     },
     executeStatus: 'complete',
-    execute: function (filter) {
-        if (this.executeStatus != 'complete') {
+    execute: function (opt) {
+        if (!opt
+            || !opt.handler
+            || this.executeStatus != 'complete') {
             return;
         }
         this.executeStatus = 'waiting';
         const me = this,
-            dlgprogress = me.dlgprocess,
-            handler = me.getHandler(),
+            filter = opt.filter,
+            handler = opt.handler,
+            dlgProgress = me.dlgProcess,
             store = me.getStore();
         let records = [];
         if (filter) {
@@ -69,15 +69,15 @@ Ext.define('PSR.panel.BatchExecutor', {
             records[i].set('executeStatus', 'waiting');
             records[i].set('executeMessage', '等待中');
         }
-        dlgprogress.setTotal(records.length);
-        dlgprogress.setProgress(0);
+        dlgProgress.setTotal(records.length);
+        dlgProgress.setProgress(0);
         let timer = setInterval(function () {
             if (me.executeStatus == 'waiting') {
                 me.executeStatus = 'executing';
-                const record = records[dlgprogress.getProgress()];
+                const record = records[dlgProgress.getProgress()];
                 record.set('executeStatus', 'executing');
                 record.set('executeMessage', '执行中');
-                Ext.callback(handler, me, [{
+                handler({
                     values: Object.assign({}, record.data),
                     success: function () {
                         record.set('executeStatus', 'success');
@@ -88,17 +88,17 @@ Ext.define('PSR.panel.BatchExecutor', {
                         record.set('executeMessage', message);
                     },
                     complete: function () {
-                        if (dlgprogress.getProgress() < records.length - 1 && me.executeStatus == 'executing') {
-                            dlgprogress.setProgress(dlgprogress.getProgress() + 1);
+                        if (dlgProgress.getProgress() < records.length - 1 && me.executeStatus == 'executing') {
+                            dlgProgress.setProgress(dlgProgress.getProgress() + 1);
                             me.executeStatus = 'waiting';
                         } else {
                             clearInterval(timer);
-                            dlgprogress.setTotal(0);
-                            dlgprogress.setProgress(0);
+                            dlgProgress.setTotal(0);
+                            dlgProgress.setProgress(0);
                             me.executeStatus = 'complete';
                         }
                     }
-                }], 0, me);
+                });
             }
         }, 10);
     }
