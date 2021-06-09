@@ -35,5 +35,14 @@ Ext.define('PSR.view.dialog.Progress', {
         } else {
             this.setHidden(true);
         }
+    },
+    afterRender: function () {
+        const progressItem = this.getAt(0),
+            total = this.getTotal() ? this.getTotal() : 0,
+            progress = this.getProgress() ? this.getProgress() : 0;
+        if (progressItem) {
+            progressItem.setValue(total != 0 ? progress / total : 0);
+            progressItem.setText(progress + ' / ' + total);
+        }
     }
 });
