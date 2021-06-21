@@ -159,18 +159,18 @@ Ext.define('PSR.view.desktop.Main', {
             defaultButtonUI: 'psr-desktop-title-button',
             items: [{
                 align: 'left',
-                iconCls: 'x-fa fa-outdent',
+                iconCls: 'x-fa fa-outdent', tooltip: '导航栏',
                 handler: 'hBtnOutdent'
             }, {
                 align: 'left',
-                iconCls: 'x-fa fa-history',
+                iconCls: 'x-fa fa-history', tooltip: '后台任务',
                 handler: 'hBtnBackendTaskList',
                 bind: {
                     badgeText: '{backendTaskSize}'
                 }
             }, {
                 align: 'left',
-                iconCls: 'x-fa fa-expand',
+                iconCls: 'x-fa fa-expand', tooltip: '全屏',
                 handler: 'hBtnExpand'
             }, {
                 xtype: 'button',
@@ -184,7 +184,7 @@ Ext.define('PSR.view.desktop.Main', {
         }, {
             xtype: 'button', reference: 'btnCompress',
             hidden: true,
-            iconCls: 'x-fa fa-compress',
+            iconCls: 'x-fa fa-compress', tooltip: '退出全屏',
             draggable: true,
             shadow: true,
             left: 5,
