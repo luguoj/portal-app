@@ -15,11 +15,14 @@ Ext.define('PSR.clientSite.service.ClientSite', {
         const moduleSrcUrl = window.moduleSite + '/module/' + opt.moduleId + '/index.js';
         const scriptEl = document.createElement('script');
         scriptEl.onload = scriptEl.onreadystateschange = function () {
-            if (opt.success) {
-                opt.success();
-            }
-            if (opt.complete) {
-                opt.complete();
+            if (!this.readyState
+                || this.readyState == 'loaded' || this.readyState == 'complete') {
+                if (opt.success) {
+                    opt.success();
+                }
+                if (opt.complete) {
+                    opt.complete();
+                }
             }
         };
         scriptEl.src = moduleSrcUrl;
