@@ -8,7 +8,7 @@ $psr-desktop-nav-header-icon-size: 36px;
   content: "";
   height: $psr-desktop-nav-header-icon-size;
   width: $psr-desktop-nav-header-icon-size/16*20;
-  background: url(desktop/logo.svg),url(desktop/logo.png) no-repeat;
+  background: url(desktop/logo.svg), url(desktop/logo.png) no-repeat;
   background-size: 100% 100%;
 }
 
@@ -26,7 +26,11 @@ $psr-desktop-nav-header-icon-size: 36px;
         $background-color: $base-dark-color,
         $pressed-background-color: $base-pressed-color,
         $hovered-background-color: $base-color,
-        $disabled-background-color: rgba(0, 0, 0, 0.12)
+        $disabled-background-color: rgba(0, 0, 0, 0.12),
+        $badge-min-width: 20px,
+        $badge-line-height: 12px,
+        $badge-top: 0px !important,
+        $badge-right: 0px
 );
 
 @include panel-ui(
@@ -91,5 +95,5 @@ $psr-desktop-nav-header-icon-size: 36px;
         $row-selected-background-color: mix(white, $panel-navigation-background-color, 10%)
 );
 .x-paneltitle-psr-desktop-nav .x-icon-el {
-        width: 45px;
+  width: 45px;
 }

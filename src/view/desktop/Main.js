@@ -36,6 +36,21 @@ Ext.define('PSR.view.desktop.Main', {
             var v = this.getView();
             v.navigationView.toggleMicro();
         },
+        hBtnBackendTaskList: function () {
+            const me = this, v = this.getView(), dlg = Ext.create('PSR.view.desktop.BackendTaskList', {
+                store: this.getStore('backendTasks'),
+                listeners: {
+                    disclosure: function (record) {
+                        dlg.close();
+                        me.switchNode(record.id);
+                    },
+                    exittask: function (records) {
+                        v.workspaceView.exitNode(records);
+                    }
+                }
+            });
+            dlg.show();
+        },
         hBtnExpand: function () {
             var v = this.getView();
             v.titleView.hide(true);
@@ -68,7 +83,14 @@ Ext.define('PSR.view.desktop.Main', {
             moduleTitle: '',
             moduleIconCls: '',
             viewTitle: '',
-            workspaceExpanded: false
+            workspaceExpanded: false,
+            personnel_description: '',
+            backendTaskSize: ''
+        },
+        stores: {
+            backendTasks: {
+                data: []
+            }
         }
     },
     layout: 'float',
@@ -139,6 +161,13 @@ Ext.define('PSR.view.desktop.Main', {
                 align: 'left',
                 iconCls: 'x-fa fa-outdent',
                 handler: 'hBtnOutdent'
+            }, {
+                align: 'left',
+                iconCls: 'x-fa fa-history',
+                handler: 'hBtnBackendTaskList',
+                bind: {
+                    badgeText: '{backendTaskSize}'
+                }
             }, {
                 align: 'left',
                 iconCls: 'x-fa fa-expand',
