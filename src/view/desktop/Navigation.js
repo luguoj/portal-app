@@ -42,7 +42,6 @@ Ext.define('PSR.view.desktop.Navigation', {
             if (this.navTree) {
                 this.navTree.setStore(store);
             }
-            store.load();
         }
     },
     layout: 'vbox',
