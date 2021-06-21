@@ -14,14 +14,16 @@ Ext.define('PSR.clientSite.service.ClientSite', {
     loadModuleSrc: function (opt) {
         const moduleSrcUrl = window.moduleSite + '/module/' + opt.moduleId + '/index.js';
         const scriptEl = document.createElement('script');
+        scriptEl.onload = scriptEl.onreadystateschange = function () {
+            if (opt.success) {
+                opt.success();
+            }
+            if (opt.complete) {
+                opt.complete();
+            }
+        };
         scriptEl.src = moduleSrcUrl;
         document.body.appendChild(scriptEl);
-        if (opt.success) {
-            opt.success();
-        }
-        if (opt.complete) {
-            opt.complete();
-        }
     },
     loadModuleAction: function (opt) {
         PSR.clientSite.Ajax.request({
