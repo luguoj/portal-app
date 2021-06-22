@@ -1,6 +1,9 @@
 Ext.define('PSR.panel.BatchExecutor', {
     xtype: 'psr-panel-batchexecutor',
     extend: 'Ext.grid.Grid',
+    config: {
+        threadPoolSize: 5
+    },
     rowLines: true, columnLines: true,
     constructor: function (config) {
         const me = this,
@@ -48,7 +51,7 @@ Ext.define('PSR.panel.BatchExecutor', {
             || this.executeStatus != 'complete') {
             return;
         }
-        this.executeStatus = 'waiting';
+        this.executeStatus = 'executing';
         const me = this,
             filter = opt.filter,
             handler = opt.handler,
@@ -76,10 +79,17 @@ Ext.define('PSR.panel.BatchExecutor', {
         }
         dlgProgress.setTotal(records.length);
         dlgProgress.setProgress(0);
+        const threadPoolSize = this.getThreadPoolSize();
+        let sleeping = threadPoolSize;
+        let currentIndex = 0;
         let timer = setInterval(function () {
-            if (me.executeStatus == 'waiting') {
-                me.executeStatus = 'executing';
-                const record = records[dlgProgress.getProgress()];
+            if (sleeping > 0 && currentIndex < records.length) {
+                const record = records[currentIndex];
+                me.scrollToRecord(store.getAt(
+                    Math.max(0, currentIndex)
+                ));
+                currentIndex++;
+                sleeping--;
                 record.set('executeStatus', 'executing');
                 record.set('executeMessage', '执行中');
                 handler({
@@ -94,20 +104,19 @@ Ext.define('PSR.panel.BatchExecutor', {
                     },
                     complete: function () {
                         dlgProgress.setProgress(dlgProgress.getProgress() + 1);
-                        if (me.executeStatus == 'executing') {
-                            if (dlgProgress.getProgress() < records.length) {
-                                me.executeStatus = 'waiting';
-                            } else {
-                                me.executeStatus = 'complete';
-                            }
-                        }
+                        sleeping++;
                     }
                 });
-            } else if (me.executeStatus == 'complete' || me.executeStatus == 'interrupt') {
+            } else if ((
+                me.executeStatus == 'executing'
+                && currentIndex == records.length
+                && sleeping == me.getThreadPoolSize()
+            ) || me.executeStatus == 'interrupt') {
                 clearInterval(timer);
                 dlgProgress.setTotal(0);
                 dlgProgress.setProgress(0);
                 me.executeStatus = 'complete';
+                me.scrollToRecord(store.getAt(0));
             }
         }, 10);
     }
