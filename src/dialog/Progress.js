@@ -53,6 +53,8 @@ Ext.define('PSR.view.dialog.Progress', {
         } else {
             this.setHidden(true);
         }
-        btnInterrupt.setDisabled(false);
+        if (btnInterrupt) {
+            btnInterrupt.setDisabled(false);
+        }
     }
 });
