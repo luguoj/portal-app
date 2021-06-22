@@ -33,7 +33,12 @@ Ext.define('PSR.panel.BatchExecutor', {
         }
         me.callParent([config]);
         me.dlgProcess = this.add({
-            xtype: 'psr-dialog-progress'
+            xtype: 'psr-dialog-progress', interruptiable: true,
+            listeners: {
+                interrupt: function () {
+                    me.executeStatus = 'interrupt';
+                }
+            }
         });
     },
     executeStatus: 'complete',
@@ -88,17 +93,21 @@ Ext.define('PSR.panel.BatchExecutor', {
                         record.set('executeMessage', message);
                     },
                     complete: function () {
-                        if (dlgProgress.getProgress() < records.length - 1 && me.executeStatus == 'executing') {
-                            dlgProgress.setProgress(dlgProgress.getProgress() + 1);
-                            me.executeStatus = 'waiting';
-                        } else {
-                            clearInterval(timer);
-                            dlgProgress.setTotal(0);
-                            dlgProgress.setProgress(0);
-                            me.executeStatus = 'complete';
+                        dlgProgress.setProgress(dlgProgress.getProgress() + 1);
+                        if (me.executeStatus == 'executing') {
+                            if (dlgProgress.getProgress() < records.length) {
+                                me.executeStatus = 'waiting';
+                            } else {
+                                me.executeStatus = 'complete';
+                            }
                         }
                     }
                 });
+            } else if (me.executeStatus == 'complete' || me.executeStatus == 'interrupt') {
+                clearInterval(timer);
+                dlgProgress.setTotal(0);
+                dlgProgress.setProgress(0);
+                me.executeStatus = 'complete';
             }
         }, 10);
     }
