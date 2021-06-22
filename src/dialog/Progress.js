@@ -1,48 +1,56 @@
 Ext.define('PSR.view.dialog.Progress', {
     extend: 'Ext.Dialog',
     xtype: 'psr-dialog-progress',
-    closable: false,
-    layout: 'vbox',
+    closable: false, padding: 5, width: 300,
+    layout: 'hbox',
     items: [{
-        xtype: 'progress'
+        xtype: 'progress',
+        flex: 1
     }],
     config: {
         progress: 0,
-        total: 0
+        total: 0,
+        interruptible: false
     },
-    updateTotal: function (total) {
-        const progressItem = this.getAt(0),
-            progress = this.getProgress() ? this.getProgress() : 0;
-        if (progressItem) {
-            progressItem.setValue(total != 0 ? progress / total : 0);
-            progressItem.setText(progress + ' / ' + total);
+    constructor: function (config) {
+        const me = this;
+        this.callParent([config]);
+        this.barProgress = this.down('progress');
+        if (this.getInterruptible()) {
+            this.add({width: 5});
+            this.btnInterrupt = this.add({
+                xtype: 'button',
+                iconCls: 'x-fa fa-times-circle', tooltip: '中断',
+                ui: 'decline round psr-button-icon-nopadding',
+                handler: function () {
+                    me.btnInterrupt.setDisabled(true);
+                    me.fireEvent('interrupt');
+                }
+            });
         }
-        if (total > 0 && total > progress) {
-            this.setHidden(false);
-        } else {
-            this.setHidden(true);
-        }
+        this.refreshUI();
     },
-    updateProgress: function (progress) {
-        const progressItem = this.getAt(0),
-            total = this.getTotal() ? this.getTotal() : 0;
-        if (progressItem) {
-            progressItem.setValue(total != 0 ? progress / total : 0);
-            progressItem.setText(progress + ' / ' + total);
-        }
-        if (total > 0 && total > progress) {
-            this.setHidden(false);
-        } else {
-            this.setHidden(true);
-        }
+    updateTotal: function () {
+        this.refreshUI()
+    },
+    updateProgress: function () {
+        this.refreshUI()
     },
     afterRender: function () {
-        const progressItem = this.getAt(0),
+        this.refreshUI()
+    },
+    refreshUI: function () {
+        const barProgress = this.barProgress,
             total = this.getTotal() ? this.getTotal() : 0,
             progress = this.getProgress() ? this.getProgress() : 0;
-        if (progressItem) {
-            progressItem.setValue(total != 0 ? progress / total : 0);
-            progressItem.setText(progress + ' / ' + total);
+        if (barProgress) {
+            barProgress.setValue(total != 0 ? progress / total : 0);
+            barProgress.setText(progress + ' / ' + total);
+        }
+        if (total > 0 && total > progress) {
+            this.setHidden(false);
+        } else {
+            this.setHidden(true);
         }
     }
 });
