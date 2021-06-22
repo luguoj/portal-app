@@ -34,3 +34,8 @@
 .x-gridrow .x-cells-el {
   background-color: unset !important;
 }
+
+@include button-ui(
+        $ui: 'psr-button-icon-nopadding',
+        $icon-only-padding: 0px
+);
