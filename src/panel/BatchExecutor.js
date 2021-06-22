@@ -33,7 +33,7 @@ Ext.define('PSR.panel.BatchExecutor', {
         }
         me.callParent([config]);
         me.dlgProcess = this.add({
-            xtype: 'psr-dialog-progress', interruptiable: true,
+            xtype: 'psr-dialog-progress', interruptible: true,
             listeners: {
                 interrupt: function () {
                     me.executeStatus = 'interrupt';
