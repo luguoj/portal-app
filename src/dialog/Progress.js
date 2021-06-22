@@ -41,6 +41,7 @@ Ext.define('PSR.view.dialog.Progress', {
     },
     refreshUI: function () {
         const barProgress = this.barProgress,
+            btnInterrupt = this.btnInterrupt,
             total = this.getTotal() ? this.getTotal() : 0,
             progress = this.getProgress() ? this.getProgress() : 0;
         if (barProgress) {
@@ -52,5 +53,6 @@ Ext.define('PSR.view.dialog.Progress', {
         } else {
             this.setHidden(true);
         }
+        btnInterrupt.setDisabled(false);
     }
 });
