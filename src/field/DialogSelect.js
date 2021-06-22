@@ -68,7 +68,7 @@ Ext.define('PSR.field.dialogSelect', {
                             picker.refresh();
                         }
                     }, '->', {
-                        tooltip: '确认', iconCls: 'x-fa fa-check', reference: 'btnOK',
+                        tooltip: '确认', iconCls: 'x-fa fa-check',
                         ui: 'confirm',
                         handler: function (btn) {
                             me.setValue(btn.selection.get(valueField));
@@ -95,7 +95,7 @@ Ext.define('PSR.field.dialogSelect', {
                     store: store,
                     listeners: {
                         selectionchange: function (picker, selections) {
-                            const btnOK = picker.up('dialog').down('button[reference="btnOK"]');
+                            const btnOK = picker.up('dialog').down('toolbar').getAt(3);
                             if (selections && selections.length > 0 && selections[0].get('isRecord')) {
                                 btnOK.setDisabled(false);
                                 btnOK.selection = selections[0];
@@ -119,40 +119,37 @@ Ext.define('PSR.field.dialogSelect', {
             placeholder = config.placeholder || this.config.placeholder,
             required = config.required || this.config.required,
             valueFieldName = config.valueFieldName || this.config.valueFieldName,
-            value = config.value || this.config.value,
-            valueHolder = {
-                xtype: 'textfield', reference: 'fValueHolder',
-                width: 0,
-                editable: false,
-                required: required,
-                name: valueFieldName,
-                value: value
-            },
-            displayer = {
-                xtype: 'textfield', reference: 'fDisplayer',
-                flex: 1,
-                editable: false,
-                placeholder: placeholder,
-                required: required,
-                value: value,
-                listeners: {
-                    clearicontap: function () {
-                        me.setValue(null);
-                    }
+            value = config.value || this.config.value;
+        config.items = [{
+            xtype: 'textfield',
+            width: 0,
+            editable: false,
+            required: required,
+            name: valueFieldName,
+            value: value
+        }, {
+            xtype: 'textfield',
+            flex: 1,
+            editable: false,
+            placeholder: placeholder,
+            required: required,
+            value: value,
+            listeners: {
+                clearicontap: function () {
+                    me.setValue(null);
                 }
-            },
-            trigger = {
-                xtype: 'button',
-                iconCls: 'x-fa fa-search-location',
-                handler: function () {
-                    me.expand();
-                }
-            };
-        config.items = [valueHolder, displayer, trigger];
+            }
+        }, {
+            xtype: 'button',
+            iconCls: 'x-fa fa-search-location',
+            handler: function () {
+                me.expand();
+            }
+        }];
         me.callParent([config]);
-        me.valueHolder = me.down('textfield[reference="fValueHolder"]');
-        me.displayer = me.down('textfield[reference="fDisplayer"]');
-        me.trigger = me.down('button');
+        me.valueHolder = me.getAt(0);
+        me.displayer = me.getAt(1);
+        me.trigger = me.getAt(2);
     },
     updateStore: function (store) {
         if (this.picker) {
