@@ -12,7 +12,7 @@ Ext.define('PSR.clientSite.service.ClientSite', {
         });
     },
     loadModuleSrc: function (opt) {
-        const moduleSrcUrl = window.moduleSite + '/module/' + opt.moduleId + '/index.js';
+        const moduleSrcUrl = window.moduleSite + '/module/' + opt.moduleId + '/index.js?v=' + (new Date()).getTime();
         const scriptEl = document.createElement('script');
         scriptEl.onload = scriptEl.onreadystateschange = function () {
             if (!this.readyState
