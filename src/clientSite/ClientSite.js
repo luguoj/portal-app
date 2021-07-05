@@ -23,7 +23,6 @@ Ext.define('PSR.clientSite.ClientSite', {
                 console.log('logout message got')
                 location.reload();
             }
-            console.log('got message from ' + event.origin + ': ' + event.data);
         }, false);
     },
     login: function (loginSuccess) {

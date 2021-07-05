@@ -15,7 +15,6 @@ function initDesktopEnv(opt) {
                 splash_login.src = window.clientSite;
             }
         }
-        console.log('got message from ' + event.origin + ': ' + event.data);
     }, false);
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementsByTagName('body')[0].insertAdjacentHTML('beforeend',
