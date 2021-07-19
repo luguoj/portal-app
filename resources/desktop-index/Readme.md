@@ -2,8 +2,8 @@
 2. 删除首页<body>标签
 3. 首页<header>标签中的<script>前引入
 ```html
-<link href="resources/desktop/desktop-index.css" rel="stylesheet">
-<script src="resources/desktop/desktop-index.js"></script> 
+<link href="resources/desktop-index.css" rel="stylesheet">
+<script src="resources/desktop-index.js"></script> 
 ```
 4. 首页<header>标签中的<script>脚本前面插入
 ```js
