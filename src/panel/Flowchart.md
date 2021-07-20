@@ -14,13 +14,12 @@ items:[{
 flowchart.setFlowOptions({
     nodes: [{
         id: 'n1', // 节点ID
-        labelText: 'n1', // 节点文本
         x: 0, // 横坐标 left
         y: 0, // 纵坐标 top
         width: 38, // 最小宽度
         height: 38, // 最小高度
         bodyFillColor: '#4be0d4', // 节点填充色
-        labelText: '节点', // 节点文本
+        labelText: 'n1', // 节点文本
         labelFillColor: 'black' // 节点文本颜色
     },
         {id: 'n2', labelText: 'n2', x: 200},
