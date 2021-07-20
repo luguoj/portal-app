@@ -7,6 +7,10 @@ Ext.define('PSR.Util', {
         const metrics = context.measureText(text);
         return Math.ceil(metrics.width);
     },
+    EXT_FONT_ROOT: '400 14px/1.25 Roboto, sans-serif',
+    EXT_FONT_BUTTON: '600 14px/16px Roboto, sans-serif',
+    EXT_FONT_TEXT_FIELD: '400 13px/16px Roboto, sans-serif',
+    EXT_FONT_GRID_COLUMN: '400 13px/16px Roboto, sans-serif',
     saveAsElement: document.createElementNS("http://www.w3.org/1999/xhtml", "a"),
     saveAs: function (name, data, type) {
         const element = this.saveAsElement,
