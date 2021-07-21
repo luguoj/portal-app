@@ -137,12 +137,19 @@ Ext.define('PSR.panel.Flowchart', {
         return rect;
     },
     createLink: function (option) {
-        const opt = Object.assign({}, option),
-            type = opt.type || 'Link';
-        return new joint.shapes.standard[type]({
+        const opt = Object.assign({
+            type: 'Link',
+            lineColor: 'black'
+        }, option);
+        return new joint.shapes.standard[opt.type]({
             source: opt.source,
             target: opt.target,
             router: {name: 'metro'},
+            attrs: {
+                line: {
+                    stroke: opt.lineColor
+                }
+            },
             labels: [{
                 position: {
                     distance: 0.5

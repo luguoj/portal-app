@@ -27,11 +27,12 @@ flowchart.setFlowOptions({
         {id: 'n4', labelText: 'n4', x: 600},
         {id: 'n5', labelText: 'n5', x: 800}],
     links: [{
+        type: 'Link', // 线型 Link/DoubleLink/ShadowLink
+        lineColor: 'black', // 线色
         source: 'n1', // 源节点ID
         target: 'n2', // 目标节点ID
         labelText: 'l1' // 连接文本
-    },
-        {source: 'n2', target: 'n3'},
+    }, {source: 'n2', target: 'n3'},
         {source: 'n3', target: 'n4'},
         {source: 'n4', target: 'n5'},
         {source: 'n2', target: 'n5'}]
