@@ -53,7 +53,7 @@ Ext.define('PSR.view.desktop.Navigation', {
     constructor: function (config) {
         this.callParent([config]);
         var navBox = this.add({
-            // userCls: 'nav-container',
+            userCls: 'nav-container',
             flex: 1,
             layout: 'vbox',
             scrollable: 'y',

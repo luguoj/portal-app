@@ -7,7 +7,7 @@ $psr-desktop-nav-header-icon-size: 36px;
 .psr-desktop-nav-app-icon:before {
   content: "";
   height: $psr-desktop-nav-header-icon-size;
-  width: $psr-desktop-nav-header-icon-size/16*20;
+  width: $psr-desktop-nav-header-icon-size;
   background: url(logo.svg), url(logo.png) no-repeat;
   background-size: 100% 100%;
 }
@@ -78,6 +78,7 @@ $psr-desktop-nav-header-icon-size: 36px;
           // 文本和图标间距
           //$item-text-icon-gap: 1px,
           // 项目文本
+        $item-text-icon-gap: 0px,
         $item-text-font-size: 14px,
         $item-text-overflow: initial,
         $item-text-color: mix(white, $panel-navigation-item-text-color, 50%),
@@ -94,6 +95,53 @@ $psr-desktop-nav-header-icon-size: 36px;
         $row-over-background-color: mix(white, $panel-navigation-background-color, 5%),
         $row-selected-background-color: mix(white, $panel-navigation-background-color, 10%)
 );
-.x-paneltitle-psr-desktop-nav .x-icon-el {
-  width: 45px;
+//.x-paneltitle-psr-desktop-nav .x-icon-el {
+//  width: 45px;
+//}
+
+.nav-container {
+  .x-nativescroller::-webkit-scrollbar {
+    width: 10px;
+    height: 1px;
+  }
+
+  .x-nativescroller::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #535353;
+  }
+
+  .x-nativescroller::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #ededed;
+  }
+}
+
+.x-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.x-scrollbar::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: $base-color;
+}
+
+.x-scrollbar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #ededed;
+}
+
+.x-nativescroller::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.x-nativescroller::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: $base-color;
+}
+
+.x-nativescroller::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #ededed;
 }
