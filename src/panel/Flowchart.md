@@ -1,3 +1,20 @@
+# 引入
+修改app.json
+```json
+{
+  "js": [
+      {"path":"common/resources/jslib/jquery-3.6.0.min.js", "bundle": false},
+      {"path":"common/resources/jslib/sheetjs/xlsx.full-0.17.0.min.js", "bundle": false},
+      {"path":"common/resources/jslib/lodash-4.17.15.min.js", "bundle": false},
+      {"path":"common/resources/jslib/backbone-1.4.0.min.js", "bundle": false},
+      {"path":"common/resources/jslib/dagre/dagre.min.js", "bundle": false},
+      {"path":"common/resources/jslib/dagre/graphlib.min.js", "bundle": false},
+      {"path":"common/resources/jslib/joint/joint-3.4.0.js", "bundle": false}      
+    ]
+}
+```
+
+
 ```js
 items:[{
     xtype: 'psr-panel-flowchart',
