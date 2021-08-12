@@ -200,11 +200,11 @@ Ext.define('PSR.view.crud.Association', {
                     association = associations[record.id];
                 record.set('assignFlag', !!association);
                 if (association) {
-                    for (const associationKey in association) {
+                    for (let associationKey in association) {
                         record.set('association_' + associationKey, association[associationKey]);
                     }
                 } else {
-                    for (const dataKey in record.data) {
+                    for (let dataKey in record.data) {
                         if (dataKey.startsWith('association_')) {
                             record.set(dataKey, null);
                         }

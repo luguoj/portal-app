@@ -169,7 +169,7 @@ Ext.define('PSR.view.crud.Details', {
                 if (!validate) {
                     return;
                 }
-                for (const valuesKey in values) {
+                for (let valuesKey in values) {
                     props.push(valuesKey);
                 }
                 v.mask({xtype: 'loadmask', message: '保存中...'});

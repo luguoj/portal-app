@@ -88,14 +88,16 @@ Ext.define('PSR.panel.Flowchart', {
         me.graph.clear();
         if (flowOptions) {
             if (flowOptions.nodes && flowOptions.nodes.length > 0) {
-                for (const nodeOpt of flowOptions.nodes) {
+                for (let i = 0; i < flowOptions.nodes.length; i++) {
+                    const nodeOpt = flowOptions.nodes[i];
                     const node = me.createNode(nodeOpt);
                     me.flow.nodes[nodeOpt.id] = node;
                     node.addTo(me.graph);
                 }
             }
             if (flowOptions.links && flowOptions.links.length > 0) {
-                for (const linkOpt of flowOptions.links) {
+                for (let i = 0; i < flowOptions.links.length; i++) {
+                    const linkOpt = flowOptions.links[i];
                     linkOpt.source = me.flow.nodes[linkOpt.source];
                     linkOpt.target = me.flow.nodes[linkOpt.target];
                     const link = me.createLink(linkOpt);

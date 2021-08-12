@@ -45,7 +45,8 @@ Ext.define('PSR.view.desktop.workspace', {
                 vm = c.getViewModel(),
                 backendTasks = vm.getStore('backendTasks');
             if (nodes && nodes.length > 0) {
-                for (const node of nodes) {
+                for (let i = 0; i < nodes.length; i++) {
+                    const node = nodes[i];
                     const nodeId = node.get('id'),
                         nodeView = v.getComponent(nodeId);
                     if (nodeView) {

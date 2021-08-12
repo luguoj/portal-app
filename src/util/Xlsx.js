@@ -30,7 +30,7 @@ Ext.define('PSR.util.Xlsx', {
         if (opt) {
             if (opt.data) {
                 const workbook = {SheetNames: [], Sheets: {}};
-                for (const sheetName in opt.data) {
+                for (let sheetName in opt.data) {
                     workbook.SheetNames.push(sheetName);
                     workbook.Sheets[sheetName] = XLSX.utils.json_to_sheet(opt.data[sheetName]);
                 }

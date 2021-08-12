@@ -37,7 +37,8 @@ Ext.define('PSR.panel.SplitScreenWebView', {
                     height: 36,
                     handler: function (button) {
                         const subContainer = button.up('container');
-                        for (const item of me.items.items) {
+                        for (let j = 0; j < me.items.items.length; j++) {
+                            const item = me.items.items[j];
                             if (item != subContainer) {
                                 if (subContainer.subViewMaximized) {
                                     item.show();

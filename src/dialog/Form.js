@@ -59,7 +59,7 @@ Ext.define('PSR.dialog.Form', {
             }),
             progress = dlgprogress.getAt(0);
         dlgprogress.show();
-        for (const valuesKey in values) {
+        for (let valuesKey in values) {
             if (!formData.get(valuesKey)) {
                 formData.set(valuesKey, values[valuesKey]);
             }

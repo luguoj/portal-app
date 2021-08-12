@@ -112,7 +112,8 @@ Ext.define('PSR.panel.Map', {
                 this.layer.setStyles(styles);
             },
             update: function (geometries) {
-                for (const geometry of geometries) {
+                for (let i = 0; i < geometries.length; i++) {
+                    const geometry = geometries[i];
                     geometry.position = PSR.panel.Map.createLatLng(geometry.position);
                 }
                 this.layer.updateGeometries(geometries);
@@ -134,7 +135,8 @@ Ext.define('PSR.panel.Map', {
                 this.layer.setStyles(styles);
             },
             update: function (geometries) {
-                for (const geometry of geometries) {
+                for (let i = 0; i < geometries.length; i++) {
+                    const geometry = geometries[i];
                     geometry.position = PSR.panel.Map.createLatLng(geometry.position);
                 }
                 this.layer.updateGeometries(geometries);
@@ -153,17 +155,20 @@ Ext.define('PSR.panel.Map', {
                 this.layer.setStyles(styles);
             },
             update: function (geometries) {
-                for (const geometry of geometries) {
+                for (let i = 0; i < geometries.length; i++) {
+                    const geometry = geometries[i];
                     if (geometry.rainbowPaths) {
-                        for (const rainbowPath of geometry.rainbowPaths) {
-                            for (let i = 0; i < rainbowPath.path.length; i++) {
-                                rainbowPath.path[i] = PSR.panel.Map.createLatLng(rainbowPath.path[i]);
+                        for (let j = 0; j < geometry.rainbowPaths.length; j++) {
+                            const rainbowPath = geometry.rainbowPaths[j];
+                            for (let k = 0; k < rainbowPath.path.length; k++) {
+                                rainbowPath.path[k] = PSR.panel.Map.createLatLng(rainbowPath.path[k]);
                             }
                         }
                     } else if (geometry.paths) {
-                        for (const path of geometry.paths) {
-                            for (let i = 0; i < path.length; i++) {
-                                path[i] = PSR.panel.Map.createLatLng(path[i]);
+                        for (let j = 0; j < geometry.paths.length; j++) {
+                            const path = geometry.paths[j];
+                            for (let k = 0; k < path.length; k++) {
+                                path[k] = PSR.panel.Map.createLatLng(path[k]);
                             }
                         }
                     }
@@ -188,12 +193,15 @@ Ext.define('PSR.panel.Map', {
                 this.layer.setStyles(styles);
             },
             update: function (geometries) {
-                for (const geometry of geometries) {
+                for (let i = 0; i < geometries.length; i++) {
+                    const geometry = geometries[i];
                     if (geometry.paths) {
-                        for (const path of geometry.paths) {
-                            for (const pathElement of path) {
-                                for (let i = 0; i < pathElement.length; i++) {
-                                    pathElement[i] = PSR.panel.Map.createLatLng(pathElement[i]);
+                        for (let j = 0; j < geometry.paths.length; j++) {
+                            const path = geometry.paths[j];
+                            for (let k = 0; k < path.length; k++) {
+                                const pathElement = path[k];
+                                for (let l = 0; l < pathElement.length; l++) {
+                                    pathElement[l] = PSR.panel.Map.createLatLng(pathElement[l]);
                                 }
                             }
                         }
@@ -215,17 +223,20 @@ Ext.define('PSR.panel.Map', {
                 this.layer.setStyles(styles);
             },
             update: function (geometries) {
-                for (const geometry of geometries) {
+                for (let i = 0; i < geometries.length; i++) {
+                    const geometry = geometries[i];
                     if (geometry.rainbowPaths) {
-                        for (const rainbowPath of geometry.rainbowPaths) {
-                            for (let i = 0; i < rainbowPath.path.length; i++) {
-                                rainbowPath.path[i] = PSR.panel.Map.createLatLng(rainbowPath.path[i]);
+                        for (let j = 0; j < geometry.rainbowPaths.length; j++) {
+                            const rainbowPath = geometry.rainbowPaths[j];
+                            for (let k = 0; k < rainbowPath.path.length; k++) {
+                                rainbowPath.path[k] = PSR.panel.Map.createLatLng(rainbowPath.path[k]);
                             }
                         }
                     } else if (geometry.paths) {
-                        for (const path of geometry.paths) {
-                            for (let i = 0; i < path.length; i++) {
-                                path[i] = PSR.panel.Map.createLatLng(path[i]);
+                        for (let j = 0; j < geometry.paths.length; j++) {
+                            const path = geometry.paths[j];
+                            for (let k = 0; k < path.length; k++) {
+                                path[k] = PSR.panel.Map.createLatLng(path[k]);
                             }
                         }
                     }

@@ -15,7 +15,7 @@ Ext.define('PSR.data.store.CatalogableTree', {
             if (catalogable == true) {
                 const catalogUsage = store.getCatalogUsage(),
                     catalogMap = store.byIdMap;
-                for (const catalogId in catalogMap) {
+                for (let catalogId in catalogMap) {
                     catalogMap[catalogId].set('iconCls', 'x-fa fa-spinner fa-spin');
                 }
                 store.searchCatalogable({
@@ -39,7 +39,7 @@ Ext.define('PSR.data.store.CatalogableTree', {
                                     nodeMap[catalogUsage].push(node);
                                 }
                             }
-                            for (const catalogId in catalogMap) {
+                            for (let catalogId in catalogMap) {
                                 const catalogNode = catalogMap[catalogId];
                                 if (nodeMap[catalogId] && nodeMap[catalogId].length > 0) {
                                     store.fillNode(catalogNode, nodeMap[catalogId]);
