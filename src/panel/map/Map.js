@@ -2,37 +2,45 @@ Ext.define('PSR.panel.Map', {
     xtype: 'psr-panel-map',
     extend: 'Ext.Component',
     config: {
-        center: [0, 0],
-        zoom: 13,
-        pitch: 45,
-        rotation: 0,
-        northeast: [0, 0],
-        southwest: [0, 0],
-        draggable: true,
-        scrollable: true,
-        layerId: null
+        mapOptions: {
+            center: [0, 0],
+            zoom: 13,
+            pitch: 45,
+            rotation: 0,
+            northeast: [0, 0],
+            southwest: [0, 0],
+            draggable: true,
+            scrollable: true,
+            layerId: null
+        }
     },
     constructor: function (config) {
         const me = this;
         me.callParent([config]);
     },
-    getMap: function () {
-        return this.map;
-    },
-    updateCenter: function (position) {
-        if (this.map) {
-            this.map.setCenter(PSR.panel.Map.createLatLng(position));
-        }
+    setMapOptions: function (mapOptions) {
+        this.callParent([Object.assign({
+            center: [0, 0],
+            zoom: 13,
+            pitch: 45,
+            rotation: 0,
+            northeast: [0, 0],
+            southwest: [0, 0],
+            draggable: true,
+            scrollable: true,
+            layerId: null
+        }, mapOptions)]);
     },
     afterRender: function () {
-        const map = this.map = new TMap.Map(this.element.dom.id, {
-            rotation: this.getRotation(), //设置地图旋转角度
-            pitch: this.getPitch(), //设置俯仰角度（0~45）
-            zoom: this.getZoom(),//设置地图缩放级别
-            center: PSR.panel.Map.createLatLng(this.getCenter()),//设置地图中心点坐标
-            boundary: PSR.panel.Map.createLatLngBounds([this.getSouthwest(), this.getNortheast()]),//设置地图显示范围
-            draggable: this.getDraggable(),
-            scrollable: this.getScrollable(),
+        const mapOptions = this.getMapOptions();
+        map = this.map = new TMap.Map(this.element.dom.id, {
+            rotation: mapOptions.rotation, //设置地图旋转角度
+            pitch: mapOptions.pitch, //设置俯仰角度（0~45）
+            zoom: mapOptions.zoom,//设置地图缩放级别
+            center: PSR.panel.Map.createLatLng(mapOptions.center),//设置地图中心点坐标
+            boundary: PSR.panel.Map.createLatLngBounds([mapOptions.southwest, mapOptions.northeast]),//设置地图显示范围
+            draggable: mapOptions.draggable,
+            scrollable: mapOptions.scrollable,
             showControl: false,//是否显示地图控件
             baseMap: {
                 type: 'vector',// 矢量地图底图模式
@@ -45,9 +53,9 @@ Ext.define('PSR.panel.Map', {
             }
         });
         // 创建自定义图层
-        if (this.getLayerId()) {
+        if (mapOptions.layerId) {
             TMap.ImageTileLayer.createCustomLayer({
-                layerId: this.getLayerId(),
+                layerId: mapOptions.layerId,
                 map: map
             });
         }
