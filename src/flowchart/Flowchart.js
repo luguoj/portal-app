@@ -165,7 +165,7 @@ Ext.define('PSR.Flowchart', {
     },
     autoLayout: function (option) {
         const opt = Object.assign({
-            randDir: this.getLayoutDir(),
+            rankDir: this.getLayoutDir(),
             nodeSep: this.getLayoutNodeSep(),
             edgeSep: this.getLayoutEdgeSep()
         }, option);
