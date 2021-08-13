@@ -17,7 +17,7 @@
 
 ```js
 items:[{
-    xtype: 'psr-panel-flowchart',
+    xtype: 'psr-flowchart',
     enableGrid: false, // 启用网格线
     flowOptions: {}, // 流程图配置项
     layoutDir: 'TB', // 布局方向

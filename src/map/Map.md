@@ -17,7 +17,7 @@
 
 ```js
 container.add({
-    xtype: 'psr-panel-map',
+    xtype: 'psr-map',
     mapOptions: {
         center: [24.594221617, 117.9752365],
         northeast: [24.599587, 117.980751],
