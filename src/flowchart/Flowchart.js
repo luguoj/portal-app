@@ -1,17 +1,15 @@
-Ext.define('PSR.panel.Flowchart', {
-    xtype: 'psr-panel-flowchart',
-    extend: 'Ext.Container',
+Ext.define('PSR.Flowchart', {
+    xtype: 'psr-flowchart',
+    extend: 'Ext.Component',
     element: {
         reference: 'element',
+        class: 'x-nativescroller',
+        style: 'overflow:auto',
         children: [{
-            reference: 'wrapEl',
-            style: 'overflow:auto',
+            reference: 'boardEl',
+            style: 'padding:20px',
             children: [{
-                reference: 'boardEl',
-                style: 'padding:20px',
-                children: [{
-                    reference: 'paperEl'
-                }]
+                reference: 'paperEl'
             }]
         }]
     },
@@ -30,7 +28,7 @@ Ext.define('PSR.panel.Flowchart', {
     },
     afterRender: function () {
         const me = this,
-            $WRAP = $(me.wrapEl.dom),
+            $WRAP = $(me.element.dom),
             $PAPER = $(me.paperEl.dom),
             enableGrid = this.getEnableGrid(),
             paperOptions = {

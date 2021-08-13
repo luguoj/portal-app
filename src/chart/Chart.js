@@ -1,12 +1,13 @@
-Ext.define('PSR.panel.Chart', {
-    xtype: 'psr-panel-chart',
+Ext.define('PSR.Chart', {
+    xtype: 'psr-chart',
     extend: 'Ext.Component',
     element: {
         reference: 'element',
+        style: 'overflow:auto',
+        class: 'x-nativescroller',
         children: [{
             reference: 'chartbox'
-        }],
-        style: 'overflow:auto'
+        }]
     },
     createChart: function (type, options) {
         const chartBoxId = this.chartbox.dom.id;
