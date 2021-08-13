@@ -1,23 +1,34 @@
 # 引入
+
 修改app.json
+
 ```json
 {
   "js": [
-      {"path":"https://map.qq.com/api/gljs?v=1.exp&key=446BZ-CJ6W6-SAYST-EIJAF-XEW6V-ORBWF","bundle": false}      
-    ]
+    {
+      "path": "https://map.qq.com/api/gljs?v=1.exp&key=446BZ-CJ6W6-SAYST-EIJAF-XEW6V-ORBWF",
+      "bundle": false
+    }
+  ]
 }
 ```
+
 # 绘制地图
+
 ```js
 container.add({
     xtype: 'psr-panel-map',
-    center: [24.594221617, 117.9752365],
-    northeast: [24.599587, 117.980751],
-    southwest: [24.588856, 117.969722],
-    layerId: '5fe4439b3474' // 自定义图层ID
+    mapOptions: {
+        center: [24.594221617, 117.9752365],
+        northeast: [24.599587, 117.980751],
+        southwest: [24.588856, 117.969722],
+        layerId: '5fe4439b3474' // 自定义图层ID
+    }
 });
 ```
+
 # 标记
+
 ```js
 map.layers.marker.style("marker", {
     "width": 25,
@@ -35,7 +46,9 @@ map.layers.marker.update([{
     }
 }]);
 ```
+
 # 运动标记
+
 ```js
 map.layers.marker.style("car", {
     'width': 40,  //小车图片宽度（像素）
@@ -79,7 +92,9 @@ map.layers.marker.on('move_ended', function () {
     currPath = !currPath;
 });
 ```
+
 # 文本标签
+
 ```js
 map.layers.label.style('label', {
     'color': '#3777FF', //颜色属性
@@ -99,7 +114,9 @@ map.layers.label.update([{
     }
 }]);
 ```
+
 # 折线
+
 ```js
 map.layers.polyline.style('style_blue', {
     color: '#3777FF', //线填充色
@@ -158,7 +175,9 @@ map.layers.polyline.update([{
     ],
 }]);
 ```
+
 # 多边形
+
 ```js
 // 多边形
 var polygonPath = [[[ //多边形的位置信息
