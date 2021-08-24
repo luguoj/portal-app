@@ -38,11 +38,15 @@ Ext.define('PSR.view.desktop.Navigation', {
         this.getViewModel().set('appIconCls', value);
     },
     updateStore: function (store) {
+        const me = this;
         if (store) {
             if (this.navTree) {
                 this.navTree.setStore(store);
             }
         }
+        store.addListener('load', function () {
+            me.navTree.setIndent(10);
+        });
     },
     layout: 'vbox',
     ui: 'psr-desktop-nav',
