@@ -1,16 +1,10 @@
 Ext.define('PSR.Chart', {
     xtype: 'psr-chart',
-    extend: 'Ext.Component',
-    element: {
-        reference: 'element',
-        style: 'overflow:auto',
-        class: 'x-nativescroller',
-        children: [{
-            reference: 'chartbox'
-        }]
-    },
+    extend: 'Ext.Container',
+    layout: 'fit',
+    items: [{xtype: 'component'}],
     createChart: function (type, options) {
-        const chartBoxId = this.chartbox.dom.id;
+        const chartBoxId = this.getAt(0).element.dom.id;
         if (type != 'chart'
             && type != 'stockChart'
             && type != 'mapChart'
@@ -23,7 +17,11 @@ Ext.define('PSR.Chart', {
         } else {
             this.chart = Highcharts[type](
                 chartBoxId,
-                Object.assign({}, options, {
+                Object.assign({
+                    chart: {
+                        height: '100%'
+                    }
+                }, options, {
                     credits: {
                         text: 'Powered by zhoudd',
                         href: 'https://blog.csdn.net/zhoudingding'
@@ -31,5 +29,8 @@ Ext.define('PSR.Chart', {
                 })
             );
         }
+    },
+    onResize: function (width, height) {
+        this.chart.setSize(width, height);
     }
 });
