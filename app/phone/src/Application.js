@@ -3,13 +3,23 @@ Ext.define('PortalApp.Application', {
 	name: 'PortalApp',
 	requires: [
 		'PortalApp.*',
+		'PSR.*',
 		'Ext.*'
 	],
 	defaultToken: 'homeview',
 
 	launch: function () {
-		Ext.getBody().removeCls('launching');
-		Ext.Viewport.add([{ xtype: 'mainview'}]);
+		PSR.clientSite.ClientSite.loginSuccess = function () {
+			var elem = document.getElementById("splash")
+			elem.parentNode.removeChild(elem)
+			Ext.getBody().removeCls('launching')
+			if (!me.desktopView) {
+				me.desktopView = Ext.Viewport.add({xtype: 'mainview'});
+			}
+		};
+		if(window.login){
+			PSR.clientSite.ClientSite.loginSuccess();
+		}
 	},
 
 	onAppUpdate: function () {
