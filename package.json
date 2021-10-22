@@ -26,6 +26,7 @@
     "dev:phone": "webpack-dev-server --env.profile=phone --env.browser=yes --env.verbose=no",
     "build:desktop": "npm run clean && cross-env webpack --env.profile=desktop --env.environment=production --env.treeshake=yes",
     "build:phone": "npm run clean && cross-env webpack --env.profile=phone --env.environment=production --env.treeshake=yes",
+    "build": "npm run clean && cross-env webpack --env.environment=production --env.treeshake=yes",
     "testing:desktop": "npm run clean && cross-env webpack --env.treeshake=yes --env.cmdopts=--testing --env.cmdopts=--build=desktop",
     "testing:phone": "npm run clean && cross-env webpack --env.treeshake=yes --env.cmdopts=--testing --env.cmdopts=--build=phone",
     "testing": "npm run clean && cross-env webpack --env.treeshake=yes --env.cmdopts=--testing"
