@@ -2,8 +2,8 @@ Ext.define('PSR.clientSite.service.ClientSite', {
     singleton: true,
     loadToken: function (opt) {
         PSR.Ajax.request({
-            method: 'POST',
-            url: window.clientSite + '/token',
+            method: 'GET',
+            url: window.clientSite + '/api/token',
             withCredentials: true,
             disableCaching: true,
             bizSuccess: opt.success,

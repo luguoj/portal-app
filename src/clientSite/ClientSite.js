@@ -1,7 +1,7 @@
 Ext.define('PSR.clientSite.ClientSite', {
     alternateClassName: ['PSR.ClientSite'],
     singleton: true,
-    clientTokenEndpoint: window.clientSite + '/token',
+    clientTokenEndpoint: window.clientSite + '/api/token',
     constructor: function (config) {
         this.callParent([config]);
         window.addEventListener("message", function (event) {
@@ -67,7 +67,7 @@ Ext.define('PSR.clientSite.ClientSite', {
             return PSR.ClientSite.clientToken;
         } else {
             Ext.Ajax.request({
-                method: 'POST',
+                method: 'GET',
                 url: PSR.ClientSite.clientTokenEndpoint,
                 withCredentials: true,
                 success: function (response) {
