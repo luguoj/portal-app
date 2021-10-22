@@ -10,9 +10,6 @@ Ext.define('PortalApp.Application', {
 	launch: function () {
 		Ext.ariaWarn = Ext.emptyFn
 		Ext.getBody().removeCls('launching')
-		var elem = document.getElementById("splash")
-		elem.parentNode.removeChild(elem)
-
 		var whichView = 'mainview'
 		if (Ext.isClassic == true) {
 			Ext.create({xtype: whichView, plugins: 'viewport'})

@@ -9,10 +9,7 @@ Ext.define('PortalApp.Application', {
 
 	launch: function () {
 		Ext.getBody().removeCls('launching');
-		var elem = document.getElementById("splash");
-		// elem.parentNode.removeChild(elem);
-
-		// Ext.Viewport.add([{ xtype: 'mainview'}]);
+		Ext.Viewport.add([{ xtype: 'mainview'}]);
 	},
 
 	onAppUpdate: function () {
