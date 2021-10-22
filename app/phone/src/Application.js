@@ -3,21 +3,16 @@ Ext.define('PortalApp.Application', {
 	name: 'PortalApp',
 	requires: [
 		'PortalApp.*',
-		'Ext.dataview.List',
-		'Ext.field.Date',
-		'Ext.Video',
-		'Ext.carousel.Carousel',
-		'Ext.data.TreeStore',
-		'Ext.layout.Center'
+		'Ext.*'
 	],
-	defaultToken: 'personnelview',
+	defaultToken: 'homeview',
 
 	launch: function () {
 		Ext.getBody().removeCls('launching');
 		var elem = document.getElementById("splash");
-		elem.parentNode.removeChild(elem);
+		// elem.parentNode.removeChild(elem);
 
-		Ext.Viewport.add([{ xtype: 'mainview'}]);
+		// Ext.Viewport.add([{ xtype: 'mainview'}]);
 	},
 
 	onAppUpdate: function () {

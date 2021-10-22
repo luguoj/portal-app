@@ -1,7 +1,10 @@
 Ext.define('PortalApp.Application', {
 	extend: 'Ext.app.Application',
 	name: 'PortalApp',
-	requires: ['PortalApp.*'],
+	requires: [
+		'PortalApp.*',
+		'Ext.*'
+	],
 	defaultToken: 'homeview',
 
 	launch: function () {
@@ -11,8 +14,6 @@ Ext.define('PortalApp.Application', {
 		elem.parentNode.removeChild(elem)
 
 		var whichView = 'mainview'
-//		var loggedIn = localStorage.getItem("LoggedIn");
-//		if(loggedIn != 'true') { whichView = 'loginview' }
 		if (Ext.isClassic == true) {
 			Ext.create({xtype: whichView, plugins: 'viewport'})
 		}
