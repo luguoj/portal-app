@@ -9,8 +9,9 @@ Ext.define('PortalApp.Application', {
 	defaultToken: 'homeview',
 
 	launch: function () {
+		const me = this;
 		PSR.clientSite.ClientSite.loginSuccess = function () {
-			var elem = document.getElementById("splash")
+			const elem = document.getElementById("splash")
 			elem.parentNode.removeChild(elem)
 			Ext.getBody().removeCls('launching')
 			if (!me.desktopView) {
