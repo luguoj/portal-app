@@ -6,7 +6,8 @@
   "template": "universalclassicmodern",
   "indexHtmlPath": "index.html",
   "requires": [
-    "font-awesome"
+    "font-awesome",
+    "ux"
   ],
 
   "builds": {

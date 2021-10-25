@@ -32,11 +32,12 @@
     "testing": "npm run clean && cross-env webpack --env.treeshake=yes --env.cmdopts=--testing"
   },
   "dependencies": {
-    "@sencha/ext-modern": "~7.4.0",
-    "@sencha/ext-modern-theme-material": "~7.4.0",
+    "@sencha/ext": "~7.4.0",
     "@sencha/ext-classic": "~7.4.0",
     "@sencha/ext-classic-theme-material": "~7.4.0",
-    "@sencha/ext": "~7.4.0"
+    "@sencha/ext-modern": "~7.4.0",
+    "@sencha/ext-modern-theme-material": "~7.4.0",
+    "@sencha/ext-ux": "^7.4.0"
   },
   "devDependencies": {
     "@sencha/ext-webpack-plugin": "~7.4.0",
