@@ -2,8 +2,9 @@ Ext.define('PortalApp.store.NavigationItemTree', {
     extend: 'Ext.data.TreeStore',
     alias: 'store.portalapp-navigationitemtree',
     proxy: {
-        type: 'psr-clientsite-ajax',
+        type: 'psr-ajax',
         url: window.gatewaySite + '/extapp/api/desktop/navigation_item',
+        withAuthToken: true,
         reader: {
             transform: function (data) {
                 if (data && data.length > 0) {
@@ -18,7 +19,7 @@ Ext.define('PortalApp.store.NavigationItemTree', {
                             } catch (e) {
                                 console.error(e);
                             }
-                        }else{
+                        } else {
                             if (!record.iconCls) {
                                 record.iconCls = 'x-fa fa-cubes'
                             }

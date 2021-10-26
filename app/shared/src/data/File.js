@@ -3,7 +3,20 @@ Ext.define('PSR.data.File', {
     singleton: true,
     download: function (opt) {
         if (opt && opt.url) {
-            var url = opt.url;
+            if (opt.withAuthToken) {
+                var token = PSR.util.Auth.getClientToken(function (token) {
+                    PSR.File.download(opt);
+                });
+                if (!token) {
+                    return;
+                }
+                opt.params = Object.assign(
+                    {},
+                    opt.params,
+                    {access_token: token.access_token}
+                );
+            }
+            let url = opt.url;
             if (opt.params) {
                 if (url.indexOf("?") == -1) {
                     url += "?";
@@ -12,7 +25,7 @@ Ext.define('PSR.data.File', {
                 }
                 url += Ext.Object.toQueryString(opt.params)
             }
+            window.open(url);
         }
-        window.open(url);
     }
 });

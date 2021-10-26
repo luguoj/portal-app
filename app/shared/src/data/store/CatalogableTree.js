@@ -1,7 +1,7 @@
 Ext.define('PSR.data.store.CatalogableTree', {
     extend: 'PSR.data.store.CatalogTree',
     searchCatalogable: function (opt) {
-        PSR.Message.error('未实现searchCatalogable方法');
+        PSR.util.Message.error('未实现searchCatalogable方法');
     },
     isRecord: false,
     fields: ['isRecord', 'code', 'description', 'text', {

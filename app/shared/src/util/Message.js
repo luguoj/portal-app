@@ -1,4 +1,4 @@
-Ext.define('PSR.Message', {
+Ext.define('PSR.util.Message', {
     singleton: true,
     info: function (message) {
         Ext.toast(message);

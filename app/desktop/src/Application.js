@@ -11,7 +11,7 @@ Ext.define('PortalApp.Application', {
     launch: function () {
         const me = this;
         Ext.ariaWarn = Ext.emptyFn
-        PSR.clientSite.ClientSite.loginSuccess = function () {
+        PSR.util.Auth.loginSuccess = function () {
             const elem = document.getElementById("splash")
             elem.parentNode.removeChild(elem)
             Ext.getBody().removeCls('launching')
@@ -24,7 +24,7 @@ Ext.define('PortalApp.Application', {
             }
         };
         if (window.login) {
-            PSR.clientSite.ClientSite.loginSuccess();
+            PSR.util.Auth.loginSuccess();
         }
     },
 

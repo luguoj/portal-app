@@ -8,13 +8,22 @@ Ext.define('PSR.data.Ajax', {
         if (!opt.failure) {
             opt.failure = PSR.Ajax.hCallFailure;
         }
+        if (opt.withAuthToken) {
+            var authHeader = PSR.util.Auth.getAuthorizationHeader(function (authHeader) {
+                PSR.Ajax.request(opt);
+            });
+            if (!authHeader) {
+                return;
+            }
+            opt.headers = Object.assign({}, authHeader, opt.headers);
+        }
         return Ext.Ajax.request(opt);
     },
     onErrorMessage: function (message, opt) {
         if (opt && opt.onErrorMessage) {
             opt.onErrorMessage(message);
         } else {
-            PSR.Message.error(message);
+            PSR.util.Message.error(message);
         }
     },
     hCallSuccess: function (response, opt) {
@@ -77,7 +86,21 @@ Ext.define('PSR.data.Ajax', {
         }
     },
     on401: function (response, opt) {
-        PSR.Ajax.onErrorMessage('授权信息无效', opt);
+        if (opt.withAuthToken) {
+            PSR.util.Auth.clientToken.expires_at = 1;
+            if (!opt.retryTimes || opt.retryTimes < 5) {
+                opt.retryTimes = opt.retryTimes ? opt.retryTimes + 1 : 1;
+                setTimeout(function () {
+                    PSR.clientSite.data.Ajax.request(opt);
+                }, 500);
+                return;
+            } else {
+                delete opt.retryTimes;
+                PSR.util.Message.error("授权信息无效");
+            }
+        } else {
+            PSR.Ajax.onErrorMessage('授权信息无效', opt);
+        }
     },
     on50x: function (response, opt) {
         const respObj = response.responseJson

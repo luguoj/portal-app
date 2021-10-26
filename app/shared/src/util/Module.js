@@ -1,17 +1,6 @@
-Ext.define('PSR.clientSite.service.ClientSite', {
+Ext.define('PSR.util.Module', {
     singleton: true,
-    loadToken: function (opt) {
-        PSR.Ajax.request({
-            method: 'GET',
-            url: window.clientSite + '/api/token',
-            withCredentials: true,
-            disableCaching: true,
-            bizSuccess: opt.success,
-            failure: opt.failure,
-            complete: opt.complete
-        });
-    },
-    loadModuleSrc: function (opt) {
+    loadSrc: function (opt) {
         const moduleSrcUrl = window.moduleSite + '/module/' + opt.moduleId + '/index.js?v=' + (new Date()).getTime();
         const scriptEl = document.createElement('script');
         scriptEl.onload = scriptEl.onreadystateschange = function () {
@@ -28,14 +17,15 @@ Ext.define('PSR.clientSite.service.ClientSite', {
         scriptEl.src = moduleSrcUrl;
         document.body.appendChild(scriptEl);
     },
-    loadModuleAction: function (opt) {
-        PSR.clientSite.Ajax.request({
+    loadAction: function (opt) {
+        PSR.Ajax.request({
             method: 'GET',
             url: window.gatewaySite + '/extapp/api/desktop/module_action/',
             params: {
                 moduleId: opt.moduleId
             },
             withCredentials: true,
+            withAuthToken: true,
             disableCaching: true,
             bizSuccess: opt.success,
             failure: opt.failure,

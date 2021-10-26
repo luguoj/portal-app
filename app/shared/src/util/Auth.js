@@ -1,5 +1,4 @@
-Ext.define('PSR.clientSite.ClientSite', {
-    alternateClassName: ['PSR.ClientSite'],
+Ext.define('PSR.util.Auth', {
     singleton: true,
     clientTokenEndpoint: window.clientSite + '/api/token',
     constructor: function (config) {
@@ -7,17 +6,17 @@ Ext.define('PSR.clientSite.ClientSite', {
         window.addEventListener("message", function (event) {
             if (event.data === 'login_success') {
                 console.log('login message got')
-                if (PSR.ClientSite.oauth2LoginDialog) {
-                    PSR.ClientSite.oauth2LoginDialog.close();
+                if (PSR.util.Auth.oauth2LoginDialog) {
+                    PSR.util.Auth.oauth2LoginDialog.close();
                 }
-                if (PSR.ClientSite.loginSuccess) {
-                    PSR.ClientSite.loginSuccess();
-                    delete PSR.ClientSite.loginSuccess;
+                if (PSR.util.Auth.loginSuccess) {
+                    PSR.util.Auth.loginSuccess();
+                    delete PSR.util.Auth.loginSuccess;
                 }
             } else if (event.data === 'login_retry') {
                 console.log('login retry message got')
-                if (PSR.ClientSite.oauth2LoginDialog) {
-                    PSR.ClientSite.oauth2LoginDialog.getAt(0).updateSrc(window.clientSite);
+                if (PSR.util.Auth.oauth2LoginDialog) {
+                    PSR.util.Auth.oauth2LoginDialog.getAt(0).updateSrc(window.clientSite);
                 }
             } else if (event.data === 'logout_success') {
                 console.log('logout message got')
@@ -26,8 +25,8 @@ Ext.define('PSR.clientSite.ClientSite', {
         }, false);
     },
     login: function (loginSuccess) {
-        PSR.ClientSite.loginSuccess = loginSuccess;
-        PSR.ClientSite.oauth2LoginDialog =
+        PSR.util.Auth.loginSuccess = loginSuccess;
+        PSR.util.Auth.oauth2LoginDialog =
             Ext.create({
                 xtype: 'dialog',
                 title: '登陆中...',
@@ -42,7 +41,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                     }
                 }
             });
-        PSR.ClientSite.oauth2LoginDialog.show();
+        PSR.util.Auth.oauth2LoginDialog.show();
     },
     logout: function () {
         Ext.create({
@@ -55,72 +54,72 @@ Ext.define('PSR.clientSite.ClientSite', {
         }).show();
     },
     checkUserChange: function (newToken) {
-        if (PSR.ClientSite.clientToken && PSR.ClientSite.clientToken.userId && PSR.ClientSite.clientToken.userId != newToken.userId) {
-            PSR.Message.error('用户已变更，即将重置工作台。', function () {
+        if (PSR.util.Auth.clientToken && PSR.util.Auth.clientToken.userId && PSR.util.Auth.clientToken.userId != newToken.userId) {
+            PSR.util.Message.error('用户已变更，即将重置工作台。', function () {
                 window.location.reload();
             });
         }
     },
     getClientToken: function (callback) {
         const now = (new Date()).getTime();
-        if (PSR.ClientSite.clientToken && (!PSR.ClientSite.clientToken.expires_at || PSR.ClientSite.clientToken.expires_at > now)) {
-            return PSR.ClientSite.clientToken;
+        if (PSR.util.Auth.clientToken && (!PSR.util.Auth.clientToken.expires_at || PSR.util.Auth.clientToken.expires_at > now)) {
+            return PSR.util.Auth.clientToken;
         } else {
             Ext.Ajax.request({
                 method: 'GET',
-                url: PSR.ClientSite.clientTokenEndpoint,
+                url: PSR.util.Auth.clientTokenEndpoint,
                 withCredentials: true,
                 success: function (response) {
                     try {
                         var respObj = JSON.parse(response.responseText);
                         if (respObj.access_token) {
-                            PSR.clientSite.ClientSite.checkUserChange(respObj);
-                            PSR.ClientSite.clientToken = respObj;
-                            PSR.ClientSite.clientToken.authHeader = {Authorization: respObj.token_type + ' ' + respObj.access_token};
+                            PSR.util.Auth.checkUserChange(respObj);
+                            PSR.util.Auth.clientToken = respObj;
+                            PSR.util.Auth.clientToken.authHeader = {Authorization: respObj.token_type + ' ' + respObj.access_token};
                             if (respObj.expires_in) {
-                                PSR.ClientSite.clientToken.expires_at = now + respObj.expires_in * 1000;
+                                PSR.util.Auth.clientToken.expires_at = now + respObj.expires_in * 1000;
                             } else {
-                                delete PSR.ClientSite.clientToken.expires_at;
+                                delete PSR.util.Auth.clientToken.expires_at;
                             }
                             if (callback) {
-                                callback(PSR.ClientSite.clientToken);
+                                callback(PSR.util.Auth.clientToken);
                             }
                         } else if (respObj.success && respObj.result && respObj.result.access_token) {
-                            PSR.clientSite.ClientSite.checkUserChange(respObj.result);
-                            PSR.ClientSite.clientToken = respObj.result;
-                            PSR.ClientSite.clientToken.authHeader = {Authorization: respObj.result.token_type + ' ' + respObj.result.access_token};
+                            PSR.util.Auth.checkUserChange(respObj.result);
+                            PSR.util.Auth.clientToken = respObj.result;
+                            PSR.util.Auth.clientToken.authHeader = {Authorization: respObj.result.token_type + ' ' + respObj.result.access_token};
                             if (respObj.result.expires_in) {
-                                PSR.ClientSite.clientToken.expires_at = now + respObj.result.expires_in * 1000;
+                                PSR.util.Auth.clientToken.expires_at = now + respObj.result.expires_in * 1000;
                             } else {
-                                delete PSR.ClientSite.clientToken.expires_at;
+                                delete PSR.util.Auth.clientToken.expires_at;
                             }
                             if (callback) {
-                                callback(PSR.ClientSite.clientToken);
+                                callback(PSR.util.Auth.clientToken);
                             }
                         } else {
                             console.log(respObj);
-                            PSR.Message.error("授权信息无效，请重新登陆", function () {
-                                PSR.clientSite.ClientSite.logout();
+                            PSR.util.Message.error("授权信息无效，请重新登陆", function () {
+                                PSR.util.Auth.logout();
                             });
                         }
                     } catch (err) {
-                        PSR.Message.error(err.message);
+                        PSR.util.Message.error(err.message);
                         console.error(err);
                     }
                 },
                 failure: function (response) {
                     if (response) {
                         if (response.status == '401') {
-                            PSR.Message.error("授权信息无效，请重新登陆", function () {
-                                PSR.clientSite.ClientSite.login(function () {
-                                    PSR.clientSite.ClientSite.getClientToken(callback);
+                            PSR.util.Message.error("授权信息无效，请重新登陆", function () {
+                                PSR.util.Auth.login(function () {
+                                    PSR.util.Auth.getClientToken(callback);
                                 });
                             });
                             return;
                         }
                     }
-                    PSR.Message.error("授权信息无效，请重新登陆", function () {
-                        PSR.clientSite.ClientSite.logout();
+                    PSR.util.Message.error("授权信息无效，请重新登陆", function () {
+                        PSR.util.Auth.logout();
                     });
                 }
             });
@@ -128,7 +127,7 @@ Ext.define('PSR.clientSite.ClientSite', {
         }
     },
     getAuthorizationHeader: function (callback) {
-        var token = PSR.ClientSite.getClientToken(function (_token) {
+        var token = PSR.util.Auth.getClientToken(function (_token) {
             if (callback) {
                 callback(_token.authHeader);
             }
@@ -142,7 +141,7 @@ Ext.define('PSR.clientSite.ClientSite', {
         }
         if (!me.extModuleAction[moduleId]) {
             me.extModuleAction[moduleId] = {loading: true};
-            PSR.clientSite.service.ClientSite.loadModuleAction({
+            PSR.util.Module.loadAction({
                 moduleId: moduleId,
                 success: function (data) {
                     const actions = {};
@@ -178,7 +177,7 @@ Ext.define('PSR.clientSite.ClientSite', {
         }
         if (!me.extModuleReady[moduleId]) {
             me.extModuleReady[moduleId] = {loading: true};
-            PSR.clientSite.service.ClientSite.loadModuleSrc({
+            PSR.util.Module.loadSrc({
                 moduleId: moduleId,
                 success: function () {
                     me.extModuleReady[moduleId] = true;
@@ -208,7 +207,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                 parent = opt.parent,
                 callback = opt.callback;
             if (moduleId) {
-                PSR.clientSite.ClientSite.getModuleReady(moduleId, function (actions) {
+                PSR.util.Auth.getModuleReady(moduleId, function (actions) {
                     const item = parent.add(Object.assign({}, config, {actions: actions}));
                     if (callback) {
                         callback(item);
@@ -221,7 +220,7 @@ Ext.define('PSR.clientSite.ClientSite', {
                 }
             }
         } else {
-            PSR.Message.error('启动模块组件失败：缺少参数')
+            PSR.util.Message.error('启动模块组件失败：缺少参数')
         }
     }
 });
