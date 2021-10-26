@@ -1,0 +1,11 @@
+@include extjs-tab-panel-ui(
+        $ui: 'portal-workspace-tab',
+        $ui-bar-plain-padding: 0px,
+        $ui-tab-padding: 8px,
+        $ui-tab-plain-background-color: $mainview-background-color,
+        $ui-tab-plain-background-color-over: mix(white, $mainview-base-color, 5%),
+        $ui-tab-plain-background-color-active: mix(white, $mainview-base-color, 10%)
+);
+.x-tab-bar-portal-workspace-tab-bottom .x-box-scroller-tab-bar-portal-workspace-tab {
+  margin-top: -24px;
+}

@@ -1,0 +1,29 @@
+$psr-desktop-title-line-height: dynamic(64px);
+
+@include extjs-toolbar-ui(
+        $ui: 'psr-desktop-title',
+        $background-color: $mainview-background-color
+);
+
+@include extjs-button-toolbar-small-ui(
+        $ui: 'psr-desktop-title-button',
+        $color: white,
+        $glyph-color: white,
+        $background-color: transparent,
+        $border-color: transparent
+);
+
+.x-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.x-scrollbar::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: $base-color;
+}
+
+.x-scrollbar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #ededed;
+}
