@@ -1,4 +1,5 @@
 initDesktopEnv({
+    title: '云工作台',
     clientSite: 'https://klcappclientsite-test.king-long.com.cn',
     gatewaySite: 'https://klcgateway-test.king-long.com.cn',
     wsGatewaySite: 'wss://klcgateway-test.king-long.com.cn',

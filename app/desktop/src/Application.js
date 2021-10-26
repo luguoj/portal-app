@@ -17,9 +17,9 @@ Ext.define('PortalApp.Application', {
             Ext.getBody().removeCls('launching')
             if (!me.desktopView) {
                 if (Ext.isClassic == true) {
-                    me.desktopView = Ext.create({xtype: 'mainview', plugins: 'viewport'})
+                    me.desktopView = Ext.create({xtype: 'mainview', appTitle: document.title, plugins: 'viewport'})
                 } else {
-                    me.desktopView = Ext.Viewport.add([{xtype: 'mainview'}])
+                    me.desktopView = Ext.Viewport.add([{xtype: 'mainview', appTitle: document.title}])
                 }
             }
         };

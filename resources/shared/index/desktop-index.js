@@ -3,7 +3,7 @@ function initDesktopEnv(opt) {
     window.gatewaySite = opt.gatewaySite;
     window.wsGatewaySite = opt.wsGatewaySite;
     window.moduleSite = opt.moduleSite;
-
+    document.title = opt.title;
     window.addEventListener("message", function (event) {
         if (window.clientSite.startsWith(event.origin) && event.data === 'login_success') {
             console.log('login message got')

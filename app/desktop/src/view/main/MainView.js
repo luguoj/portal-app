@@ -5,6 +5,12 @@ Ext.define('PortalApp.view.main.MainView', {
     viewModel: {
         type: 'mainviewmodel'
     },
+    config: {
+        appTitle: ''
+    },
+    updateAppTitle: function (value) {
+        this.getViewModel().set('appTitle', value);
+    },
     layout: 'border',
     items: [{
         region: 'west',
@@ -13,8 +19,6 @@ Ext.define('PortalApp.view.main.MainView', {
         split: true,
         collapsible: true,
         xtype: 'main-navigationview',
-        appTitle: '云工作台',
-        appIconCls: 'psr-desktop-nav-app-icon',
         hideAnimation: {
             type: 'slide',
             direction: 'left',
@@ -25,7 +29,7 @@ Ext.define('PortalApp.view.main.MainView', {
             direction: 'right',
             out: false
         },
-        bind: {store: '{modules}'}
+        bind: {store: '{modules}', title: '{appTitle}'}
     }, {
         xtype: 'button', reference: 'btnExitFullscreen',
         hidden: true,

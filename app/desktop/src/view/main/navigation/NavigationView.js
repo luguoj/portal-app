@@ -17,21 +17,6 @@ Ext.define('PortalApp.view.main.NavigationView', {
             }
         }
     },
-    viewModel: {
-        data: {
-            appTitle: '',
-        }
-    },
-    config: {
-        appIconCls: '',
-        appTitle: ''
-    },
-    updateAppTitle: function (value) {
-        this.getViewModel().set('appTitle', value);
-    },
-    updateAppIconCls: function (value) {
-        this.getViewModel().set('appIconCls', value);
-    },
     updateStore: function (store) {
         const me = this;
         if (store) {
@@ -44,10 +29,7 @@ Ext.define('PortalApp.view.main.NavigationView', {
         });
     },
     ui: 'psr-desktop-nav',
-    bind: {
-        title: '{appTitle}',
-        iconCls: '{appIconCls}',
-    },
+    iconCls: 'psr-desktop-nav-app-icon',
     layout: {
         type: 'vbox',
         align: 'stretch'
@@ -66,9 +48,6 @@ Ext.define('PortalApp.view.main.NavigationView', {
                 itemclick: 'onMenuItemClick'
             }
         });
-    },
-    updateSiteIconCls: function (newValue, oldValue) {
-        this.setIconCls(newValue + ' psr-title-icon');
     },
     switchNode: function (node) {
         this.getController().switchNode(node);
