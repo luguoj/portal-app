@@ -2,21 +2,7 @@ Ext.define('PortalApp.view.main.NavigationView', {
     extend: 'Ext.panel.Panel',
     xtype: 'main-navigationview',
     mixins: ['PSR.mixin.Storable'],
-    controller: {
-        onMenuItemClick: function (tree, event) {
-            if (event.node.isLeaf() && event.node.data.viewConfig) {
-                this.redirectTo(event.node.get('id'));
-            }
-        },
-        switchNode: function (node) {
-            var v = this.getView(),
-                navigationNodes = v.getStore(),
-                navigationNode = navigationNodes.findNode("id", node.data.id);
-            if (navigationNode) {
-                this.getView().getAt(0).getAt(0).setSelection(navigationNode);
-            }
-        }
-    },
+    controller: 'main-navigationviewcontroller',
     updateStore: function (store) {
         const me = this;
         if (store) {
@@ -49,7 +35,7 @@ Ext.define('PortalApp.view.main.NavigationView', {
             }
         });
     },
-    switchNode: function (node) {
-        this.getController().switchNode(node);
+    switchNode: function (opt) {
+        this.getController().switchNode(opt);
     }
 });

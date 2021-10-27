@@ -7,7 +7,7 @@ Ext.define('PortalApp.view.main.MainViewModel', {
     },
     formulas: {},
     stores: {
-        modules: {
+        navNodes: {
             type: 'portalapp-navigationitemtree',
             autoLoad: true
         }

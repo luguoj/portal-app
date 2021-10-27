@@ -29,7 +29,7 @@ Ext.define('PortalApp.view.main.MainView', {
             direction: 'right',
             out: false
         },
-        bind: {store: '{modules}', title: '{appTitle}'}
+        bind: {store: '{navNodes}', title: '{appTitle}'}
     }, {
         xtype: 'button', reference: 'btnExitFullscreen',
         hidden: true,

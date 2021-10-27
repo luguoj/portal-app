@@ -22,10 +22,7 @@ Ext.define('PortalApp.view.main.WorkspaceView', {
     },{
         title: 'Dashboard'
     }],
-    switchNode: function (node) {
-        this.getController().switchNode(node);
-    },
-    exitNode: function (node) {
-        this.getController().exitNode(node);
+    switchView: function (opt) {
+        this.getController().switchView(opt);
     }
 });
