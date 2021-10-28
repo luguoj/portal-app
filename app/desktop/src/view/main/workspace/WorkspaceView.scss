@@ -4,7 +4,16 @@
         $ui-tab-padding: 8px,
         $ui-tab-plain-background-color: $portal-main-background-color,
         $ui-tab-plain-background-color-over: mix(white, $portal-main-base-color, 5%),
-        $ui-tab-plain-background-color-active: mix(white, $portal-main-base-color, 10%)
+        $ui-tab-plain-background-color-active: mix(white, $portal-main-base-color, 10%),
+        $ui-tab-plain-color: #adb3b8,
+        $ui-tab-plain-color-active: #adb3b8,
+        $ui-tab-plain-color-over: #fff,
+        $ui-tab-plain-glyph-color: #adb3b8,
+        $ui-tab-plain-glyph-color-active: #adb3b8,
+        $ui-tab-plain-glyph-color-over: #fff,
+        $ui-tab-plain-border-color: $portal-main-background-color,
+        $ui-tab-plain-border-color-over: $base-highlight-color,
+        $ui-tab-plain-border-color-active: $base-color,
 );
 .x-tab-bar-portal-main-workspace-tab-bottom .x-box-scroller-tab-bar-portal-main-workspace-tab {
   margin-top: -24px;
