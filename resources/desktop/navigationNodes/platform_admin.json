@@ -1,0 +1,61 @@
+[
+  {
+    "parentId": null,
+    "id": "dashboard",
+    "text": "仪表台",
+    "iconCls": "x-fa fa-chart-pie",
+    "viewConfig": {
+      "xtype": "console-dashboard"
+    }
+  },
+  {
+    "id": "console-auth",
+    "text": "授权管理",
+    "iconCls": "x-fa fa-user-edit"
+  },
+  {
+    "parentId": "console-auth",
+    "id": "client",
+    "text": "客户端",
+    "iconCls": "x-fa fa-desktop",
+    "viewConfig": {
+      "xtype": "console-auth-client"
+    }
+  },
+  {
+    "parentId": "console-auth",
+    "id": "resource",
+    "text": "资源",
+    "iconCls": "x-fa fa-server",
+    "viewConfig": {
+      "xtype": "console-auth-resource"
+    }
+  },
+  {
+    "parentId": "console-auth",
+    "id": "user",
+    "text": "用户",
+    "iconCls": "x-fa fa-users",
+    "viewConfig": {
+      "xtype": "console-auth-user"
+    }
+  },
+  {
+    "parentId": "console-auth",
+    "id": "authority",
+    "text": "权限",
+    "iconCls": "x-fa fa-user-shield",
+    "viewConfig": {
+      "xtype": "console-auth-authority"
+    }
+  },
+  {
+    "parentId": "console-auth",
+    "id": "catalog",
+    "text": "类目",
+    "iconCls": "x-fa fa-list-alt",
+    "viewConfig": {
+      "xtype": "console-auth-catalog"
+    }
+  }
+]

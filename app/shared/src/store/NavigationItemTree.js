@@ -3,7 +3,6 @@ Ext.define('PortalApp.store.NavigationItemTree', {
     alias: 'store.portalapp-navigationitemtree',
     proxy: {
         type: 'psr-ajax',
-        url: window.portalEnv.mainNavigationApi,
         withAuthToken: true,
         reader: {
             transform: function (data) {
@@ -27,6 +26,20 @@ Ext.define('PortalApp.store.NavigationItemTree', {
                 }
                 return PSR.data.reader.Transform.parentTree(data);
             }
+        }
+    },
+    load: function (opt) {
+        const me = this;
+        var token = PSR.util.Auth.getClientToken(function (token) {
+            me.load(opt);
+        });
+        if (token) {
+            if (token.username == 'platform_admin') {
+                this.getProxy().setUrl('resources/desktop/navigationNodes/platform_admin.json');
+            } else {
+                this.getProxy().setUrl(window.portalEnv.gateway + '/extapp/api/desktop/navigation_item');
+            }
+            this.callParent([opt]);
         }
     }
 });
