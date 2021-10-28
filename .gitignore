@@ -10,3 +10,4 @@
 /cordova
 /node_modules
 *.log
+main.js
