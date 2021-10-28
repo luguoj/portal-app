@@ -33,8 +33,8 @@
     }
   },
 
-  "classpath": ["app/shared/src","app/${build.id}/src"],
-  "overrides": ["app/shared/overrides","app/${build.id}/overrides"],
+  "classpath": ["app/shared/src","app/${build.id}/src","module/shared/src","module/${build.id}/src"],
+  "overrides": ["app/shared/overrides","app/${build.id}/overrides","module/shared/overrides","module/${build.id}/overrides"],
 
   "sass": {
     "namespace": "PortalApp",
