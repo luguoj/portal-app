@@ -11,17 +11,7 @@ Ext.define('PortalApp.view.main.WorkspaceView', {
     defaults: {
         closable: true
     },
-    items: [{
-        title: 'Dashboard'
-    },{
-        title: 'Dashboard'
-    },{
-        title: 'Dashboard'
-    },{
-        title: 'Dashboard'
-    },{
-        title: 'Dashboard'
-    }],
+    items: [],
     switchView: function (opt) {
         this.getController().switchView(opt);
     }
