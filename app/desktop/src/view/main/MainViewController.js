@@ -4,9 +4,21 @@ Ext.define('PortalApp.view.main.MainViewController', {
     routes: {
         ':nodeId': {action: 'mainRoute'}
     },
+    initViewModel: function (vm) {
+        var me = this;
+        vm.getStore('navNodes').on({
+            load: function (store, records, success) {
+                if (me.switchingNodeId) {
+                    me.switchNode(me.switchingNodeId);
+                    delete me.switchingNodeId;
+                } else {
+                    Ext.route.Router.onStateChange(Ext.util.History.getToken())
+                }
+            }
+        })
+    },
     mainRoute: function (nodeId) {
-        var v = this.getView(),
-            vm = this.getViewModel(),
+        var vm = this.getViewModel(),
             nodes = vm.getStore('navNodes');
         if (nodes.isLoaded()) {
             this.switchNode(nodeId);
