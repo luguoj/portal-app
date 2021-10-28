@@ -1,4 +1,4 @@
-$portal-main-navigation-header-icon-size: 44px;
+$portal-main-navigation-header-icon-size: 38px;
 
 .portal-main-navigation-app-icon:before {
   content: "";
@@ -11,8 +11,7 @@ $portal-main-navigation-header-icon-size: 44px;
 
 @include extjs-panel-ui(
         $ui: 'portal-main-navigation',
-        $ui-header-padding: 0px 14px,
-        $ui-header-border-width: 6px 8px,
+        $ui-header-padding: 6px 8px 6px 8px,
         $ui-header-icon-width: $portal-main-navigation-header-icon-size,
         $ui-header-icon-height: $portal-main-navigation-header-icon-size,
         $ui-header-background-color: $portal-main-background-color,
