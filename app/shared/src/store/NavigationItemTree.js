@@ -3,14 +3,14 @@ Ext.define('PortalApp.store.NavigationItemTree', {
     alias: 'store.portalapp-navigationitemtree',
     proxy: {
         type: 'psr-ajax',
-        url: window.gatewaySite + '/extapp/api/desktop/navigation_item',
+        url: window.portalEnv.mainNavigationApi,
         withAuthToken: true,
         reader: {
             transform: function (data) {
                 if (data && data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
                         var record = data[i];
-                        if (record.viewConfig) {
+                        if (record.viewConfig && typeof (record.viewConfig) == 'string') {
                             if (!record.iconCls) {
                                 record.iconCls = 'x-fa fa-cube'
                             }
@@ -19,10 +19,9 @@ Ext.define('PortalApp.store.NavigationItemTree', {
                             } catch (e) {
                                 console.error(e);
                             }
-                        } else {
-                            if (!record.iconCls) {
-                                record.iconCls = 'x-fa fa-cubes'
-                            }
+                        }
+                        if (!record.iconCls) {
+                            record.iconCls = 'x-fa fa-cubes'
                         }
                     }
                 }

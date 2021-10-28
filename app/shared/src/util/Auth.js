@@ -1,6 +1,6 @@
 Ext.define('PSR.util.Auth', {
     singleton: true,
-    clientTokenEndpoint: window.clientSite + '/api/token',
+    clientTokenEndpoint: window.portalEnv.authclient + '/api/token',
     constructor: function (config) {
         this.callParent([config]);
         window.addEventListener("message", function (event) {
@@ -16,7 +16,7 @@ Ext.define('PSR.util.Auth', {
             } else if (event.data === 'login_retry') {
                 console.log('login retry message got')
                 if (PSR.util.Auth.oauth2LoginDialog) {
-                    PSR.util.Auth.oauth2LoginDialog.getAt(0).updateSrc(window.clientSite);
+                    PSR.util.Auth.oauth2LoginDialog.getAt(0).updateSrc(window.portalEnv.authclient);
                 }
             } else if (event.data === 'logout_success') {
                 console.log('logout message got')
@@ -37,7 +37,7 @@ Ext.define('PSR.util.Auth', {
                 },
                 listeners: {
                     show: function (dialog) {
-                        dialog.getAt(0).setSrc(window.clientSite);
+                        dialog.getAt(0).setSrc(window.portalEnv.authclient);
                     }
                 }
             });
@@ -50,7 +50,7 @@ Ext.define('PSR.util.Auth', {
             iconCls: 'x-fa fa-spinner fa-spin',
             closable: true,
             resizable: false,
-            html: '<iframe  src="' + window.clientSite + '/logout" frameborder="0" width="0px" height="0px"></iframe > ',
+            html: '<iframe  src="' + window.portalEnv.authclient + '/logout" frameborder="0" width="0px" height="0px"></iframe > ',
         }).show();
     },
     checkUserChange: function (newToken) {

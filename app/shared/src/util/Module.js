@@ -10,7 +10,7 @@ Ext.define('PSR.util.Module', {
             // 如果尚未加载，则执行加载
             module.loading++;
             module.source = 'loading';
-            const moduleSrcUrl = window.moduleSite + '/' + opt.moduleId + '/index.js?v=' + (new Date()).getTime();
+            const moduleSrcUrl = window.portalEnv.modulecdn + '/' + opt.moduleId + '/index.js?v=' + (new Date()).getTime();
             const scriptEl = document.createElement('script');
             // 加载成功
             scriptEl.onload = scriptEl.onreadystateschange = function () {
@@ -53,7 +53,7 @@ Ext.define('PSR.util.Module', {
             module.actions = 'loading';
             PSR.Ajax.request({
                 method: 'GET',
-                url: window.gatewaySite + '/extapp/api/desktop/module_action/',
+                url: window.portalEnv.gateway + '/extapp/api/desktop/module_action/',
                 params: {
                     moduleId: moduleId
                 },
@@ -150,7 +150,6 @@ Ext.define('PSR.util.Module', {
                     item = Ext.create(Object.assign({}, config, {actions: actions}))
                     item = parent.add(item);
                 } catch (e) {
-                    debugger
                     PSR.util.Message.error('创建模块失败')
                 }
                 if (item && callback) {
