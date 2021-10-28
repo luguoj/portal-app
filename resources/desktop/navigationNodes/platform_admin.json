@@ -11,7 +11,8 @@
   {
     "id": "console-auth",
     "text": "授权管理",
-    "iconCls": "x-fa fa-user-edit"
+    "iconCls": "x-fa fa-user-edit",
+    "expanded": true
   },
   {
     "parentId": "console-auth",
