@@ -31,17 +31,6 @@ Ext.define('PortalApp.view.main.MainView', {
         },
         bind: {store: '{navNodes}', title: '{appTitle}'}
     }, {
-        xtype: 'button', reference: 'btnExitFullscreen',
-        hidden: true,
-        iconCls: 'x-fa fa-compress', tooltip: '退出全屏',
-        draggable: true,
-        shadow: true,
-        left: 5,
-        top: 5,
-        width: 36,
-        height: 36,
-        handler: 'hBtnExitFullscreen'
-    }, {
         region: 'center',
         layout: 'border',
         items: [{
@@ -78,5 +67,38 @@ Ext.define('PortalApp.view.main.MainView', {
             width: '100%',
             height: '100%'
         }]
+    }, {
+        xtype: 'button', reference: 'btnExitFullscreen',
+        hidden: true,
+        floating: true,
+        iconCls: 'x-fa fa-compress', tooltip: '退出全屏',
+        shadow: true,
+        x: -30,
+        y: 7,
+        width: 36,
+        height: 36,
+        handler: 'hBtnExitFullscreen',
+        listeners: {
+            mouseover: function (button) {
+                button.outside = true;
+                button.animate({
+                    to: {
+                        x: 1
+                    }
+                });
+            },
+            mouseout: function (button) {
+                button.outside = false;
+                setTimeout(function () {
+                    if (button.outside == false) {
+                        button.animate({
+                            to: {
+                                x: -30
+                            }
+                        });
+                    }
+                }, 1000);
+            }
+        }
     }]
 });
