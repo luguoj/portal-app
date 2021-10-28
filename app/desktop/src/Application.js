@@ -25,6 +25,7 @@ Ext.define('PortalApp.Application', {
         };
         if (window.login) {
             PSR.util.Auth.loginSuccess();
+            delete PSR.util.Auth.loginSuccess;
         }
     },
 
