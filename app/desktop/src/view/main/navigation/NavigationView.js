@@ -37,5 +37,21 @@ Ext.define('PortalApp.view.main.NavigationView', {
     },
     switchNode: function (opt) {
         this.getController().switchNode(opt);
+    },
+    createReExpander: function (direction, defaults) {
+        var result = this.callParent([direction, defaults]);
+        result.expandTool.setIconCls('x-fa fa-indent');
+        return result;
+    },
+    updateCollapseTool: function () {
+        this.callParent();
+        var me = this, collapseTool = me.collapseTool;
+        if (collapseTool) {
+            if (me.collapsed && !me.isPlaceHolderCollapse()) {
+                collapseTool.setIconCls('x-fa fa-indent')
+            } else {
+                collapseTool.setIconCls('x-fa fa-outdent')
+            }
+        }
     }
 });
