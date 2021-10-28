@@ -38,7 +38,7 @@ Ext.define('PortalApp.view.main.MainView', {
             docked: 'top',
             height: 50,
             xtype: 'toolbar',
-            ui: 'psr-desktop-title',
+            ui: 'portal-main-toolbar',
             hideMode: 'clip',
             hideAnimation: {
                 type: 'slide',
@@ -50,7 +50,7 @@ Ext.define('PortalApp.view.main.MainView', {
                 direction: 'down',
                 out: false
             },
-            defaultButtonUI: 'psr-desktop-title-button-toolbar',
+            defaultButtonUI: 'portal-main-toolbar-button-toolbar',
             items: [{
                 iconCls: 'x-fa fa-expand', tooltip: '全屏',
                 handler: 'hBtnFullscreen'

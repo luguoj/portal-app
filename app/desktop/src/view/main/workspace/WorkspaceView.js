@@ -7,7 +7,7 @@ Ext.define('PortalApp.view.main.WorkspaceView', {
     },
     tabPosition: 'bottom',
     plain: true,
-    ui: 'portal-workspace-tab',
+    ui: 'portal-main-workspace-tab',
     defaults: {
         closable: true
     },

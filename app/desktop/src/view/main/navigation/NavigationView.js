@@ -14,8 +14,8 @@ Ext.define('PortalApp.view.main.NavigationView', {
             me.navTree.setIndent(10);
         });
     },
-    ui: 'psr-desktop-nav',
-    iconCls: 'psr-desktop-nav-app-icon',
+    ui: 'portal-main-navigation',
+    iconCls: 'portal-main-navigation-app-icon',
     layout: {
         type: 'vbox',
         align: 'stretch'

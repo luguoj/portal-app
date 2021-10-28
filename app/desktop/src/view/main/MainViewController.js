@@ -43,7 +43,7 @@ Ext.define('PortalApp.view.main.MainViewController', {
         const view = this.getView(),
             btnExitFullscreen = this.lookup('btnExitFullscreen'),
             navigationview = view.down('main-navigationview'),
-            maintitle = view.down('toolbar[ui=psr-desktop-title]'),
+            maintitle = view.down('toolbar[ui=portal-main-toolbar]'),
             tabbar = view.down('tabbar');
         btnExitFullscreen.show();
         navigationview.hide(btnExitFullscreen);
@@ -54,7 +54,7 @@ Ext.define('PortalApp.view.main.MainViewController', {
         const view = this.getView(),
             btnExitFullscreen = this.lookup('btnExitFullscreen'),
             navigationview = view.down('main-navigationview'),
-            maintitle = view.down('toolbar[ui=psr-desktop-title]'),
+            maintitle = view.down('toolbar[ui=portal-main-toolbar]'),
             tabbar = view.down('tabbar');
         navigationview.show(btnExitFullscreen);
         maintitle.show(btnExitFullscreen);

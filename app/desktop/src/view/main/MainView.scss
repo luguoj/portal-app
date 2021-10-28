@@ -1,12 +1,12 @@
-$psr-desktop-title-line-height: dynamic(64px);
+$portal-main-toolbar-line-height: dynamic(64px);
 
 @include extjs-toolbar-ui(
-        $ui: 'psr-desktop-title',
-        $background-color: $mainview-background-color
+        $ui: 'portal-main-toolbar',
+        $background-color: $portal-main-background-color
 );
 
 @include extjs-button-toolbar-small-ui(
-        $ui: 'psr-desktop-title-button',
+        $ui: 'portal-main-toolbar-button',
         $color: white,
         $glyph-color: white,
         $background-color: transparent,
