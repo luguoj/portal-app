@@ -1,11 +1,10 @@
 Ext.define('PSR.data.File', {
-    alternateClassName: ['PSR.File'],
     singleton: true,
     download: function (opt) {
         if (opt && opt.url) {
             if (opt.withAuthToken) {
                 var token = PSR.util.Auth.getClientToken(function (token) {
-                    PSR.File.download(opt);
+                    PSR.data.File.download(opt);
                 });
                 if (!token) {
                     return;

@@ -1,5 +1,4 @@
 Ext.define('PSR.data.reader.Transform', {
-    alternateClassName: ['PSR.ReaderTransform'],
     singleton: true,
     getPathTreeOption: function (opt) {
         return Object.assign({

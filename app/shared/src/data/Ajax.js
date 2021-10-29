@@ -1,16 +1,15 @@
 Ext.define('PSR.data.Ajax', {
-    alternateClassName: ['PSR.Ajax'],
     singleton: true,
     request: function (opt) {
         if (!opt.success) {
-            opt.success = PSR.Ajax.hCallSuccess;
+            opt.success = PSR.data.Ajax.hCallSuccess;
         }
         if (!opt.failure) {
-            opt.failure = PSR.Ajax.hCallFailure;
+            opt.failure = PSR.data.Ajax.hCallFailure;
         }
         if (opt.withAuthToken) {
             var authHeader = PSR.util.Auth.getAuthorizationHeader(function (authHeader) {
-                PSR.Ajax.request(opt);
+                PSR.data.Ajax.request(opt);
             });
             if (!authHeader) {
                 return;
@@ -37,7 +36,7 @@ Ext.define('PSR.data.Ajax', {
                 opt.complete(response, opt);
             }
         } catch (err) {
-            PSR.Ajax.onErrorMessage(err.message, opt);
+            PSR.data.Ajax.onErrorMessage(err.message, opt);
             console.error(err);
         }
     },
@@ -57,9 +56,9 @@ Ext.define('PSR.data.Ajax', {
                     PSR.data.Ajax.on401(response, opt);
                 }
             } else if (response.status == '403') {
-                PSR.Ajax.onErrorMessage('不允许访问', opt);
+                PSR.data.Ajax.onErrorMessage('不允许访问', opt);
             } else if (response.status == '503') {
-                PSR.Ajax.onErrorMessage('服务不可用', opt);
+                PSR.data.Ajax.onErrorMessage('服务不可用', opt);
             } else if (response.status >= 500 && response.status < 600) {
                 if (opt.on50x) {
                     opt.on50x(response, opt);
@@ -67,9 +66,9 @@ Ext.define('PSR.data.Ajax', {
                     PSR.data.Ajax.on50x(response, opt);
                 }
             } else if (response.statusText) {
-                PSR.Ajax.onErrorMessage(response.statusText, opt);
+                PSR.data.Ajax.onErrorMessage(response.statusText, opt);
             } else {
-                PSR.Ajax.onErrorMessage('调用失败', opt);
+                PSR.data.Ajax.onErrorMessage('调用失败', opt);
             }
         }
         if (opt.complete) {
@@ -80,9 +79,9 @@ Ext.define('PSR.data.Ajax', {
         const respObj = response.responseJson
             || (response.responseText ? JSON.parse(response.responseText) : null);
         if (respObj && respObj.message) {
-            PSR.Ajax.onErrorMessage('<b>错误的请求</b>: ' + respObj.exception + ', ' + respObj.message, opt);
+            PSR.data.Ajax.onErrorMessage('<b>错误的请求</b>: ' + respObj.exception + ', ' + respObj.message, opt);
         } else {
-            PSR.Ajax.onErrorMessage('错误的请求', opt);
+            PSR.data.Ajax.onErrorMessage('错误的请求', opt);
         }
     },
     on401: function (response, opt) {
@@ -99,16 +98,16 @@ Ext.define('PSR.data.Ajax', {
                 PSR.util.Message.error("授权信息无效");
             }
         } else {
-            PSR.Ajax.onErrorMessage('授权信息无效', opt);
+            PSR.data.Ajax.onErrorMessage('授权信息无效', opt);
         }
     },
     on50x: function (response, opt) {
         const respObj = response.responseJson
             || (response.responseText ? JSON.parse(response.responseText) : null);
         if (respObj && respObj.message) {
-            PSR.Ajax.onErrorMessage('<b>服务内部错误</b>: ' + respObj.exception + ', ' + respObj.message, opt);
+            PSR.data.Ajax.onErrorMessage('<b>服务内部错误</b>: ' + respObj.exception + ', ' + respObj.message, opt);
         } else {
-            PSR.Ajax.onErrorMessage('服务内部错误', opt);
+            PSR.data.Ajax.onErrorMessage('服务内部错误', opt);
         }
     },
 });

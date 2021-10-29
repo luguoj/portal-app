@@ -51,7 +51,7 @@ Ext.define('PSR.util.Module', {
             // 如果尚未加载，则执行加载
             module.loading++;
             module.actions = 'loading';
-            PSR.Ajax.request({
+            PSR.data.Ajax.request({
                 method: 'GET',
                 url: window.portalEnv.gateway + '/extapp/api/desktop/module_action/',
                 params: {

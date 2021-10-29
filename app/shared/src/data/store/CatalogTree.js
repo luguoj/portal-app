@@ -17,7 +17,7 @@ Ext.define('PSR.data.store.CatalogTree', {
         extraParams: {},
         reader: {
             transform: function (data) {
-                return PSR.ReaderTransform.catalogTree(data.content, {
+                return PSR.data.reader.Transform.catalogTree(data.content, {
                     expand: true,
                     hideUsage: this.hideUsage,
                     isRecord: this.isRecord

@@ -13,7 +13,7 @@ Ext.define('PSR.data.proxy.Ajax', {
         rootProperty: 'content'
     },
     sendRequest: function (request) {
-        request.setRawRequest(PSR.Ajax.request(request.getCurrentConfig()));
+        request.setRawRequest(PSR.data.Ajax.request(request.getCurrentConfig()));
         this.lastRequest = request;
         return request;
     },
