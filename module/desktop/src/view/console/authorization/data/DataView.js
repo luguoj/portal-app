@@ -1,4 +1,4 @@
-Ext.define('PortalApp.view.console.auth.data.DataView', {
+Ext.define('PortalApp.view.console.authorization.data.DataView', {
     extend: 'Ext.panel.Panel',
     xtype: 'console-auth-dataview',
     controller: 'console-auth-dataviewcontroller',
@@ -47,8 +47,9 @@ Ext.define('PortalApp.view.console.auth.data.DataView', {
         bbar: {
             xtype: 'pagingtoolbar',
             displayInfo: true,
-            displayMsg: '第 {0} - {1} 行, 共{2}行记录',
-            emptyMsg: "没有记录"
+        },
+        plugins: {
+            gridfilters: true
         },
         bind: {store: '{entities}'}
     }]

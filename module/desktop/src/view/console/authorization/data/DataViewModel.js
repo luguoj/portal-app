@@ -1,6 +1,9 @@
-Ext.define('PortalApp.view.console.auth.data.DataViewModel', {
+Ext.define('PortalApp.view.console.authorization.data.DataViewModel', {
     extend: 'Ext.app.ViewModel',
     alias: 'viewmodel.console-auth-dataviewmodel',
+    data: {
+        domainSchema: null
+    },
     stores: {
         domainTypes: {
             type: 'portalapp-authorization-domaintype',
@@ -10,6 +13,7 @@ Ext.define('PortalApp.view.console.auth.data.DataViewModel', {
             type: 'portalapp-authorization-entity',
             pageSize: 50,
             remoteSort: true,
+            remoteFilter: true,
             autoLoad: false
         }
     }
