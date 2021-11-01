@@ -1,8 +1,8 @@
 Ext.define('PortalApp.view.console.authorization.data.DataView', {
     extend: 'Ext.panel.Panel',
-    xtype: 'console-auth-dataview',
-    controller: 'console-auth-dataviewcontroller',
-    viewModel: 'console-auth-dataviewmodel',
+    xtype: 'console-authorization-dataview',
+    controller: 'console-authorization-dataviewcontroller',
+    viewModel: 'console-authorization-dataviewmodel',
     tbar: {
         items: [{
             xtype: 'combobox',

@@ -1,6 +1,6 @@
 Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.console-auth-dataviewcontroller',
+    alias: 'controller.console-authorization-dataviewcontroller',
     createColumnCfg: function (fieldSchema) {
         const fieldType = fieldSchema.type,
             columnCfg = {
