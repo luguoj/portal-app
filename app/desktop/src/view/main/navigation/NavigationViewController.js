@@ -9,9 +9,11 @@ Ext.define('PortalApp.view.main.NavigationViewController', {
     switchNode: function (opt) {
         var v = this.getView(),
             navigationNodes = v.getStore(),
-            navigationNode = navigationNodes.findNode("id", opt.nodeId);
+            navigationNode = navigationNodes ? navigationNodes.findNode("id", opt.nodeId) : null;
         if (navigationNode) {
             v.navTree.setSelection(navigationNode);
+        } else {
+            v.navTree.setSelection(null);
         }
     }
 });
