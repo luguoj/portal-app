@@ -51,57 +51,28 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
         }
         return columnCfg;
     },
-    hCombDomainTypeChange: function (comb, newValue) {
+    onCombDomainTypeChange: function (comb, newValue) {
         const me = this,
             view = this.getView(),
             filterForm = view.down('container[region=west]'),
             grid = view.down('grid'),
             viewModel = this.getViewModel(),
-            entityStore = viewModel.getStore('entities');
-        filterForm.removeAll();
+            entityStore = viewModel.getStore('entities'),
+            domainTypeStore = viewModel.getStore('domainTypes');
         if (newValue) {
+            viewModel.set('domainType', domainTypeStore.findRecord('type', newValue));
             PortalApp.data.authorization.DomainTypeApi.findSchemaByDomainType(
                 {
                     domainType: newValue,
                     success: function (data) {
                         if (data && data.length > 0) {
                             viewModel.set('domainSchema', data);
-                            const filterFields = [], gridColumns = [];
+                            const gridColumns = [];
                             for (let i = 0; i < data.length; i++) {
                                 const fieldSchema = data[i],
                                     columnCfg = me.createColumnCfg(fieldSchema);
-                                const filterField = {
-                                        name: fieldSchema.name,
-                                        fieldLabel: fieldSchema.title,
-                                        emptyText: fieldSchema.description
-                                    };
-                                switch (fieldSchema.type) {
-                                    case 'java.lang.Integer':
-                                    case 'java.lang.Long':
-                                        filterField.xtype = 'numberfield';
-                                        break;
-                                    case 'java.math.BigDecimal':
-                                        filterField.xtype = 'numberfield';
-                                        break;
-                                    case 'java.time.LocalDateTime':
-                                        filterField.xtype = 'datefield';
-                                        filterField.format = 'Y-m-d H:i:s.u';
-                                        filterField.altFormats = 'Y-m-d\\TH:i:s.u';
-                                        break;
-                                    case 'java.lang.Boolean':
-                                        filterField.xtype = 'checkboxfield';
-                                        break;
-                                    case 'java.lang.String':
-                                        filterField.xtype = 'textfield';
-                                        break;
-                                    default:
-                                        PSR.util.Message.error('不支持的字段类型: ' + fieldSchema.title + '(' + fieldSchema.name + ')' + ' - ' + fieldSchema.type);
-
-                                }
-                                filterFields.push(filterField);
                                 gridColumns.push(columnCfg);
                             }
-                            filterForm.add(filterFields);
                             grid.reconfigure(gridColumns);
                             entityStore.setDomainType(newValue);
                             entityStore.load();
@@ -111,27 +82,60 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
             );
         }
     },
-    hBtnFilterToggle: function (btn, pressed) {
+    getModuleId: function () {
+        return '';
+    },
+    onGrdItemDbClick: function (grid, record, item, index) {
         const view = this.getView(),
-            filterView = view.down('container[region=west]');
-        if (pressed) {
-            filterView.show(btn);
+            viewModel = this.getViewModel(),
+            moduleId = this.getModuleId(),
+            domainType = viewModel.get('domainType'),
+            type = domainType.get('type'),
+            title = domainType.get('title'),
+            domainSchema = viewModel.get('domainSchema'),
+            entityId = record.get('id');
+        view.fireEvent('switchview', {
+            moduleId: moduleId,
+            viewId: 'data-editor-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + entityId,
+            title: title,
+            iconCls: 'x-fa fa-edit',
+            viewConfig: {
+                xtype: 'console-authorization-data-editorview',
+                domainType: domainType,
+                domainSchema: domainSchema,
+                entity: record
+            },
+        })
+    },
+    onGrdSelectionChange: function (sm, selections) {
+        const view = this.getView(),
+            btnRemove = view.down('button[handler=hBtnRemove]');
+        if (selections.length) {
+            btnRemove.enable();
         } else {
-            filterView.hide(btn);
+            btnRemove.disable();
         }
     },
-    hBtnSearch: function () {
+    hBtnAdd: function (btn) {
         const view = this.getView(),
-            filterForm = view.down('container[region=west]'),
-            filterValues = filterForm.getValues(),
             viewModel = this.getViewModel(),
-            entityStore = viewModel.getStore('entities'),
+            moduleId = this.getModuleId(),
+            domainType = viewModel.get('domainType'),
+            type = domainType.get('type'),
+            title = domainType.get('title'),
             domainSchema = viewModel.get('domainSchema');
-        if (domainSchema) {
-            for (let i = 0; i < domainSchema.length; i++) {
-                const fieldSchema = domainSchema[i];
-
-            }
-        }
+        debugger
+        view.fireEvent('switchview', {
+            moduleId: moduleId,
+            viewId: 'data-editor-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + new Date(),
+            title: title,
+            iconCls: 'x-fa fa-edit',
+            viewConfig: {
+                xtype: 'console-authorization-data-editorview',
+                domainType: domainType,
+                domainSchema: domainSchema,
+                entity: null
+            },
+        })
     }
 });

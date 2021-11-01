@@ -4,46 +4,34 @@ Ext.define('PortalApp.view.console.authorization.data.DataView', {
     controller: 'console-authorization-dataviewcontroller',
     viewModel: 'console-authorization-dataviewmodel',
     tbar: {
-        items: [{
+        items: ['领域类型:', {
             xtype: 'combobox',
             editable: false,
             valueField: 'type',
             displayField: 'title',
             bind: {store: '{domainTypes}'},
             listeners: {
-                change: 'hCombDomainTypeChange'
+                change: 'onCombDomainTypeChange'
             }
+        }, '-', {
+            xtype: 'button',
+            text: '创建',
+            iconCls: 'x-fa fa-plus',
+            bind: {disabled: '{!domainType}'},
+            handler: 'hBtnAdd'
         }, {
             xtype: 'button',
-            iconCls: 'x-fa fa-filter',
-            enableToggle: true,
-            listeners: {
-                toggle: 'hBtnFilterToggle'
-            }
-        }, {
-            xtype: 'button',
-            iconCls: 'x-fa fa-search',
-            handler: 'hBtnSearch'
+            text: '删除',
+            iconCls: 'x-fa fa-remove',
+            disabled: true,
+            handler: 'hBtnRemove'
         }]
     },
-    layout: 'border',
-    defaults: {
-        split: true,
-        bodyPadding: 10
-    },
+    layout: 'fit',
     items: [{
-        region: 'west',
-        width: '20%',
-        hidden: true,
-        xtype: 'form',
-        scrollable: 'y',
-        defaults: {
-            anchor: '100%'
-        },
-        items: []
-    }, {
-        region: 'center',
         xtype: 'grid',
+        columnLines: true,
+        selType: 'checkboxmodel',
         bbar: {
             xtype: 'pagingtoolbar',
             displayInfo: true,
@@ -51,6 +39,10 @@ Ext.define('PortalApp.view.console.authorization.data.DataView', {
         plugins: {
             gridfilters: true
         },
-        bind: {store: '{entities}'}
+        bind: {store: '{entities}'},
+        listeners: {
+            itemdblclick: 'onGrdItemDbClick',
+            selectionchange: 'onGrdSelectionChange'
+        }
     }]
 });

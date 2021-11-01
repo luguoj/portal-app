@@ -2,6 +2,7 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewModel', {
     extend: 'Ext.app.ViewModel',
     alias: 'viewmodel.console-authorization-dataviewmodel',
     data: {
+        domainType:'',
         domainSchema: null
     },
     stores: {
