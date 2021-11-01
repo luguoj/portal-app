@@ -44,7 +44,6 @@ Ext.define('PSR.data.proxy.Entity', {
             }
             propertyFilterOptions.push(valueRange);
         }
-        debugger;
         return Ext.encode(filterOptions);
     }
 });
