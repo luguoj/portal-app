@@ -27,7 +27,9 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
                         try {
                             const item = Ext.create(Object.assign({}, newViewConfig, {actions: actions}))
                             v.add(item);
-                            item.addListener('switchview', c.switchView)
+                            item.addListener('switchview', function (opt) {
+                                c.switchView(opt);
+                            });
                             c.switchView(opt);
                         } catch (e) {
                             PSR.util.Message.error('创建模块失败')
@@ -37,7 +39,9 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
             } else {
                 const item = Ext.create(newViewConfig);
                 v.add(item);
-                item.addListener('switchview', c.switchView);
+                item.addListener('switchview', function (opt) {
+                    c.switchView(opt);
+                });
                 c.switchView(opt);
             }
         } else {
