@@ -7,6 +7,9 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
                 dataIndex: fieldSchema.name,
                 text: fieldSchema.description
             };
+        if (fieldSchema.name == 'version' || fieldSchema.name == 'createdDate' || fieldSchema.name == 'lastModifiedDate') {
+            columnCfg.hidden = true;
+        }
         switch (fieldType) {
             case 'java.lang.Integer':
             case 'java.lang.Long':
