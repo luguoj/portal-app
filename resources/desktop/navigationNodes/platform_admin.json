@@ -1,62 +1,77 @@
 [
   {
     "parentId": null,
-    "id": "dashboard",
+    "id": "console-dashboardview",
     "text": "仪表台",
     "iconCls": "x-fa fa-chart-pie",
     "viewConfig": {
-      "xtype": "console-dashboard"
+      "xtype": "console-dashboardview"
     }
   },
   {
-    "id": "console-auth",
+    "id": "console-data",
+    "text": "数据维护",
+    "iconCls": "x-fa fa-database",
+    "expanded": true
+  },
+  {
+    "parentId": "console-data",
+    "id": "console-authorization-dataview",
+    "text": "授权数据",
+    "iconCls": "x-fa fa-database",
+    "viewConfig": {
+      "xtype": "console-authorization-dataview"
+    }
+  },
+  {
+    "id": "console-authorization",
     "text": "授权管理",
     "iconCls": "x-fa fa-user-edit",
     "expanded": true
   },
   {
-    "parentId": "console-auth",
-    "id": "client",
+    "parentId": "console-authorization",
+    "id": "console-authorization-clientview",
     "text": "客户端",
     "iconCls": "x-fa fa-desktop",
     "viewConfig": {
-      "xtype": "console-auth-client"
+      "xtype": "console-authorization-clientview"
     }
   },
   {
-    "parentId": "console-auth",
-    "id": "resource",
+    "parentId": "console-authorization",
+    "id": "console-authorization-resourceview",
     "text": "资源",
     "iconCls": "x-fa fa-server",
     "viewConfig": {
-      "xtype": "console-auth-resource"
+      "xtype": "console-authorization-resourceview"
     }
   },
   {
-    "parentId": "console-auth",
-    "id": "user",
+    "parentId": "console-authorization",
+    "id": "console-authorization-userview",
     "text": "用户",
     "iconCls": "x-fa fa-users",
     "viewConfig": {
-      "xtype": "console-auth-user"
+      "xtype": "console-authorization-userview"
     }
   },
   {
-    "parentId": "console-auth",
-    "id": "authority",
+    "parentId": "console-authorization",
+    "id": "console-authorization-authorityview",
     "text": "权限",
     "iconCls": "x-fa fa-user-shield",
     "viewConfig": {
-      "xtype": "console-auth-authority"
+      "xtype": "console-authorization-authorityview"
     }
   },
   {
-    "parentId": "console-auth",
-    "id": "catalog",
+    "parentId": "console-authorization",
+    "id": "console-authorization-catalogview",
     "text": "类目",
     "iconCls": "x-fa fa-list-alt",
     "viewConfig": {
-      "xtype": "console-auth-catalog"
+      "xtype": "console-authorization-catalogview"
     }
   }
 ]
