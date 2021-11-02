@@ -66,6 +66,8 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             viewModel = this.getViewModel(),
             entityStore = viewModel.getStore('entities'),
             domainTypeStore = viewModel.getStore('domainTypes');
+        entityStore.clearFilter(true);
+        entityStore.getSorters().removeAll();
         if (newValue) {
             viewModel.set('domainType', domainTypeStore.findRecord('type', newValue));
             PSR.data.entityCRUD.DomainTypeApi.findSchemaByDomainType(
