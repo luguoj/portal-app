@@ -152,5 +152,35 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
                 entityId: null
             },
         })
+    },
+    hBtnRemove: function (btn) {
+        const view = this.getView(),
+            application = this.getApplication(),
+            grid = view.down('grid'),
+            selections = grid.getSelection(),
+            viewModel = this.getViewModel(),
+            domainType = viewModel.get('domainType').get('type'),
+            entityStore = viewModel.getStore('entities');
+        if (selections && selections.length > 0) {
+            PSR.util.Message.confirm('删除' + selections.length + '条数据', function () {
+                btn.setDisabled(true);
+                const ids = [];
+                for (let i = 0; i < selections.length; i++) {
+                    const selection = selections[i];
+                    ids.push(selection.get('id'));
+                }
+                PSR.data.entityCRUD.EntityCRUDApi.delete({
+                    application: application,
+                    domainType: domainType,
+                    ids: ids,
+                    success: function () {
+                        PSR.util.Message.info('删除成功');
+                    },
+                    complete: function () {
+                        entityStore.reload();
+                    }
+                });
+            });
+        }
     }
 });
