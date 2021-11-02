@@ -46,5 +46,16 @@ Ext.define('PortalApp.view.console.authorization.data.EditorViewController', {
         if (entity) {
             form.loadRecord(entity);
         }
+    },
+    onFrmDirtyChange: function (form, dirty) {
+        const view = this.getView(),
+            btnReset = view.down('button[handler=hBtnReset]'),
+            btnSave = view.down('button[handler=hBtnSave]');
+        btnReset.setDisabled(!dirty);
+        btnSave.setDisabled(!dirty);
+    },
+    hBtnReset: function () {
+        const view = this.getView(), form = view.down('form');
+        form.reset();
     }
 });

@@ -22,7 +22,7 @@ Ext.define('PortalApp.view.console.authorization.data.DataView', {
         }, {
             xtype: 'button',
             text: '删除',
-            iconCls: 'x-fa fa-remove',
+            iconCls: 'x-fa fa-trash-alt',
             disabled: true,
             handler: 'hBtnRemove'
         }]

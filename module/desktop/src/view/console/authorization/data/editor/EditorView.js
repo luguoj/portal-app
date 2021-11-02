@@ -11,7 +11,15 @@ Ext.define('PortalApp.view.console.authorization.data.EditorView', {
     tbar: {
         items: [{
             xtype: 'button',
+            text: '重置',
+            iconCls: 'x-fa fa-redo-alt',
+            disabled: 'true',
+            handler: 'hBtnReset'
+        }, {
+            xtype: 'button',
+            text: '保存',
             iconCls: 'x-fa fa-save',
+            disabled: 'true',
             handler: 'hBtnSave'
         }]
     },
@@ -20,12 +28,16 @@ Ext.define('PortalApp.view.console.authorization.data.EditorView', {
         xtype: 'form',
         padding: 10,
         scrollable: 'y',
+        trackResetOnLoad: true,
         defaults: {
             anchor: '100%'
         },
-        items: []
+        items: [],
+        listeners: {
+            dirtychange: 'onFrmDirtyChange'
+        }
     }],
-    listeners:{
-        afterrender:'onAfterRendered'
+    listeners: {
+        afterrender: 'onAfterRendered'
     }
 });
