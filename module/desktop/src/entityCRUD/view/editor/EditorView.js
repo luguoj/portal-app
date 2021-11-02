@@ -4,6 +4,7 @@ Ext.define('PSR.view.entityCRUD.data.EditorView', {
     controller: 'psr-view-entitycrud-data-editorviewcontroller',
     viewModel: 'psr-view-entitycrud-data-editorviewmodel',
     config: {
+        mode:'',
         domainType: null,
         domainSchema: null,
         entity: null

@@ -110,6 +110,7 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             iconCls: 'x-fa fa-edit',
             viewConfig: {
                 xtype: 'psr-view-entitycrud-data-editorview',
+                mode:'editing',
                 application: application,
                 domainType: domainType,
                 domainSchema: domainSchema,
@@ -142,6 +143,7 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             iconCls: 'x-fa fa-edit',
             viewConfig: {
                 xtype: 'psr-view-entitycrud-data-editorview',
+                mode: 'creating',
                 application: application,
                 domainType: domainType,
                 domainSchema: domainSchema,
