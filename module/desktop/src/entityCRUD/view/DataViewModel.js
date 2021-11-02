@@ -25,7 +25,7 @@ Ext.define('PSR.view.entityCRUD.data.DataViewModel', {
     },
     stores: {
         domainTypes: {
-            type: 'psr-entitycrud-domaintype',
+            type: 'psr-domainschema-domaintype',
             autoLoad: true
         },
         entities: {

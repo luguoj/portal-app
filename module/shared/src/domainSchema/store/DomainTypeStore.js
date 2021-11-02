@@ -1,6 +1,6 @@
-Ext.define('PSR.store.entityCRUD.DomainTypeStore', {
+Ext.define('PSR.store.domainSchema.DomainTypeStore', {
     extend: 'Ext.data.Store',
-    alias: 'store.psr-entitycrud-domaintype',
+    alias: 'store.psr-domainschema-domaintype',
     config: {
         application: ''
     },
