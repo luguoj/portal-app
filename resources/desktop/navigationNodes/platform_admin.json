@@ -20,7 +20,8 @@
     "text": "授权数据",
     "iconCls": "x-fa fa-database",
     "viewConfig": {
-      "xtype": "console-authorization-dataview"
+      "xtype": "psr-view-entitycrud-dataview",
+      "application": "authorization"
     }
   },
   {
