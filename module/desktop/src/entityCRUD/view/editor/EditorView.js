@@ -4,17 +4,17 @@ Ext.define('PSR.view.entityCRUD.data.EditorView', {
     controller: 'psr-view-entitycrud-data-editorviewcontroller',
     viewModel: 'psr-view-entitycrud-data-editorviewmodel',
     config: {
-        mode:'',
+        application: '',
+        mode: '',
         domainType: null,
         domainSchema: null,
-        entity: null
+        entityId: null
     },
     tbar: {
         items: [{
             xtype: 'button',
             text: '重置',
             iconCls: 'x-fa fa-redo-alt',
-            disabled: 'true',
             handler: 'hBtnReset'
         }, {
             xtype: 'button',

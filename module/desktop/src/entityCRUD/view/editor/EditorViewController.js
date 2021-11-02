@@ -2,9 +2,9 @@ Ext.define('PSR.view.entityCRUD.data.EditorViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.psr-view-entitycrud-data-editorviewcontroller',
     onAfterRendered: function (view) {
-        const form = view.down('form'),
+        const mode = view.getMode(),
             domainSchema = view.getDomainSchema(),
-            entity = view.getEntity(),
+            form = view.down('form'),
             filterFields = [];
         for (let i = 0; i < domainSchema.length; i++) {
             const fieldSchema = domainSchema[i];
@@ -14,7 +14,7 @@ Ext.define('PSR.view.entityCRUD.data.EditorViewController', {
                 emptyText: fieldSchema.description
             };
             filterFields.push(filterField);
-            if (entity && fieldSchema.name == 'id'
+            if (mode == 'editing' && fieldSchema.name == 'id'
                 || fieldSchema.name == 'version'
                 || fieldSchema.name == 'createdDate'
                 || fieldSchema.name == 'lastModifiedDate') {
@@ -33,6 +33,8 @@ Ext.define('PSR.view.entityCRUD.data.EditorViewController', {
                     break;
                 case 'java.lang.Boolean':
                     filterField.xtype = 'checkboxfield';
+                    filterField.inputValue = true;
+                    filterField.uncheckedValue = false;
                     break;
                 case 'java.lang.String':
                     filterField.xtype = 'textfield';
@@ -43,19 +45,75 @@ Ext.define('PSR.view.entityCRUD.data.EditorViewController', {
             }
         }
         form.add(filterFields);
-        if (entity) {
-            form.loadRecord(entity);
+        if (mode == 'editing') {
+            this.loadEntity();
+        }
+    },
+    loadEntity: function () {
+        const view = this.getView(),
+            application = view.getApplication(),
+            domainType = view.getDomainType().get('type'),
+            entityId = view.getEntityId(),
+            form = view.down('form');
+        if (entityId) {
+            PSR.data.entityCRUD.EntityCRUDApi.findAllById({
+                application: application,
+                domainType: domainType,
+                ids: [entityId],
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        form.loadRecord(Ext.data.Model.loadData(data[0]));
+                    }
+                }
+            });
         }
     },
     onFrmDirtyChange: function (form, dirty) {
         const view = this.getView(),
-            btnReset = view.down('button[handler=hBtnReset]'),
             btnSave = view.down('button[handler=hBtnSave]');
-        btnReset.setDisabled(!dirty);
         btnSave.setDisabled(!dirty);
     },
     hBtnReset: function () {
-        const view = this.getView(), form = view.down('form');
-        form.reset();
+        this.loadEntity();
+    },
+    hBtnSave: function () {
+        const view = this.getView(),
+            application = view.getApplication(),
+            domainType = view.getDomainType().get('type'),
+            mode = view.getMode(),
+            form = view.down('form'),
+            idField = form.down('textfield[name=id]'),
+            record = form.getRecord(),
+            dirtyValues = form.getValues(false, true, true, false, true);
+        if (mode == 'creating') {
+            PSR.data.entityCRUD.EntityCRUDApi.create({
+                application: application,
+                domainType: domainType,
+                values: dirtyValues,
+                success: function (data) {
+                    PSR.util.Message.info('保存成功');
+                    form.loadRecord(Ext.data.Model.loadData(data));
+                    view.setMode('editing');
+                    idField.setDisabled(true);
+                }
+            });
+        } else if (mode == 'editing') {
+            const fields = [];
+            for (const dirtyValuesKey in dirtyValues) {
+                fields.push(dirtyValuesKey);
+            }
+            dirtyValues.id = record.get('id');
+            dirtyValues.version = record.get('version');
+            PSR.data.entityCRUD.EntityCRUDApi.patch({
+                application: application,
+                domainType: domainType,
+                fields: fields,
+                values: dirtyValues,
+                success: function (data) {
+                    PSR.util.Message.info('保存成功');
+                    form.loadRecord(Ext.data.Model.loadData(data));
+                }
+            });
+        }
     }
 });
