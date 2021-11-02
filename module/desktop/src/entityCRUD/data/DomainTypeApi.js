@@ -10,7 +10,7 @@ Ext.define('PSR.data.entityCRUD.DomainTypeApi', {
             withAuthToken: true,
             disableCaching: true,
             bizSuccess: opt.success,
-            bizFailure: opt.failure,
+            failure: opt.failure,
             complete: opt.complete
         });
     }
