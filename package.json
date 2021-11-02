@@ -34,8 +34,10 @@
   "dependencies": {
     "@sencha/ext": "~7.4.0",
     "@sencha/ext-classic": "~7.4.0",
+    "@sencha/ext-classic-locale": "^7.4.0",
     "@sencha/ext-classic-theme-material": "~7.4.0",
     "@sencha/ext-modern": "~7.4.0",
+    "@sencha/ext-modern-locale": "^7.4.0",
     "@sencha/ext-modern-theme-material": "~7.4.0",
     "@sencha/ext-ux": "^7.4.0"
   },

@@ -7,9 +7,10 @@
   "indexHtmlPath": "index.html",
   "requires": [
     "font-awesome",
-    "ux"
+    "ux",
+    "ext-locale"
   ],
-
+  "locale": "zh_CN",
   "builds": {
     "desktop": {
       "toolkit": "classic",
@@ -68,7 +69,7 @@
       "shared": "resources"
     }
   },
-  
+
   "fashion": {
 		"missingParameters": "error",
     "inliner": {"enable": false}
