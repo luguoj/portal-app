@@ -53,6 +53,21 @@ Ext.define('PSR.view.entityCRUD.data.DataView', {
         bbar: {
             xtype: 'pagingtoolbar',
             displayInfo: true,
+            items: [{
+                xtype: 'combobox',
+                valueField: 'limit',
+                displayField: 'limit',
+                editable: false,
+                queryMode: 'local',
+                value: 50,
+                store: {
+                    fields: ['limit'],
+                    data: [[50], [100], [200], [500], [1000], [2000]]
+                },
+                listeners: {
+                    change: 'onCombPageLimitChange'
+                }
+            }]
         },
         plugins: {
             gridfilters: true

@@ -170,10 +170,18 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
                         PSR.util.Message.info('删除成功');
                     },
                     complete: function () {
-                        entityStore.reload();
+                        entityStore.load();
                     }
                 });
             });
+        }
+    },
+    onCombPageLimitChange: function (comb, newValue) {
+        const viewModel = this.getViewModel(),
+            entityStore = viewModel.getStore('entities');
+        entityStore.setPageSize(newValue);
+        if (entityStore.isLoaded()) {
+            entityStore.loadPage(1);
         }
     }
 });
