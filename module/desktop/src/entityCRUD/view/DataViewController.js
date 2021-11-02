@@ -92,13 +92,9 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             );
         }
     },
-    getModuleId: function () {
-        return '';
-    },
     onGrdItemDbClick: function (grid, record, item, index) {
         const view = this.getView(),
             viewModel = this.getViewModel(),
-            moduleId = this.getModuleId(),
             application = this.getApplication(),
             domainType = viewModel.get('domainType'),
             type = domainType.get('type'),
@@ -106,7 +102,6 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             domainSchema = viewModel.get('domainSchema'),
             entityId = record.get('id');
         view.fireEvent('switchview', {
-            moduleId: moduleId,
             viewId: 'data-editor-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + entityId,
             title: title,
             iconCls: 'x-fa fa-edit',
@@ -132,14 +127,12 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
     hBtnAdd: function (btn) {
         const view = this.getView(),
             viewModel = this.getViewModel(),
-            moduleId = this.getModuleId(),
             application = this.getApplication(),
             domainType = viewModel.get('domainType'),
             type = domainType.get('type'),
             title = domainType.get('title'),
             domainSchema = viewModel.get('domainSchema');
         view.fireEvent('switchview', {
-            moduleId: moduleId,
             viewId: 'data-editor-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + Date.parse(new Date()),
             title: title,
             iconCls: 'x-fa fa-edit',
