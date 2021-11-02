@@ -1,6 +1,6 @@
-Ext.define('PortalApp.view.console.authorization.data.EditorViewController', {
+Ext.define('PSR.view.entityCRUD.data.EditorViewController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.console-authorization-data-editorviewcontroller',
+    alias: 'controller.psr-view-entitycrud-data-editorviewcontroller',
     onAfterRendered: function (view) {
         const form = view.down('form'),
             domainSchema = view.getDomainSchema(),

@@ -1,8 +1,26 @@
-Ext.define('PortalApp.view.console.authorization.data.DataView', {
+Ext.define('PSR.view.entityCRUD.data.DataView', {
     extend: 'Ext.panel.Panel',
-    xtype: 'console-authorization-dataview',
-    controller: 'console-authorization-dataviewcontroller',
-    viewModel: 'console-authorization-dataviewmodel',
+    xtype: 'psr-view-entitycrud-dataview',
+    controller: 'psr-entitycrud-dataviewcontroller',
+    viewModel: 'psr-entitycrud-dataviewmodel',
+    config: {
+        application: '',
+    },
+    updateApplication: function () {
+        const application = this.getApplication(),
+            controller = this.getController(),
+            viewModel = this.getViewModel();
+        if (controller) {
+            controller.setApplication(application);
+        }
+        if (viewModel) {
+            viewModel.setApplication(application);
+        }
+    },
+    constructor: function (config) {
+        this.callParent([config]);
+        this.updateApplication();
+    },
     tbar: {
         items: ['领域类型:', {
             xtype: 'combobox',

@@ -1,11 +1,10 @@
-Ext.define('PSR.store.EntityStore', {
+Ext.define('PSR.store.entityCRUD.EntityStore', {
     extend: 'Ext.data.Store',
-    alias: 'store.psr-entity',
+    alias: 'store.psr-entitycrud-entity',
     config: {
         application: '',
         domainType: ''
     },
-    urlPrefix: portalEnv.gateway + '/authorization/api/entity/',
     updateApplication: function () {
         this.updateUrl();
     },
@@ -23,12 +22,10 @@ Ext.define('PSR.store.EntityStore', {
     },
     constructor: function (config) {
         this.callParent([config]);
-        this.updateApplication();
-        this.updateDomainType();
+        this.updateUrl();
     },
     proxy: {
-        type: 'psr-entity',
-        url: portalEnv.gateway + '/authorization/api/entity/',
+        type: 'psr-entitycrud-entity',
         withAuthToken: true
     },
     load: function (opt) {

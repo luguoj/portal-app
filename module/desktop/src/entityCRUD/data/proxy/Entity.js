@@ -1,6 +1,6 @@
-Ext.define('PSR.data.proxy.Entity', {
+Ext.define('PSR.data.proxy.entityCRUD.Entity', {
     extend: 'PSR.data.proxy.Ajax',
-    alias: 'proxy.psr-entity',
+    alias: 'proxy.psr-entitycrud-entity',
     filterParam: 'filter_options',
     encodeFilters: function (filters) {
         const filterOptions = {};

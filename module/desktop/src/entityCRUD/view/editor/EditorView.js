@@ -1,8 +1,8 @@
-Ext.define('PortalApp.view.console.authorization.data.EditorView', {
+Ext.define('PSR.view.entityCRUD.data.EditorView', {
     extend: 'Ext.panel.Panel',
-    xtype: 'console-authorization-data-editorview',
-    controller: 'console-authorization-data-editorviewcontroller',
-    viewModel: 'console-authorization-data-editorviewmodel',
+    xtype: 'psr-view-entitycrud-data-editorview',
+    controller: 'psr-view-entitycrud-data-editorviewcontroller',
+    viewModel: 'psr-view-entitycrud-data-editorviewmodel',
     config: {
         domainType: null,
         domainSchema: null,

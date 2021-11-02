@@ -1,6 +1,9 @@
-Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
+Ext.define('PSR.view.entityCRUD.data.DataViewController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.console-authorization-dataviewcontroller',
+    alias: 'controller.psr-entitycrud-dataviewcontroller',
+    config: {
+        application: ''
+    },
     createColumnCfg: function (fieldSchema) {
         const fieldType = fieldSchema.type,
             columnCfg = {
@@ -56,6 +59,7 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
     },
     onCombDomainTypeChange: function (comb, newValue) {
         const me = this,
+            application = this.getApplication(),
             view = this.getView(),
             filterForm = view.down('container[region=west]'),
             grid = view.down('grid'),
@@ -64,8 +68,9 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
             domainTypeStore = viewModel.getStore('domainTypes');
         if (newValue) {
             viewModel.set('domainType', domainTypeStore.findRecord('type', newValue));
-            PortalApp.data.authorization.DomainTypeApi.findSchemaByDomainType(
+            PSR.data.entityCRUD.DomainTypeApi.findSchemaByDomainType(
                 {
+                    application: application,
                     domainType: newValue,
                     success: function (data) {
                         if (data && data.length > 0) {
@@ -92,6 +97,7 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
         const view = this.getView(),
             viewModel = this.getViewModel(),
             moduleId = this.getModuleId(),
+            application = this.getApplication(),
             domainType = viewModel.get('domainType'),
             type = domainType.get('type'),
             title = domainType.get('title'),
@@ -103,7 +109,8 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
             title: title,
             iconCls: 'x-fa fa-edit',
             viewConfig: {
-                xtype: 'console-authorization-data-editorview',
+                xtype: 'psr-view-entitycrud-data-editorview',
+                application: application,
                 domainType: domainType,
                 domainSchema: domainSchema,
                 entity: record
@@ -123,6 +130,7 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
         const view = this.getView(),
             viewModel = this.getViewModel(),
             moduleId = this.getModuleId(),
+            application = this.getApplication(),
             domainType = viewModel.get('domainType'),
             type = domainType.get('type'),
             title = domainType.get('title'),
@@ -134,7 +142,8 @@ Ext.define('PortalApp.view.console.authorization.data.DataViewController', {
             title: title,
             iconCls: 'x-fa fa-edit',
             viewConfig: {
-                xtype: 'console-authorization-data-editorview',
+                xtype: 'psr-view-entitycrud-data-editorview',
+                application: application,
                 domainType: domainType,
                 domainSchema: domainSchema,
                 entity: null
