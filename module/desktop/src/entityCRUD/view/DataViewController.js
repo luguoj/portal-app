@@ -135,10 +135,9 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             type = domainType.get('type'),
             title = domainType.get('title'),
             domainSchema = viewModel.get('domainSchema');
-        debugger
         view.fireEvent('switchview', {
             moduleId: moduleId,
-            viewId: 'data-editor-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + new Date(),
+            viewId: 'data-editor-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + Date.parse(new Date()),
             title: title,
             iconCls: 'x-fa fa-edit',
             viewConfig: {
