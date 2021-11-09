@@ -75,21 +75,11 @@ Ext.define('PSR.util.Auth', {
                         if (respObj.access_token) {
                             PSR.util.Auth.checkUserChange(respObj);
                             PSR.util.Auth.clientToken = respObj;
-                            PSR.util.Auth.clientToken.authHeader = {Authorization: respObj.token_type + ' ' + respObj.access_token};
+                            PSR.util.Auth.clientToken.authHeader = {Authorization: respObj.token_type.value + ' ' + respObj.access_token};
                             if (respObj.expires_in) {
                                 PSR.util.Auth.clientToken.expires_at = now + respObj.expires_in * 1000;
-                            } else {
-                                delete PSR.util.Auth.clientToken.expires_at;
-                            }
-                            if (callback) {
-                                callback(PSR.util.Auth.clientToken);
-                            }
-                        } else if (respObj.success && respObj.result && respObj.result.access_token) {
-                            PSR.util.Auth.checkUserChange(respObj.result);
-                            PSR.util.Auth.clientToken = respObj.result;
-                            PSR.util.Auth.clientToken.authHeader = {Authorization: respObj.result.token_type + ' ' + respObj.result.access_token};
-                            if (respObj.result.expires_in) {
-                                PSR.util.Auth.clientToken.expires_at = now + respObj.result.expires_in * 1000;
+                            } else if (respObj.expires_at) {
+                                PSR.util.Auth.clientToken.expires_at = respObj.expires_at;
                             } else {
                                 delete PSR.util.Auth.clientToken.expires_at;
                             }
