@@ -76,12 +76,28 @@
   },
 
   "js": [
+    {"path":"jslib/jquery-3.6.0.min.js", "bundle": false},
+    {"path":"jslib/sheetjs/xlsx.full-0.17.0.min.js", "bundle": false},
+    {"path":"jslib/lodash-4.17.21.min.js", "bundle": false},
+    {"path":"jslib/backbone-1.4.0.min.js", "bundle": false},
+    {"path":"jslib/dagre/dagre.min.js", "bundle": false},
+    {"path":"jslib/dagre/graphlib.min.js", "bundle": false},
+    {"path":"jslib/joint/joint-3.4.4.min.js", "bundle": false},
+    {"path":"https://map.qq.com/api/gljs?v=1.exp&key=446BZ-CJ6W6-SAYST-EIJAF-XEW6V-ORBWF","bundle": false},
+    {"path":"jslib/highcharts/oldie-polyfills-9.3.1.min.js", "bundle": false},
+    {"path":"jslib/highcharts/highstock-9.3.1.min.js", "bundle": false},
+    {"path":"jslib/highcharts/map-9.3.1.min.js", "bundle": false},
+    {"path":"jslib/highcharts/gantt-9.3.1.min.js", "bundle": false}
   ],
   "css": [
     {
       "path": "${build.out.css.path}",
       "bundle": true,
       "exclude": ["fashion"]
+    },
+    {
+      "path": "jslib/joint/joint-3.4.4.min.css",
+      "bundle": false
     }
   ],
 
