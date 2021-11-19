@@ -25,6 +25,16 @@
     }
   },
   {
+    "parentId": "console-data",
+    "id": "console-file-dataview",
+    "text": "文件数据",
+    "iconCls": "x-fa fa-database",
+    "viewConfig": {
+      "xtype": "psr-view-entitycrud-dataview",
+      "application": "file"
+    }
+  },
+  {
     "id": "console-authorization",
     "text": "授权管理",
     "iconCls": "x-fa fa-user-edit",
