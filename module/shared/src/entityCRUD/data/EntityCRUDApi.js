@@ -46,7 +46,7 @@ Ext.define('PSR.data.entityCRUD.EntityCRUDApi', {
             complete: opt.complete
         });
     },
-    patch: function (opt) {debugger
+    patch: function (opt) {
         const url = this.getAPIUrl(opt);
         PSR.data.Ajax.request({
             method: 'PATCH',
