@@ -5,46 +5,47 @@ Ext.define('PSR.view.entityCRUD.data.EditorViewController', {
         const mode = view.getMode(),
             domainSchema = view.getDomainSchema(),
             form = view.down('form'),
-            filterFields = [];
+            fields = [];
         for (let i = 0; i < domainSchema.length; i++) {
             const fieldSchema = domainSchema[i];
-            const filterField = {
+            const field = {
                 name: fieldSchema.name,
                 fieldLabel: fieldSchema.title,
                 emptyText: fieldSchema.description
             };
-            filterFields.push(filterField);
+            fields.push(field);
             if (mode == 'editing' && fieldSchema.name == 'id'
                 || fieldSchema.name == 'version'
                 || fieldSchema.name == 'createdDate'
                 || fieldSchema.name == 'lastModifiedDate') {
-                filterField.disabled = true;
+                field.disabled = true;
             }
             switch (fieldSchema.type) {
                 case 'java.math.BigDecimal':
                 case 'java.lang.Integer':
                 case 'java.lang.Long':
-                    filterField.xtype = 'numberfield';
+                    field.xtype = 'numberfield';
                     break;
                 case 'java.time.LocalDateTime':
-                    filterField.xtype = 'datefield';
-                    filterField.format = 'Y-m-d H:i:s.u';
-                    filterField.altFormats = 'Y-m-d\\TH:i:s.u';
+                    field.xtype = 'datefield';
+                    field.format = 'Y-m-d H:i:s.u';
+                    field.altFormats = 'Y-m-d\\TH:i:s.u';
                     break;
+                case 'boolean':
                 case 'java.lang.Boolean':
-                    filterField.xtype = 'checkboxfield';
-                    filterField.inputValue = true;
-                    filterField.uncheckedValue = false;
+                    field.xtype = 'checkboxfield';
+                    field.inputValue = true;
+                    field.uncheckedValue = false;
                     break;
                 case 'java.lang.String':
-                    filterField.xtype = 'textfield';
+                    field.xtype = 'textfield';
                     break;
                 default:
                     PSR.util.Message.error('不支持的字段类型: ' + fieldSchema.title + '(' + fieldSchema.name + ')' + ' - ' + fieldSchema.type);
 
             }
         }
-        form.add(filterFields);
+        form.add(fields);
         if (mode == 'editing') {
             this.loadEntity();
         }
