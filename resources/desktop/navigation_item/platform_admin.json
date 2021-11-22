@@ -84,5 +84,29 @@
     "viewConfig": {
       "xtype": "console-authorization-catalogview"
     }
+  },
+  {
+    "parentId": null,
+    "id": "console-docs",
+    "text": "文档",
+    "iconCls": "x-fa fa-list-alt"
+  },
+  {
+    "parentId": "console-docs",
+    "id": "console-docs-api",
+    "text": "APIs",
+    "iconCls": "x-fa fa-list-alt",
+    "viewConfig": {
+      "xtype": "psr-view-docs-apiview"
+    }
+  },
+  {
+    "parentId": "console-docs",
+    "id": "console-docs-extjs",
+    "text": "Extjs",
+    "iconCls": "x-fa fa-list-alt",
+    "viewConfig": {
+      "xtype": "psr-view-docs-extjsview"
+    }
   }
 ]

@@ -19,6 +19,7 @@
       if (s.match(/\bdesktop\b/)) { profile = 'desktop' }
       else if (s.match(/\bphone\b/)) { profile = 'phone' }
       else { profile = tags.desktop ? 'desktop' : 'phone' }
+      window.portalEnv.profile = profile;
       Ext.manifest ='generatedFiles/' + profile;
     };
   </script>

@@ -35,9 +35,11 @@ Ext.define('PortalApp.store.NavigationItemTree', {
         });
         if (token) {
             if (token.username == 'platform_admin') {
-                this.getProxy().setUrl('resources/desktop/navigationNodes/platform_admin.json');
+                this.getProxy().setUrl('resources/' + window.portalEnv.profile + '/navigation_item/platform_admin.json');
+            } else if (window.portalEnv.develop) {
+                this.getProxy().setUrl('resources/' + window.portalEnv.profile + '/navigation_item/developer.json');
             } else {
-                this.getProxy().setUrl(window.portalEnv.gateway + '/extapp/api/desktop/navigation_item');
+                this.getProxy().setUrl(window.portalEnv.gateway + '/extapp/api/' + window.portalEnv.profile + '/navigation_item');
             }
             this.callParent([opt]);
         }
