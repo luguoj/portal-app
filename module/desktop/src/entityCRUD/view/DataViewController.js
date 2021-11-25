@@ -8,7 +8,8 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
         const fieldType = fieldSchema.type,
             columnCfg = {
                 dataIndex: fieldSchema.name,
-                text: fieldSchema.description
+                text: fieldSchema.description,
+                width: PSR.util.Grid.getColumnWidth(fieldSchema.description)
             };
         if (fieldSchema.name == 'version' || fieldSchema.name == 'createdDate' || fieldSchema.name == 'lastModifiedDate') {
             columnCfg.hidden = true;
@@ -33,7 +34,7 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
                 Object.assign(columnCfg, {
                     xtype: 'datecolumn',
                     format: 'Y-m-d H:i:s.u',
-                    width: PSR.util.Grid.getColumnWidth('0000-00-00 00:00:00.000'),
+                    width: Math.max(columnCfg.width, PSR.util.Grid.getColumnWidth('0000-00-00 00:00:00.000')),
                     resizable: false,
                     filter: {
                         type: 'date',
@@ -44,7 +45,7 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             case 'java.lang.Boolean':
                 Object.assign(columnCfg, {
                     xtype: 'booleancolumn',
-                    width: PSR.util.Grid.getColumnWidth('是'),
+                    width: Math.max(columnCfg.width, PSR.util.Grid.getColumnWidth('是')),
                     filter: 'boolean'
                 });
                 break;
