@@ -88,13 +88,15 @@ Ext.define('PSR.util.Auth', {
                             }
                         } else {
                             console.log(respObj);
-                            PSR.util.Message.error("授权信息无效，请重新登陆", function () {
+                            PSR.util.Message.error("认证失效，请重新登陆", function () {
                                 PSR.util.Auth.logout();
                             });
                         }
                     } catch (err) {
-                        PSR.util.Message.error(err.message);
-                        console.error(err);
+                        console.log(err);
+                        PSR.util.Message.error("认证失效，请重新登陆", function () {
+                            PSR.util.Auth.logout();
+                        });
                     }
                 },
                 failure: function (response) {
