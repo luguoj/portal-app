@@ -44,14 +44,10 @@ Ext.define('PSR.util.Auth', {
         PSR.util.Auth.oauth2LoginDialog.show();
     },
     logout: function () {
-        Ext.create({
-            xtype: 'dialog',
-            title: '登出',
-            iconCls: 'x-fa fa-spinner fa-spin',
-            closable: true,
-            resizable: false,
+        Ext.toast({
+            title: "登出",
             html: '<iframe  src="' + window.portalEnv.authclient + '/logout" frameborder="0" width="0px" height="0px"></iframe > ',
-        }).show();
+        });
     },
     checkUserChange: function (newToken) {
         if (PSR.util.Auth.clientToken && PSR.util.Auth.clientToken.userId && PSR.util.Auth.clientToken.userId != newToken.userId) {
