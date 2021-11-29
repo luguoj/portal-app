@@ -86,10 +86,12 @@
     }
   },
   {
-    "parentId": null,
-    "id": "console-docs",
-    "text": "文档",
-    "iconCls": "x-fa fa-list-alt"
+    "id": "console-file",
+    "text": "文件服务",
+    "iconCls": "x-fa fa-file-archive",
+    "viewConfig": {
+      "xtype": "psr-view-console-file-fileview"
+    }
   },
   {
     "parentId": "console-docs",
