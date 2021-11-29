@@ -1,14 +1,6 @@
 Ext.define('PSR.view.console.file.FileViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.psr-console-file-fileviewcontroller',
-    onCombPageLimitChange: function (comb, newValue) {
-        const viewModel = this.getViewModel(),
-            fileStore = viewModel.getStore('files');
-        fileStore.setPageSize(newValue);
-        if (fileStore.isLoaded()) {
-            fileStore.loadPage(1);
-        }
-    },
     hBtnDownload: function (btn) {
         const rec = btn.lookupViewModel().get('record');
         PSR.data.file.FileVersionApi.download({

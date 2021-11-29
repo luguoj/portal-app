@@ -176,13 +176,5 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
                 });
             });
         }
-    },
-    onCombPageLimitChange: function (comb, newValue) {
-        const viewModel = this.getViewModel(),
-            entityStore = viewModel.getStore('entities');
-        entityStore.setPageSize(newValue);
-        if (entityStore.isLoaded()) {
-            entityStore.loadPage(1);
-        }
     }
 });
