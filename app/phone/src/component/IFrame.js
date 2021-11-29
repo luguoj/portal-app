@@ -1,4 +1,4 @@
-Ext.define('PSR.view.IFrame', {
+Ext.define('PSR.IFrame', {
     extend: 'Ext.Component',
     xtype: 'psr-iframe',
     config: {
