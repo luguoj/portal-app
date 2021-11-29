@@ -72,5 +72,12 @@ Ext.define('PortalApp.view.main.MainViewController', {
         maintitle.show(btnExitFullscreen);
         tabbar.show(btnExitFullscreen);
         btnExitFullscreen.hide();
+    },
+    hBtnLogout: function () {
+        PSR.util.Message.confirm(
+            "是否要登出当前用户",
+            function () {
+                PSR.util.Auth.logout();
+            });
     }
 });
