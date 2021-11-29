@@ -103,7 +103,7 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             domainSchema = viewModel.get('domainSchema'),
             entityId = record.get('id');
         view.fireEvent('switchview', {
-            viewId: 'data-editor-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + entityId,
+            viewId: 'psr-view-entitycrud-data-editorview-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + entityId,
             title: title,
             iconCls: 'x-fa fa-edit',
             viewConfig: {
@@ -134,7 +134,7 @@ Ext.define('PSR.view.entityCRUD.data.DataViewController', {
             title = domainType.get('title'),
             domainSchema = viewModel.get('domainSchema');
         view.fireEvent('switchview', {
-            viewId: 'data-editor-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + Date.parse(new Date()),
+            viewId: 'psr-view-entitycrud-data-editorview-' + type.replace(new RegExp('\\.', 'gm'), '-') + '-' + Date.parse(new Date()),
             title: title,
             iconCls: 'x-fa fa-edit',
             viewConfig: {
