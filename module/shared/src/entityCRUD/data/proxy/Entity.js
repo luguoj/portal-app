@@ -40,6 +40,8 @@ Ext.define('PSR.data.proxy.entityCRUD.Entity', {
                     valueRange.operation = 'GRATERTHANOREQUAL';
                     break;
                 default:
+                    PSR.util.Message.error("不支持的过滤操作符:" + operator);
+                    continue;
                     break;
             }
             propertyFilterOptions.push(valueRange);
