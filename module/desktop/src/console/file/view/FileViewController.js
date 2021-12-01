@@ -6,18 +6,6 @@ Ext.define('PSR.view.console.file.FileViewController', {
         PSR.data.file.FileVersionApi.download({
             id: rec.get('fileMetaId')
         });
-        PSR.data.entityCRUD.EntityCRUDApi.findAllById({
-            application: 'file',
-            domainType: 'org.psr.platform.file.entity.FileMetaEntity',
-            ids: [rec.get('fileMetaId')],
-            success: function (data) {
-                if (data && data.length > 0) {
-                    PSR.data.file.FileVersionApi.download({
-                        id: data[0].id
-                    });
-                }
-            }
-        });
     },
     hBtnVersion: function (btn) {
         const view = this.getView();
