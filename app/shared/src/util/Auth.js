@@ -46,7 +46,7 @@ Ext.define('PSR.util.Auth', {
     logout: function () {
         Ext.toast({
             title: "登出",
-            html: '<iframe  src="' + window.portalEnv.authclient + '/logout" frameborder="0" width="0px" height="0px"></iframe > ',
+            html: '登出<iframe  src="' + window.portalEnv.authclient + '/logout" frameborder="0" width="0px" height="0px"></iframe > ',
         });
     },
     checkUserChange: function (newToken) {
