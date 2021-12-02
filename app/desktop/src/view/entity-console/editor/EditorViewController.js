@@ -27,9 +27,7 @@ Ext.define('PortalApp.view.entityConsole.EditorViewController', {
                     field.xtype = 'numberfield';
                     break;
                 case 'java.time.LocalDateTime':
-                    field.xtype = 'datefield';
-                    field.format = 'Y-m-d H:i:s.u';
-                    field.altFormats = 'Y-m-d\\TH:i:s.u';
+                    field.xtype = 'psr-datefield';
                     break;
                 case 'boolean':
                 case 'java.lang.Boolean':
