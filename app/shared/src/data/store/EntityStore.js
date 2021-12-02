@@ -1,10 +1,11 @@
 Ext.define('PSR.store.EntityStore', {
-    extend: 'Ext.data.Store',
+    extend: 'PSR.data.AjaxStore',
     alias: 'store.psr-entity',
     config: {
         application: '',
         domainType: ''
     },
+    withAuthToken: true,
     updateApplication: function () {
         this.updateUrl();
     },
@@ -25,8 +26,7 @@ Ext.define('PSR.store.EntityStore', {
         this.updateUrl();
     },
     proxy: {
-        type: 'psr-entity',
-        withAuthToken: true
+        type: 'psr-entity'
     },
     load: function (opt) {
         if (!this.getApplication()) {

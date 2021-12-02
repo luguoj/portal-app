@@ -39,6 +39,13 @@ Ext.define('PSR.data.Ajax', {
             PSR.data.Ajax.onErrorMessage(err.message, opt);
             console.error(err);
         }
+        if (opt.retryTimes) {
+            delete opt.retryTimes;
+        }
+        if (opt.retryMessage) {
+            opt.retryMessage.close();
+            delete opt.retryMessage;
+        }
     },
     hCallFailure: function (response, opt) {
         if (response) {
@@ -74,6 +81,15 @@ Ext.define('PSR.data.Ajax', {
         if (opt.complete) {
             opt.complete(response, opt);
         }
+        if (response.status != '401') {
+            if (opt.retryTimes) {
+                delete opt.retryTimes;
+            }
+            if (opt.retryMessage) {
+                opt.retryMessage.close();
+                delete opt.retryMessage;
+            }
+        }
     },
     on400: function (response, opt) {
         const respObj = response.responseJson
@@ -87,19 +103,21 @@ Ext.define('PSR.data.Ajax', {
     on401: function (response, opt) {
         if (opt.withAuthToken) {
             PSR.util.Auth.clientToken.expires_at = 1;
-            if (!opt.retryTimes || opt.retryTimes < 5) {
+            if (!opt.retryTimes || opt.retryTimes < 10) {
                 opt.retryTimes = opt.retryTimes ? opt.retryTimes + 1 : 1;
+                opt.retryMessage = opt.retryMessage || Ext.Msg.show({
+                    title: '授权异常,重试中...',
+                    progress: true,
+                    closable: false
+                });
                 setTimeout(function () {
+                    opt.retryMessage.updateProgress(0.1 * opt.retryTimes);
                     PSR.data.Ajax.request(opt);
-                }, 500);
+                }, 200);
                 return;
-            } else {
-                delete opt.retryTimes;
-                PSR.data.Ajax.onErrorMessage("授权信息无效");
             }
-        } else {
-            PSR.data.Ajax.onErrorMessage('授权信息无效', opt);
         }
+        PSR.data.Ajax.onErrorMessage('授权信息无效', opt);
     },
     on50x: function (response, opt) {
         const respObj = response.responseJson

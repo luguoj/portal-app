@@ -1,9 +1,10 @@
 Ext.define('PSR.store.DomainTypeStore', {
-    extend: 'Ext.data.Store',
+    extend: 'PSR.data.AjaxStore',
     alias: 'store.psr-domaintype',
     config: {
         application: ''
     },
+    withAuthToken: true,
     updateApplication: function () {
         this.updateUrl();
     },
@@ -18,9 +19,5 @@ Ext.define('PSR.store.DomainTypeStore', {
     constructor: function (config) {
         this.callParent([config]);
         this.updateUrl();
-    },
-    proxy: {
-        type: 'psr-ajax',
-        withAuthToken: true
     }
 });

@@ -1,9 +1,8 @@
 Ext.define('PortalApp.store.NavigationItemTree', {
-    extend: 'Ext.data.TreeStore',
+    extend: 'PSR.data.AjaxTreeStore',
     alias: 'store.portalapp-navigationitemtree',
+    withAuthToken: true,
     proxy: {
-        type: 'psr-ajax',
-        withAuthToken: true,
         reader: {
             transform: function (data) {
                 if (data && data.length > 0) {
