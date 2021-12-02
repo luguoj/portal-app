@@ -35,3 +35,11 @@ body.launching {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   background: #ededed;
 }
+
+.psr-color-confirm {
+  color: var(--confirm-color);
+}
+
+.psr-color-decline {
+  color: var(--alert-color);
+}
