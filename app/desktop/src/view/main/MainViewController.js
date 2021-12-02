@@ -61,6 +61,11 @@ Ext.define('PortalApp.view.main.MainViewController', {
         navigationview.hide(btnExitFullscreen);
         maintitle.hide(btnExitFullscreen);
         tabbar.hide(btnExitFullscreen);
+        const el = document.documentElement,
+            rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+        if (typeof rfs != 'undefined' && rfs) {
+            rfs.call(el);
+        }
     },
     hBtnExitFullscreen: function () {
         const view = this.getView(),
@@ -72,6 +77,11 @@ Ext.define('PortalApp.view.main.MainViewController', {
         maintitle.show(btnExitFullscreen);
         tabbar.show(btnExitFullscreen);
         btnExitFullscreen.hide();
+        const el = document,
+            cfs = el.cancelFullScreen || el.webkitCancelFullScreen || el.mozCancelFullScreen || el.msCancelFullscreen;
+        if (typeof cfs != 'undefined' && cfs) {
+            cfs.call(el);
+        }
     },
     hBtnLogout: function () {
         PSR.util.Message.confirm(
