@@ -90,7 +90,7 @@ Ext.define('PSR.data.Ajax', {
             if (!opt.retryTimes || opt.retryTimes < 5) {
                 opt.retryTimes = opt.retryTimes ? opt.retryTimes + 1 : 1;
                 setTimeout(function () {
-                    PSR.clientSite.data.Ajax.request(opt);
+                    PSR.data.Ajax.request(opt);
                 }, 500);
                 return;
             } else {
