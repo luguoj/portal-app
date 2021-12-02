@@ -95,7 +95,7 @@ Ext.define('PSR.data.Ajax', {
                 return;
             } else {
                 delete opt.retryTimes;
-                PSR.util.Message.error("授权信息无效");
+                PSR.data.Ajax.onErrorMessage("授权信息无效");
             }
         } else {
             PSR.data.Ajax.onErrorMessage('授权信息无效', opt);
