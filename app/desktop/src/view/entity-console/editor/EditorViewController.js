@@ -33,9 +33,7 @@ Ext.define('PortalApp.view.entityConsole.EditorViewController', {
                     break;
                 case 'boolean':
                 case 'java.lang.Boolean':
-                    field.xtype = 'checkboxfield';
-                    field.inputValue = true;
-                    field.uncheckedValue = false;
+                    field.xtype = 'psr-checkboxfield';
                     break;
                 case 'java.lang.String':
                     field.xtype = 'textfield';
