@@ -35,17 +35,11 @@ Ext.define('PortalApp.view.fileConsole.VersionView', {
         }, {
             text: '创建日期',
             dataIndex: 'createdDate',
-            xtype: 'datecolumn',
-            format: 'Y-m-d H:i:s.u',
-            width: 170,
-            resizable: false
+            xtype: 'psr-datecolumn'
         }, {
             text: '最后修改日期',
             dataIndex: 'lastModifiedDate',
-            xtype: 'datecolumn',
-            format: 'Y-m-d H:i:s.u',
-            width: 170,
-            resizable: false
+            xtype: 'psr-datecolumn'
         }, {
             text: '文件名',
             dataIndex: 'name',

@@ -32,10 +32,7 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleViewController', {
                 break;
             case 'java.time.LocalDateTime':
                 Object.assign(columnCfg, {
-                    xtype: 'datecolumn',
-                    format: 'Y-m-d H:i:s.u',
-                    width: Math.max(columnCfg.width, PSR.util.Grid.getColumnWidth('0000-00-00 00:00:00.000')),
-                    resizable: false,
+                    xtype: 'psr-datecolumn',
                     filter: {
                         type: 'date',
                         dateFormat: 'Y-m-d\\TH:i:s.u'
