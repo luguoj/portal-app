@@ -33,34 +33,27 @@ Ext.define('PortalApp.view.fileConsole.FileConsoleView', {
             width: 44,
             resizable: false
         }, {
-            text: '下载',
-            xtype: 'widgetcolumn',
-            width: 48,
+            xtype: 'actioncolumn',
+            width: 67,
             resizable: false,
             menuDisabled: true,
-            widget: {
-                xtype: 'button',
-                iconCls: 'x-fa fa-file-download',
+            items: [{
+                iconCls: 'x-fa fa-download',
+                altText:'下载',
+                tooltip: '下载',
                 handler: 'hBtnDownload',
-                bind: {
-                    disabled: '{!record.fileMetaId}'
+                isActionDisabled: function (view, rowIndex, colIndex, item, record) {
+                    return !record.get('fileVersionId');
                 }
-            }
-        }, {
-            text: '版本',
-            xtype: 'widgetcolumn',
-            width: 48,
-            resizable: false,
-            menuDisabled: true,
-            widget: {
-                xtype: 'button',
+            }, {
                 iconCls: 'x-fa fa-file-archive',
+                altText:'版本',
+                tooltip: '版本',
                 handler: 'hBtnVersion',
-                bind: {
-                    hidden: '{!record.versionControl}',
-                    disabled: '{!record.fileMetaId}'
+                isActionDisabled: function (view, rowIndex, colIndex, item, record) {
+                    return !record.get('fileVersionId');
                 }
-            }
+            }]
         }],
         bind: {
             store: '{files}'
