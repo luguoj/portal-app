@@ -96,7 +96,7 @@ Ext.define('PortalApp.view.entityConsole.EditorViewController', {
             });
         } else if (mode == 'editing') {
             const fields = [];
-            for (const dirtyValuesKey in dirtyValues) {
+            for (let dirtyValuesKey in dirtyValues) {
                 fields.push(dirtyValuesKey);
             }
             dirtyValues.id = record.get('id');
