@@ -37,9 +37,13 @@ body.launching {
 }
 
 .psr-color-confirm {
-  color: var(--confirm-color);
+  color: $confirm-color;
 }
 
 .psr-color-decline {
-  color: var(--alert-color);
+  color: $alert-color;
+}
+
+.psr-color-disabled {
+  color: $disabled-color;
 }
