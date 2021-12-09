@@ -48,6 +48,6 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
         }
     },
     onTabChange: function (tabPanel, newCard) {
-        this.redirectTo(newCard.getItemId());
+        this.redirectTo(window.btoa(newCard.getItemId()).replaceAll('=', ''));
     }
 });

@@ -3,7 +3,7 @@ Ext.define('PortalApp.view.main.NavigationViewController', {
     alias: 'controller.main-navigationviewcontroller',
     onMenuItemClick: function (tree, event) {
         if (event.node.isLeaf() && event.node.data.viewConfig) {
-            this.redirectTo(event.node.get('id'));
+            this.redirectTo(window.btoa(event.node.get('id')).replaceAll('=', ''));
         }
     },
     switchNode: function (opt) {

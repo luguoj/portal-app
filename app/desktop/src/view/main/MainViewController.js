@@ -2,7 +2,7 @@ Ext.define('PortalApp.view.main.MainViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.mainviewcontroller',
     routes: {
-        ':nodeId': {action: 'mainRoute'}
+        ':routeHash': {action: 'mainRoute'}
     },
     initViewModel: function (vm) {
         var me = this;
@@ -17,9 +17,10 @@ Ext.define('PortalApp.view.main.MainViewController', {
             }
         })
     },
-    mainRoute: function (nodeId) {
+    mainRoute: function (routeHash) {
         var vm = this.getViewModel(),
-            nodes = vm.getStore('navNodes');
+            nodes = vm.getStore('navNodes'),
+            nodeId = window.atob(routeHash);
         if (nodes.isLoaded()) {
             this.switchNode(nodeId);
         } else {
