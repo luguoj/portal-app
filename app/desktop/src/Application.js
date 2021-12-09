@@ -4,7 +4,8 @@ Ext.define('PortalApp.Application', {
     requires: [
         'PortalApp.*',
         'PSR.*',
-        'Ext.*'
+        'Ext.*',
+        'PortalModule.*'
     ],
     defaultToken: 'homeview',
 
