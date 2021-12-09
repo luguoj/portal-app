@@ -6,7 +6,14 @@ Ext.define('PSR.data.api.file.FileApi', {
     download: function (opt) {
         const url = this.getAPIUrl();
         PSR.data.File.download({
-            url: url + '/' + opt.id + '/download',
+            url: url + '/' + opt.id,
+            withAuthToken: true
+        });
+    },
+    downloadVersion: function (opt) {
+        const url = window.portalEnv.gateway + '/file/api/file_version';
+        PSR.data.File.download({
+            url: url + '/' + opt.id,
             withAuthToken: true
         });
     },
@@ -24,7 +31,7 @@ Ext.define('PSR.data.api.file.FileApi', {
             headers: {
                 "Content-Type": null
             },
-            url: this.getAPIUrl() + '/' + opt.id + '/upload',
+            url: this.getAPIUrl() + '/' + opt.id,
             withAuthToken: true,
             params: params,
             rawData: formData,
@@ -46,7 +53,7 @@ Ext.define('PSR.data.api.file.FileApi', {
             }
         });
     },
-    patch: function (opt) {
+    patchMeta: function (opt) {
         const params = {version: opt.version};
         if (opt.storageService) {
             params['storage_service'] = opt.storageService;
@@ -62,7 +69,7 @@ Ext.define('PSR.data.api.file.FileApi', {
             headers: {
                 "Content-Type": null
             },
-            url: this.getAPIUrl() + '/' + opt.id,
+            url: this.getAPIUrl() + '/' + opt.id + '/meta',
             withAuthToken: true,
             params: params,
             bizSuccess: function (data) {

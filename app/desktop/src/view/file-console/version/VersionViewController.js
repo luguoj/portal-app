@@ -9,10 +9,10 @@ Ext.define('PortalApp.view.fileConsole.VersionViewController', {
             fileStore.loadPage(1);
         }
     },
-    hBtnDownload: function (btn) {
-        const rec = btn.lookupViewModel().get('record');
-        PSR.data.api.file.FileVersionApi.download({
-            id: rec.get('fileId')
+    hBtnDownload: function (grid, rowIndex) {
+        const rec = grid.getStore().getAt(rowIndex);
+        PSR.data.api.file.FileApi.downloadVersion({
+            id: rec.get('id')
         });
     }
 });

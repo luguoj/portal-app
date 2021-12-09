@@ -61,16 +61,16 @@ Ext.define('PortalApp.view.fileConsole.VersionView', {
             dataIndex: 'storageService',
             width: 70
         }, {
-            xtype: 'widgetcolumn',
-            widget: {
-                textAlign: 'left',
-                xtype: 'button',
-                iconCls: 'x-fa fa-file-download',
-                handler: 'hBtnDownload',
-                bind: {
-                    disabled: '{!record.fileVersionId}'
-                }
-            }
+            xtype: 'actioncolumn',
+            width: 40,
+            resizable: false,
+            menuDisabled: true,
+            items: [{
+                iconCls: 'x-fa fa-download',
+                altText:'下载',
+                tooltip: '下载',
+                handler: 'hBtnDownload'
+            }]
         }],
         bind: {
             store: '{fileVersions}'
