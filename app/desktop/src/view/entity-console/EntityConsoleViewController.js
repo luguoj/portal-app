@@ -15,7 +15,9 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleViewController', {
             columnCfg.hidden = true;
         }
         switch (fieldType) {
+            case 'int':
             case 'java.lang.Integer':
+            case 'long':
             case 'java.lang.Long':
                 Object.assign(columnCfg, {
                     xtype: 'numbercolumn',

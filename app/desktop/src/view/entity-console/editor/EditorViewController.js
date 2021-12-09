@@ -22,7 +22,9 @@ Ext.define('PortalApp.view.entityConsole.EditorViewController', {
             }
             switch (fieldSchema.type) {
                 case 'java.math.BigDecimal':
+                case 'int':
                 case 'java.lang.Integer':
+                case 'long':
                 case 'java.lang.Long':
                     field.xtype = 'numberfield';
                     break;
