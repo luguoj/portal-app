@@ -4,19 +4,18 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
     switchView: function (opt) {
         const c = this,
             v = c.getView(),
-            vm = c.getViewModel(),
-            viewId = 'workview-' + opt.viewId,
-            title = opt.title,
-            iconCls = opt.iconCls,
-            moduleId = opt.moduleId,
-            viewConfig = opt.viewConfig,
+            viewId = opt.viewId,
             view = v.getComponent(viewId);
-        if (!view) {
+        if (!view && opt.viewConfig) {
+            const title = opt.title,
+                iconCls = opt.iconCls,
+                moduleId = opt.moduleId,
+                viewConfig = opt.viewConfig;
             const newViewConfig = Object.assign(
                 {
                     itemId: viewId,
-                    title: title,
-                    iconCls: iconCls
+                    title: title ? title : '未命名',
+                    iconCls: iconCls ? iconCls : 'x-fa fa-exclamation-triangle'
                 },
                 viewConfig
             );
@@ -47,5 +46,8 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
         } else {
             v.setActiveItem(view);
         }
+    },
+    onTabChange: function (tabPanel, newCard) {
+        this.redirectTo(newCard.getItemId());
     }
 });

@@ -38,18 +38,24 @@ Ext.define('PortalApp.view.main.MainViewController', {
             : nodes.findRecord('id', nodeId);
         if (targetNode == null) {
             console.log('unmatchedRoute: ' + nodeId);
-            return;
+            workspaceView.switchView({
+                viewId: nodeId
+            });
+            navigationView.switchNode({
+                nodeId: nodeId
+            });
+        } else {
+            workspaceView.switchView({
+                viewId: targetNode.get('id'),
+                title: targetNode.get('text'),
+                iconCls: targetNode.get('iconCls'),
+                moduleId: targetNode.get('moduleId'),
+                viewConfig: targetNode.get('viewConfig')
+            });
+            navigationView.switchNode({
+                nodeId: targetNode.get('id')
+            });
         }
-        workspaceView.switchView({
-            viewId: targetNode.get('id'),
-            title: targetNode.get('text'),
-            iconCls: targetNode.get('iconCls'),
-            moduleId: targetNode.get('moduleId'),
-            viewConfig: targetNode.get('viewConfig')
-        });
-        navigationView.switchNode({
-            nodeId: targetNode.get('id')
-        });
     },
     hBtnFullscreen: function () {
         const view = this.getView(),

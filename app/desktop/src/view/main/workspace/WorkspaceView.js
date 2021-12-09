@@ -14,5 +14,8 @@ Ext.define('PortalApp.view.main.WorkspaceView', {
     items: [],
     switchView: function (opt) {
         this.getController().switchView(opt);
+    },
+    listeners:{
+        tabchange:'onTabChange'
     }
 });
