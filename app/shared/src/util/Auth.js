@@ -7,7 +7,8 @@ Ext.define('PSR.util.Auth', {
             if (event.data === 'login_success') {
                 console.log('login message got')
                 if (PSR.util.Auth.oauth2LoginDialog) {
-                    PSR.util.Auth.oauth2LoginDialog.close();
+                    PSR.util.Auth.oauth2LoginDialog.destroy();
+                    delete PSR.util.Auth.oauth2LoginDialog;
                 }
                 if (PSR.util.Auth.loginSuccess) {
                     PSR.util.Auth.loginSuccess();
@@ -28,17 +29,15 @@ Ext.define('PSR.util.Auth', {
         PSR.util.Auth.loginSuccess = loginSuccess;
         PSR.util.Auth.oauth2LoginDialog =
             Ext.create({
-                xtype: 'dialog',
-                title: '登陆中...',
-                iconCls: 'x-fa fa-spinner fa-spin',
-                maximized: true,
-                resizable: false, layout: 'fit', bodyPadding: 0, items: {
-                    xtype: 'psr-iframe'
-                },
-                listeners: {
-                    show: function (dialog) {
-                        dialog.getAt(0).setSrc(window.portalEnv.authclient);
-                    }
+                xtype: 'psr-iframe',
+                src: window.portalEnv.authclient,
+                floating: true,
+                floated: true,
+                height: '100%',
+                width: '100%',
+                style: {
+                    'background-image': 'none',
+                    'background-color': 'rgba(0, 0, 0, 0.75)'
                 }
             });
         PSR.util.Auth.oauth2LoginDialog.show();
@@ -85,13 +84,17 @@ Ext.define('PSR.util.Auth', {
                         } else {
                             console.log(respObj);
                             PSR.util.Message.error("认证失效，请重新登陆", function () {
-                                PSR.util.Auth.logout();
+                                PSR.util.Auth.login(function () {
+                                    PSR.util.Auth.getClientToken(callback);
+                                });
                             });
                         }
                     } catch (err) {
                         console.log(err);
                         PSR.util.Message.error("认证失效，请重新登陆", function () {
-                            PSR.util.Auth.logout();
+                            PSR.util.Auth.login(function () {
+                                PSR.util.Auth.getClientToken(callback);
+                            });
                         });
                     }
                 },
@@ -107,7 +110,9 @@ Ext.define('PSR.util.Auth', {
                         }
                     }
                     PSR.util.Message.error("授权信息无效，请重新登陆", function () {
-                        PSR.util.Auth.logout();
+                        PSR.util.Auth.login(function () {
+                            PSR.util.Auth.getClientToken(callback);
+                        });
                     });
                 }
             });
