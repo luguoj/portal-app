@@ -10,9 +10,9 @@ Ext.define('PortalApp.view.fileConsole.VersionViewController', {
         }
     },
     hBtnDownload: function (grid, rowIndex) {
-        const rec = grid.getStore().getAt(rowIndex);
+        const record = grid.getStore().getAt(rowIndex);
         PSR.data.api.file.FileApi.downloadVersion({
-            id: rec.get('id')
+            id: record.get('id')
         });
     }
 });

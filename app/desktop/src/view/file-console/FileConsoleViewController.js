@@ -2,21 +2,21 @@ Ext.define('PortalApp.view.fileConsole.FileConsoleViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.fileconsoleviewcontroller',
     hBtnDownload: function (grid, rowIndex) {
-        const rec = grid.getStore().getAt(rowIndex);
+        const record = grid.getStore().getAt(rowIndex);
         PSR.data.api.file.FileApi.download({
-            id: rec.get('id')
+            id: record.get('id')
         });
     },
     hBtnVersion: function (grid, rowIndex) {
         const view = this.getView(),
-            rec = grid.getStore().getAt(rowIndex);
+            record = grid.getStore().getAt(rowIndex);
         view.fireEvent('switchview', {
-            viewId: 'fileconsole-versionview-' + rec.get('id'),
+            viewId: 'fileconsole-versionview-' + record.get('id'),
             title: '文件版本',
             iconCls: 'x-fa fa-edit',
             viewConfig: {
                 xtype: 'fileconsole-versionview',
-                fileId: rec.get('id')
+                fileId: record.get('id')
             },
         })
     }
