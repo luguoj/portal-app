@@ -30,7 +30,7 @@ Ext.define('PSR.window.Upload', {
             fieldLabel: '选择文件',
             emptyText: '选择文件',
             anchor: '100%',
-            required: true,
+            allowBlank: false,
             accept: accept,
             multiple: multiple
         });
