@@ -7,10 +7,9 @@ Ext.define('PSR.toolbar.Paging', {
         displayField: 'limit',
         editable: false,
         queryMode: 'local',
-        value: 50,
         store: {
             fields: ['limit'],
-            data: [[50], [100], [200], [500], [1000], [2000]]
+            data: [[10], [20], [50], [100], [200], [500], [1000], [2000]]
         },
         listeners: {
             change: function (combo, newValue) {
@@ -21,5 +20,19 @@ Ext.define('PSR.toolbar.Paging', {
                 }
             }
         }
-    }]
+    }],
+    initComponent: function () {
+        this.callParent();
+        const store = this.getStore(),
+            comboLimit = this.comboLimit = this.down('combobox[valueField=limit]');
+        if (store) {
+            comboLimit.setValue(store.getPageSize());
+        }
+    },
+    onBindStore: function (store, initial) {
+        this.callParent([store, initial]);
+        if (this.comboLimit) {
+            this.comboLimit.setValue(store.getPageSize());
+        }
+    },
 });
