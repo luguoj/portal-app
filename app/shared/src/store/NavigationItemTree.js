@@ -1,6 +1,6 @@
 Ext.define('PortalApp.store.NavigationItemTree', {
     extend: 'PSR.data.AjaxTreeStore',
-    alias: 'store.portalapp-navigationitemtree',
+    alias: 'store.navigationitemtree',
     withAuthToken: true,
     proxy: {
         reader: {

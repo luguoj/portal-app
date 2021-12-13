@@ -1,4 +1,4 @@
-Ext.define('PSR.data.api.entity.DomainSchemaApi', {
+Ext.define('PortalApp.data.api.entity.DomainSchemaApi', {
     singleton: true,
     findSchemaByDomainType: function (opt) {
         const domainType = opt.domainType,

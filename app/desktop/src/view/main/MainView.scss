@@ -12,18 +12,3 @@ $portal-main-toolbar-line-height: dynamic(64px);
         $background-color: transparent,
         $border-color: transparent
 );
-
-.x-scrollbar::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-.x-scrollbar::-webkit-scrollbar-thumb {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: $base-color;
-}
-
-.x-scrollbar::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: #ededed;
-}

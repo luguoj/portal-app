@@ -3,7 +3,7 @@ Ext.define('PortalApp.view.fileConsole.FileConsoleViewController', {
     alias: 'controller.fileconsoleviewcontroller',
     hBtnDownload: function (grid, rowIndex) {
         const record = grid.getStore().getAt(rowIndex);
-        PSR.data.api.file.FileApi.download({
+        PortalApp.data.api.file.FileApi.download({
             id: record.get('id')
         });
     },

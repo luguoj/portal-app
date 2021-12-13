@@ -25,11 +25,11 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleViewModel', {
     },
     stores: {
         domainTypes: {
-            type: 'psr-domaintype',
+            type: 'domaintype',
             autoLoad: true
         },
         entities: {
-            type: 'psr-entity',
+            type: 'entity',
             pageSize: 50,
             remoteSort: true,
             remoteFilter: true,

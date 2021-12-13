@@ -20,30 +20,3 @@ body.launching {
     height: 240px;
   }
 }
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: $base-color;
-}
-
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: #ededed;
-}
-
-.psr-color-confirm {
-  color: $confirm-color;
-}
-
-.psr-color-decline {
-  color: $alert-color;
-}
-
-.psr-color-disabled {
-  color: $disabled-color;
-}

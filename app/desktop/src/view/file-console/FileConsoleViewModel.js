@@ -3,7 +3,7 @@ Ext.define('PortalApp.view.fileConsole.FileConsoleViewModel', {
     alias: 'viewmodel.fileconsoleviewmodel',
     stores: {
         files: {
-            type: 'psr-entity',
+            type: 'entity',
             application: 'file',
             domainType: 'org.psr.platform.file.entity.FileEntity',
             pageSize: 50,

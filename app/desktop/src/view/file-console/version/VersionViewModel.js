@@ -3,7 +3,7 @@ Ext.define('PortalApp.view.fileConsole.VersionViewModel', {
     alias: 'viewmodel.fileconsole-versionviewmodel',
     stores: {
         fileVersions: {
-            type: 'psr-entity',
+            type: 'entity',
             application: 'file',
             domainType: 'org.psr.platform.file.entity.FileVersionEntity',
             pageSize: 50,

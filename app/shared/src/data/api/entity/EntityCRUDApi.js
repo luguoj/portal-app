@@ -1,4 +1,4 @@
-Ext.define('PSR.data.api.entity.EntityCRUDApi', {
+Ext.define('PortalApp.data.api.entity.EntityCRUDApi', {
     singleton: true,
     getAPIUrl: function (opt) {
         const application = opt.application,

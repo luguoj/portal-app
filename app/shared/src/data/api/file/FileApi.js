@@ -1,4 +1,4 @@
-Ext.define('PSR.data.api.file.FileApi', {
+Ext.define('PortalApp.data.api.file.FileApi', {
     singleton: true,
     getAPIUrl: function () {
         return window.portalEnv.gateway + '/file/api/file';

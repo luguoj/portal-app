@@ -11,7 +11,7 @@ Ext.define('PortalApp.view.fileConsole.VersionViewController', {
     },
     hBtnDownload: function (grid, rowIndex) {
         const record = grid.getStore().getAt(rowIndex);
-        PSR.data.api.file.FileApi.downloadVersion({
+        PortalApp.data.api.file.FileApi.downloadVersion({
             id: record.get('id')
         });
     }

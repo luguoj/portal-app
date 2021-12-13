@@ -70,7 +70,7 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleViewController', {
         entityStore.getSorters().removeAll();
         if (newValue) {
             viewModel.set('domainType', domainTypeStore.findRecord('type', newValue));
-            PSR.data.api.entity.DomainSchemaApi.findSchemaByDomainType(
+            PortalApp.data.api.entity.DomainSchemaApi.findSchemaByDomainType(
                 {
                     application: application,
                     domainType: newValue,
@@ -162,7 +162,7 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleViewController', {
                     const selection = selections[i];
                     ids.push(selection.get('id'));
                 }
-                PSR.data.api.entity.EntityCRUDApi.delete({
+                PortalApp.data.api.entity.EntityCRUDApi.delete({
                     application: application,
                     domainType: domainType,
                     ids: ids,

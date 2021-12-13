@@ -34,8 +34,22 @@
     }
   },
 
-  "classpath": ["app/shared/src","app/${build.id}/src","module/shared/src","module/${build.id}/src"],
-  "overrides": ["app/shared/overrides","app/${build.id}/overrides","module/shared/overrides","module/${build.id}/overrides"],
+  "classpath": [
+    "app/shared/src",
+    "app/${build.id}/src",
+    "common/shared/src",
+    "common/${build.id}/src",
+    "module/shared/src",
+    "module/${build.id}/src"
+  ],
+  "overrides": [
+    "app/shared/overrides",
+    "app/${build.id}/overrides",
+    "common/shared/overrides",
+    "common/${build.id}/overrides",
+    "module/shared/overrides",
+    "module/${build.id}/overrides"
+  ],
 
   "sass": {
     "namespace": "PortalApp",
@@ -45,11 +59,15 @@
     ],
     "var": [
       "app/shared/sass/var.scss",
-      "app/${build.id}/sass/var.scss"
+      "app/${build.id}/sass/var.scss",
+      "common/shared/sass/var.scss",
+      "common/${build.id}/sass/var.scss"
     ],
     "src": [
       "app/shared/src/sass/src.scss",
-      "app/${build.id}/sass/src.scss"
+      "app/${build.id}/sass/src.scss",
+      "common/shared/sass/src.scss",
+      "common/${build.id}/sass/src.scss"
     ]
   },
 

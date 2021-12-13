@@ -1,6 +1,6 @@
-Ext.define('PSR.store.DomainTypeStore', {
+Ext.define('PortalApp.store.DomainTypeStore', {
     extend: 'PSR.data.AjaxStore',
-    alias: 'store.psr-domaintype',
+    alias: 'store.domaintype',
     config: {
         application: ''
     },

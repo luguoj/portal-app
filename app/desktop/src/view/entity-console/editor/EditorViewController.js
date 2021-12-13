@@ -55,7 +55,7 @@ Ext.define('PortalApp.view.entityConsole.EditorViewController', {
             entityId = view.getEntityId(),
             form = view.down('form');
         if (entityId) {
-            PSR.data.api.entity.EntityCRUDApi.findAllById({
+            PortalApp.data.api.entity.EntityCRUDApi.findAllById({
                 application: application,
                 domainType: domainType,
                 ids: [entityId],
@@ -85,7 +85,7 @@ Ext.define('PortalApp.view.entityConsole.EditorViewController', {
             record = form.getRecord(),
             dirtyValues = form.getValues(false, true, true, false, true);
         if (mode == 'creating') {
-            PSR.data.api.entity.EntityCRUDApi.create({
+            PortalApp.data.api.entity.EntityCRUDApi.create({
                 application: application,
                 domainType: domainType,
                 values: dirtyValues,
@@ -103,7 +103,7 @@ Ext.define('PortalApp.view.entityConsole.EditorViewController', {
             }
             dirtyValues.id = record.get('id');
             dirtyValues.version = record.get('version');
-            PSR.data.api.entity.EntityCRUDApi.patch({
+            PortalApp.data.api.entity.EntityCRUDApi.patch({
                 application: application,
                 domainType: domainType,
                 fields: fields,
