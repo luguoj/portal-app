@@ -62,7 +62,7 @@ Ext.define('PortalApp.view.portalConsole.module.PropertyView', {
             },
         }, {
             name: 'enabled',
-            xtype: 'psr-checkboxfield',
+            xtype: 'checkboxfield',
             fieldLabel: '有效',
             emptyText: '有效',
             bind: {

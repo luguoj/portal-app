@@ -34,7 +34,7 @@ Ext.define('PortalApp.view.portalConsole.module.ActionView', {
             dataIndex: 'enabled',
             disabled: true,
             editor: {
-                xtype: 'psr-checkboxfield'
+                xtype: 'checkboxfield'
             }
         }, {
             dataIndex: 'code',
