@@ -68,7 +68,7 @@ Ext.define('PortalApp.view.portalConsole.ModuleView', {
             resizable: true,
             menuDisabled: true,
             items: [{
-                iconCls: 'x-fa fa-trash psr-decline',
+                iconCls: 'x-fa fa-trash',
                 altText: '删除',
                 tooltip: '删除',
                 handler: 'hBtnRemove'
