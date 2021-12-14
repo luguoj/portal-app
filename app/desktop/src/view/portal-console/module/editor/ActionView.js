@@ -171,19 +171,20 @@ Ext.define('PortalApp.view.portalConsole.module.ActionView', {
         },
         hBtnRemove: function (grid, rowIndex) {
             const me = this,
+                view = this.getView(),
                 actionStore = this.getStore('actions'),
                 record = grid.getStore().getAt(rowIndex);
             if (record.get('version') == undefined) {
                 actionStore.remove(record);
             } else {
                 PSR.util.Message.confirm('删除模块操作:' + record.get('code'), function () {
+                    view.mask('处理中...');
                     PortalApp.data.api.portal.ModuleApi.deleteAction({
                         id: record.get('id'),
                         success: function () {
-                            PSR.util.Message.info('删除成功');
-                        },
-                        complete: function () {
                             me.loadData();
+                            view.unmask();
+                            PSR.util.Message.info('删除成功');
                         }
                     });
                 });

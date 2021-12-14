@@ -202,19 +202,20 @@ Ext.define('PortalApp.view.portalConsole.module.ResourceFileView', {
         },
         hBtnRemove: function (grid, rowIndex) {
             const me = this,
+                view = this.getView();
                 resourceFileStore = this.getStore('resourceFiles'),
                 record = grid.getStore().getAt(rowIndex);
             if (record.get('version') == undefined) {
                 resourceFileStore.remove(record);
             } else {
                 PSR.util.Message.confirm('删除模块资源:' + record.get('catalog'), function () {
+                    view.mask('处理中...');
                     PortalApp.data.api.portal.ModuleApi.deleteResource({
                         id: record.get('id'),
                         success: function () {
-                            PSR.util.Message.info('删除成功');
-                        },
-                        complete: function () {
                             me.loadData();
+                            view.unmask();
+                            PSR.util.Message.info('删除成功');
                         }
                     });
                 });
