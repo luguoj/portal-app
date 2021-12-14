@@ -2,7 +2,6 @@ Ext.define('PortalApp.view.portalConsole.module.EditorView', {
     extend: 'Ext.panel.Panel',
     xtype: 'portalconsole-module-editorview',
     controller: 'portalconsole-module-editorviewcontroller',
-    viewModel: 'portalconsole-module-editorviewmodel',
     config: {
         module: null
     },
@@ -53,6 +52,11 @@ Ext.define('PortalApp.view.portalConsole.module.EditorView', {
         viewModel.set('module', value);
         if (this.rendered) {
             controller.loadData();
+        }
+    },
+    viewModel: {
+        data: {
+            module: null
         }
     }
 });

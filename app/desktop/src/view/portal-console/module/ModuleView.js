@@ -1,8 +1,6 @@
 Ext.define('PortalApp.view.portalConsole.ModuleView', {
     extend: 'Ext.panel.Panel',
     xtype: 'portalconsole-moduleview',
-    controller: 'portalconsole-moduleviewcontroller',
-    viewModel: 'portalconsole-moduleviewmodel',
     layout: 'fit',
     tbar: {
         items: [{
@@ -83,5 +81,19 @@ Ext.define('PortalApp.view.portalConsole.ModuleView', {
             itemdblclick: 'onGrdItemDbClick',
             selectionchange: 'onGrdSelectionChange'
         }
-    }]
+    }],
+    controller: 'portalconsole-moduleviewcontroller',
+    viewModel: {
+        stores: {
+            modules: {
+                type: 'entity',
+                application: 'portal',
+                domainType: 'org.psr.platform.portal.entity.ModuleEntity',
+                pageSize: 50,
+                remoteSort: true,
+                remoteFilter: true,
+                autoLoad: true
+            }
+        }
+    }
 });
