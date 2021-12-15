@@ -64,9 +64,6 @@ Ext.define('PortalApp.view.portalConsole.ModuleView', {
             hidden: true
         },{
             xtype:'actioncolumn',
-            width: 40,
-            resizable: true,
-            menuDisabled: true,
             items: [{
                 iconCls: 'x-fa fa-trash',
                 altText: '删除',

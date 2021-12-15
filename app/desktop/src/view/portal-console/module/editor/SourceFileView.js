@@ -37,9 +37,6 @@ Ext.define('PortalApp.view.portalConsole.module.SourceFileView', {
             flex: 1
         }, {
             xtype: 'actioncolumn',
-            width: 93,
-            resizable: true,
-            menuDisabled: true,
             items: [{
                 iconCls: 'x-fa fa-upload',
                 altText: '上传',

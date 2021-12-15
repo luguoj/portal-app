@@ -52,18 +52,12 @@ Ext.define('PortalApp.view.portalConsole.module.ActionView', {
             }
         }, {
             xtype: 'actioncolumn',
-            width: 40,
-            resizable: false,
-            menuDisabled: true,
             items: [{
                 iconCls: 'x-fa fa-trash',
                 altText: '删除',
                 tooltip: '删除',
                 handler: 'hBtnRemove'
-            }],
-            editRenderer: function () {
-                return '';
-            }
+            }]
         }],
         bind: {store: '{actions}'},
         listeners: {

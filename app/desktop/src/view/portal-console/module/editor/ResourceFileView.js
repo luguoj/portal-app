@@ -56,9 +56,6 @@ Ext.define('PortalApp.view.portalConsole.module.ResourceFileView', {
             }
         }, {
             xtype: 'actioncolumn',
-            width: 120,
-            resizable: false,
-            menuDisabled: true,
             items: [{
                 iconCls: 'x-fa fa-trash',
                 altText: '删除',
@@ -88,10 +85,7 @@ Ext.define('PortalApp.view.portalConsole.module.ResourceFileView', {
                 isActionDisabled: function (view, rowIndex, colIndex, item, record) {
                     return record.get('file') == undefined || !record.get('file').fileVersionId;
                 }
-            }],
-            editRenderer: function () {
-                return '';
-            }
+            }]
         }],
         bind: {store: '{resourceFiles}'},
         listeners: {

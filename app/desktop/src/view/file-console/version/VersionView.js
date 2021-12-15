@@ -62,9 +62,6 @@ Ext.define('PortalApp.view.fileConsole.VersionView', {
             width: 70
         }, {
             xtype: 'actioncolumn',
-            width: 40,
-            resizable: false,
-            menuDisabled: true,
             items: [{
                 iconCls: 'x-fa fa-download',
                 altText:'下载',
