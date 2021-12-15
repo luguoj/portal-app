@@ -3,7 +3,8 @@ Ext.define('PortalApp.view.main.WorkspaceView', {
     xtype: 'main-workspaceview',
     controller: 'main-workspaceviewcontroller',
     plugins: {
-        tabreorderer: true
+        tabreorderer: true,
+        tabclosemenu: true
     },
     tabPosition: 'bottom',
     plain: true,
@@ -15,7 +16,7 @@ Ext.define('PortalApp.view.main.WorkspaceView', {
     switchView: function (opt) {
         this.getController().switchView(opt);
     },
-    listeners:{
-        tabchange:'onTabChange'
+    listeners: {
+        tabchange: 'onTabChange'
     }
 });
