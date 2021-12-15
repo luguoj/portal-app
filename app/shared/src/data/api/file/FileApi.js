@@ -56,13 +56,13 @@ Ext.define('PortalApp.data.api.file.FileApi', {
     patchMeta: function (opt) {
         const params = {version: opt.version};
         if (opt.storageService) {
-            params['storage_service'] = opt.storageService;
+            params.storageService = opt.storageService;
         }
         if (opt.versionControl) {
-            params['version_control'] = opt.versionControl;
+            params.versionControl = opt.versionControl;
         }
         if (opt.abandoned) {
-            params['abandoned'] = opt.abandoned;
+            params.abandoned = opt.abandoned;
         }
         PSR.data.Ajax.request({
             method: 'PATCH',
