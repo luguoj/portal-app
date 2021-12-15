@@ -63,8 +63,10 @@ Ext.define('PortalApp.view.portalConsole.ModuleViewController', {
                 id: record.get('id'),
                 success: function () {
                     me.getStore('modules').reload();
-                    view.unmask();
                     PSR.util.Message.info('删除成功');
+                },
+                complete:function (){
+                    view.unmask();
                 }
             });
         });

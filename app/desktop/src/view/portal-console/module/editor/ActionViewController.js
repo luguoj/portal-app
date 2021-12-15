@@ -109,8 +109,10 @@ Ext.define('PortalApp.view.portalConsole.module.ActionViewController', {
                     id: record.get('id'),
                     success: function () {
                         me.loadData();
-                        view.unmask();
                         PSR.util.Message.info('删除成功');
+                    },
+                    complete:function (){
+                        view.unmask();
                     }
                 });
             });
