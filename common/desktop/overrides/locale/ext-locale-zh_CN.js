@@ -40,3 +40,9 @@ Ext.define('PSR-Ext.locale.zh_CN.grid.filters.filter.String', {
     override: 'Ext.grid.filters.filter.String',
     emptyText: '输入文本...'
 });
+Ext.define('PSR-Ext.locale.zh_CN.ux.TabCloseMenu', {
+    override: 'Ext.ux.TabCloseMenu',
+    closeTabText: '关闭标签页',
+    closeOtherTabsText: '关闭其他标签页',
+    closeAllTabsText: '关闭所有标签页'
+});
