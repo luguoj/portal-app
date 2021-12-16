@@ -8,32 +8,27 @@ Ext.define('PortalApp.store.EntityTreeStore', {
         rootText: 'ROOT'
     },
     withAuthToken: true,
-    updateApplication: function () {
-        this.updateUrl();
+    root: {
+        id: 'root',
+        loaded: true,
+        content: [],
+        expanded: true,
+        text: 'ROOT'
     },
-    updateDomainType: function () {
-        this.updateUrl();
+    updateProxy: function (proxy) {
+        const application = this.getApplication(),
+            domainType = this.getDomainType(),
+            rootText = this.getRootText(),
+            parentIdField = this.getParentIdField(),
+            reader = proxy.getReader(),
+            url = portalEnv.gateway + '/' + application + '/api/entity/' + domainType;
+        proxy.setUrl(url);
+        reader.rootText = rootText;
+        reader.parentIdField = parentIdField;
     },
-    updateUrl: function () {
-        const proxy = this.getProxy();
-        if (proxy) {
-            const application = this.getApplication(),
-                domainType = this.getDomainType(),
-                url = portalEnv.gateway + '/' + application + '/api/entity/' + domainType;
-            proxy.setUrl(url);
-        }
-    },
-    constructor: function (config) {
-        this.callParent([config]);
-        this.updateUrl();
-        const rootData = {
-            id: 'root',
-            content: [],
-            expanded: true,
-            text: this.getRootText()
-        }
-        this.setRoot(rootData);
-        this.getProxy().getReader().rootData = rootData;
+    applyRoot: function (value) {
+        value.text = this.getRootText();
+        return this.callParent([value]);
     },
     proxy: {
         type: 'entity',
@@ -41,7 +36,13 @@ Ext.define('PortalApp.store.EntityTreeStore', {
             transform: function (data) {
                 return PSR.data.reader.Transform.parentTree(data.content, {
                     expand: true,
-                    root: this.rootData
+                    parentIdField: this.parentIdField,
+                    root: {
+                        id: 'root',
+                        content: [],
+                        expanded: true,
+                        text: this.rootText
+                    }
                 });
             }
         }
