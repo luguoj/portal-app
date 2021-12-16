@@ -71,7 +71,7 @@ Ext.define('PSR.data.reader.Transform', {
             roots = [],
             nodeMap = {};
         for (let index = 0; records && index < records.length; index++) {
-            const record = Object.assign({isRecord: true, leaf: true}, records[index]),
+            const record = Object.assign({isRecord: true}, records[index]),
                 pathValue = record[pathField],
                 paths = pathValue ? pathValue.split(pathSplitter) : null;
             let path = '',
@@ -80,12 +80,14 @@ Ext.define('PSR.data.reader.Transform', {
                 if (deep == 0) {
                     path = paths[deep];
                 } else {
-                    path = path + '/' + paths[deep];
+                    path = path + pathSplitter + paths[deep];
                 }
                 let childPathNode = nodeMap[path];
                 if (!childPathNode) {
                     childPathNode = {leaf: true, expanded: !!opt.expand};
                     childPathNode[displayField] = paths[deep];
+                    childPathNode[pathField] = path;
+                    childPathNode.id = path.replaceAll(pathSplitter, '-');
                     childPathNode[rootProperty] = [];
                     nodeMap[path] = childPathNode;
                     if (pathNode) {
