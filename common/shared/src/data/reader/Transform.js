@@ -101,16 +101,17 @@ Ext.define('PSR.data.reader.Transform', {
     },
     parentTree: function (records, opt) {
         opt = Object.assign({}, opt);
-        var rootProperty = opt.rootProperty ? opt.rootProperty : 'content';
-        var roots = [];
+        const rootProperty = opt.rootProperty ? opt.rootProperty : 'content',
+            parentIdField = opt.parentIdField ? opt.parentIdField : 'parentId',
+            roots = [];
         if (records && records.length > 0) {
-            var nodeMap = {};
-            for (var i = 0; i < records.length; i++) {
-                var record = Object.assign({}, records[i]);
+            const nodeMap = {};
+            for (let i = 0; i < records.length; i++) {
+                const record = Object.assign({}, records[i]);
                 if (record.iconCls == null) {
                     delete record.iconCls;
                 }
-                var tempNode = {leaf: true};
+                const tempNode = {leaf: true};
                 if (opt.expand === true) {
                     tempNode.expanded = true;
                 } else if (opt.expand === false) {
@@ -119,10 +120,10 @@ Ext.define('PSR.data.reader.Transform', {
                 tempNode[rootProperty] = [];
                 nodeMap[record.id] = Object.assign(tempNode, record);
             }
-            for (var nodeMapKey in nodeMap) {
-                var node = nodeMap[nodeMapKey];
-                if (node.parentId && nodeMap[node.parentId]) {
-                    var parentNode = nodeMap[node.parentId];
+            for (let nodeMapKey in nodeMap) {
+                const node = nodeMap[nodeMapKey];
+                if (node[parentIdField] && nodeMap[node[parentIdField]]) {
+                    const parentNode = nodeMap[node[parentIdField]];
                     parentNode.leaf = false
                     parentNode[rootProperty].push(node);
                 } else {
@@ -130,16 +131,14 @@ Ext.define('PSR.data.reader.Transform', {
                 }
             }
         }
+        const result = {expanded: true};
         if (opt.root) {
-            var result = {expanded: true},
-                root = Object.assign({leaf: false, expanded: true}, opt.root);
+            const root = Object.assign({leaf: false, expanded: true}, opt.root);
             root[rootProperty] = roots;
             result[rootProperty] = [root];
-            return result;
         } else {
-            var result = {expanded: true};
             result[rootProperty] = roots;
-            return result;
         }
+        return result;
     }
 });
