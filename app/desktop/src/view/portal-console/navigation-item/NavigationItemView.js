@@ -124,7 +124,7 @@ Ext.define('PortalApp.view.portalConsole.NavigationItemView', {
                 type: 'entitytree',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.NavigationItemEntity',
-                remoteSort: true,
+                remoteSort: false,
                 remoteFilter: true,
                 autoLoad: false,
                 rootText: '导航节点',
