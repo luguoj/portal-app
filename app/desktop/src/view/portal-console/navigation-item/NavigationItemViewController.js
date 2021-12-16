@@ -70,20 +70,25 @@ Ext.define('PortalApp.view.portalConsole.NavigationViewItemController', {
     hBtnRemove: function (grid, rowIndex) {
         const me = this,
             view = this.getView(),
-            record = grid.getStore().getAt(rowIndex);
-        PSR.util.Message.confirm('删除:' + record.get('text'), function () {
-            view.mask('处理中...');
-            PortalApp.data.api.portal.NavigationItemApi.delete({
-                id: record.get('id'),
-                success: function () {
-                    me.getStore('modules').reload();
-                    PSR.util.Message.info('删除成功');
-                },
-                complete: function () {
-                    view.unmask();
-                }
+            store = grid.getStore(),
+            record = store.getAt(rowIndex);
+        if (record.get('version') != null) {
+            PSR.util.Message.confirm('删除:' + record.get('text'), function () {
+                view.mask('处理中...');
+                PortalApp.data.api.portal.NavigationItemApi.delete({
+                    id: record.get('id'),
+                    success: function () {
+                        me.getStore('modules').reload();
+                        PSR.util.Message.info('删除成功');
+                    },
+                    complete: function () {
+                        view.unmask();
+                    }
+                });
             });
-        });
+        } else {
+            store.remove([record]);
+        }
     },
     hBtnEdit: function (grid, rowIndex) {
         const me = this,
