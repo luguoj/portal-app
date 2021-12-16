@@ -19,22 +19,24 @@ Ext.define('PortalApp.store.EntityTreeStore', {
         text: 'ROOT'
     },
     updateProxy: function (proxy) {
-        const store = this,
-            reader = proxy.getReader(),
-            transform = this.getTransform(),
-            application = this.getApplication(),
-            domainType = this.getDomainType(),
-            url = portalEnv.gateway + '/' + application + '/api/entity/' + domainType;
-        proxy.setUrl(url);
-        if (!reader.getTransform()) {
-            if (transform == 'parentTree') {
-                reader.setTransform(function (data) {
-                    return store.transformParentTree(data);
-                });
-            } else if (transform == 'pathTree') {
-                reader.setTransform(function (data) {
-                    return store.transformPathTree(data);
-                });
+        if (proxy) {
+            const store = this,
+                reader = proxy.getReader(),
+                transform = this.getTransform(),
+                application = this.getApplication(),
+                domainType = this.getDomainType(),
+                url = portalEnv.gateway + '/' + application + '/api/entity/' + domainType;
+            proxy.setUrl(url);
+            if (!reader.getTransform()) {
+                if (transform == 'parentTree') {
+                    reader.setTransform(function (data) {
+                        return store.transformParentTree(data);
+                    });
+                } else if (transform == 'pathTree') {
+                    reader.setTransform(function (data) {
+                        return store.transformPathTree(data);
+                    });
+                }
             }
         }
     },
