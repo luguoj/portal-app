@@ -99,14 +99,8 @@ Ext.define('PSR.data.reader.Transform', {
             }
             Object.assign(pathNode, record);
         }
-        const result = {expanded: true};
-        if (opt.root) {
-            const root = Object.assign({leaf: false, expanded: true}, opt.root);
-            root[rootProperty] = roots;
-            result[rootProperty] = [root];
-        } else {
-            result[rootProperty] = roots;
-        }
+        const result = {};
+        result[rootProperty] = roots;
         return result;
     },
     parentTree: function (records, opt) {
@@ -136,14 +130,8 @@ Ext.define('PSR.data.reader.Transform', {
                 }
             }
         }
-        const result = {expanded: true};
-        if (opt.root) {
-            const root = Object.assign({leaf: false, expanded: true}, opt.root);
-            root[rootProperty] = roots;
-            result[rootProperty] = [root];
-        } else {
-            result[rootProperty] = roots;
-        }
+        const result = {};
+        result[rootProperty] = roots;
         return result;
     }
 });

@@ -47,26 +47,14 @@ Ext.define('PortalApp.store.EntityTreeStore', {
     transformParentTree: function (data) {
         return PSR.data.reader.Transform.parentTree(data.content, {
             expand: true,
-            parentIdField: this.getParentIdField(),
-            root: {
-                id: 'root',
-                content: [],
-                expanded: true,
-                text: this.getRootText()
-            }
+            parentIdField: this.getParentIdField()
         });
     },
     transformPathTree: function (data) {
         return PSR.data.reader.Transform.pathTree(data.content, {
             expand: true,
             pathField: this.getPathField(),
-            displayField: this.getDisplayField(),
-            root: {
-                id: 'root',
-                content: [],
-                expanded: true,
-                text: this.getRootText()
-            }
+            displayField: this.getDisplayField()
         });
     },
     proxy: {
