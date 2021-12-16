@@ -41,8 +41,10 @@ Ext.define('PortalApp.store.EntityTreeStore', {
         }
     },
     applyRoot: function (value) {
-        value.text = this.getRootText();
-        return this.callParent([value]);
+        if (value) {
+            value.text = this.getRootText();
+            return this.callParent([value]);
+        }
     },
     transformParentTree: function (data) {
         return PSR.data.reader.Transform.parentTree(data.content, {
