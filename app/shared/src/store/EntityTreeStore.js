@@ -4,8 +4,11 @@ Ext.define('PortalApp.store.EntityTreeStore', {
     config: {
         application: '',
         domainType: '',
+        rootText: 'ROOT',
+        transform: null, // 'parentTree or pathTree'
         parentIdField: 'parentId',
-        rootText: 'ROOT'
+        pathField: 'path',
+        displayField: 'text'
     },
     withAuthToken: true,
     root: {
@@ -16,36 +19,56 @@ Ext.define('PortalApp.store.EntityTreeStore', {
         text: 'ROOT'
     },
     updateProxy: function (proxy) {
-        const application = this.getApplication(),
-            domainType = this.getDomainType(),
-            rootText = this.getRootText(),
-            parentIdField = this.getParentIdField(),
+        const store = this,
             reader = proxy.getReader(),
+            transform = this.getTransform(),
+            application = this.getApplication(),
+            domainType = this.getDomainType(),
             url = portalEnv.gateway + '/' + application + '/api/entity/' + domainType;
         proxy.setUrl(url);
-        reader.rootText = rootText;
-        reader.parentIdField = parentIdField;
+        if (!reader.getTransform()) {
+            if (transform == 'parentTree') {
+                reader.setTransform(function (data) {
+                    return store.transformParentTree(data);
+                });
+            } else if (transform == 'pathTree') {
+                reader.setTransform(function (data) {
+                    return store.transformPathTree(data);
+                });
+            }
+        }
     },
     applyRoot: function (value) {
         value.text = this.getRootText();
         return this.callParent([value]);
     },
-    proxy: {
-        type: 'entity',
-        reader: {
-            transform: function (data) {
-                return PSR.data.reader.Transform.parentTree(data.content, {
-                    expand: true,
-                    parentIdField: this.parentIdField,
-                    root: {
-                        id: 'root',
-                        content: [],
-                        expanded: true,
-                        text: this.rootText
-                    }
-                });
+    transformParentTree: function (data) {
+        return PSR.data.reader.Transform.parentTree(data.content, {
+            expand: true,
+            parentIdField: this.getParentIdField(),
+            root: {
+                id: 'root',
+                content: [],
+                expanded: true,
+                text: this.getRootText()
             }
-        }
+        });
+    },
+    transformPathTree: function (data) {
+        return PSR.data.reader.Transform.pathTree(data.content, {
+            expand: true,
+            pathField: this.getPathField(),
+            displayField: this.getDisplayField(),
+            root: {
+                id: 'root',
+                content: [],
+                expanded: true,
+                text: this.getRootText()
+            }
+        });
+    },
+    proxy: {
+        type: 'entity'
     },
     load: function (opt) {
         if (!this.getApplication()) {
