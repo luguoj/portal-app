@@ -4,6 +4,7 @@ Ext.define('PSR.data.AjaxTreeStore', {
     config: {
         withAuthToken: false
     },
+    pageSize: 0,
     proxy: {
         type: 'psr-ajax'
     },

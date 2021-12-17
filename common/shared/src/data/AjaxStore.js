@@ -4,6 +4,7 @@ Ext.define('PSR.data.AjaxStore', {
     config: {
         withAuthToken: false
     },
+    pageSize: 0,
     proxy: {
         type: 'psr-ajax'
     },
@@ -30,7 +31,7 @@ Ext.define('PSR.data.AjaxStore', {
                         PSR.util.Auth.clientToken.expires_at = 1;
                         if (!opt.retryTimes || opt.retryTimes < 10) {
                             opt.retryTimes = opt.retryTimes ? opt.retryTimes + 1 : 1;
-                            console.warn('授权信息失效,重新获取...'+opt.retryTimes);
+                            console.warn('授权信息失效,重新获取...' + opt.retryTimes);
                             opt.retryMessage = opt.retryMessage || Ext.Msg.show({
                                 title: '同步数据中...',
                                 progress: true,
