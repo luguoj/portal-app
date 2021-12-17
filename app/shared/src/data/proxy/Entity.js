@@ -12,32 +12,38 @@ Ext.define('PSR.data.proxy.Entity', {
                 operator = filterJson.operator,
                 propertyFilterOptions = filterOptions[property] || [],
                 valueRange = {
-                    sign: 'INCLUDED',
+                    sign: 'EXCLUDED',
                     from: value
                 };
             filterOptions[property] = propertyFilterOptions;
             switch (operator) {
                 case '==':
-                    valueRange.operation = 'EQUAL';
+                    valueRange.operation = 'NOTEQUAL';
                     break;
                 case 'eq':
-                    valueRange.operation = 'EQUAL';
+                    valueRange.operation = 'NOTEQUAL';
                     break;
                 case 'like':
-                    valueRange.operation = 'LIKE';
+                    valueRange.operation = 'NOTLIKE';
                     break;
                 case 'in':
-                    valueRange.operation = 'IN';
+                    valueRange.operation = 'NOTIN';
                     delete valueRange.from;
                     valueRange.collect = value;
                     break;
                 case 'gt':
-                    valueRange.sign = 'EXCLUDED';
                     valueRange.operation = 'LESSTHANOREQUAL';
                     break;
                 case 'lt':
-                    valueRange.sign = 'EXCLUDED';
                     valueRange.operation = 'GRATERTHANOREQUAL';
+                    break;
+                case 'isnull':
+                    valueRange.operation = 'NOTNULL';
+                    delete valueRange.from;
+                    break;
+                case 'notnull':
+                    valueRange.operation = 'ISNULL';
+                    delete valueRange.from;
                     break;
                 default:
                     PSR.util.Message.error("不支持的过滤操作符:" + operator);
