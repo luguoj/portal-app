@@ -9,7 +9,7 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleViewController', {
             columnCfg = {
                 dataIndex: fieldSchema.name,
                 text: fieldSchema.description,
-                width: PSR.util.Grid.getColumnWidth(fieldSchema.description)
+                minWidth: PSR.util.Grid.getColumnWidth(fieldSchema.description)
             };
         if (fieldSchema.name == 'version' || fieldSchema.name == 'createdDate' || fieldSchema.name == 'lastModifiedDate') {
             columnCfg.hidden = true;
@@ -44,7 +44,7 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleViewController', {
             case 'java.lang.Boolean':
                 Object.assign(columnCfg, {
                     xtype: 'booleancolumn',
-                    width: Math.max(columnCfg.width, PSR.util.Grid.getColumnWidth('是')),
+                    width: PSR.util.Grid.getColumnWidth('是'),
                     filter: 'boolean'
                 });
                 break;
