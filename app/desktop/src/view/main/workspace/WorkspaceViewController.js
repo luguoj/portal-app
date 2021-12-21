@@ -21,7 +21,7 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
                         me.createTabView(opt);
                     },
                     failure: function () {
-                        me.redirectTo(window.btoa(view.getActiveTab().getItemId()).replaceAll('=', ''));
+                        me.refreshToken();
                     }
                 });
             } else {
@@ -58,11 +58,17 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
             PSR.util.Message.error('创建模块失败')
         }
     },
-    onTabChange: function (tabPanel, newCard) {
-        this.redirectTo(window.btoa(newCard.getItemId()).replaceAll('=', ''));
+    onTabChange: function () {
+        this.refreshToken();
     },
-    onTabRemove: function (tabPanel) {
-        if (tabPanel.items.length == 0) {
+    onTabRemove: function () {
+        this.refreshToken();
+    },
+    refreshToken: function () {
+        const activateTab = this.getView().getActiveTab();
+        if (activateTab) {
+            this.redirectTo(window.btoa(activateTab.getItemId()).replaceAll('=', ''));
+        } else {
             this.redirectTo('');
         }
     }
