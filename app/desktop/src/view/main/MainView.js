@@ -5,12 +5,6 @@ Ext.define('PortalApp.view.main.MainView', {
     viewModel: {
         type: 'mainviewmodel'
     },
-    config: {
-        appTitle: ''
-    },
-    updateAppTitle: function (value) {
-        this.getViewModel().set('appTitle', value);
-    },
     layout: 'border',
     items: [{
         region: 'west',

@@ -1,5 +1,4 @@
 function splash_login() {
-    document.title = window.portalEnv.title;
     window.addEventListener("message", function (event) {
         if (window.portalEnv.authclient.startsWith(event.origin) && event.data === 'login_success') {
             console.log('login message got')

@@ -15,7 +15,37 @@ Ext.define('PortalApp.view.main.MainViewController', {
                     Ext.route.Router.onStateChange(Ext.util.History.getToken())
                 }
             }
-        })
+        });
+        me.loadProfile();
+    },
+    loadProfile: function () {
+        const me = this,
+            token = PSR.util.Auth.getClientToken(function (token) {
+                me.loadProfile();
+            });
+        if (token) {
+            const viewModel = this.getViewModel(),
+                navNodeStore = this.getStore('navNodes');
+            let getProfileUrl = window.portalEnv.gateway + '/portal/api/user_profile/portal/' + window.portalEnv.portalCode + '-' + window.portalEnv.profile;
+            if (token.username == 'platform_admin') {
+                getProfileUrl = 'resources/' + window.portalEnv.profile + '/navigation_item/platform_admin.json';
+            } else if (window.portalEnv.develop) {
+                getProfileUrl = 'resources/' + window.portalEnv.profile + '/navigation_item/developer.json';
+            }
+            PSR.data.Ajax.request({
+                method: 'GET',
+                url: getProfileUrl,
+                withCredentials: true,
+                withAuthToken: true,
+                disableCaching: true,
+                bizSuccess: function (data) {
+                    navNodeStore.getProxy().setData(data.navigationItems);
+                    navNodeStore.load();
+                    viewModel.set('appTitle', data.portal.description);
+                    document.title = data.portal.description;
+                }
+            });
+        }
     },
     mainRoute: function (routeHash) {
         var vm = this.getViewModel(),

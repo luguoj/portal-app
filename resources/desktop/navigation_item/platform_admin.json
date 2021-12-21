@@ -1,170 +1,178 @@
-[
-  {
-    "parentId": null,
-    "id": "dashboardview",
-    "text": "概览",
-    "iconCls": "x-fa fa-chart-pie",
-    "viewConfig": {
-      "xtype": "dashboardview"
+{
+  "portal": {
+    "device": "desktop",
+    "code": "platform-admin",
+    "description": "管理员控制台",
+    "enabled": true
+  },
+  "navigationItems": [
+    {
+      "parentId": null,
+      "id": "dashboardview",
+      "text": "概览",
+      "iconCls": "x-fa fa-chart-pie",
+      "viewConfig": {
+        "xtype": "dashboardview"
+      }
+    },
+    {
+      "id": "entityconsole",
+      "text": "数据维护",
+      "iconCls": "x-fa fa-database",
+      "expanded": true
+    },
+    {
+      "parentId": "entityconsole",
+      "id": "entityconsoleview-authorization",
+      "text": "授权数据",
+      "iconCls": "x-fa fa-database",
+      "viewConfig": {
+        "xtype": "entityconsoleview",
+        "application": "authorization"
+      }
+    },
+    {
+      "parentId": "entityconsole",
+      "id": "entityconsoleview-file",
+      "text": "文件数据",
+      "iconCls": "x-fa fa-database",
+      "viewConfig": {
+        "xtype": "entityconsoleview",
+        "application": "file"
+      }
+    },
+    {
+      "parentId": "entityconsole",
+      "id": "entityconsoleview-portal",
+      "text": "门户数据",
+      "iconCls": "x-fa fa-database",
+      "viewConfig": {
+        "xtype": "entityconsoleview",
+        "application": "portal"
+      }
+    },
+    {
+      "id": "authorization",
+      "text": "授权管理",
+      "iconCls": "x-fa fa-user-edit"
+    },
+    {
+      "parentId": "authorization",
+      "id": "authorization-clientview",
+      "text": "客户端",
+      "iconCls": "x-fa fa-desktop",
+      "viewConfig": {
+        "xtype": "authorization-clientview"
+      }
+    },
+    {
+      "parentId": "authorization",
+      "id": "authorization-resourceview",
+      "text": "资源",
+      "iconCls": "x-fa fa-server",
+      "viewConfig": {
+        "xtype": "authorization-resourceview"
+      }
+    },
+    {
+      "parentId": "authorization",
+      "id": "authorization-userview",
+      "text": "用户",
+      "iconCls": "x-fa fa-users",
+      "viewConfig": {
+        "xtype": "authorization-userview"
+      }
+    },
+    {
+      "parentId": "authorization",
+      "id": "authorization-authorityview",
+      "text": "权限",
+      "iconCls": "x-fa fa-user-shield",
+      "viewConfig": {
+        "xtype": "authorization-authorityview"
+      }
+    },
+    {
+      "id": "fileconsole",
+      "text": "文件服务",
+      "iconCls": "x-fa fa-file-archive",
+      "viewConfig": {
+        "xtype": "fileconsoleview"
+      }
+    },
+    {
+      "id": "portalconsole",
+      "text": "门户管理",
+      "iconCls": "x-fa fa-list-alt",
+      "expanded": true
+    },
+    {
+      "parentId": "portalconsole",
+      "id": "portalconsole-portalview",
+      "text": "门户",
+      "iconCls": "x-fa fa-list-alt",
+      "viewConfig": {
+        "xtype": "portalconsole-portalview"
+      }
+    },
+    {
+      "parentId": "portalconsole",
+      "id": "portalconsole-moduleview",
+      "text": "模块",
+      "iconCls": "x-fa fa-list-alt",
+      "viewConfig": {
+        "xtype": "portalconsole-moduleview"
+      }
+    },
+    {
+      "parentId": "portalconsole",
+      "id": "portalconsole-navigationitemview",
+      "text": "导航项目",
+      "iconCls": "x-fa fa-list-alt",
+      "viewConfig": {
+        "xtype": "portalconsole-navigationitemview"
+      }
+    },
+    {
+      "parentId": "portalconsole",
+      "id": "portalconsole-groupview",
+      "text": "分组",
+      "iconCls": "x-fa fa-list-alt",
+      "viewConfig": {
+        "xtype": "portalconsole-groupview"
+      }
+    },
+    {
+      "parentId": "portalconsole",
+      "id": "portalconsole-usergroupview",
+      "text": "用户分组",
+      "iconCls": "x-fa fa-list-alt",
+      "viewConfig": {
+        "xtype": "portalconsole-usergroupview"
+      }
+    },
+    {
+      "id": "docs",
+      "text": "开发文档",
+      "iconCls": "x-fa fa-list-alt"
+    },
+    {
+      "parentId": "docs",
+      "id": "docs-apiview",
+      "text": "APIs",
+      "iconCls": "x-fa fa-list-alt",
+      "viewConfig": {
+        "xtype": "docs-apiview"
+      }
+    },
+    {
+      "parentId": "docs",
+      "id": "docs-extjsview",
+      "text": "Extjs",
+      "iconCls": "x-fa fa-list-alt",
+      "viewConfig": {
+        "xtype": "docs-extjsview"
+      }
     }
-  },
-  {
-    "id": "entityconsole",
-    "text": "数据维护",
-    "iconCls": "x-fa fa-database",
-    "expanded": true
-  },
-  {
-    "parentId": "entityconsole",
-    "id": "entityconsoleview-authorization",
-    "text": "授权数据",
-    "iconCls": "x-fa fa-database",
-    "viewConfig": {
-      "xtype": "entityconsoleview",
-      "application": "authorization"
-    }
-  },
-  {
-    "parentId": "entityconsole",
-    "id": "entityconsoleview-file",
-    "text": "文件数据",
-    "iconCls": "x-fa fa-database",
-    "viewConfig": {
-      "xtype": "entityconsoleview",
-      "application": "file"
-    }
-  },
-  {
-    "parentId": "entityconsole",
-    "id": "entityconsoleview-portal",
-    "text": "门户数据",
-    "iconCls": "x-fa fa-database",
-    "viewConfig": {
-      "xtype": "entityconsoleview",
-      "application": "portal"
-    }
-  },
-  {
-    "id": "authorization",
-    "text": "授权管理",
-    "iconCls": "x-fa fa-user-edit"
-  },
-  {
-    "parentId": "authorization",
-    "id": "authorization-clientview",
-    "text": "客户端",
-    "iconCls": "x-fa fa-desktop",
-    "viewConfig": {
-      "xtype": "authorization-clientview"
-    }
-  },
-  {
-    "parentId": "authorization",
-    "id": "authorization-resourceview",
-    "text": "资源",
-    "iconCls": "x-fa fa-server",
-    "viewConfig": {
-      "xtype": "authorization-resourceview"
-    }
-  },
-  {
-    "parentId": "authorization",
-    "id": "authorization-userview",
-    "text": "用户",
-    "iconCls": "x-fa fa-users",
-    "viewConfig": {
-      "xtype": "authorization-userview"
-    }
-  },
-  {
-    "parentId": "authorization",
-    "id": "authorization-authorityview",
-    "text": "权限",
-    "iconCls": "x-fa fa-user-shield",
-    "viewConfig": {
-      "xtype": "authorization-authorityview"
-    }
-  },
-  {
-    "id": "fileconsole",
-    "text": "文件服务",
-    "iconCls": "x-fa fa-file-archive",
-    "viewConfig": {
-      "xtype": "fileconsoleview"
-    }
-  },
-  {
-    "id": "portalconsole",
-    "text": "门户管理",
-    "iconCls": "x-fa fa-list-alt",
-    "expanded": true
-  },
-  {
-    "parentId": "portalconsole",
-    "id": "portalconsole-portalview",
-    "text": "门户",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "portalconsole-portalview"
-    }
-  },
-  {
-    "parentId": "portalconsole",
-    "id": "portalconsole-moduleview",
-    "text": "模块",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "portalconsole-moduleview"
-    }
-  },
-  {
-    "parentId": "portalconsole",
-    "id": "portalconsole-navigationitemview",
-    "text": "导航项目",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "portalconsole-navigationitemview"
-    }
-  },
-  {
-    "parentId": "portalconsole",
-    "id": "portalconsole-groupview",
-    "text": "分组",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "portalconsole-groupview"
-    }
-  },
-  {
-    "parentId": "portalconsole",
-    "id": "portalconsole-usergroupview",
-    "text": "用户分组",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "portalconsole-usergroupview"
-    }
-  },
-  {
-    "id": "docs",
-    "text": "开发文档",
-    "iconCls": "x-fa fa-list-alt"
-  },
-  {
-    "parentId": "docs",
-    "id": "docs-apiview",
-    "text": "APIs",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "docs-apiview"
-    }
-  },
-  {
-    "parentId": "docs",
-    "id": "docs-extjsview",
-    "text": "Extjs",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "docs-extjsview"
-    }
-  }
-]
+  ]
+}
