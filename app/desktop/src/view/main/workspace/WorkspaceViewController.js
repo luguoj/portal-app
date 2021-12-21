@@ -2,52 +2,68 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.main-workspaceviewcontroller',
     switchView: function (opt) {
-        const c = this,
-            v = c.getView(),
+        const me = this,
+            view = me.getView(),
+            viewModel = me.getViewModel(),
             viewId = opt.viewId,
-            view = v.getComponent(viewId);
-        if (!view && opt.viewConfig) {
-            const title = opt.title,
-                iconCls = opt.iconCls,
-                moduleId = opt.moduleId,
-                viewConfig = opt.viewConfig;
-            const newViewConfig = Object.assign(
-                {
-                    itemId: viewId,
-                    title: title ? title : '未命名',
-                    iconCls: iconCls ? iconCls : 'x-fa fa-exclamation-triangle'
-                },
-                viewConfig
-            );
+            tabView = view.getComponent(viewId);
+        if (!tabView) {
+            const moduleId = opt.moduleId;
             if (moduleId) {
                 PSR.util.Module.load({
                     moduleId: moduleId,
-                    callback: function (module) {
-                        try {
-                            const item = Ext.create(Object.assign({}, newViewConfig, {actions: actions}))
-                            v.add(item);
-                            item.addListener('switchview', function (opt) {
-                                c.switchView(opt);
-                            });
-                            c.switchView(opt);
-                        } catch (e) {
-                            PSR.util.Message.error('创建模块失败')
+                    success: function (module) {
+                        if (module.actions) {
+                            for (let i = 0; i < module.actions.length; i++) {
+                                viewModel.set('module-action-' + moduleId + '-' + module.actions[i], true);
+                            }
                         }
+                        me.createTabView(opt);
+                    },
+                    failure: function () {
+                        me.redirectTo(window.btoa(view.getActiveTab().getItemId()).replaceAll('=', ''));
                     }
                 });
             } else {
-                const item = Ext.create(newViewConfig);
-                v.add(item);
-                item.addListener('switchview', function (opt) {
-                    c.switchView(opt);
-                });
-                c.switchView(opt);
+                me.createTabView(opt);
             }
         } else {
-            v.setActiveItem(view);
+            view.setActiveItem(tabView);
+        }
+    },
+    createTabView: function (opt) {
+        const me = this,
+            view = this.getView();
+        if (!opt.viewConfig) {
+            PSR.util.Message.error('视图创建失败');
+            return;
+        }
+        const newViewConfig = Object.assign(
+            {
+                itemId: opt.viewId,
+                title: opt.title ? opt.title : '未命名',
+                iconCls: opt.iconCls ? opt.iconCls : 'x-fa fa-exclamation-triangle'
+            },
+            opt.viewConfig
+        );
+        try {
+            const item = Ext.create(newViewConfig);
+            view.add(item);
+            item.addListener('switchview', function (opt) {
+                me.switchView(opt);
+            });
+            me.switchView(opt);
+        } catch (e) {
+            console.error(e);
+            PSR.util.Message.error('创建模块失败')
         }
     },
     onTabChange: function (tabPanel, newCard) {
         this.redirectTo(window.btoa(newCard.getItemId()).replaceAll('=', ''));
+    },
+    onTabRemove: function (tabPanel) {
+        if (tabPanel.items.length == 0) {
+            this.redirectTo('');
+        }
     }
 });
