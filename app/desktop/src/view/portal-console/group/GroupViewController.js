@@ -7,15 +7,32 @@ Ext.define('PortalApp.view.portalConsole.GroupViewController', {
         groupTreeStore.load();
     },
     onGrdBeforeEdit: function (editor, context) {
-        return !!context.record.get('isRecord') && (context.colIdx == 0 || context.colIdx == 1);
+        return !!context.record.get('isRecord') && (context.colIdx == 1 || context.colIdx == 2);
+    },
+    hBtnEnable: function (btn) {
+        const me = this,
+            record = btn.lookupViewModel().get('record');
+        PortalApp.data.api.entity.EntityCRUDApi.patch({
+            application: 'portal',
+            domainType: 'org.psr.platform.portal.entity.GroupEntity',
+            fields: ['enabled'],
+            values: {
+                id: record.get('id'),
+                version: record.get('version'),
+                enabled: !record.get('enabled')
+            },
+            success: function (data) {
+                PSR.util.Message.info('保存成功');
+                me.loadData();
+            }
+        })
     },
     onGrdEdit: function (editor, context) {
         const me = this,
             record = context.record,
             newValues = {
                 code: context.newValues.code,
-                description: context.newValues.description,
-                enabled: context.newValues.enabled
+                description: context.newValues.description
             };
         if (record.get('version') == undefined) {
             PortalApp.data.api.entity.EntityCRUDApi.create({
@@ -38,7 +55,7 @@ Ext.define('PortalApp.view.portalConsole.GroupViewController', {
             PortalApp.data.api.entity.EntityCRUDApi.patch({
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.GroupEntity',
-                fields: ['code', 'description', 'enabled'],
+                fields: ['code', 'description'],
                 values: newValues,
                 success: function (data) {
                     PSR.util.Message.info('保存成功');

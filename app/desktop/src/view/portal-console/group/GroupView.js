@@ -16,6 +16,21 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
             displayInfo: true
         },
         columns: [{
+            text: '有效',
+            xtype: 'widgetcolumn',
+            width: 48,
+            resizable: false,
+            menuDisabled: true,
+            widget: {
+                xtype: 'button',
+                iconCls: 'x-fa fa-file',
+                handler: 'hBtnEnable',
+                bind: {
+                    hidden: '{!record.isRecord}',
+                    iconCls: '{record.enabled?"x-fa fa-check-circle psr-color-confirm":"x-fa fa-check psr-color-disabled"}'
+                }
+            }
+        }, {
             text: '编码',
             xtype: 'treecolumn',
             flex: 1,
@@ -38,15 +53,6 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
             editor: {
                 allowBlank: false,
                 emptyText: '描述'
-            }
-        }, {
-            text: '有效',
-            dataIndex: 'enabled',
-            xtype: 'checkcolumn',
-            width: 40,
-            disabled: true,
-            editor: {
-                xtype: 'checkboxfield'
             }
         }, {
             xtype: 'actioncolumn',
