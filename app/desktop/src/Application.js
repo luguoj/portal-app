@@ -7,7 +7,7 @@ Ext.define('PortalApp.Application', {
         'Ext.*',
         'PortalModule.*'
     ],
-    defaultToken: 'homeview',
+    defaultToken: '',
 
     launch: function () {
         const me = this;
