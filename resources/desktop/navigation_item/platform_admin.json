@@ -54,7 +54,8 @@
     {
       "id": "authorizationconsole",
       "text": "授权管理",
-      "iconCls": "x-fa fa-user-edit"
+      "iconCls": "x-fa fa-user-edit",
+      "expanded": true
     },
     {
       "parentId": "authorizationconsole",
@@ -78,7 +79,7 @@
       "parentId": "authorizationconsole",
       "id": "authorizationconsole-userview",
       "text": "用户",
-      "iconCls": "x-fa fa-users",
+      "iconCls": "x-fa fa-user",
       "viewConfig": {
         "xtype": "authorizationconsole-userview"
       }
@@ -90,6 +91,15 @@
       "iconCls": "x-fa fa-shield-alt",
       "viewConfig": {
         "xtype": "authorizationconsole-authorityview"
+      }
+    },
+    {
+      "parentId": "authorizationconsole",
+      "id": "authorizationconsole-groupview",
+      "text": "分组",
+      "iconCls": "x-fa fa-users",
+      "viewConfig": {
+        "xtype": "authorizationconsole-groupview"
       }
     },
     {
