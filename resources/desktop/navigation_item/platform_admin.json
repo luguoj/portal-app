@@ -52,44 +52,44 @@
       }
     },
     {
-      "id": "authorization",
+      "id": "authorizationconsole",
       "text": "授权管理",
       "iconCls": "x-fa fa-user-edit"
     },
     {
-      "parentId": "authorization",
-      "id": "authorization-clientview",
+      "parentId": "authorizationconsole",
+      "id": "authorizationconsole-clientview",
       "text": "客户端",
       "iconCls": "x-fa fa-desktop",
       "viewConfig": {
-        "xtype": "authorization-clientview"
+        "xtype": "authorizationconsole-clientview"
       }
     },
     {
-      "parentId": "authorization",
-      "id": "authorization-resourceview",
+      "parentId": "authorizationconsole",
+      "id": "authorizationconsole-resourceview",
       "text": "资源",
       "iconCls": "x-fa fa-server",
       "viewConfig": {
-        "xtype": "authorization-resourceview"
+        "xtype": "authorizationconsole-resourceview"
       }
     },
     {
-      "parentId": "authorization",
-      "id": "authorization-userview",
+      "parentId": "authorizationconsole",
+      "id": "authorizationconsole-userview",
       "text": "用户",
       "iconCls": "x-fa fa-users",
       "viewConfig": {
-        "xtype": "authorization-userview"
+        "xtype": "authorizationconsole-userview"
       }
     },
     {
-      "parentId": "authorization",
-      "id": "authorization-authorityview",
+      "parentId": "authorizationconsole",
+      "id": "authorizationconsole-authorityview",
       "text": "权限",
-      "iconCls": "x-fa fa-user-shield",
+      "iconCls": "x-fa fa-shield-alt",
       "viewConfig": {
-        "xtype": "authorization-authorityview"
+        "xtype": "authorizationconsole-authorityview"
       }
     },
     {
