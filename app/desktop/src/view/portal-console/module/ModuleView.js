@@ -7,12 +7,6 @@ Ext.define('PortalApp.view.portalConsole.ModuleView', {
             text: '添加',
             iconCls: 'x-fa fa-plus',
             handler: 'hBtnAdd'
-        }, {
-            xtype: 'button',
-            text: '删除',
-            iconCls: 'x-fa fa-trash-alt',
-            disabled: true,
-            handler: 'hBtnRemove'
         }]
     },
     items: [{
