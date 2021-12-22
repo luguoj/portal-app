@@ -9,7 +9,7 @@ Ext.define('PortalApp.data.api.authorization.AuthorityApi', {
             method: 'DELETE',
             url: url + 'authority/' + opt.id,
             withAuthToken: true,
-            success: opt.success,
+            bizSuccess: opt.success,
             failure: opt.failure,
             complete: opt.complete
         });

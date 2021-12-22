@@ -27,7 +27,7 @@ Ext.define('PortalApp.data.api.authorization.UserApi', {
             method: 'DELETE',
             url: url + 'user/' + opt.id,
             withAuthToken: true,
-            success: opt.success,
+            bizSuccess: opt.success,
             failure: opt.failure,
             complete: opt.complete
         });
