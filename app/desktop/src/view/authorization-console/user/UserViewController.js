@@ -127,6 +127,7 @@ Ext.define('PortalApp.view.authorizationConsole.UserViewController', {
                 PortalApp.data.api.authorization.UserApi.delete({
                     id: record.get('id'),
                     success: function () {
+                        store.remove([record]);
                         me.loadData();
                         PSR.util.Message.info('删除成功');
                     },
