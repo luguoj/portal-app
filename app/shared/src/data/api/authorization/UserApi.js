@@ -21,7 +21,7 @@ Ext.define('PortalApp.data.api.authorization.UserApi', {
             complete: opt.complete
         });
     },
-    remove: function (opt) {
+    delete: function (opt) {
         const url = this.getAPIUrl(opt);
         PSR.data.Ajax.request({
             method: 'DELETE',
