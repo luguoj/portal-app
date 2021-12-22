@@ -55,7 +55,7 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
             me.switchView(opt);
         } catch (e) {
             console.error(e);
-            PSR.util.Message.error('创建模块失败')
+            PSR.util.Message.error('创建视图失败')
         }
     },
     onTabChange: function () {
