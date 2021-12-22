@@ -11,10 +11,6 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
                 autoCancel: false
             }
         },
-        bbar: {
-            xtype: 'psr-pagingtoolbar',
-            displayInfo: true
-        },
         columns: [{
             text: '有效',
             xtype: 'widgetcolumn',
