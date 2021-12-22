@@ -90,7 +90,7 @@ Ext.define('PortalApp.view.portalConsole.GroupViewController', {
         }
         newNode.set('description', '新分组-' + now);
         newNode.set('enabled', false);
-        plgRowediting.startEdit(newNode);
+        plgRowediting.startEdit(newNode, 1);
     },
     hBtnClone: function (grid, rowIndex) {
         const me = this,
@@ -168,7 +168,7 @@ Ext.define('PortalApp.view.portalConsole.GroupViewController', {
         view.fireEvent('switchview', {
             viewId: 'portalconsole-group-groupuserview-' + record.get('id'),
             title: '分组用户:' + record.get('code'),
-            iconCls: 'x-fa fa-users',
+            iconCls: 'x-fa fa-user',
             viewConfig: {
                 xtype: 'portalconsole-group-groupuserview',
                 group: record,
