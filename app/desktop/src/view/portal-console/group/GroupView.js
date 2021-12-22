@@ -69,7 +69,7 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
                     return record.get('version') == null;
                 }
             }, {
-                iconCls: 'x-fa fa-users',
+                iconCls: 'x-fa fa-user',
                 altText: '分组用户',
                 tooltip: '分组用户',
                 handler: 'hBtnUser',
