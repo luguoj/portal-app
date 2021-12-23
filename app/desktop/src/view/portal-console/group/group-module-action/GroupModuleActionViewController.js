@@ -76,7 +76,7 @@ Ext.define('PortalApp.view.portalConsole.group.GroupModuleActionViewController',
             moduleActionTreeStore.load();
         }
     },
-    hBtnEnabled: function (btn) {
+    hBtnEnable: function (btn) {
         const me = this,
             group = this.getViewModel().get('group'),
             record = btn.lookupViewModel().get('record');

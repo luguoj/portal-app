@@ -35,7 +35,7 @@ Ext.define('PortalApp.view.portalConsole.group.GroupNavigationItemView', {
             menuDisabled: true,
             widget: {
                 xtype: 'button',
-                handler: 'hBtnEnabled',
+                handler: 'hBtnEnable',
                 bind: {
                     hidden: '{!record.isView}',
                     iconCls: '{record.granted?"x-fa fa-check-circle psr-color-confirm":"x-fa fa-check psr-color-disabled"}'

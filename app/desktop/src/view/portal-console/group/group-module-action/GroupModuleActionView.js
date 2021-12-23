@@ -25,7 +25,7 @@ Ext.define('PortalApp.view.portalConsole.group.GroupModuleActionView', {
             menuDisabled: true,
             widget: {
                 xtype: 'button',
-                handler: 'hBtnEnabled',
+                handler: 'hBtnEnable',
                 bind: {
                     hidden: '{!record.action}',
                     iconCls: '{record.granted?"x-fa fa-check-circle psr-color-confirm":"x-fa fa-check psr-color-disabled"}'

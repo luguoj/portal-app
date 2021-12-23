@@ -24,7 +24,7 @@ Ext.define('PortalApp.view.portalConsole.ModuleViewController', {
             },
         })
     },
-    hBtnEnabled: function (btn) {
+    hBtnEnable: function (btn) {
         const me = this,
             record = btn.lookupViewModel().get('record'),
             fields = ['enabled'],

@@ -75,7 +75,7 @@ Ext.define('PortalApp.view.portalConsole.module.ActionViewController', {
             })
         }
     },
-    hBtnEnabled: function (btn, e) {
+    hBtnEnable: function (btn, e) {
         const me = this,
             record = btn.lookupViewModel().get('record'),
             fields = ['enabled'],
