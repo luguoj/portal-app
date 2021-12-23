@@ -6,7 +6,6 @@ Ext.define('PortalApp.view.fileConsole.FileConsoleView', {
     layout: 'fit',
     items: [{
         xtype: 'grid',
-        columnLines: true,
         bbar: {
             xtype: 'psr-pagingtoolbar',
             displayInfo: true

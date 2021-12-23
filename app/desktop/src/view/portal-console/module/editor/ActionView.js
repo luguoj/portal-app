@@ -18,7 +18,6 @@ Ext.define('PortalApp.view.portalConsole.module.ActionView', {
     items: [{
         xtype: 'grid',
         reference: 'grd-resources',
-        columnLines: true,
         minHeight: 100,
         disableSelection: true,
         plugins: {

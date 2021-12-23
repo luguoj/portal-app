@@ -9,7 +9,6 @@ Ext.define('PortalApp.view.fileConsole.VersionView', {
     layout: 'fit',
     items: [{
         xtype: 'grid',
-        columnLines: true,
         bbar: {
             xtype: 'pagingtoolbar',
             displayInfo: true,

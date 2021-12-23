@@ -11,7 +11,6 @@ Ext.define('PortalApp.view.authorizationConsole.UserView', {
     },
     items: [{
         xtype: 'grid',
-        columnLines: true,
         plugins: {
             gridfilters: true,
             rowediting: {

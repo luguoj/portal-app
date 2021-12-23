@@ -11,7 +11,6 @@ Ext.define('PortalApp.view.portalConsole.ModuleView', {
     },
     items: [{
         xtype: 'grid',
-        columnLines: true,
         bbar: {
             xtype: 'psr-pagingtoolbar',
             displayInfo: true

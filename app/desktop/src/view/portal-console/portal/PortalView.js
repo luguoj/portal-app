@@ -4,11 +4,6 @@ Ext.define('PortalApp.view.portalConsole.PortalView', {
     layout: 'fit',
     items: [{
         xtype: 'grid',
-        columnLines: true,
-        bbar: {
-            xtype: 'psr-pagingtoolbar',
-            displayInfo: true
-        },
         columns: [{
             text: '主键标识',
             dataIndex: 'id',

@@ -48,7 +48,6 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleView', {
     layout: 'fit',
     items: [{
         xtype: 'grid',
-        columnLines: true,
         selType: 'checkboxmodel',
         bbar: {
             xtype: 'psr-pagingtoolbar',

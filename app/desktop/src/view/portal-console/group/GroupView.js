@@ -4,7 +4,6 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
     layout: 'fit',
     items: [{
         xtype: 'treepanel',
-        columnLines: true,
         plugins: {
             rowediting: {
                 clicksToMoveEditor: 1,
