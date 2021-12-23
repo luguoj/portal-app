@@ -28,7 +28,7 @@ Ext.define('PSR.util.Import', {
             const scriptEl = document.createElement('script');
             scriptEl.setAttribute('type', 'text/javascript')
             // 加载成功
-            scriptEl.onload = scriptEl.onreadystateschange = function () {debugger
+            scriptEl.onload = scriptEl.onreadystateschange = function () {
                 if (!this.readyState
                     || this.readyState == 'loaded' || this.readyState == 'complete') {
                     console.log('script loaded:' + opt.url);
