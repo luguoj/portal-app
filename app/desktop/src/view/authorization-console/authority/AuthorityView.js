@@ -16,7 +16,6 @@ Ext.define('PortalApp.view.authorizationConsole.AuthorityView', {
         xtype: 'grid',
         features: [{
             ftype: 'grouping',
-            startCollapsed: true,
             groupHeaderTpl: '{name} ({rows.length})',
         }],
         plugins: {
