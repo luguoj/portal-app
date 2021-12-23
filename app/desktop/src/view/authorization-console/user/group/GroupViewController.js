@@ -1,22 +1,22 @@
-Ext.define('PortalApp.view.authorizationConsole.user.AuthorityViewController', {
+Ext.define('PortalApp.view.authorizationConsole.user.GroupViewController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.authorizationconsole-user-authorityviewcontroller',
+    alias: 'controller.authorizationconsole-user-groupviewcontroller',
     afterRender: function (view) {
         this.loadData();
     },
     loadData: function () {
         if (this.getView().rendered) {
-            const authorityStore = this.getStore('authorities'),
-                userAuthorityStore = this.getStore('userAuthorities'),
+            const groupTreeStore = this.getStore('groupTree'),
+                userGroupStore = this.getStore('userGroups'),
                 user = this.getViewModel().get('user');
             if (user) {
-                authorityStore.load();
-                userAuthorityStore.addFilter({
+                groupTreeStore.load();
+                userGroupStore.addFilter({
                     property: 'userId',
                     operator: '==',
                     value: user.get('id')
                 }, true);
-                userAuthorityStore.load();
+                userGroupStore.load();
             }
         }
     },
@@ -24,17 +24,16 @@ Ext.define('PortalApp.view.authorizationConsole.user.AuthorityViewController', {
         this.loadData();
     },
     onDataLoad: function () {
-        const authorityStore = this.getStore('authorities'),
-            userAuthorityStore = this.getStore('userAuthorities');
-        if (authorityStore.isLoaded() && userAuthorityStore.isLoaded()) {
+        const groupTreeStore = this.getStore('groupTree'),
+            userGroupStore = this.getStore('userGroups');
+        if (groupTreeStore.isLoaded() && userGroupStore.isLoaded()) {
             const grantMap = {};
-            for (let i = 0; i < userAuthorityStore.getData().items.length; i++) {
-                const userAuthorityItem = userAuthorityStore.getData().items[i];
-                grantMap[userAuthorityItem.get('authorityId')] = userAuthorityItem;
+            for (let i = 0; i < userGroupStore.getData().items.length; i++) {
+                const userGroupItem = userGroupStore.getData().items[i];
+                grantMap[userGroupItem.get('groupId')] = userGroupItem;
             }
-            for (let i = 0; i < authorityStore.getData().items.length; i++) {
-                const authorityItem = authorityStore.getData().items[i];
-                authorityItem.set('granted', grantMap[authorityItem.get('id')]);
+            for (const byIdMapKey in groupTreeStore.byIdMap) {
+                groupTreeStore.byIdMap[byIdMapKey].set('granted', grantMap[byIdMapKey]);
             }
         }
     },
@@ -45,7 +44,7 @@ Ext.define('PortalApp.view.authorizationConsole.user.AuthorityViewController', {
         if (record.get('granted')) {
             PortalApp.data.api.entity.EntityCRUDApi.delete({
                 application: 'authorization',
-                domainType: 'org.psr.platform.authorization.entity.UserAuthorityEntity',
+                domainType: 'org.psr.platform.authorization.entity.UserGroupEntity',
                 ids: [record.get('granted').id],
                 success: function (data) {
                     PSR.util.Message.info('保存成功');
@@ -55,10 +54,10 @@ Ext.define('PortalApp.view.authorizationConsole.user.AuthorityViewController', {
         } else {
             PortalApp.data.api.entity.EntityCRUDApi.create({
                 application: 'authorization',
-                domainType: 'org.psr.platform.authorization.entity.UserAuthorityEntity',
+                domainType: 'org.psr.platform.authorization.entity.UserGroupEntity',
                 values: {
                     userId: user.get('id'),
-                    authorityId: record.get('id')
+                    groupId: record.get('id')
                 },
                 success: function (data) {
                     PSR.util.Message.info('保存成功');

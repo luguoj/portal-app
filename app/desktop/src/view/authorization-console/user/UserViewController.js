@@ -116,6 +116,20 @@ Ext.define('PortalApp.view.authorizationConsole.UserViewController', {
             },
         })
     },
+    hBtnGroup: function (grid, rowIndex) {
+        const me = this,
+            view = this.getView(),
+            record = grid.getStore().getAt(rowIndex);
+        view.fireEvent('switchview', {
+            viewId: 'authorizationconsole-user-groupview-' + record.get('id'),
+            title: '用户分组:' + record.get('id'),
+            iconCls: 'x-fa fa-users',
+            viewConfig: {
+                xtype: 'authorizationconsole-user-groupview',
+                user: record,
+            },
+        })
+    },
     hBtnRemove: function (grid, rowIndex) {
         const me = this,
             view = this.getView(),

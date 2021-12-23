@@ -1,6 +1,6 @@
-Ext.define('PortalApp.view.authorizationConsole.user.AuthorityView', {
+Ext.define('PortalApp.view.authorizationConsole.user.GroupView', {
     extend: 'Ext.panel.Panel',
-    xtype: 'authorizationconsole-user-authorityview',
+    xtype: 'authorizationconsole-user-groupview',
     config: {
         user: null
     },
@@ -12,11 +12,7 @@ Ext.define('PortalApp.view.authorizationConsole.user.AuthorityView', {
         }]
     },
     items: [{
-        xtype: 'grid',
-        features: [{
-            ftype: 'grouping',
-            groupHeaderTpl: '{name} ({rows.length})',
-        }],
+        xtype: 'treepanel',
         columns: [{
             text: '授权',
             xtype: 'widgetcolumn',
@@ -27,63 +23,59 @@ Ext.define('PortalApp.view.authorizationConsole.user.AuthorityView', {
                 xtype: 'button',
                 handler: 'hBtnEnable',
                 bind: {
+                    hidden: '{!record.isRecord}',
                     iconCls: '{record.granted?"x-fa fa-check-circle psr-color-confirm":"x-fa fa-check psr-color-disabled"}'
                 }
             }
         }, {
-            text: '主键标识',
-            dataIndex: 'id',
-            menuDisabled: true,
+            text: '分组',
+            xtype: 'treecolumn',
             flex: 1,
+            dataIndex: 'code',
             renderer: function (value, metaData, record) {
-                if (record.get('version') == null && record.get('isRecord')) {
-                    return value + '<b class="psr-color-decline"> (*)</b>';
+                if (record.get('isRecord')) {
+                    return '<b>[' + record.get('text') + ']</b> ' + record.get('description');
                 } else {
-                    return value;
+                    return record.get('text');
                 }
             }
         }, {
             text: '描述',
             dataIndex: 'description',
-            menuDisabled: true,
-            flex: 1
-        }, {
-            text: '目录',
-            dataIndex: 'catalog',
-            menuDisabled: true,
             flex: 1
         }],
         bind: {
-            store: '{authorities}'
+            store: '{groupTree}'
         }
     }],
     updateUser: function (value) {
         this.getViewModel().set('user', value);
         this.getController().loadData();
     },
-    controller: 'authorizationconsole-user-authorityviewcontroller',
+    controller: 'authorizationconsole-user-groupviewcontroller',
     viewModel: {
         data: {
             user: null
         },
         stores: {
-
-            authorities: {
-                groupField: 'catalog',
-                fields: ['id', 'version', 'catalog', 'description', 'granted'],
-                type: 'entity',
+            groupTree: {
+                fields: ['id', 'version', 'code', 'description', 'enabled', 'text', 'isRecord'],
+                type: 'entitytree',
+                transform: 'pathTree',
+                pathField: 'code',
                 application: 'authorization',
-                domainType: 'org.psr.platform.authorization.entity.AuthorityEntity',
+                domainType: 'org.psr.platform.authorization.entity.GroupEntity',
+                rootText: '分组',
                 autoLoad: false,
                 listeners: {
                     load: 'onDataLoad'
                 }
             },
-            userAuthorities: {
+            userGroups: {
                 groupField: 'catalog',
                 type: 'entity',
                 application: 'authorization',
-                domainType: 'org.psr.platform.authorization.entity.UserAuthorityEntity',
+                domainType: 'org.psr.platform.authorization.entity.UserGroupEntity',
                 autoLoad: false,
                 listeners: {
                     load: 'onDataLoad'
