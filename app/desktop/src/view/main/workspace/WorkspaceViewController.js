@@ -35,7 +35,7 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
         const me = this,
             view = this.getView();
         if (!opt.viewConfig) {
-            PSR.util.Message.error('视图创建失败');
+            console.error(new Error("视图创建失败,viewConfig为空"));
             return;
         }
         const newViewConfig = Object.assign(
@@ -55,7 +55,6 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
             me.switchView(opt);
         } catch (e) {
             console.error(e);
-            PSR.util.Message.error('创建视图失败')
         }
     },
     onTabChange: function () {
