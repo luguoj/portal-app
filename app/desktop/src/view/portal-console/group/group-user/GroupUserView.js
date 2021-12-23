@@ -17,6 +17,13 @@ Ext.define('PortalApp.view.portalConsole.group.GroupUserView', {
         xtype: 'grid',
         flex: 1,
         frame: true,
+        plugins: {
+            gridfilters: true
+        },
+        bbar: {
+            xtype: 'psr-pagingtoolbar',
+            displayInfo: true
+        },
         columns: [{
             xtype: 'widgetcolumn',
             width: 48,
@@ -33,6 +40,7 @@ Ext.define('PortalApp.view.portalConsole.group.GroupUserView', {
             flex: 1,
             text: '所有用户',
             dataIndex: 'id',
+            filter: 'string'
         }],
         bind: {
             store: '{users}',
@@ -80,6 +88,8 @@ Ext.define('PortalApp.view.portalConsole.group.GroupUserView', {
                 application: 'authorization',
                 domainType: 'org.psr.platform.authorization.entity.UserEntity',
                 autoLoad: false,
+                pageSize: 50,
+                remoteSort: true,
                 listeners: {
                     load: 'onDataLoad'
                 }
