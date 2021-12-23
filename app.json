@@ -45,10 +45,13 @@
   "overrides": [
     "app/shared/overrides",
     "app/${build.id}/overrides",
+    "app/${build.id}/locale/${app.locale}",
     "common/shared/overrides",
     "common/${build.id}/overrides",
+    "common/${build.id}/locale/${app.locale}",
     "module/shared/overrides",
-    "module/${build.id}/overrides"
+    "module/${build.id}/overrides",
+    "module/${build.id}/locale/${app.locale}"
   ],
 
   "sass": {
