@@ -82,7 +82,6 @@ Ext.define('PortalApp.view.portalConsole.ModuleView', {
                 domainType: 'org.psr.platform.portal.entity.ModuleEntity',
                 pageSize: 50,
                 remoteSort: true,
-                remoteFilter: true,
                 autoLoad: true
             }
         }

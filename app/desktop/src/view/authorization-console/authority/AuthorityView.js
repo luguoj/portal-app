@@ -102,9 +102,6 @@ Ext.define('PortalApp.view.authorizationConsole.AuthorityView', {
                 type: 'entity',
                 application: 'authorization',
                 domainType: 'org.psr.platform.authorization.entity.AuthorityEntity',
-                pageSize: 50,
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: false
             }
         }

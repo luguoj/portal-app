@@ -5,6 +5,8 @@ Ext.define('PortalApp.store.EntityStore', {
         application: '',
         domainType: ''
     },
+    remoteSort: false,
+    remoteFilter: true,
     withAuthToken: true,
     updateApplication: function () {
         this.updateUrl();

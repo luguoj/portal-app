@@ -74,8 +74,6 @@ Ext.define('PortalApp.view.portalConsole.UserGroupView', {
                 type: 'entity',
                 application: 'authorization',
                 domainType: 'org.psr.platform.authorization.entity.UserEntity',
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: true
             },
             groupTree: {
@@ -86,9 +84,6 @@ Ext.define('PortalApp.view.portalConsole.UserGroupView', {
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.GroupEntity',
                 rootText: '分组',
-                pageSize: 0,
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: true,
                 listeners: {
                     load: 'onDataLoad'
@@ -98,8 +93,6 @@ Ext.define('PortalApp.view.portalConsole.UserGroupView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.UserGroupEntity',
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: false,
                 filters: [{
                     property: 'userId',

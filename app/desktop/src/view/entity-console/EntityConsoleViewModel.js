@@ -32,7 +32,6 @@ Ext.define('PortalApp.view.entityConsole.EntityConsoleViewModel', {
             type: 'entity',
             pageSize: 50,
             remoteSort: true,
-            remoteFilter: true,
             autoLoad: false
         }
     }

@@ -81,8 +81,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupUserView', {
                 type: 'entity',
                 application: 'authorization',
                 domainType: 'org.psr.platform.authorization.entity.UserEntity',
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: false,
                 listeners: {
                     load: 'onDataLoad'
@@ -92,8 +90,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupUserView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.UserGroupEntity',
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: false,
                 listeners: {
                     load: 'onDataLoad'

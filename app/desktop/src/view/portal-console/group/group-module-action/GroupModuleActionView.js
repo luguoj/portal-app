@@ -77,8 +77,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupModuleActionView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.ModuleEntity',
-                remoteFilter: true,
-                remoteSort: false,
                 autoLoad: false,
                 listeners: {
                     load: 'onDataLoad'
@@ -88,8 +86,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupModuleActionView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.ModuleActionEntity',
-                remoteFilter: true,
-                remoteSort: false,
                 autoLoad: false,
                 listeners: {
                     load: 'onDataLoad'
@@ -99,8 +95,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupModuleActionView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.GroupModuleActionEntity',
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: false,
                 listeners: {
                     load: 'onDataLoad'

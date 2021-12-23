@@ -52,9 +52,6 @@ Ext.define('PortalApp.view.portalConsole.PortalView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.PortalEntity',
-                pageSize: 50,
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: false
             }
         }

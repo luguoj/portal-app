@@ -8,7 +8,6 @@ Ext.define('PortalApp.view.fileConsole.FileConsoleViewModel', {
             domainType: 'org.psr.platform.file.entity.FileEntity',
             pageSize: 50,
             remoteSort: true,
-            remoteFilter: true,
             autoLoad: false
         }
     }

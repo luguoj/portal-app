@@ -125,8 +125,6 @@ Ext.define('PortalApp.view.portalConsole.NavigationItemView', {
                 transform: 'parentTree',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.NavigationItemEntity',
-                remoteSort: false,
-                remoteFilter: true,
                 autoLoad: false,
                 rootText: '导航节点',
                 sorters: [{property: 'sort', direction: 'ASC'}]

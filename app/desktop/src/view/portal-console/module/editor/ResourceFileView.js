@@ -107,9 +107,6 @@ Ext.define('PortalApp.view.portalConsole.module.ResourceFileView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.ModuleResourceEntity',
-                pageSize: 0,
-                remoteFilter: true,
-                remoteSort: true,
                 autoLoad: false,
                 sorters: [{property: 'catalog', direction: 'ASC'}]
             }

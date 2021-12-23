@@ -75,8 +75,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupNavigationItemView', {
                 transform: 'parentTree',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.NavigationItemEntity',
-                remoteSort: false,
-                remoteFilter: true,
                 autoLoad: false,
                 rootText: '导航节点',
                 sorters: [{property: 'sort', direction: 'ASC'}],
@@ -88,8 +86,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupNavigationItemView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.GroupNavigationItemEntity',
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: false,
                 listeners: {
                     load: 'onDataLoad'

@@ -133,7 +133,6 @@ Ext.define('PortalApp.view.authorizationConsole.UserView', {
                 domainType: 'org.psr.platform.authorization.entity.UserEntity',
                 pageSize: 50,
                 remoteSort: true,
-                remoteFilter: true,
                 autoLoad: false
             }
         }

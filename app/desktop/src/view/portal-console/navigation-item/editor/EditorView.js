@@ -105,7 +105,6 @@ Ext.define('PortalApp.view.portalConsole.navigationItem.EditorView', {
                 domainType: 'org.psr.platform.portal.entity.ModuleEntity',
                 pageSize: 50,
                 remoteSort: true,
-                remoteFilter: true,
                 autoLoad: true
             }
         }

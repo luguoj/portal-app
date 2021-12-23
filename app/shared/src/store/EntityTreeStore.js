@@ -10,6 +10,8 @@ Ext.define('PortalApp.store.EntityTreeStore', {
         pathField: 'path',
         displayField: 'text'
     },
+    remoteSort: false,
+    remoteFilter: true,
     withAuthToken: true,
     root: {
         id: 'root',

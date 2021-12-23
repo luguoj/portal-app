@@ -121,9 +121,6 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.GroupEntity',
                 rootText: '分组',
-                pageSize: 0,
-                remoteSort: true,
-                remoteFilter: true,
                 autoLoad: true
             }
         }

@@ -79,9 +79,6 @@ Ext.define('PortalApp.view.portalConsole.module.ActionView', {
                 type: 'entity',
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.ModuleActionEntity',
-                pageSize: 0,
-                remoteFilter: true,
-                remoteSort: true,
                 autoLoad: false,
                 sorters: [{property: 'code', direction: 'ASC'}]
             }
