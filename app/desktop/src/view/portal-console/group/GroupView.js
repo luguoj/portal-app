@@ -18,7 +18,6 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
             menuDisabled: true,
             widget: {
                 xtype: 'button',
-                iconCls: 'x-fa fa-file',
                 handler: 'hBtnEnable',
                 bind: {
                     hidden: '{!record.isRecord}',

@@ -23,7 +23,6 @@ Ext.define('PortalApp.view.portalConsole.ModuleView', {
             menuDisabled: true,
             widget: {
                 xtype: 'button',
-                iconCls: 'x-fa fa-file',
                 handler: 'hBtnEnabled',
                 bind: {
                     iconCls: '{record.enabled?"x-fa fa-check-circle psr-color-confirm":"x-fa fa-check psr-color-disabled"}'

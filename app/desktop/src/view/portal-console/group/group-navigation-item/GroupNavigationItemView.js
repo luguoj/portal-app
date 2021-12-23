@@ -35,7 +35,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupNavigationItemView', {
             menuDisabled: true,
             widget: {
                 xtype: 'button',
-                iconCls: 'x-fa fa-file',
                 handler: 'hBtnEnabled',
                 bind: {
                     hidden: '{!record.isView}',

@@ -29,7 +29,6 @@ Ext.define('PortalApp.view.authorizationConsole.UserView', {
             menuDisabled: true,
             widget: {
                 xtype: 'button',
-                iconCls: 'x-fa fa-file',
                 handler: 'hBtnEnable',
                 bind: {
                     iconCls: '{record.enabled?"x-fa fa-check-circle psr-color-confirm":"x-fa fa-check psr-color-disabled"}'
@@ -101,9 +100,17 @@ Ext.define('PortalApp.view.authorizationConsole.UserView', {
                 }
             }, {
                 iconCls: 'x-fa fa-shield-alt',
-                altText: '授权',
-                tooltip: '授权',
+                altText: '用户权限',
+                tooltip: '用户权限',
                 handler: 'hBtnAuthority',
+                isActionDisabled: function (view, rowIndex, colIndex, item, record) {
+                    return record.get('version') == null;
+                }
+            },{
+                iconCls: 'x-fa fa-users',
+                altText: '用户分组',
+                tooltip: '用户分组',
+                handler: 'hBtnGroup',
                 isActionDisabled: function (view, rowIndex, colIndex, item, record) {
                     return record.get('version') == null;
                 }

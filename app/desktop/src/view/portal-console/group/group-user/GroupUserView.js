@@ -24,7 +24,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupUserView', {
             menuDisabled: true,
             widget: {
                 xtype: 'button',
-                iconCls: 'x-fa fa-file',
                 handler: 'hBtnEnable',
                 bind: {
                     iconCls: '{record.granted?"x-fa fa-check-circle psr-color-confirm":"x-fa fa-check psr-color-disabled"}'
@@ -49,7 +48,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupUserView', {
             menuDisabled: true,
             widget: {
                 xtype: 'button',
-                iconCls: 'x-fa fa-file',
                 handler: 'hBtnDisable',
                 bind: {
                     iconCls: 'x-fa fa-times psr-color-decline'
