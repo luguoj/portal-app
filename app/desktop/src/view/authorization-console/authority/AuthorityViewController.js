@@ -102,7 +102,7 @@ Ext.define('PortalApp.view.authorizationConsole.AuthorityViewController', {
             iconCls: 'x-fa fa-users',
             viewConfig: {
                 xtype: 'authorizationconsole-authority-groupview',
-                user: record,
+                authority: record,
             },
         })
     },
@@ -116,7 +116,7 @@ Ext.define('PortalApp.view.authorizationConsole.AuthorityViewController', {
             iconCls: 'x-fa fa-user',
             viewConfig: {
                 xtype: 'authorizationconsole-authority-userview',
-                user: record,
+                authority: record,
             },
         })
     },
