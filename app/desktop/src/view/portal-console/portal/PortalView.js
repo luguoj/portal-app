@@ -2,6 +2,12 @@ Ext.define('PortalApp.view.portalConsole.PortalView', {
     extend: 'Ext.panel.Panel',
     xtype: 'portalconsole-portalview',
     layout: 'fit',
+    tbar: {
+        items: [{
+            iconCls: 'x-fa fa-redo-alt',
+            handler: 'hBtnRefresh'
+        }]
+    },
     items: [{
         xtype: 'grid',
         columns: [{
