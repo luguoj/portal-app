@@ -4,7 +4,6 @@ Ext.define('PortalApp.view.portalConsole.module.ResourceFileView', {
     config: {
         module: null
     },
-    bubbleEvents: ['switchview'],
     layout: 'fit',
     tools: [{
         iconCls: 'x-fa fa-redo-alt',
