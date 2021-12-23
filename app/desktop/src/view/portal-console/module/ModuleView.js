@@ -68,8 +68,7 @@ Ext.define('PortalApp.view.portalConsole.ModuleView', {
             store: '{modules}'
         },
         listeners: {
-            itemdblclick: 'onGrdItemDbClick',
-            selectionchange: 'onGrdSelectionChange'
+            itemdblclick: 'onGrdItemDbClick'
         }
     }],
     controller: 'portalconsole-moduleviewcontroller',

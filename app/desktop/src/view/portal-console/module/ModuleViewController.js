@@ -13,15 +13,6 @@ Ext.define('PortalApp.view.portalConsole.ModuleViewController', {
             },
         })
     },
-    onGrdSelectionChange: function (sm, selections) {
-        const view = this.getView(),
-            btnRemove = view.down('button[handler=hBtnRemove]');
-        if (selections.length) {
-            btnRemove.enable();
-        } else {
-            btnRemove.disable();
-        }
-    },
     hBtnAdd: function (btn) {
         const view = this.getView(),
             viewModel = this.getViewModel();
