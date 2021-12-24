@@ -8,7 +8,7 @@
   "requires": [
     "font-awesome",
     "ux",
-    "ext-locale"
+    "locale"
   ],
   "locale": "zh_CN",
   "builds": {
