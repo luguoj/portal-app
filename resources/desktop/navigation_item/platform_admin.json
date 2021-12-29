@@ -25,7 +25,7 @@
       "parentId": "entityconsole",
       "id": "entityconsoleview-authorization",
       "text": "授权数据",
-      "iconCls": "x-fa fa-database",
+      "iconCls": "x-fa fa-user-edit",
       "viewConfig": {
         "xtype": "entityconsoleview",
         "application": "authorization"
@@ -35,7 +35,7 @@
       "parentId": "entityconsole",
       "id": "entityconsoleview-file",
       "text": "文件数据",
-      "iconCls": "x-fa fa-database",
+      "iconCls": "x-fa fa-file",
       "viewConfig": {
         "xtype": "entityconsoleview",
         "application": "file"
@@ -45,7 +45,7 @@
       "parentId": "entityconsole",
       "id": "entityconsoleview-portal",
       "text": "门户数据",
-      "iconCls": "x-fa fa-database",
+      "iconCls": "x-fa fa-desktop",
       "viewConfig": {
         "xtype": "entityconsoleview",
         "application": "portal"
@@ -113,14 +113,14 @@
     {
       "id": "portalconsole",
       "text": "门户管理",
-      "iconCls": "x-fa fa-list-alt",
+      "iconCls": "x-fa fa-desktop",
       "expanded": true
     },
     {
       "parentId": "portalconsole",
       "id": "portalconsole-portalview",
       "text": "门户",
-      "iconCls": "x-fa fa-list-alt",
+      "iconCls": "x-fa fa-desktop",
       "viewConfig": {
         "xtype": "portalconsole-portalview"
       }
@@ -129,7 +129,7 @@
       "parentId": "portalconsole",
       "id": "portalconsole-moduleview",
       "text": "模块",
-      "iconCls": "x-fa fa-list-alt",
+      "iconCls": "x-fa fa-cube",
       "viewConfig": {
         "xtype": "portalconsole-moduleview"
       }
@@ -138,7 +138,7 @@
       "parentId": "portalconsole",
       "id": "portalconsole-navigationitemview",
       "text": "导航项目",
-      "iconCls": "x-fa fa-list-alt",
+      "iconCls": "x-fa fa-sitemap",
       "viewConfig": {
         "xtype": "portalconsole-navigationitemview"
       }
@@ -147,7 +147,7 @@
       "parentId": "portalconsole",
       "id": "portalconsole-groupview",
       "text": "分组",
-      "iconCls": "x-fa fa-list-alt",
+      "iconCls": "x-fa fa-users",
       "viewConfig": {
         "xtype": "portalconsole-groupview"
       }
@@ -156,7 +156,7 @@
       "parentId": "portalconsole",
       "id": "portalconsole-usergroupview",
       "text": "用户分组",
-      "iconCls": "x-fa fa-list-alt",
+      "iconCls": "x-fa fa-users",
       "viewConfig": {
         "xtype": "portalconsole-usergroupview"
       }
