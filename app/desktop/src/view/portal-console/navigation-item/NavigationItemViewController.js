@@ -141,7 +141,7 @@ Ext.define('PortalApp.view.portalConsole.NavigationViewItemController', {
             PortalApp.data.api.entity.EntityCRUDApi.patch({
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.NavigationItemEntity',
-                fields: ['text', 'iconCls', 'parentId'],
+                fields: ['text', 'iconCls'],
                 values: newValues,
                 success: function (data) {
                     PSR.util.Message.info('保存成功');
