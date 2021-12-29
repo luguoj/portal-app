@@ -52,6 +52,16 @@
       }
     },
     {
+      "parentId": "entityconsole",
+      "id": "entityconsoleview-organization",
+      "text": "组织数据",
+      "iconCls": "x-fa fa-users",
+      "viewConfig": {
+        "xtype": "entityconsoleview",
+        "application": "organization"
+      }
+    },
+    {
       "id": "authorizationconsole",
       "text": "授权管理",
       "iconCls": "x-fa fa-user-edit",
