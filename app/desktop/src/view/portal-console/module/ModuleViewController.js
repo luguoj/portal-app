@@ -47,13 +47,15 @@ Ext.define('PortalApp.view.portalConsole.ModuleViewController', {
     hBtnRemove: function (grid, rowIndex) {
         const me = this,
             view = this.getView(),
-            record = grid.getStore().getAt(rowIndex);
+            store = grid.getStore(),
+            record = store.getAt(rowIndex);
         PSR.util.Message.confirm('删除模块:' + record.get('description'), function () {
             view.mask('处理中...');
             PortalApp.data.api.portal.ModuleApi.delete({
                 id: record.get('id'),
                 success: function () {
-                    me.getStore('modules').reload();
+                    store.remove([record]);
+                    store.reload();
                     PSR.util.Message.info('删除成功');
                 },
                 complete:function (){

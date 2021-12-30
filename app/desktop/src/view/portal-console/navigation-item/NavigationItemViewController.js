@@ -78,6 +78,7 @@ Ext.define('PortalApp.view.portalConsole.NavigationViewItemController', {
                 PortalApp.data.api.portal.NavigationItemApi.delete({
                     id: record.get('id'),
                     success: function () {
+                        store.remove([record]);
                         me.getStore('modules').reload();
                         PSR.util.Message.info('删除成功');
                     },

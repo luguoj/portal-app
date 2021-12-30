@@ -108,6 +108,7 @@ Ext.define('PortalApp.view.portalConsole.module.ActionViewController', {
                 PortalApp.data.api.portal.ModuleApi.deleteAction({
                     id: record.get('id'),
                     success: function () {
+                        actionStore.remove([record]);
                         me.loadData();
                         PSR.util.Message.info('删除成功');
                     },

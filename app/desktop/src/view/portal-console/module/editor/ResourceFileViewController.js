@@ -100,8 +100,8 @@ Ext.define('PortalApp.view.portalConsole.module.ResourceFileViewController', {
     },
     hBtnRemove: function (grid, rowIndex) {
         const me = this,
-            view = this.getView();
-        resourceFileStore = this.getStore('resourceFiles'),
+            view = this.getView(),
+            resourceFileStore = this.getStore('resourceFiles'),
             record = grid.getStore().getAt(rowIndex);
         if (record.get('version') == undefined) {
             resourceFileStore.remove(record);
@@ -111,10 +111,11 @@ Ext.define('PortalApp.view.portalConsole.module.ResourceFileViewController', {
                 PortalApp.data.api.portal.ModuleApi.deleteResource({
                     id: record.get('id'),
                     success: function () {
+                        resourceFileStore.remove([record]);
                         me.loadData();
                         PSR.util.Message.info('删除成功');
                     },
-                    complete:function (){
+                    complete: function () {
                         view.unmask();
                     }
                 });
