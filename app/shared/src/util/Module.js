@@ -1,9 +1,9 @@
-Ext.define('PSR.util.Module', {
+Ext.define('PortalApp.util.Module', {
     singleton: true,
     module: {},
     load: function (opt) {
         const moduleId = opt.moduleId,
-            module = PSR.util.Module.module[moduleId] = PSR.util.Module.module[moduleId]
+            module = PortalApp.util.Module.module[moduleId] = PortalApp.util.Module.module[moduleId]
                 || {
                     loading: false,
                     ready: {
@@ -74,7 +74,7 @@ Ext.define('PSR.util.Module', {
                 }
             } else {
                 setTimeout(function () {
-                    PSR.util.Module.load(opt);
+                    PortalApp.util.Module.load(opt);
                 }, 250);
             }
             return false;

@@ -10,7 +10,7 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
         if (!tabView) {
             const moduleId = opt.moduleId;
             if (moduleId) {
-                PSR.util.Module.load({
+                PortalApp.util.Module.load({
                     moduleId: moduleId,
                     success: function (module) {
                         if (module.actions) {
