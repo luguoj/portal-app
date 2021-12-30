@@ -24,7 +24,6 @@ Ext.define('PSR.util.Module', {
                 PSR.data.Ajax.request({
                     method: 'GET',
                     url: window.portalEnv.gateway + '/portal/api/user_profile/module/' + moduleId,
-                    withCredentials: true,
                     withAuthToken: true,
                     disableCaching: true,
                     bizSuccess: function (data) {

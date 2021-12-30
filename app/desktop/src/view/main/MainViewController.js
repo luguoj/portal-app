@@ -35,7 +35,6 @@ Ext.define('PortalApp.view.main.MainViewController', {
             PSR.data.Ajax.request({
                 method: 'GET',
                 url: getProfileUrl,
-                withCredentials: true,
                 withAuthToken: true,
                 disableCaching: true,
                 bizSuccess: function (data) {
