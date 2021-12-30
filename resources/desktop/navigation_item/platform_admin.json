@@ -172,6 +172,21 @@
       }
     },
     {
+      "id": "organizationconsole",
+      "text": "组织管理",
+      "iconCls": "x-fa fa-users",
+      "expanded": true
+    },
+    {
+      "parentId": "organizationconsole",
+      "id": "organizationconsole-organizationview",
+      "text": "组织",
+      "iconCls": "x-fa fa-users",
+      "viewConfig": {
+        "xtype": "organizationconsole-organizationview"
+      }
+    },
+    {
       "id": "docs",
       "text": "开发文档",
       "iconCls": "x-fa fa-list-alt"
