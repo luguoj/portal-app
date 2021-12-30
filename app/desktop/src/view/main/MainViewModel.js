@@ -3,7 +3,7 @@ Ext.define('PortalApp.view.main.MainViewModel', {
     alias: 'viewmodel.mainviewmodel',
     data: {
         appTitle: '',
-        personnel_description: '123'
+        personnel_description: ''
     },
     formulas: {},
     stores: {

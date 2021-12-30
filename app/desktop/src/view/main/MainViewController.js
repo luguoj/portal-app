@@ -44,6 +44,17 @@ Ext.define('PortalApp.view.main.MainViewController', {
                     document.title = data.portal.description;
                 }
             });
+            viewModel.set('personnel_description', token.username);
+            PortalApp.data.api.entity.EntityCRUDApi.findAllById({
+                application: 'organization',
+                domainType: 'org.psr.platform.organization.entity.UserPersonnelEntity',
+                ids: [token.username],
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        viewModel.set('personnel_description', data[0].lastName + ' ' + data[0].firstName);
+                    }
+                }
+            });
         }
     },
     mainRoute: function (routeHash) {
