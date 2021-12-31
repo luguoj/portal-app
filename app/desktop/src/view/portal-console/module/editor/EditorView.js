@@ -40,9 +40,6 @@ Ext.define('PortalApp.view.portalConsole.module.EditorView', {
         xtype: 'portalconsole-module-editor-resourcefileview',
         title: '资源',
     }],
-    listeners: {
-        afterrender: 'onAfterRendered'
-    },
     bind: {
         title: '模块:{module.description}'
     },

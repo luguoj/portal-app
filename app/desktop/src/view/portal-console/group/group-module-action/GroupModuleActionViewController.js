@@ -1,7 +1,7 @@
 Ext.define('PortalApp.view.portalConsole.group.GroupModuleActionViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.portalconsole-group-groupmoduleactionviewcontroller',
-    onAfterRendered: function (view) {
+    afterRender: function (view) {
         if (view.getGroup()) {
             this.loadData();
         }

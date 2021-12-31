@@ -37,8 +37,5 @@ Ext.define('PortalApp.view.entityConsole.EditorView', {
         listeners: {
             dirtychange: 'onFrmDirtyChange'
         }
-    }],
-    listeners: {
-        afterrender: 'onAfterRendered'
-    }
+    }]
 });

@@ -1,7 +1,7 @@
 Ext.define('PortalApp.view.portalConsole.module.EditorViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.portalconsole-module-editorviewcontroller',
-    onAfterRendered: function (view) {
+    afterRender: function (view) {
         if (view.getModule()) {
             this.loadData();
         }

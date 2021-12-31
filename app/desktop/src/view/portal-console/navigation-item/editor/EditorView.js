@@ -79,9 +79,6 @@ Ext.define('PortalApp.view.portalConsole.navigationItem.EditorView', {
             }
         }]
     }],
-    listeners: {
-        afterrender: 'onAfterRendered'
-    },
     bind: {
         title: '视图:{navigationItem.text}'
     },

@@ -1,7 +1,7 @@
 Ext.define('PortalApp.view.entityConsole.EditorViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.entityconsole-editorviewcontroller',
-    onAfterRendered: function (view) {
+    afterRender: function (view) {
         const mode = view.getMode(),
             domainSchema = view.getDomainSchema(),
             form = view.down('form'),

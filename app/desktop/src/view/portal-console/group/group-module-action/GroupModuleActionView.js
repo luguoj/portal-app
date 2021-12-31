@@ -50,9 +50,6 @@ Ext.define('PortalApp.view.portalConsole.group.GroupModuleActionView', {
             store: '{moduleActionTree}',
         }
     }],
-    listeners: {
-        afterrender: 'onAfterRendered'
-    },
     updateGroup: function (value) {
         this.getViewModel().set('group', value);
         if (this.rendered) {

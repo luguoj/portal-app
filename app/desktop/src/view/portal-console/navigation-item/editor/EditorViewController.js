@@ -1,7 +1,7 @@
 Ext.define('PortalApp.view.portalConsole.navigationItem.EditorViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.portalconsole-navigationitem-editorviewcontroller',
-    onAfterRendered: function (view) {
+    afterRender: function (view) {
         if (view.getNavigationItem()) {
             this.loadData();
         }
