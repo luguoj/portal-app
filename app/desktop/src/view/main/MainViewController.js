@@ -113,6 +113,7 @@ Ext.define('PortalApp.view.main.MainViewController', {
         if (typeof rfs != 'undefined' && rfs) {
             rfs.call(el);
         }
+        this.getViewModel().set('fullscreen', true);
     },
     hBtnExitFullscreen: function () {
         const view = this.getView(),
@@ -129,6 +130,7 @@ Ext.define('PortalApp.view.main.MainViewController', {
         if (typeof cfs != 'undefined' && cfs) {
             cfs.call(el);
         }
+        this.getViewModel().set('fullscreen', false);
     },
     hBtnLogout: function () {
         PSR.util.Message.confirm(

@@ -3,7 +3,8 @@ Ext.define('PortalApp.view.main.MainViewModel', {
     alias: 'viewmodel.mainviewmodel',
     data: {
         appTitle: '',
-        personnel_description: ''
+        personnel_description: '',
+        fullscreen: false
     },
     formulas: {},
     stores: {
