@@ -11,5 +11,20 @@ Ext.define('PSR.util.LocalFile', {
         element.dispatchEvent(ev);
         urlObject.revokeObjectURL(element.href);
         element.href = '';
+    },
+    read: function (file, handler, readAsText) {
+        const reader = new FileReader();
+        reader.addEventListener("load", function (e) {
+            try {
+                handler(reader.result);
+            } catch (e) {
+                PSR.util.Message.info("文件读取失败：" + files[0].name);
+            }
+        }, false);
+        if (readAsText) {
+            reader.readAsText(file);
+        } else {
+            reader.readAsBinaryString(file);
+        }
     }
 });
