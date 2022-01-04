@@ -56,9 +56,17 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
         this.appendSubBoard();
     },
     hBtnConfig: function (btn) {
-        this.getView().setBoardConfig({
-            html: '12345'
-        });
+        const view = this.getView(),
+            editor = view.add({
+                xtype: 'dashboard-subboard-editorview',
+                boardConfig: view.getBoardConfig(),
+                listeners: {
+                    save: function (boardConfig) {
+                        view.setBoardConfig(JSON.parse(boardConfig));
+                        editor.close();
+                    }
+                }
+            }).show();
     },
     hBtnRemove: function () {
         const view = this.getView();
