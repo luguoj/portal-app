@@ -22,8 +22,7 @@ Ext.define('PortalApp.view.dashboard.DashboardViewController', {
         view.add({
             xtype: 'dashboard-subboardview',
             height: '100%',
-            resizable: {handles: 's'},
-            editing: this.getViewModel().get('editing')
+            resizable: {handles: 's'}
         });
         this.getViewModel().set('editing', true);
     },
@@ -33,5 +32,40 @@ Ext.define('PortalApp.view.dashboard.DashboardViewController', {
     },
     hBtnCancel: function () {
         this.getViewModel().set('editing', false);
+    },
+    hBtnImport: function () {
+        const view = this.getView(),
+            viewModel = this.getViewModel(),
+            dialog = PSR.Dialog.upload({
+                accept: '.dashboardconfig',
+                uploadHandler: function (file) {
+                    PSR.util.LocalFile.read(
+                        file,
+                        function (data) {
+                            const boardConfigs = JSON.parse(PSR.util.Base64.decode(data));
+                            view.remove(view.down('dashboard-subboardview'));
+                            view.add({
+                                xtype: 'dashboard-subboardview',
+                                height: '100%',
+                                resizable: {handles: 's'},
+                                boardConfig: boardConfigs.boardConfig,
+                                subBoardConfigs: boardConfigs.subBoardConfigs,
+                            });
+                            dialog.close();
+                            viewModel.set('editing', true);
+                        },
+                        true
+                    );
+                }
+            });
+    },
+    hBtnExport: function () {
+        const board = this.getView().down('dashboard-subboardview');
+        PSR.util.LocalFile.write(
+            "export.dashboardconfig",
+            PSR.util.Base64.encode(
+                JSON.stringify(board.readBoardConfigTree())
+            )
+        );
     }
 });

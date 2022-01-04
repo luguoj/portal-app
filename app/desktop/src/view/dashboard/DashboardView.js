@@ -37,6 +37,20 @@ Ext.define('PortalApp.view.dashboard.DashboardView', {
                 hidden: '{!editing}',
                 handler: 'hBtnCancel'
             }
+        }, {
+            iconCls: 'x-fa fa-file-import',
+            tooltip: '导入配置',
+            bind: {
+                hidden: '{editing}'
+            },
+            handler: 'hBtnImport'
+        }, {
+            iconCls: 'x-fa fa-file-export',
+            tooltip: '导出配置',
+            bind: {
+                hidden: '{editing}'
+            },
+            handler: 'hBtnExport'
         }],
         bind: {
             hidden: '{fullscreen}'
