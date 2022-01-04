@@ -100,6 +100,8 @@
   },
 
   "js": [
+    {"path": "jslib/vue/vue.js", "bundle": false},
+    {"path": "jslib/vue/datav/datav.map.vue.js", "bundle": false},
     {"path":"jslib/jquery-3.6.0.min.js", "bundle": false},
     {"path":"jslib/sheetjs/xlsx.full-0.17.0.min.js", "bundle": false},
     {"path":"jslib/lodash-4.17.21.min.js", "bundle": false},
