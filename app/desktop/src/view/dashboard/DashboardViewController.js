@@ -13,13 +13,23 @@ Ext.define('PortalApp.view.dashboard.DashboardViewController', {
         this.loadData();
     },
     onBtnEditToggle: function (btn, pressed) {
-        const boards = this.getView().query('dashboard-placeholderview');
-        for (let i = 0; i < boards.length; i++) {
-            const board = boards[i];
-            board.setEditing(pressed);
-        }
+        const board = this.getView().down('dashboard-subboardview');
+        board.setEditing(pressed);
     },
     hBtnAdd: function () {
+        const view = this.getView();
+        view.remove(view.down('dashboard-subboardview'));
+        view.add({
+            xtype: 'dashboard-subboardview',
+            height: '100%',
+            resizable: {handles: 's'},
+            editing: this.getViewModel().get('editing')
+        });
+        this.getViewModel().set('editing', true);
+    },
+    hBtnSave: function () {
+        const board = this.getView().down('dashboard-subboardview');
+        console.info(JSON.stringify(board.readBoardConfigTree()));
     },
     hBtnCancel: function () {
         this.getViewModel().set('editing', false);

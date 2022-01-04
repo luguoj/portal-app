@@ -29,7 +29,8 @@ Ext.define('PortalApp.view.dashboard.DashboardView', {
             iconCls: 'x-fa fa-save',
             bind: {
                 hidden: '{!editing}'
-            }
+            },
+            handler: 'hBtnSave'
         }, {
             iconCls: 'x-fa fa-times',
             bind: {
@@ -42,7 +43,7 @@ Ext.define('PortalApp.view.dashboard.DashboardView', {
         }
     },
     items: [{
-        xtype: 'dashboard-placeholderview',
+        xtype: 'dashboard-subboardview',
         height: '100%',
         resizable: {handles: 's'}
     }],

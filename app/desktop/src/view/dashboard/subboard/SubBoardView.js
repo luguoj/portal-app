@@ -1,9 +1,10 @@
-Ext.define('PortalApp.view.dashboard.PlaceholderView', {
+Ext.define('PortalApp.view.dashboard.SubBoardView', {
     extend: 'Ext.panel.Panel',
-    xtype: 'dashboard-placeholderview',
+    xtype: 'dashboard-subboardview',
     config: {
         editing: false,
-        boardConfig: null
+        boardConfig: null,
+        subBoardConfigs: null
     },
     layout: {type: 'vbox', align: 'stretch'},
     items: [{
@@ -62,7 +63,10 @@ Ext.define('PortalApp.view.dashboard.PlaceholderView', {
     updateBoardConfig: function (value) {
         this.getController().loadData();
     },
-    controller: 'dashboard-placeholderviewcontroller',
+    readBoardConfigTree: function () {
+        return this.getController().readBoardConfigTree();
+    },
+    controller: 'dashboard-subboardviewcontroller',
     viewModel: {
         data: {
             editing: false,
