@@ -3,7 +3,6 @@ window.portalEnvProd = {
     gateway: 'https://klcgateway.king-long.com.cn',
     wsgateway: 'wss://klcgateway.king-long.com.cn',
     portal: 'https://klc.king-long.com.cn',
-    modulecdn: 'https://klc.king-long.com.cn/extmodule/module',
     portalCode: 'portal-platform',
     splashLoginBackground: 'https://klc-test.king-long.com.cn/images/login_bg.jpg',
 };
@@ -12,7 +11,6 @@ window.portalEnvTest = {
     gateway: 'https://klcgateway-test.king-long.com.cn',
     wsgateway: 'wss://klcgateway-test.king-long.com.cn',
     portal: 'https://klc-test.king-long.com.cn',
-    modulecdn: 'https://klc-test.king-long.com.cn/extmodule/module',
     portalCode: 'portal-platform',
     splashLoginBackground: 'https://klc-test.king-long.com.cn/images/login_bg.jpg',
 };
