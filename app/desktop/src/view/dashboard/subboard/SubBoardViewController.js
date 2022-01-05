@@ -167,14 +167,23 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
     },
     readBoardConfigTree: function () {
         const subBoards = this.subBoards,
-            subBoardConfigs = [];
-        for (let i = 0; i < subBoards.length; i++) {
-            const subBoard = subBoards[i];
-            subBoardConfigs.push(subBoard.readBoardConfigTree());
+            view = this.getView(),
+            boardConfig = view.getBoardConfig(),
+            flex = view.flex,
+            configTree = {};
+        if (subBoards && subBoards.length > 0) {
+            configTree.subBoardConfigs = [];
+            for (let i = 0; i < subBoards.length; i++) {
+                const subBoard = subBoards[i];
+                configTree.subBoardConfigs.push(subBoard.readBoardConfigTree());
+            }
         }
-        return {
-            boardConfig: this.getView().getBoardConfig(),
-            subBoardConfigs: subBoardConfigs
-        };
+        if (boardConfig) {
+            configTree.boardConfig = boardConfig;
+        }
+        if (flex) {
+            configTree.flex = flex;
+        }
+        return configTree;
     }
 });
