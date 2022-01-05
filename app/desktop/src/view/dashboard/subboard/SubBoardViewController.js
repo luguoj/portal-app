@@ -54,6 +54,9 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
                 subBoard.setBoardId(value + (value ? '-' : '') + (i + 1));
             }
         }
+        if (this.editor) {
+            this.editor.setBoardId(value);
+        }
     },
     hBtnAdd: function () {
         const viewModel = this.getViewModel();
@@ -67,7 +70,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
     hBtnConfig: function (btn) {
         const view = this.getView(),
             dashboard = view.up('dashboardview'),
-            editor = dashboard.add({
+            editor = this.editor = dashboard.add({
                 xtype: 'dashboard-subboard-editorview',
                 boardId: view.getBoardId(),
                 boardConfig: view.getBoardConfig(),
