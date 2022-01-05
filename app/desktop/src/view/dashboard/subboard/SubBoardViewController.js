@@ -129,7 +129,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
                     xtype: 'splitter',
                     maskOnDisable: false,
                     collapseOnDblClick: false,
-                    height: 1, width: 1
+                    height: 3, width: 3
                 })
             );
         }
