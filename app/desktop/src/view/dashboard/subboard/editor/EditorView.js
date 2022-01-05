@@ -2,10 +2,10 @@ Ext.define('PortalApp.view.dashboard.subBoard.EditorView', {
     extend: 'Ext.window.Window',
     xtype: 'dashboard-subboard-editorview',
     config: {
+        boardId: '',
         boardConfig: null
     },
     constrain: true,
-    title: '板块配置',
     width: '25%',
     height: '50%',
     layout: 'fit',
@@ -50,6 +50,12 @@ Ext.define('PortalApp.view.dashboard.subBoard.EditorView', {
             dirtychange: 'onFrmDirtyChange'
         }
     }],
+    bind: {
+        title: '板块配置 {boardId}'
+    },
+    updateBoardId: function (value) {
+        this.getViewModel().set('boardId', value);
+    },
     updateBoardConfig: function (value) {
         this.getViewModel().set('boardConfig', value);
         this.getController().loadData();
@@ -57,6 +63,7 @@ Ext.define('PortalApp.view.dashboard.subBoard.EditorView', {
     controller: 'dashboard-subboard-editorviewcontroller',
     viewModel: {
         data: {
+            boardId: '',
             boardConfig: null,
             dirty: false
         }

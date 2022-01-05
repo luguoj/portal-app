@@ -2,6 +2,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardView', {
     extend: 'Ext.panel.Panel',
     xtype: 'dashboard-subboardview',
     config: {
+        boardId: '',
         editing: false,
         boardConfig: null,
         subBoardConfigs: null
@@ -25,7 +26,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardView', {
                 'background-color': null
             },
             border: 1,
-            x: 0, y: 0,
+            x: 0, y: 0, width: 32, height: 32,
             handler: 'hBtnConfig',
             bind: {
                 hidden: '{!editing}'
@@ -38,10 +39,16 @@ Ext.define('PortalApp.view.dashboard.SubBoardView', {
                 'background-color': null
             },
             border: 1,
-            x: 50, y: 0,
+            x: 32, y: 0, width: 32, height: 32,
             handler: 'hBtnRemove',
             bind: {
                 hidden: '{!editing}'
+            }
+        }, {
+            x: 72, y: 8,
+            bind: {
+                html: '{boardId}',
+                hidden: '{!editing||split}'
             }
         }],
         bind: {
@@ -56,6 +63,10 @@ Ext.define('PortalApp.view.dashboard.SubBoardView', {
             hidden: '{!editing}'
         }
     }],
+    updateBoardId: function (value) {
+        this.getViewModel().set('boardId', value);
+        this.getController().updateBoardId(value);
+    },
     updateEditing: function (value) {
         this.getViewModel().set('editing', value);
         this.getController().loadData();
@@ -69,6 +80,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardView', {
     controller: 'dashboard-subboardviewcontroller',
     viewModel: {
         data: {
+            boardId: '',
             editing: false,
             split: false
         },

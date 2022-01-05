@@ -46,6 +46,15 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
     hBtnRefresh: function () {
         this.loadData();
     },
+    updateBoardId: function (value) {
+        const subBoards = this.subBoards;
+        if (subBoards) {
+            for (let i = 0; i < subBoards.length; i++) {
+                const subBoard = subBoards[i];
+                subBoard.setBoardId(value + (value ? '-' : '') + (i + 1));
+            }
+        }
+    },
     hBtnAdd: function () {
         const viewModel = this.getViewModel();
         if (!viewModel.get('split')) {
@@ -60,6 +69,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
             dashboard = view.up('dashboardview'),
             editor = dashboard.add({
                 xtype: 'dashboard-subboard-editorview',
+                boardId: view.getBoardId(),
                 boardConfig: view.getBoardConfig(),
                 listeners: {
                     save: function (boardConfig) {
@@ -118,6 +128,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
         this.subBoards.push(
             view.insert(view.items.length - 1, subBoardCfg)
         );
+        this.updateBoardId(view.getBoardId());
     },
     removeSubBoard: function (subBoard) {
         const view = this.getView(),
@@ -144,6 +155,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
             );
             this.getViewModel().set('split', false);
         }
+        this.updateBoardId(view.getBoardId());
     },
     readBoardConfigTree: function () {
         const subBoards = this.subBoards,
