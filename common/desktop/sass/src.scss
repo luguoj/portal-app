@@ -43,3 +43,14 @@
   width: 28px;
   text-align: center;
 }
+
+.#{$prefix}window {
+  .#{$prefix}window-header {
+    .#{$prefix}tool-tool-el {
+      color: $base-color;
+    }
+    .#{$prefix}tool-close {
+      color: $window-close-glyph-color;
+    }
+  }
+}
