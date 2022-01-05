@@ -91,6 +91,11 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
         const view = this.getView();
         view.fireEvent('removeme', view);
     },
+    beforeDestroy: function () {
+        if (this.editor) {
+            this.editor.close();
+        }
+    },
     appendSubBoard: function (extSubBoardCfg) {
         const me = this,
             view = this.getView(),

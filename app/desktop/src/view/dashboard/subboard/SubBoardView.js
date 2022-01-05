@@ -77,6 +77,9 @@ Ext.define('PortalApp.view.dashboard.SubBoardView', {
     readBoardConfigTree: function () {
         return this.getController().readBoardConfigTree();
     },
+    listeners: {
+        beforedestroy: 'beforeDestroy'
+    },
     controller: 'dashboard-subboardviewcontroller',
     viewModel: {
         data: {
