@@ -33,3 +33,11 @@ if (typeof String.prototype.endsWith != 'function') {
         return this.substring(this.length - str.length) == str;
     };
 }
+Array.prototype.remove = function (obj) {
+    let objIndex = this.indexOf(obj);
+    if (objIndex >= 0) {
+        this.splice(objIndex, 1);
+        return true;
+    }
+    return false;
+}
