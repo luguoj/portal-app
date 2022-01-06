@@ -155,6 +155,15 @@
     },
     {
       "parentId": "portalconsole",
+      "id": "portalconsole-dashboardtemplateview",
+      "text": "概览模板",
+      "iconCls": "x-fa fa-chart-pie",
+      "viewConfig": {
+        "xtype": "portalconsole-dashboardtemplateview"
+      }
+    },
+    {
+      "parentId": "portalconsole",
       "id": "portalconsole-groupview",
       "text": "分组",
       "iconCls": "x-fa fa-users",
