@@ -124,4 +124,25 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateViewController', {
             store.remove([record]);
         }
     },
+    hBtnEdit: function (grid, rowIndex) {
+        const me = this,
+            view = this.getView(),
+            record = grid.getStore().getAt(rowIndex);
+        view.fireEvent('switchview', {
+            viewId: 'portalconsole-dashboardtemplate-editorview-' + record.get('id'),
+            title: '概览:' + record.get('text'),
+            iconCls: 'x-fa fa-edit',
+            viewConfig: {
+                xtype: 'portalconsole-dashboardtemplate-editorview',
+                dashboardTemplate: record,
+                listeners: {
+                    save: function (data) {
+                        for (let dataKey in data) {
+                            record.set(dataKey, data[dataKey]);
+                        }
+                    }
+                }
+            },
+        })
+    },
 });
