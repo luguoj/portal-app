@@ -2,16 +2,16 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.dashboard-subboardviewcontroller',
     beforeRender: function (view) {
-        const viewModel = this.getViewModel(),
-            subBoardConfigs = view.getSubBoardConfigs();
+        const subBoardConfigs = view.getSubBoardConfigs();
         this.subBoards = [];
         this.splitters = [];
+        this.getViewModel().set('split', false);
         if (subBoardConfigs && subBoardConfigs.length > 0) {
             if (subBoardConfigs.length == 1) {
                 view.setBoardConfig(subBoardConfigs[0].boardConfig);
             } else {
                 this.appendSubBoard(subBoardConfigs[0]);
-                viewModel.set('split', true);
+                this.getViewModel().set('split', true);
                 for (let i = 1; i < subBoardConfigs.length; i++) {
                     this.appendSubBoard(subBoardConfigs[i]);
                 }
@@ -19,6 +19,25 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
         }
     },
     afterRender: function (view) {
+        this.dragSource = new Ext.drag.Source({
+            element: view.el,
+            handle: '.board-dd-handle',
+            describe: function (info) {
+                info.setData('originBoard', view);
+            },
+            proxy: {
+                type: 'placeholder',
+                cls: 'psr-proxy-drag',
+                html: view.getBoardId()
+            }
+        });
+        this.dropTarget = new Ext.drag.Target({
+            element: view.el,
+            listeners: {
+                scope: this,
+                drop: this.onDrop
+            }
+        });
         this.loadData();
     },
     loadData: function () {
@@ -41,6 +60,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
             if (boardConfig && subBoards.length == 0) {
                 ctContent.add(Ext.create(JSON.parse(boardConfig)));
             }
+            this.handleDragDropAvailability();
         }
     },
     hBtnRefresh: function () {
@@ -56,6 +76,9 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
         }
         if (this.editor) {
             this.editor.setBoardId(value);
+        }
+        if (this.dragSource) {
+            this.dragSource.getProxy().setHtml(value);
         }
     },
     hBtnAdd: function () {
@@ -162,12 +185,13 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
             view.remove(subBoard)
         );
         if (view.items.length == 3) {
-            const lastSubView = view.items.items[1];
-            view.setBoardConfig(lastSubView.getBoardConfig());
+            const lastSubView = view.items.items[1],
+                boardConfig = lastSubView.getBoardConfig();
             this.subBoards.remove(
                 view.remove(lastSubView)
             );
             this.getViewModel().set('split', false);
+            view.setBoardConfig(boardConfig);
         }
         this.updateBoardId(view.getBoardId());
     },
@@ -191,5 +215,34 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
             configTree.flex = flex;
         }
         return configTree;
+    },
+    onDrop: function (target, info, event) {
+        const view = this.getView();
+        info.getData('originBoard').then(function (originBoard) {
+            if (view == originBoard) {
+                return;
+            }
+            view.setBoardConfig(originBoard.getBoardConfig());
+            originBoard.setBoardConfig();
+        });
+    },
+    handleDragDropAvailability: function () {
+        if (this.dragSource && this.dropTarget) {
+            if (this.getViewModel().get('split')) {
+                this.dragSource.disable();
+                this.dropTarget.disable();
+            } else {
+                if (this.getView().getBoardConfig()) {
+                    this.dragSource.enable();
+                } else {
+                    this.dragSource.disable();
+                }
+                this.dropTarget.enable();
+            }
+        }
+    },
+    destroy: function () {
+        this.dragSource = this.dropTarget = Ext.destroy(this.dragSource, this.dropTarget);
+        this.callParent();
     }
 });

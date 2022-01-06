@@ -45,9 +45,21 @@ Ext.define('PortalApp.view.dashboard.SubBoardView', {
                 hidden: '{!editing}'
             }
         }, {
-            x: 72, y: 8,
+            x: 66, y: 0, cls: 'board-dd-handle',
+            padding: 8,
+            style: {
+                '-webkit-user-select': 'none',
+                '-moz-user-select': 'none',
+                '-ms-user-select': 'none',
+                'user-select': 'none',
+                'background-color': 'rgba(0, 0, 0, 0.2)'
+            },
+            bodyStyle: {
+                'background-color': 'rgba(0, 0, 0, 0.2)',
+                'color': 'white'
+            },
             bind: {
-                html: '{boardId}',
+                html: '&nbsp{boardId}',
                 hidden: '{!editing||split}'
             }
         }],
