@@ -9,9 +9,9 @@ Ext.define('PortalApp.view.dashboard.subBoard.EditorViewController', {
             const me = this,
                 form = this.lookup('form'),
                 viewModel = this.getViewModel(),
-                boardConfig = viewModel.get('boardConfig');
+                boardConfig = this.getView().getBoardConfig();
             form.loadRecord(Ext.data.Model.loadData({
-                boardConfig: boardConfig ? JSON.stringify(boardConfig, null, 2) : ''
+                boardConfig: boardConfig ? JSON.stringify(JSON.parse(boardConfig), null, 2) : ''
             }));
         }
     },

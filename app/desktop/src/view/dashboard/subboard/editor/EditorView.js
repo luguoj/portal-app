@@ -57,14 +57,12 @@ Ext.define('PortalApp.view.dashboard.subBoard.EditorView', {
         this.getViewModel().set('boardId', value);
     },
     updateBoardConfig: function (value) {
-        this.getViewModel().set('boardConfig', value);
         this.getController().loadData();
     },
     controller: 'dashboard-subboard-editorviewcontroller',
     viewModel: {
         data: {
             boardId: '',
-            boardConfig: null,
             dirty: false
         }
     }

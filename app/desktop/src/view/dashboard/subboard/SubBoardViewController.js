@@ -8,7 +8,7 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
         this.splitters = [];
         if (subBoardConfigs && subBoardConfigs.length > 0) {
             if (subBoardConfigs.length == 1) {
-                view.setBoardConfig(subBoardConfigs.boardConfig);
+                view.setBoardConfig(subBoardConfigs[0].boardConfig);
             } else {
                 this.appendSubBoard(subBoardConfigs[0]);
                 viewModel.set('split', true);
@@ -38,8 +38,8 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
             }
             const ctContent = this.lookup('ctContent');
             ctContent.removeAll();
-            if (boardConfig) {
-                ctContent.add(boardConfig);
+            if (boardConfig && subBoards.length == 0) {
+                ctContent.add(Ext.create(JSON.parse(boardConfig)));
             }
         }
     },
@@ -61,11 +61,13 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
     hBtnAdd: function () {
         const viewModel = this.getViewModel();
         if (!viewModel.get('split')) {
-            this.lookup('ctContent').removeAll();
             this.appendSubBoard({boardConfig: this.getView().getBoardConfig()});
             viewModel.set('split', true);
         }
         this.appendSubBoard();
+        if (this.getView().getBoardConfig()) {
+            this.getView().setBoardConfig();
+        }
     },
     hBtnConfig: function (btn) {
         const view = this.getView(),
@@ -76,8 +78,12 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
                 boardConfig: view.getBoardConfig(),
                 listeners: {
                     save: function (boardConfig) {
-                        view.setBoardConfig(JSON.parse(boardConfig));
-                        editor.close();
+                        try {
+                            view.setBoardConfig(boardConfig);
+                            editor.close();
+                        } catch (e) {
+                            PSR.util.Message.error(e.message);
+                        }
                     },
                     close: function () {
                         view.unmask();
