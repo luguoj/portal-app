@@ -2,7 +2,11 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.dashboard-subboardviewcontroller',
     beforeRender: function (view) {
-        const subBoardConfigs = view.getSubBoardConfigs();
+        this.updateSubBoardConfigs();
+    },
+    updateSubBoardConfigs: function () {
+        const view = this.getView(),
+            subBoardConfigs = view.getSubBoardConfigs();
         this.subBoards = [];
         this.splitters = [];
         this.getViewModel().set('split', false);
@@ -186,12 +190,16 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
         );
         if (view.items.length == 3) {
             const lastSubView = view.items.items[1],
-                boardConfig = lastSubView.getBoardConfig();
+                configTree = lastSubView.readBoardConfigTree(),
+                boardConfig = configTree.boardConfig,
+                subBoardConfigs = configTree.subBoardConfigs;
             this.subBoards.remove(
                 view.remove(lastSubView)
             );
             this.getViewModel().set('split', false);
             view.setBoardConfig(boardConfig);
+            view.setSubBoardConfigs(subBoardConfigs);
+            this.updateSubBoardConfigs();
         }
         this.updateBoardId(view.getBoardId());
     },
