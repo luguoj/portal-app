@@ -3,9 +3,23 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateView', {
     xtype: 'portalconsole-dashboardtemplateview',
     layout: 'fit',
     tbar: {
-        items: [{
+        items: ['门户:', {
+            xtype: 'combobox',
+            allowBlank: false,
+            emptyText: '选择门户',
+            editable: false,
+            valueField: 'id',
+            displayField: 'description',
+            bind: {store: '{portals}'},
+            listeners: {
+                change: 'onCombPortalChange'
+            }
+        }, {
             iconCls: 'x-fa fa-redo-alt',
-            handler: 'hBtnRefresh'
+            handler: 'hBtnRefresh',
+            bind: {
+                disabled: '{!portalId}'
+            }
         }]
     },
     items: [{
@@ -83,7 +97,8 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateView', {
             }]
         }],
         bind: {
-            store: '{dashboardTemplateTree}'
+            store: '{dashboardTemplateTree}',
+            disabled: '{!portalId}'
         },
         listeners: {
             beforeedit: 'onGrdBeforeEdit',
@@ -92,8 +107,16 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateView', {
     }],
     controller: 'portalconsole-dashboardtemplateviewcontroller',
     viewModel: {
-        data: {},
+        data: {
+            portalId: null
+        },
         stores: {
+            portals: {
+                type: 'entity',
+                application: 'portal',
+                domainType: 'org.psr.platform.portal.entity.PortalEntity',
+                autoLoad: true
+            },
             dashboardTemplateTree: {
                 fields: ['id', 'version', 'code', 'description', 'enabled', 'text', 'isRecord'],
                 type: 'entitytree',
@@ -102,7 +125,7 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateView', {
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.DashboardTemplateEntity',
                 rootText: '概览模板',
-                autoLoad: true
+                autoLoad: false
             }
         }
     }

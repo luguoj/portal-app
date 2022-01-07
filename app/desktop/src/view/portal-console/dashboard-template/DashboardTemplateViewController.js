@@ -6,10 +6,22 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateViewController', {
     },
     loadData: function () {
         if (this.getView().rendered) {
-            const dashboardTemplateTreeStore = this.getStore('dashboardTemplateTree');
-            dashboardTemplateTreeStore.removeAll();
-            dashboardTemplateTreeStore.load();
+            if (this.getViewModel().get('portalId')) {
+                const dashboardTemplateTreeStore = this.getStore('dashboardTemplateTree');
+                dashboardTemplateTreeStore.removeAll();
+                dashboardTemplateTreeStore.load();
+            }
         }
+    },
+    onCombPortalChange: function (comb, newValue) {
+        this.getViewModel().set('portalId', newValue);
+        this.getStore('dashboardTemplateTree').addFilter(
+            {
+                property: 'portalId',
+                operator: '==',
+                value: newValue
+            }, true);
+        this.loadData();
     },
     hBtnRefresh: function () {
         this.loadData();
@@ -43,6 +55,7 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateViewController', {
                 description: context.newValues.description
             };
         if (record.get('version') == undefined) {
+            newValues.portalId = record.get('portalId');
             PortalApp.data.api.entity.EntityCRUDApi.create({
                 application: 'portal',
                 domainType: 'org.psr.platform.portal.entity.DashboardTemplateEntity',
@@ -82,6 +95,7 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateViewController', {
             currentNode.createNode({
                 id: 'new-' + now,
                 isRecord: true,
+                portalId: viewModel.get('portalId'),
                 code: '',
                 description: '',
                 enabled: null,
