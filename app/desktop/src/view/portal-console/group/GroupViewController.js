@@ -148,6 +148,20 @@ Ext.define('PortalApp.view.portalConsole.GroupViewController', {
             },
         })
     },
+    hBtnDashboardTemplate: function (grid, rowIndex) {
+        const me = this,
+            view = this.getView(),
+            record = grid.getStore().getAt(rowIndex);
+        view.fireEvent('switchview', {
+            viewId: 'portalconsole-group-dashboardtemplateview-' + record.get('id'),
+            title: '分组概览模板:' + record.get('code'),
+            iconCls: 'x-fa fa-chart-pie',
+            viewConfig: {
+                xtype: 'portalconsole-group-dashboardtemplateview',
+                group: record,
+            },
+        })
+    },
     hBtnModuleAction: function (grid, rowIndex) {
         const me = this,
             view = this.getView(),

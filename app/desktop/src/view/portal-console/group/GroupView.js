@@ -59,6 +59,14 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
                     return record.get('version') == null;
                 }
             }, {
+                iconCls: 'x-fa fa-chart-pie',
+                altText: '分组概览模板',
+                tooltip: '分组概览模板',
+                handler: 'hBtnDashboardTemplate',
+                isActionDisabled: function (view, rowIndex, colIndex, item, record) {
+                    return record.get('version') == null;
+                }
+            }, {
                 iconCls: 'x-fa fa-bolt',
                 altText: '分组操作',
                 tooltip: '分组操作',
