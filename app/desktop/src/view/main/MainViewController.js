@@ -38,7 +38,32 @@ Ext.define('PortalApp.view.main.MainViewController', {
                 withAuthToken: true,
                 disableCaching: true,
                 bizSuccess: function (data) {
-                    navNodeStore.getProxy().setData(data.navigationItems);
+                    const navigationItems = [];
+                    if (data.dashboardTemplates && data.dashboardTemplates.length > 0) {
+                        navigationItems.push({
+                            "id": "dashboard",
+                            "text": "概览",
+                            "iconCls": "x-fa fa-chart-pie",
+                            "expanded": false,
+                            "sort": -1
+                        });
+                        for (let i = 0; i < data.dashboardTemplates.length; i++) {
+                            const dashboardTemplate = data.dashboardTemplates[i];
+                            navigationItems.push({
+                                "id": "dashboard-" + dashboardTemplate.id,
+                                "parentId": "dashboard",
+                                "text": dashboardTemplate.description,
+                                "iconCls": "x-fa fa-chart-pie",
+                                "viewConfig": {
+                                    "xtype": "main-dashboardview",
+                                    "dashboardConfig": dashboardTemplate.config
+                                },
+                                "sort": dashboardTemplate.description
+                            });
+                        }
+                    }
+                    navigationItems.push(...data.navigationItems);
+                    navNodeStore.getProxy().setData(navigationItems);
                     navNodeStore.load();
                     viewModel.set('appTitle', data.portal.description);
                     document.title = data.portal.description;
