@@ -37,7 +37,8 @@ Ext.define('PortalApp.view.main.MainViewModel', {
                         return PSR.data.reader.Transform.parentTree(data);
                     }
                 }
-            }
+            },
+            sorters: [{property: 'sort', direction: 'ASC'}]
         }
     }
 });
