@@ -26,7 +26,7 @@ Ext.define('PSR.overrides.Ext.ux.TreePicker', {
                 columns: me.columns,
                 minHeight: me.minPickerHeight,
                 maxHeight: me.maxPickerHeight,
-                manageHeight: false,
+                manageHeight: true,
                 shadow: false,
                 rootVisible: me.rootVisible,
                 listeners: {
