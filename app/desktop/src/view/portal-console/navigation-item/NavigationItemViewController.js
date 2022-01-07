@@ -3,7 +3,6 @@ Ext.define('PortalApp.view.portalConsole.NavigationViewItemController', {
     alias: 'controller.portalconsole-navigationitemviewcontroller',
     onCombPortalChange: function (comb, newValue) {
         this.getViewModel().set('portalId', newValue);
-        this.getView().down('treepanel').setDisabled(false);
         this.getStore('navigationItemTree').addFilter(
             {
                 property: 'portalId',

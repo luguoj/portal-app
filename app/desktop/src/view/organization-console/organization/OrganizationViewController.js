@@ -16,7 +16,6 @@ Ext.define('PortalApp.view.organizationconsole.OrganizationViewController', {
     },
     onCombOrganizationUseChange: function (comb, newValue) {
         this.getViewModel().set('organizationUseId', newValue);
-        this.getView().down('treepanel').setDisabled(false);
         this.getStore('organizationTree').addFilter(
             {
                 property: 'useId',
