@@ -17,7 +17,11 @@ Ext.define('PortalApp.view.portalConsole.dashboardTemplate.EditorViewController'
     hBtnSave: function () {
         const view = this.getView(),
             board = view.down('dashboard-subboardview'),
-            dashboardTemplate = this.getViewModel().get('dashboardTemplate');
+            dashboardTemplate = this.getViewModel().get('dashboardTemplate'),
+            boardConfig = board.readBoardConfigTree();
+        if (board.height != '100%') {
+            boardConfig.height = board.getHeight();
+        }
         PortalApp.data.api.entity.EntityCRUDApi.patch({
             application: 'portal',
             domainType: 'org.psr.platform.portal.entity.DashboardTemplateEntity',
@@ -25,7 +29,7 @@ Ext.define('PortalApp.view.portalConsole.dashboardTemplate.EditorViewController'
             values: {
                 id: dashboardTemplate.get('id'),
                 version: dashboardTemplate.get('version'),
-                config: JSON.stringify(board.readBoardConfigTree())
+                config: JSON.stringify(boardConfig)
             },
             success: function (data) {
                 PSR.util.Message.info('保存成功');
@@ -61,16 +65,26 @@ Ext.define('PortalApp.view.portalConsole.dashboardTemplate.EditorViewController'
             )
         );
     },
+    hBtnAutoHeight: function () {
+        const board = this.getView().down('dashboard-subboardview');
+        board.setHeight('100%');
+        board.height = '100%';
+    },
     initDashboard: function (config) {
         const view = this.getView(),
             dashboardConfig = {
                 xtype: 'dashboard-subboardview',
                 height: '100%',
-                resizable: {handles: 's'},
+                resizable: {
+                    handles: 's'
+                },
                 editing: true
             };
         view.remove(view.down('dashboard-subboardview'));
         if (config) {
+            if (config.height) {
+                dashboardConfig.height = config.height;
+            }
             dashboardConfig.boardConfig = config.boardConfig;
             dashboardConfig.subBoardConfigs = config.subBoardConfigs;
         }

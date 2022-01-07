@@ -4,7 +4,8 @@ Ext.define('PortalApp.view.portalConsole.dashboardTemplate.EditorView', {
     config: {
         dashboardTemplate: null
     },
-    layout: 'fit',
+    layout: {type: 'vbox', align: 'stretch'},
+    scrollable: 'y',
     tbar: {
         items: [{
             iconCls: 'x-fa fa-redo-alt',
@@ -20,6 +21,10 @@ Ext.define('PortalApp.view.portalConsole.dashboardTemplate.EditorView', {
             iconCls: 'x-fa fa-file-export',
             tooltip: '导出配置',
             handler: 'hBtnExport'
+        }, '|', {
+            iconCls: 'x-fa fa-vector-square',
+            tooltip: '自适应高度',
+            handler: 'hBtnAutoHeight'
         }],
         bind: {
             hidden: '{fullscreen}'
