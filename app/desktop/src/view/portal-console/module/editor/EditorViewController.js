@@ -32,7 +32,7 @@ Ext.define('PortalApp.view.portalConsole.module.EditorViewController', {
             module = viewModel.get('module'),
             newModule = Ext.data.Model.loadData(data);
         if (!module || data.id != module.get('id')) {
-            view.fireEvent('switchview', {
+            view.fireEvent('resetview', {
                 viewId: 'portalconsole-module-editorview-' + data.id,
                 title: '模块',
                 iconCls: 'x-fa fa-edit',
@@ -41,7 +41,6 @@ Ext.define('PortalApp.view.portalConsole.module.EditorViewController', {
                     module: newModule
                 },
             });
-            view.close();
         } else {
             viewModel.set('module', newModule);
             this.afterModuleLoad();

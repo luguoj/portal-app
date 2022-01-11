@@ -49,8 +49,17 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
         try {
             const item = Ext.create(newViewConfig);
             view.add(item);
-            item.addListener('switchview', function (opt) {
-                me.switchView(opt);
+            item.addListener('switchview', function (newopt) {
+                me.switchView(newopt);
+            });
+            item.addListener('resetview', function (newopt) {
+                if (newopt) {
+                    item.close();
+                    me.switchView(newopt);
+                } else {
+                    item.close();
+                    me.switchView(opt);
+                }
             });
             me.switchView(opt);
         } catch (e) {
