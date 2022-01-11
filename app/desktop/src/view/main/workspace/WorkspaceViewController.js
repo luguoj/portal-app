@@ -61,6 +61,13 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
                     me.switchView(opt);
                 }
             });
+            item.addListener('popupview', function (view) {
+                if (view) {
+                    item.add(view).show();
+                } else {
+                    console.error(new Error("弹窗没有配置"));
+                }
+            });
             me.switchView(opt);
         } catch (e) {
             console.error(e);
