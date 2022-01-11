@@ -98,11 +98,11 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
     },
     hBtnConfig: function (btn) {
         const view = this.getView(),
-            dashboard = view.up('dashboardview'),
-            editor = this.editor = dashboard.add({
+            editor = this.editor = Ext.create({
                 xtype: 'dashboard-subboard-editorview',
                 boardId: view.getBoardId(),
                 boardConfig: view.getBoardConfig(),
+                animateTarget: view,
                 listeners: {
                     save: function (boardConfig) {
                         try {
@@ -117,8 +117,8 @@ Ext.define('PortalApp.view.dashboard.SubBoardViewViewController', {
                     }
                 }
             });
+        view.fireEvent('popupview', editor);
         view.mask();
-        editor.show(view);
     },
     hBtnRemove: function () {
         const view = this.getView();
