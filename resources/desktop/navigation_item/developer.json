@@ -1,26 +1,14 @@
 [
   {
-    "parentId": null,
-    "id": "console-docs",
-    "text": "文档",
-    "iconCls": "x-fa fa-list-alt"
+    "id": "development",
+    "text": "开发",
+    "iconCls": "x-fa fa-code",
+    "expanded": true
   },
   {
-    "parentId": "console-docs",
-    "id": "console-docs-api",
-    "text": "APIs",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "psr-view-docs-apiview"
-    }
-  },
-  {
-    "parentId": "console-docs",
-    "id": "console-docs-extjs",
-    "text": "Extjs",
-    "iconCls": "x-fa fa-list-alt",
-    "viewConfig": {
-      "xtype": "psr-view-docs-extjsview"
-    }
+    "parentId": "development",
+    "id": "my-view-id",
+    "text": "开发中的视图",
+    "iconCls": "x-fa fa-code"
   }
 ]

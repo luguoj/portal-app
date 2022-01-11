@@ -26,18 +26,8 @@ Ext.define('PortalApp.view.main.MainViewController', {
         if (token) {
             const viewModel = this.getViewModel(),
                 navNodeStore = this.getStore('navNodes');
-            let getProfileUrl = window.portalEnv.gateway + '/portal/api/user_profile/portal/' + window.portalEnv.portalCode + '-' + window.portalEnv.profile;
-            if (token.username == 'platform_admin') {
-                getProfileUrl = 'resources/' + window.portalEnv.profile + '/navigation_item/platform_admin.json';
-            } else if (window.portalEnv.develop) {
-                getProfileUrl = 'resources/' + window.portalEnv.profile + '/navigation_item/developer.json';
-            }
-            PSR.data.Ajax.request({
-                method: 'GET',
-                url: getProfileUrl,
-                withAuthToken: true,
-                disableCaching: true,
-                bizSuccess: function (data) {
+            PortalApp.data.api.portal.UserProfileApi.portal({
+                success: function (data) {
                     const navigationItems = [];
                     if (data.dashboardTemplates && data.dashboardTemplates.length > 0) {
                         navigationItems.push({
