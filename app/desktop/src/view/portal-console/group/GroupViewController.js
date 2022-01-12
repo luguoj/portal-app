@@ -155,7 +155,7 @@ Ext.define('PortalApp.view.portalConsole.GroupViewController', {
         view.fireEvent('switchview', {
             viewId: 'portalconsole-group-dashboardtemplateview-' + record.get('id'),
             title: '分组概览模板:' + record.get('code'),
-            iconCls: 'x-fa fa-chart-pie',
+            iconCls: 'x-fa fa-chart-line',
             viewConfig: {
                 xtype: 'portalconsole-group-dashboardtemplateview',
                 group: record,

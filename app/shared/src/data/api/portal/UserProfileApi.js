@@ -211,9 +211,18 @@ Ext.define('PortalApp.data.api.portal.UserProfileApi', {
                 },
                 {
                     "parentId": "portalconsole",
+                    "id": "portalconsole-dashboard-partview",
+                    "text": "概览部件",
+                    "iconCls": "x-fa fa-chart-pie",
+                    "viewConfig": {
+                        "xtype": "portalconsole-dashboard-partview"
+                    }
+                },
+                {
+                    "parentId": "portalconsole",
                     "id": "portalconsole-dashboardtemplateview",
                     "text": "概览模板",
-                    "iconCls": "x-fa fa-chart-pie",
+                    "iconCls": "x-fa fa-chart-line",
                     "viewConfig": {
                         "xtype": "portalconsole-dashboardtemplateview"
                     }

@@ -33,7 +33,7 @@ Ext.define('PortalApp.view.main.MainViewController', {
                         navigationItems.push({
                             "id": "dashboard",
                             "text": "概览",
-                            "iconCls": "x-fa fa-chart-pie",
+                            "iconCls": "x-fa fa-chart-line",
                             "expanded": false,
                             "sort": -1
                         });
@@ -43,7 +43,7 @@ Ext.define('PortalApp.view.main.MainViewController', {
                                 "id": "dashboard-" + dashboardTemplate.id,
                                 "parentId": "dashboard",
                                 "text": dashboardTemplate.description,
-                                "iconCls": "x-fa fa-chart-pie",
+                                "iconCls": "x-fa fa-chart-line",
                                 "viewConfig": {
                                     "xtype": "main-dashboardview",
                                     "dashboardConfig": dashboardTemplate.config

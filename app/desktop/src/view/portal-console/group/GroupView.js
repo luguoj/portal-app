@@ -59,7 +59,7 @@ Ext.define('PortalApp.view.portalConsole.GroupView', {
                     return record.get('version') == null;
                 }
             }, {
-                iconCls: 'x-fa fa-chart-pie',
+                iconCls: 'x-fa fa-chart-line',
                 altText: '分组概览模板',
                 tooltip: '分组概览模板',
                 handler: 'hBtnDashboardTemplate',
