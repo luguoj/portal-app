@@ -10,14 +10,9 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
         if (!tabView) {
             const moduleId = opt.moduleId;
             if (moduleId) {
-                PortalApp.util.Module.load({
+                me.loadModule({
                     moduleId: moduleId,
-                    success: function (module) {
-                        if (module.actions) {
-                            for (let i = 0; i < module.actions.length; i++) {
-                                viewModel.set('module-action-' + moduleId + '-' + module.actions[i], true);
-                            }
-                        }
+                    success: function () {
                         me.createTabView(opt);
                     },
                     failure: function () {
@@ -30,6 +25,31 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
         } else {
             view.setActiveItem(tabView);
         }
+    },
+    loadModule: function (opt) {
+        const me = this,
+            viewModel = me.getViewModel(),
+            moduleId = opt.moduleId,
+            success = opt.success,
+            failure = opt.failure;
+        PortalApp.util.Module.load({
+            moduleId: moduleId,
+            success: function (module) {
+                if (module.actions) {
+                    for (let i = 0; i < module.actions.length; i++) {
+                        viewModel.set('module-action-' + moduleId + '-' + module.actions[i], true);
+                    }
+                }
+                if (success) {
+                    success();
+                }
+            },
+            failure: function () {
+                if (failure) {
+                    failure();
+                }
+            }
+        });
     },
     createTabView: function (opt) {
         const me = this,
@@ -67,6 +87,9 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
                 } else {
                     console.error(new Error("弹窗没有配置"));
                 }
+            });
+            item.addListener('loadmodule', function (opt) {
+                me.loadModule(opt);
             });
             me.switchView(opt);
         } catch (e) {
