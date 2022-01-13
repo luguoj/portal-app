@@ -64,6 +64,10 @@ Ext.define('PortalApp.util.Module', {
                             module.ready.scriptFile = 'failure';
                             module.ready.styleFile = 'failure';
                         }
+                    },
+                    failure: function () {
+                        module.ready.scriptFile = 'failure';
+                        module.ready.styleFile = 'failure';
                     }
                 });
             }
