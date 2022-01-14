@@ -70,28 +70,7 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
         try {
             const item = Ext.create(newViewConfig);
             view.add(item);
-            item.addListener('switchview', function (newopt) {
-                me.switchView(newopt);
-            });
-            item.addListener('resetview', function (newopt) {
-                if (newopt) {
-                    item.close();
-                    me.switchView(newopt);
-                } else {
-                    item.close();
-                    me.switchView(opt);
-                }
-            });
-            item.addListener('popupview', function (view) {
-                if (view) {
-                    item.add(view).show();
-                } else {
-                    console.error(new Error("弹窗没有配置"));
-                }
-            });
-            item.addListener('loadmodule', function (opt) {
-                me.loadModule(opt);
-            });
+            item.originOpt = opt;
             me.switchView(opt);
         } catch (e) {
             console.error(e);
@@ -109,6 +88,22 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
             this.redirectTo(window.btoa(activateTab.getItemId()).replaceAll('=', ''));
         } else {
             this.redirectTo('');
+        }
+    },
+    onPopupView: function (view, popup) {
+        if (popup) {
+            view.add(popup).show();
+        } else {
+            console.error(new Error("弹窗没有配置"));
+        }
+    },
+    onResetView: function (view, newopt) {
+        if (newopt) {
+            view.close();
+            this.switchView(newopt);
+        } else {
+            view.close();
+            this.switchView(view.originOpt);
         }
     }
 });
