@@ -27,13 +27,13 @@ Ext.define('PortalApp.util.Module', {
                     withAuthToken: true,
                     disableCaching: true,
                     bizSuccess: function (data) {
-                        if (data && data.module) {
+                        if (data && data.module && data.module.enabled) {
                             Object.assign(module, data.module);
                             module.actions = data.moduleActions;
                             module.resources = data.moduleResources;
                             if (module.scriptFileId) {
                                 PSR.util.Import.script({
-                                    url: PortalApp.data.api.file.FileApi.getAPIUrl() + '1/' + module.scriptFileId,
+                                    url: PortalApp.data.api.file.FileApi.getAPIUrl() + '/' + module.scriptFileId,
                                     withAuthToken: true,
                                     success: function () {
                                         module.ready.scriptFile = true;
@@ -72,6 +72,7 @@ Ext.define('PortalApp.util.Module', {
                 });
             }
             if (module.ready.scriptFile == 'failure' || module.ready.styleFile == 'failure') {
+                delete PortalApp.util.Module.module[moduleId];
                 console.error(new Error('模块加载失败'));
                 if (opt.failure) {
                     opt.failure();
