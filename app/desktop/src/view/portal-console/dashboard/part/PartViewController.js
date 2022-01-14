@@ -182,25 +182,28 @@ Ext.define('PortalApp.view.portalConsole.dashboard.PartViewController', {
             record = grid.getStore().getAt(rowIndex),
             editor = this.editor = Ext.create({
                 xtype: 'portalconsole-dashboard-part-editorview',
-                partCode: record.get('code'),
-                partConfigValue: record.get('config'),
+                width: view.getWidth() * 0.75,
+                height: view.getHeight() * 0.75,
+                dashboardPart: record,
                 listeners: {
-                    save: function (configValue) {
+                    save: function (values) {
                         const newValues = {
                             id: record.get('id'),
                             version: record.get('version'),
-                            config: JSON.stringify(JSON.parse(configValue))
+                            moduleId: values.moduleId,
+                            config: JSON.stringify(JSON.parse(values.configValue))
                         }
                         PortalApp.data.api.entity.EntityCRUDApi.patch({
                             application: 'portal',
                             domainType: 'org.psr.platform.portal.entity.DashboardPartEntity',
-                            fields: ['config',],
+                            fields: ['config', 'moduleId'],
                             values: newValues,
                             success: function (data) {
                                 PSR.util.Message.info('保存成功');
+                                record.set('moduleId', data.moduleId);
                                 record.set('config', data.config);
                                 record.set('version', data.version);
-                                editor.setPartConfigValue(data.config);
+                                editor.setDashboardPart(Ext.data.Model.loadData(data));
                             }
                         })
                     },

@@ -2,13 +2,11 @@ Ext.define('PortalApp.view.portalConsole.dashboard.part.EditorView', {
     extend: 'Ext.window.Window',
     xtype: 'portalconsole-dashboard-part-editorview',
     config: {
-        partCode: null,
-        partConfigValue: null
+        dashboardPart: null
     },
-    constrain: true,
-    width: '25%',
-    height: '50%',
-    layout: 'fit',
+    width: '75%',
+    height: '75%',
+    layout: {type: 'hbox', align: 'stretch'},
     bodyPadding: 10,
     tools: [{
         iconCls: 'x-fa fa-clipboard-check',
@@ -30,9 +28,10 @@ Ext.define('PortalApp.view.portalConsole.dashboard.part.EditorView', {
         handler: 'hBtnRefresh'
     }],
     items: [{
+        flex: 1,
         xtype: 'form',
         reference: 'form',
-        padding: 10,
+        padding: '10 10 0 10',
         trackResetOnLoad: true,
         defaults: {
             anchor: '100%'
@@ -42,6 +41,31 @@ Ext.define('PortalApp.view.portalConsole.dashboard.part.EditorView', {
             align: 'stretch'
         },
         items: [{
+            xtype: 'combobox',
+            name: 'moduleId',
+            valueField: 'id',
+            displayField: 'code',
+            forceSelection: true,
+            fieldLabel: '选择模块',
+            typeAhead: true,
+            pageSize: 50,
+            listConfig: {
+                loadingText: '搜索中...',
+                emptyText: '没有发现匹配的模块.',
+            },
+            beforeQuery: function (queryPlan) {
+                this.getStore().addFilter(
+                    {
+                        property: 'code',
+                        operator: 'like',
+                        value: '%' + queryPlan.query + '%'
+                    }, true);
+                return queryPlan;
+            },
+            bind: {
+                store: '{modules}'
+            }
+        }, {
             xtype: 'textareafield',
             name: 'configValue',
             flex: 1
@@ -49,14 +73,17 @@ Ext.define('PortalApp.view.portalConsole.dashboard.part.EditorView', {
         listeners: {
             dirtychange: 'onFrmDirtyChange'
         }
+    }, {
+        flex: 1,
+        xtype: 'panel', reference: 'pnPreview',
+        frame: true,
+        layout: 'fit'
     }],
     bind: {
         title: '部件配置 {partCode}'
     },
-    updatePartCode: function (value) {
-        this.getViewModel().set('partCode', value);
-    },
-    updatePartConfigValue: function () {
+    updateDashboardPart: function (value) {
+        this.getViewModel().set('partCode', value.get('code'));
         this.getController().loadData();
     },
     controller: 'portalconsole-dashboard-part-editorviewcontroller',
@@ -64,6 +91,16 @@ Ext.define('PortalApp.view.portalConsole.dashboard.part.EditorView', {
         data: {
             partCode: '',
             dirty: false
+        },
+        stores: {
+            modules: {
+                type: 'entity',
+                application: 'portal',
+                domainType: 'org.psr.platform.portal.entity.ModuleEntity',
+                pageSize: 50,
+                remoteSort: true,
+                autoLoad: true
+            }
         }
     }
 });
