@@ -72,7 +72,7 @@ Ext.define('PortalApp.util.Module', {
                 });
             }
             if (module.ready.scriptFile == 'failure' || module.ready.styleFile == 'failure') {
-                PSR.util.Message.error('模块加载失败');
+                console.error(new Error('模块加载失败'));
                 if (opt.failure) {
                     opt.failure();
                 }

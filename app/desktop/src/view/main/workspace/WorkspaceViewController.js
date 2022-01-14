@@ -16,6 +16,7 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
                         me.createTabView(opt);
                     },
                     failure: function () {
+                        PSR.util.Message.info('模块加载失败');
                         me.refreshToken();
                     }
                 });
