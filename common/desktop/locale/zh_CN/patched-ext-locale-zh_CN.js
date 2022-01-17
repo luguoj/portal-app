@@ -38,3 +38,7 @@ Ext.define('Ext.locale.zh_CN.ux.TabCloseMenu', {
     closeOtherTabsText: '关闭其他标签页',
     closeAllTabsText: '关闭所有标签页'
 });
+Ext.define('Ext.locale.zh_CN.window.Window', {
+    override: 'Ext.window.Window',
+    closeToolText: '关闭对话框'
+});
