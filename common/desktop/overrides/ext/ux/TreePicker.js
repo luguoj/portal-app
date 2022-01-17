@@ -5,7 +5,10 @@ Ext.define('PSR.overrides.Ext.ux.TreePicker', {
     },
     initComponent: function () {
         var me = this;
-        this.store = this.store || Ext.data.StoreManager.lookup('ext-empty-store');
+        this.store = this.store || Ext.StoreMgr.lookup({
+            type: 'tree',
+            proxy: 'memory'
+        });
         me.callParent(arguments);
     },
     updateStore: function (store) {
