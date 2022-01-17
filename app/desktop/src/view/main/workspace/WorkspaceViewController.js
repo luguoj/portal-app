@@ -105,5 +105,20 @@ Ext.define('PortalApp.view.main.WorkspaceViewController', {
             view.close();
             this.switchView(view.originOpt);
         }
+    },
+    onAdd: function (view, component, index) {
+        const me = this;
+        component.addListener('loadmodule', function (opt) {
+            me.loadModule(opt);
+        });
+        component.addListener('popupview', function (popup) {
+            me.onPopupView(component, popup);
+        });
+        component.addListener('resetview', function (newopt) {
+            me.onResetView(component, newopt);
+        });
+        component.addListener('switchview', function (newopt) {
+            me.switchView(newopt);
+        });
     }
 });

@@ -10,21 +10,7 @@ Ext.define('PortalApp.view.main.WorkspaceView', {
     plain: true,
     ui: 'portal-main-workspace-tab',
     defaults: {
-        closable: true,
-        listeners: {
-            loadmodule: function (opt) {
-                this.up('main-workspaceview').getController().loadModule(opt);
-            },
-            popupview: function (popup) {
-                this.up('main-workspaceview').getController().onPopupView(this, popup);
-            },
-            resetview: function (newopt) {
-                this.up('main-workspaceview').getController().onResetView(this, newopt);
-            },
-            switchview: function (newopt) {
-                this.up('main-workspaceview').getController().switchView(newopt);
-            }
-        }
+        closable: true
     },
     items: [],
     switchView: function (opt) {
@@ -32,6 +18,7 @@ Ext.define('PortalApp.view.main.WorkspaceView', {
     },
     listeners: {
         tabchange: 'onTabChange',
-        remove: 'onTabRemove'
+        remove: 'onTabRemove',
+        add: 'onAdd'
     }
 });
