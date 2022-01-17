@@ -1,6 +1,6 @@
-Ext.define('PortalApp.view.portalConsole.DashboardTemplateView', {
+Ext.define('PortalApp.view.portalConsole.dashboard.TemplateView', {
     extend: 'Ext.panel.Panel',
-    xtype: 'portalconsole-dashboardtemplateview',
+    xtype: 'portalconsole-dashboard-templateview',
     layout: 'fit',
     tbar: {
         items: ['门户:', {
@@ -105,7 +105,7 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateView', {
             edit: 'onGrdEdit'
         }
     }],
-    controller: 'portalconsole-dashboardtemplateviewcontroller',
+    controller: 'portalconsole-dashboard-templateviewcontroller',
     viewModel: {
         data: {
             portalId: null

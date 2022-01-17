@@ -39,17 +39,24 @@ Ext.define('PortalApp.view.main.MainViewController', {
                         });
                         for (let i = 0; i < data.dashboardTemplates.length; i++) {
                             const dashboardTemplate = data.dashboardTemplates[i];
-                            navigationItems.push({
-                                "id": "dashboard-" + dashboardTemplate.id,
-                                "parentId": "dashboard",
-                                "text": dashboardTemplate.description,
-                                "iconCls": "x-fa fa-chart-line",
-                                "viewConfig": {
-                                    "xtype": "main-dashboardview",
-                                    "dashboardConfig": dashboardTemplate.config
-                                },
-                                "sort": dashboardTemplate.description
-                            });
+                            if (dashboardTemplate.config) {
+                                const viewConfig = Object.assign({
+                                        xtype: 'dashboard-partview'
+                                    },
+                                    eval('(' + dashboardTemplate.config + ')')
+                                );
+                                navigationItems.push({
+                                    "id": "dashboardview-" + dashboardTemplate.id,
+                                    "parentId": "dashboard",
+                                    "text": dashboardTemplate.description,
+                                    "iconCls": "x-fa fa-chart-line",
+                                    "viewConfig": {
+                                        "xtype": "dashboardview",
+                                        "mainPart": viewConfig
+                                    },
+                                    "sort": dashboardTemplate.description
+                                });
+                            }
                         }
                     }
                     navigationItems.push(...data.navigationItems);

@@ -1,6 +1,6 @@
 Ext.define('PortalApp.view.portalConsole.DashboardTemplateViewController', {
     extend: 'Ext.app.ViewController',
-    alias: 'controller.portalconsole-dashboardtemplateviewcontroller',
+    alias: 'controller.portalconsole-dashboard-templateviewcontroller',
     afterRender: function (view) {
         this.loadData();
     },
@@ -143,17 +143,33 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateViewController', {
             view = this.getView(),
             record = grid.getStore().getAt(rowIndex);
         view.fireEvent('switchview', {
-            viewId: 'portalconsole-dashboardtemplate-editorview-' + record.get('id'),
+            viewId: 'dashboardview-editing-' + record.get('id'),
             title: '概览:' + record.get('text'),
             iconCls: 'x-fa fa-edit',
             viewConfig: {
-                xtype: 'portalconsole-dashboardtemplate-editorview',
-                dashboardTemplate: record,
+                xtype: 'dashboardview',
+                editing: true,
+                mainPart: JSON.parse(record.get('config')),
                 listeners: {
-                    save: function (data) {
-                        for (let dataKey in data) {
-                            record.set(dataKey, data[dataKey]);
-                        }
+                    save: function (template) {
+                        const dashboardview = this;
+                        PortalApp.data.api.entity.EntityCRUDApi.patch({
+                            application: 'portal',
+                            domainType: 'org.psr.platform.portal.entity.DashboardTemplateEntity',
+                            fields: ['config'],
+                            values: {
+                                id: record.get('id'),
+                                version: record.get('version'),
+                                config: JSON.stringify(template)
+                            },
+                            success: function (data) {
+                                PSR.util.Message.info('保存成功');
+                                for (let dataKey in data) {
+                                    record.set(dataKey, data[dataKey]);
+                                }
+                                dashboardview.setMainPart(template);
+                            }
+                        });
                     }
                 }
             },

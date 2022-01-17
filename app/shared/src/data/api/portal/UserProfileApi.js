@@ -220,11 +220,11 @@ Ext.define('PortalApp.data.api.portal.UserProfileApi', {
                 },
                 {
                     "parentId": "portalconsole",
-                    "id": "portalconsole-dashboardtemplateview",
+                    "id": "portalconsole-dashboard-templateview",
                     "text": "概览模板",
                     "iconCls": "x-fa fa-chart-line",
                     "viewConfig": {
-                        "xtype": "portalconsole-dashboardtemplateview"
+                        "xtype": "portalconsole-dashboard-templateview"
                     }
                 },
                 {
