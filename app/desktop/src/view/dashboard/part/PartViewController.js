@@ -52,7 +52,7 @@ Ext.define('PortalApp.view.dashboard.PartViewController', {
                         domainType: 'org.psr.platform.portal.entity.DashboardPartEntity',
                         ids: [dashboardPartId],
                         success: function (data) {
-                            if (data && data.length > 0) {
+                            if (data && data.length > 0 && data[0].enabled) {
                                 const moduleId = data[0].moduleId,
                                     partConfig = data[0].config;
                                 const finalConfig = Object.assign(
@@ -66,7 +66,18 @@ Ext.define('PortalApp.view.dashboard.PartViewController', {
                                     moduleId: moduleId,
                                     componentTpl: finalConfig
                                 });
+                            } else {
+                                ctContent.add({
+                                    xtype: 'container', layout: 'center',
+                                    items: [{html: '部件模板不存在或未激活'}]
+                                })
                             }
+                        },
+                        failure: function () {
+                            ctContent.add({
+                                xtype: 'container', layout: 'center',
+                                items: [{html: '部件模板加载失败'}]
+                            })
                         }
                     });
                 } else {
