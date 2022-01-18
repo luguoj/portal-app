@@ -18,7 +18,7 @@ Ext.define('PortalApp.view.dashboard.part.EditorViewController', {
             delete extraConfig.dashboardPartId;
             form.loadRecord(Ext.data.Model.loadData({
                 dashboardPartId: dashboardPartId ? dashboardPartId : null,
-                extraConfig: extraConfig ? JSON.stringify(extraConfig, null, 2) : ''
+                extraConfigValue: extraConfig ? JSON.stringify(extraConfig, null, 2) : ''
             }));
         }
     },
@@ -72,6 +72,8 @@ Ext.define('PortalApp.view.dashboard.part.EditorViewController', {
             modulePartTreeStore.getProxy().setData({children: modulePartTreeData});
             modulePartTreeStore.load();
         }
+        this.loadPart();
+        this.hBtnCheck();
     },
     hBtnRefresh: function () {
         this.loadData();
@@ -82,51 +84,50 @@ Ext.define('PortalApp.view.dashboard.part.EditorViewController', {
     hBtnCheck: function () {
         const form = this.lookup('form'),
             values = form.getValues(),
-            extraConfig = values.extraConfig,
             moduleId = this.lookup('txtPartModuleId').getValue(),
-            partConfig = this.lookup('txtPartConfig').getValue(),
-            txtExtraConfig = form.down('textarea[name=extraConfig]');
+            partConfigValue = this.lookup('txtPartConfigValue').getValue(),
+            txtExtraConfigValue = form.down('textarea[name=extraConfigValue]'),
+            pnPreview = this.lookup('pnPreview');
+        let partConfig, extraConfig, finalConfig;
         try {
-            txtExtraConfig.setValue(
-                JSON.stringify(eval('(' + extraConfig + ')'), null, 2)
-            );
-            PSR.util.Message.info('校验成功');
-            const pnPreview = this.lookup('pnPreview');
-            pnPreview.removeAll();
-            this.getView().fireEvent('loadmodule', {
-                moduleId: moduleId,
-                success: function () {
-                    const finalConfig = Object.assign(
-                        {},
-                        eval('(' + partConfig + ')'),
-                        eval('(' + extraConfig + ')')
-                    );
-                    pnPreview.add(Ext.create(finalConfig));
-                },
-                failure: function () {
-                    pnPreview.add({
-                        layout: 'center',
-                        items: [{html: '模块加载失败'}]
-                    });
-                }
-            });
-            return true
+            partConfig = partConfigValue ? eval('(' + partConfigValue + ')') : null;
         } catch (e) {
             console.error(e);
-            PSR.util.Message.info('校验失败');
+            PSR.util.Message.info('部件配置语法错误');
             return false;
         }
+        try {
+            extraConfig = values.extraConfigValue ? eval('(' + values.extraConfigValue + ')') : null;
+        } catch (e) {
+            console.error(e);
+            PSR.util.Message.info('额外配置语法错误');
+            return false;
+        }
+        txtExtraConfigValue.setValue(JSON.stringify(extraConfig, null, 2));
+        pnPreview.removeAll();
+        finalConfig = Object.assign(
+            {},
+            partConfig,
+            extraConfig
+        );
+        pnPreview.add({
+            xtype: 'portalapp-modulecomponent',
+            moduleId: moduleId,
+            componentTpl: finalConfig
+        });
+        PSR.util.Message.info('校验成功');
+        return true
     },
     hBtnSave: function () {
         const view = this.getView(),
             form = this.lookup('form');
         if (this.hBtnCheck()) {
             const values = form.getValues(),
-                extraConfig = values.extraConfig,
+                extraConfigValue = values.extraConfigValue,
                 dashboardPartId = values.dashboardPartId,
                 content = Object.assign(
                     {},
-                    JSON.parse(extraConfig),
+                    JSON.parse(extraConfigValue),
                     {
                         dashboardPartId: dashboardPartId
                     }
@@ -134,11 +135,15 @@ Ext.define('PortalApp.view.dashboard.part.EditorViewController', {
             view.fireEvent('save', content);
         }
     },
-    onTreePickSelect: function (picker, record) {
-        const view = this.getView(),
+    loadPart: function () {
+        const partStore = this.getStore('parts'),
+            form = this.lookup('form'),
+            values = form.getValues(),
+            dashboardPartId = values.dashboardPartId,
             txtModuleId = this.lookup('txtPartModuleId'),
-            txtPartConfig = this.lookup('txtPartConfig');
-        txtModuleId.setValue(record.get('moduleId'));
-        txtPartConfig.setValue(record.get('config'));
-    },
+            txtPartConfigValue = this.lookup('txtPartConfigValue'),
+            record = (dashboardPartId && partStore.isLoaded()) ? partStore.findRecord('id', dashboardPartId) : null;
+        txtModuleId.setValue(record ? record.get('moduleId') : '');
+        txtPartConfigValue.setValue(record ? record.get('config') : '');
+    }
 });

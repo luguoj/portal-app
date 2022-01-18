@@ -30,9 +30,8 @@ Ext.define('PortalApp.view.dashboard.part.EditorView', {
     }],
     items: [{
         flex: 1,
-        xtype: 'form',
+        xtype: 'form', reference: 'form',
         frame: true,
-        reference: 'form',
         trackResetOnLoad: true,
         padding: '10 10 0 10',
         defaults: {
@@ -43,8 +42,7 @@ Ext.define('PortalApp.view.dashboard.part.EditorView', {
             align: 'stretch'
         },
         items: [{
-            xtype: 'treepicker',
-            name: 'dashboardPartId',
+            xtype: 'treepicker', name: 'dashboardPartId',
             valueField: 'id',
             displayField: 'code',
             rootVisible: false,
@@ -70,26 +68,30 @@ Ext.define('PortalApp.view.dashboard.part.EditorView', {
                 }
             },
             listeners: {
-                select: 'onTreePickSelect'
+                change: 'loadPart'
             }
         }, {
             xtype: 'textfield', reference: 'txtPartModuleId',
             fieldLabel: '模板模块ID',
             editable: false
         }, {
-            xtype: 'textareafield', reference: 'txtPartConfig',
+            xtype: 'textareafield', reference: 'txtPartConfigValue',
             flex: 1,
             fieldLabel: '部件配置',
             editable: false
         }, {
-            xtype: 'textareafield',
-            name: 'extraConfig',
+            xtype: 'textareafield', name: 'extraConfigValue',
             flex: 1,
             fieldLabel: '部件额外配置'
         }],
         listeners: {
             dirtychange: 'onFrmDirtyChange'
         }
+    }, {
+        xtype: 'splitter',
+        maskOnDisable: false,
+        collapseOnDblClick: false,
+        height: 3, width: 3
     }, {
         flex: 1,
         xtype: 'panel', reference: 'pnPreview',
