@@ -41,6 +41,8 @@ Ext.define('PortalApp.component.ModuleComponent', {
                     });
                 }
             });
+        } else {
+            me.createComponentItem();
         }
     },
     createComponentItem: function () {
