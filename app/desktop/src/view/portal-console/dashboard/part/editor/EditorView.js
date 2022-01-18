@@ -31,6 +31,7 @@ Ext.define('PortalApp.view.portalConsole.dashboard.part.EditorView', {
         flex: 1,
         xtype: 'form',
         reference: 'form',
+        frame: true,
         padding: '10 10 0 10',
         trackResetOnLoad: true,
         defaults: {
@@ -68,11 +69,21 @@ Ext.define('PortalApp.view.portalConsole.dashboard.part.EditorView', {
         }, {
             xtype: 'textareafield',
             name: 'configValue',
+            fieldLabel: '部件配置',
             flex: 1
+        }, {
+            xtype: 'textareafield', reference: 'txtTestingConfig',
+            flex: 1,
+            fieldLabel: '部件测试配置'
         }],
         listeners: {
             dirtychange: 'onFrmDirtyChange'
         }
+    }, {
+        xtype: 'splitter',
+        maskOnDisable: false,
+        collapseOnDblClick: false,
+        height: 3, width: 3
     }, {
         flex: 1,
         xtype: 'panel', reference: 'pnPreview',

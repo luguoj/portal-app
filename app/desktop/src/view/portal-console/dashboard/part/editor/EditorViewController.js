@@ -24,27 +24,55 @@ Ext.define('PortalApp.view.portalConsole.dashboard.part.EditorViewController', {
     hBtnCheck: function () {
         const form = this.lookup('form'),
             values = form.getValues(),
-            configValue = values.configValue,
-            moduleId = values.moduleId,
-            txtConfigValue = form.down('textarea');
+            txtConfigValue = form.down('textarea[name=configValue]'),
+            txtTestingConfig = this.lookup('txtTestingConfig'),
+            pnPreview = this.lookup('pnPreview');
+        pnPreview.removeAll();
+        let partConfig, testingConfig, finalConfig;
         try {
-            txtConfigValue.setValue(
-                JSON.stringify(eval('(' + configValue + ')'), null, 2)
-            );
-            PSR.util.Message.info('校验成功');
-            const pnPreview = this.lookup('pnPreview');
-            pnPreview.removeAll();
-            pnPreview.add({
-                xtype: 'portalapp-modulecomponent',
-                moduleId: moduleId,
-                componentTpl: eval('(' + configValue + ')')
-            })
-            return true;
+            partConfig = values.configValue ? eval('(' + values.configValue + ')') : null;
+
         } catch (e) {
             console.error(e);
-            PSR.util.Message.info('校验失败');
+            PSR.util.Message.info('部件配置语法错误');
             return false;
         }
+        if (!partConfig) {
+            PSR.util.Message.info('校验失败，缺少配置');
+            return false;
+        }
+        txtConfigValue.setValue(
+            JSON.stringify(partConfig, null, 2)
+        );
+        if (!partConfig.xtype) {
+            PSR.util.Message.info('校验失败，缺少配置项xtype');
+            return false;
+        }
+        try {
+            testingConfig = txtTestingConfig.getValue() ? eval('(' + txtTestingConfig.getValue() + ')') : null;
+        } catch (e) {
+            console.error(e);
+            PSR.util.Message.info('测试配置语法错误');
+            return false;
+        }
+        if (testingConfig) {
+            txtTestingConfig.setValue(
+                JSON.stringify(testingConfig, null, 2)
+            );
+        }
+        finalConfig = Object.assign(
+            {},
+            partConfig,
+            testingConfig
+        )
+        pnPreview.add({
+            xtype: 'portalapp-modulecomponent',
+            moduleId: values.moduleId,
+            componentTpl: finalConfig
+        })
+        PSR.util.Message.info('校验成功');
+        return true;
+
     },
     hBtnRefresh: function () {
         this.loadData();
