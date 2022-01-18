@@ -5,21 +5,30 @@ Ext.define('PortalApp.util.Module', {
         const moduleId = opt.moduleId,
             module = PortalApp.util.Module.module[moduleId] = PortalApp.util.Module.module[moduleId]
                 || {
-                    loading: false,
-                    ready: {
-                        scriptFile: false,
-                        styleFile: false
-                    }
+                    loading: null,
+                    scriptFile: null,
+                    styleFile: null
                 };
-        let moduleReady = module.ready.scriptFile == true && module.ready.styleFile == true;
-        if (moduleReady) {
-            module.loading == false;
+        if (module.loading == 'complete') {
             if (opt.success) {
                 opt.success(module);
             }
             return true;
+        } else if (module.loading == 'failure') {
+            console.error(new Error('模块加载失败'));
+            if (opt.failure) {
+                opt.failure();
+            }
+        } else if (module.loading == true) {
+            if (module.scriptFile != null && module.styleFile != null) {
+                module.loading = 'complete';
+            } else {
+                setTimeout(function () {
+                    PortalApp.util.Module.load(opt);
+                }, 250);
+            }
         } else {
-            if (!module.loading) {
+            if (module.loading == null) {
                 module.loading = true;
                 PSR.data.Ajax.request({
                     method: 'GET',
@@ -36,51 +45,44 @@ Ext.define('PortalApp.util.Module', {
                                     url: PortalApp.data.api.file.FileApi.getAPIUrl() + '/' + module.scriptFileId,
                                     withAuthToken: true,
                                     success: function () {
-                                        module.ready.scriptFile = true;
+                                        module.scriptFile = true;
                                     },
                                     failure: function () {
-                                        module.ready.scriptFile = 'failure';
+                                        module.scriptFile = false;
                                     }
                                 });
                             } else {
-                                module.ready.scriptFile = true;
+                                module.scriptFile = false;
                             }
                             if (module.styleFileId) {
                                 PSR.util.Import.style({
                                     url: PortalApp.data.api.file.FileApi.getAPIUrl() + '/' + module.styleFileId,
                                     withAuthToken: true,
                                     success: function () {
-                                        module.ready.styleFile = true;
+                                        module.styleFile = true;
                                     },
                                     failure: function () {
-                                        module.ready.styleFile = 'failure';
+                                        module.styleFile = false;
                                     }
                                 });
                             } else {
-                                module.ready.styleFile = true;
+                                module.styleFile = false;
                             }
                         } else {
                             console.log(data);
-                            module.ready.scriptFile = 'failure';
-                            module.ready.styleFile = 'failure';
+                            module.loading = 'failure';
                         }
                     },
                     failure: function () {
-                        module.ready.scriptFile = 'failure';
-                        module.ready.styleFile = 'failure';
+                        module.loading = 'failure';
+                        if (opt.failure) {
+                            opt.failure();
+                        }
+                    },
+                    complete: function () {
+                        PortalApp.util.Module.load(opt);
                     }
                 });
-            }
-            if (module.ready.scriptFile == 'failure' || module.ready.styleFile == 'failure') {
-                delete PortalApp.util.Module.module[moduleId];
-                console.error(new Error('模块加载失败'));
-                if (opt.failure) {
-                    opt.failure();
-                }
-            } else {
-                setTimeout(function () {
-                    PortalApp.util.Module.load(opt);
-                }, 250);
             }
             return false;
         }
