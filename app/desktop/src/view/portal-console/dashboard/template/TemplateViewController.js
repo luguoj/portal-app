@@ -148,6 +148,7 @@ Ext.define('PortalApp.view.portalConsole.DashboardTemplateViewController', {
             iconCls: 'x-fa fa-edit',
             viewConfig: {
                 xtype: 'dashboardview',
+                editable: true,
                 editing: true,
                 mainPart: JSON.parse(record.get('config')),
                 listeners: {

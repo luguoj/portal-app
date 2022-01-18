@@ -19,7 +19,8 @@ Ext.define('PortalApp.view.dashboard.DashboardView', {
             enableToggle: true,
             toggleHandler: 'hBtnEdit',
             bind: {
-                pressed: '{editing}'
+                hidden: '{!editable}',
+                pressed: '{editable&&editing}'
             }
         }, {
             iconCls: 'x-fa fa-save',
@@ -69,6 +70,9 @@ Ext.define('PortalApp.view.dashboard.DashboardView', {
             hidden: '{fullscreen}'
         }
     },
+    updateEditable: function (value) {
+        this.getViewModel().set('editable', value);
+    },
     updateMainPart: function (value) {
         this.getController().loadData();
     },
@@ -84,6 +88,7 @@ Ext.define('PortalApp.view.dashboard.DashboardView', {
     controller: 'dashboard-dashboardviewcontroller',
     viewModel: {
         data: {
+            editable: true,
             editing: false,
             dashboardTemplateId: null
         }
