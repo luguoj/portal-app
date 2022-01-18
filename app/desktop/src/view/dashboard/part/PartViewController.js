@@ -55,24 +55,17 @@ Ext.define('PortalApp.view.dashboard.PartViewController', {
                             if (data && data.length > 0) {
                                 const moduleId = data[0].moduleId,
                                     partConfig = data[0].config;
-                                view.fireEvent('loadmodule', {
+                                const finalConfig = Object.assign(
+                                    {},
+                                    eval('(' + partConfig + ')'),
+                                    contentTemplate
+                                )
+                                delete finalConfig.dashboardPartId;
+                                ctContent.add({
+                                    xtype: 'portalapp-modulecomponent',
                                     moduleId: moduleId,
-                                    success: function () {
-                                        const finalPartConfig = Object.assign(
-                                            {},
-                                            eval('(' + partConfig + ')'),
-                                            contentTemplate
-                                        )
-                                        delete finalPartConfig.dashboardPartId;
-                                        ctContent.add(Ext.create(finalPartConfig));
-                                    },
-                                    failure: function () {
-                                        ctContent.add({
-                                            layout: 'center',
-                                            items: [{html: '模块加载失败'}]
-                                        });
-                                    }
-                                })
+                                    componentTpl: finalConfig
+                                });
                             }
                         }
                     });
