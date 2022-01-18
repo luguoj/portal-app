@@ -27,8 +27,8 @@
     "build:desktop": "npm run clean && cross-env webpack --env profile=desktop --env environment=production --env treeshake=yes",
     "build:phone": "npm run clean && cross-env webpack --env profile=phone --env environment=production --env treeshake=yes",
     "build": "npm run clean && cross-env webpack --env environment=production --env treeshake=yes",
-    "testing:desktop": "npm run clean && cross-env webpack --env treeshake=yes --env cmdopts=--testing --env cmdopts=--build=desktop",
-    "testing:phone": "npm run clean && cross-env webpack --env treeshake=yes --env cmdopts=--testing --env cmdopts=--build=phone",
+    "testing:desktop": "npm run clean && cross-env webpack --env profile=desktop --env reeshake=yes --env cmdopts=--testing",
+    "testing:phone": "npm run clean && cross-env webpack --env profile=phone --env treeshake=yes --env cmdopts=--testing",
     "testing": "npm run clean && cross-env webpack --env treeshake=yes --env cmdopts=--testing"
   },
   "dependencies": {
