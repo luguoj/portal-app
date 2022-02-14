@@ -5,6 +5,11 @@
 
 export default {
   name: 'App',
+  setup() {
+    onMounted(() => {
+      window.NProgress.done()
+    })
+  },
   components: {
   }
 }
