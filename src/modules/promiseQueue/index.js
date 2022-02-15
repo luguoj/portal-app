@@ -1,39 +1,40 @@
-export function createQueue() {
-    const queue = []
-    let flushing = false
-
-    function enqueue(promise, resolve, reject) {
-        queue.push({promise, resolve, reject})
-        if (!flushing) {
-            return flushQueue()
+export function Queue() {
+    this.queue = []
+    this.flushing = false
+    this.enqueue = function (task) {
+        this.queue.push(task)
+        if (!this.flushing) {
+            this.flushing = true
+            return Promise.resolve(chain())
         } else {
             return Promise.resolve()
         }
     }
 
-    function flushQueue() {
-        flushing = true
-        const chain = () => {
-            const nextTask = queue.shift()
-            if (nextTask) {
-                let p = new Promise(nextTask.promise)
-                if (nextTask.resolve) {
-                    p = p.then(nextTask.resolve)
-                }
-                if (nextTask.reject) {
-                    p = p.catch(nextTask.reject)
-                }
-                return p.then(() => {
-                    chain()
-                })
-            } else {
-                flushing = false
-            }
+    const chain = () => {
+        const nextTask = this.queue.shift()
+        if (nextTask) {
+            return nextTask.execute().then(() => {
+                chain()
+            })
+        } else {
+            this.flushing = false
         }
-        return Promise.resolve(chain())
     }
+}
 
-    return {
-        enqueue
+export function Task(executor, resolve, reject) {
+    this.executor = executor
+    this.resolve = resolve
+    this.reject = reject
+    this.execute = function () {
+        let p = new Promise(this.executor)
+        if (this.resolve) {
+            p = p.then(this.resolve)
+        }
+        if (this.reject) {
+            p = p.catch(this.reject)
+        }
+        return p
     }
 }

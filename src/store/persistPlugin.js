@@ -1,9 +1,9 @@
-import {createQueue} from "@/modules/promiseQueue";
+import {Queue, Task} from "@/modules/promiseQueue";
 
 export function createPersistedSatate(options = {}) {
     const storage = options.storage || localStorage
     const key = options.key || 'vuex'
-    const queue = createQueue();
+    const queue = new Queue();
 
     function getState(key, storage) {
         const value = storage.getItem(key)
@@ -25,14 +25,18 @@ export function createPersistedSatate(options = {}) {
             store.replaceState(data)
         }
         store.subscribe((mutation, state) => {
-            queue.enqueue((reslove, reject) => {
-                try {
-                    setState(key, state, storage)
-                    reslove()
-                } catch (err) {
-                    reject(err)
-                }
-            })
+            queue.enqueue(
+                new Task(
+                    (reslove, reject) => {
+                        try {
+                            setState(key, state, storage)
+                            reslove()
+                        } catch (err) {
+                            reject(err)
+                        }
+                    }
+                )
+            )
         })
     }
 }
