@@ -1,14 +1,15 @@
 export function Queue() {
     this.queue = []
     this.flushing = false
-    this.enqueue = function (task) {
-        this.queue.push(task)
+    this.enqueue = function (executor) {
+        const p = new Promise((resolve, reject) => {
+            this.queue.push(new Task(executor, resolve, reject))
+        })
         if (!this.flushing) {
             this.flushing = true
-            return Promise.resolve(chain())
-        } else {
-            return Promise.resolve()
+            chain()
         }
+        return p
     }
 
     const chain = () => {
@@ -23,18 +24,8 @@ export function Queue() {
     }
 }
 
-export function Task(executor, resolve, reject) {
-    this.executor = executor
-    this.resolve = resolve
-    this.reject = reject
-    this.execute = function () {
-        let p = new Promise(this.executor)
-        if (this.resolve) {
-            p = p.then(this.resolve)
-        }
-        if (this.reject) {
-            p = p.catch(this.reject)
-        }
-        return p
+function Task(executor, resolve, reject) {
+    this.execute = () => {
+        return new Promise(executor).then(resolve).catch(reject)
     }
 }
