@@ -1,6 +1,5 @@
-import {createApp} from "vue"
 import {createStore} from "vuex"
-import {createPersistedSatate} from "@/store/persistPlugin";
+import {createPersistedSatate} from "@/modules/vuexPlugins/persist";
 
 export const store = createStore({
     state() {
