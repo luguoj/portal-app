@@ -1,8 +1,10 @@
 <template>
+  <Desktop></Desktop>
 </template>
 
 <script>
 import {onMounted} from "vue";
+import Desktop from "@/views/Desktop";
 
 export default {
   name: 'App',
@@ -12,6 +14,7 @@ export default {
     })
   },
   components: {
+    Desktop
   }
 }
 </script>
