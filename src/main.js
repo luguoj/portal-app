@@ -8,11 +8,15 @@ import './styles/global.css'
 const app = createApp(App)
 app.use(store)
 app.use(router)
-
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 
 app.use(ElementPlus, {locale: zhCn})
+
+import PrimeVue from "primevue/config";
+import 'primeicons/primeicons.css'
+
+app.use(PrimeVue)
 
 app.mount('#app')
