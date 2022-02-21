@@ -30,15 +30,13 @@ export default function () {
         )
     }
 
-    function onLogout() {
-        logout().then(() => {
-            authorized.value = false
-        })
-    }
-
     return {
         authorized,
         onSignIn,
-        onLogout
+        logout: () => {
+            logout().then(() => {
+                authorized.value = false
+            })
+        }
     }
 }

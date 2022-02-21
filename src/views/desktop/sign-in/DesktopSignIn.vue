@@ -15,14 +15,14 @@
 import {onBeforeMount, onBeforeUnmount, onMounted, ref} from "vue";
 
 export default {
-  name: "SignIn",
-  emits: ['signin'],
+  name: "DesktopSignIn",
+  emits: ['sign-in'],
   setup(props,context) {
     let signinFrame = ref(null)
     const onMessage = function (event) {
       if (event.data === 'login_success') {
         console.log('login message got')
-        context.emit('signin')
+        context.emit('sign-in')
       } else if (event.data === 'login_retry') {
         console.log('login retry message got', signinFrame.value)
         signinFrame.value.src = process.env.VUE_APP_PSR_AUTH_CLIENT_URL
