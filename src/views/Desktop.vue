@@ -68,24 +68,25 @@ export default {
 
   .ct-title {
     background-color: var(--el-color-white);
-    padding: 0px;
-    border-bottom: 1px solid var(--el-border-color-base);
+    padding: 0;
+    //border-bottom: 1px solid var(--el-border-color-base);
   }
 
   .ct-menu {
     background-color: var(--el-color-white);
-    padding: 0px;
+    padding: 0;
+    //border-right: 1px solid var(--el-border-color-base);
   }
 }
 
 .ct-header-bar {
   background-color: var(--el-color-white);
-  border-bottom: 1px solid var(--el-border-color-base);
-  padding-left: 0px;
+  //border-bottom: 1px solid var(--el-border-color-base);
+  padding-left: 0;
 }
 
 .ct-workspace {
   background-color: var(--el-color-white);
-  padding: 0px;
+  padding: 0;
 }
 </style>
