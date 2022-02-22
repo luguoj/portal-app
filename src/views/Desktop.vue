@@ -82,7 +82,6 @@ export default {
 .ct-header-bar {
   background-color: var(--el-color-white);
   //border-bottom: 1px solid var(--el-border-color-base);
-  padding-left: 0;
 }
 
 .ct-workspace {
