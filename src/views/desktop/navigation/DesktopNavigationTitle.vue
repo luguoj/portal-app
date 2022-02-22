@@ -12,9 +12,6 @@
 </template>
 
 <script>
-import {ElCollapseTransition} from "element-plus";
-
-ElCollapseTransition
 export default {
   name: "DesktopNavigationTitle",
   props: ['navigationExpanded'],
