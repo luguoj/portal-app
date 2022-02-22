@@ -1,7 +1,7 @@
 <template>
   <div class="ct-inner">
     <div class="icon">
-      <el-image :class="icon" style="width: 40px;height: 40px" fit="fill" :src="titleIconUrl"></el-image>
+      <el-image style="width: 40px;height: 40px" fit="fill" :src="titleIconUrl"></el-image>
     </div>
     <transition name="text">
       <div v-show="navigationExpanded" class="text">
