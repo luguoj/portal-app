@@ -19,7 +19,6 @@
         <DesktopHeaderBar
             :navigation-expanded="navigationExpanded"
             @toggle-navigation-expansion="toggleNavigationExpansion"
-            @logout="onLogout"
         />
       </el-header>
       <el-main class="ct-workspace">
