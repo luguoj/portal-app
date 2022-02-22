@@ -8,9 +8,11 @@
           />
         </el-header>
         <el-main class="ct-menu">
-          <DesktopNavigationMenu
-              :navigation-expanded="navigationExpanded"
-          />
+          <el-scrollbar>
+            <DesktopNavigationMenu
+                :navigation-expanded="navigationExpanded"
+            />
+          </el-scrollbar>
         </el-main>
       </el-container>
     </el-aside>
