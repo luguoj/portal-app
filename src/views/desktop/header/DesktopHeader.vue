@@ -12,26 +12,19 @@
           <el-icon class="pi pi-user"></el-icon>
         </el-button>
       </template>
-      <DesktopHeaderBarUserPopover></DesktopHeaderBarUserPopover>
+      <desktop-header-user-popover></desktop-header-user-popover>
     </el-popover>
-    <el-breadcrumb separator="/" class="breadcrumb left">
-      <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-      <el-breadcrumb-item
-      ><a href="/">promotion management</a></el-breadcrumb-item
-      >
-      <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-      <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
-    </el-breadcrumb>
+    <desktop-header-view-path/>
   </div>
 </template>
 
 <script>
-import DesktopHeaderBarUserPopover from "@/views/desktop/header-bar/DesktopHeaderBarUserPopover";
-import {ElMessageBox} from "element-plus";
+import DesktopHeaderUserPopover from "@/views/desktop/header/DesktopHeaderUserPopover";
+import DesktopHeaderViewPath from "@/views/desktop/header/DesktopHeaderViewPath";
 
 export default {
-  name: "DesktopHeaderBar",
-  components: {DesktopHeaderBarUserPopover},
+  name: "DesktopHeader",
+  components: {DesktopHeaderViewPath, DesktopHeaderUserPopover},
   props: ['navigationExpanded'],
   emits: ['toggle-navigation-expansion', 'logout'],
   setup(props, context) {

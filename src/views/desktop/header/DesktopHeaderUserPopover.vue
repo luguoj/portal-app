@@ -12,7 +12,7 @@ import {inject} from "vue";
 import {ElMessageBox} from "element-plus";
 
 export default {
-  name: "DesktopHeaderBarUserPopover",
+  name: "DesktopHeaderUserPopover",
   setup() {
     const logout = inject('logout')
     return {

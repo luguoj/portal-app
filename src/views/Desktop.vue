@@ -18,7 +18,7 @@
     </el-aside>
     <el-container>
       <el-header class="ct-header-bar">
-        <DesktopHeaderBar
+        <desktop-header
             :navigation-expanded="navigationExpanded"
             @toggle-navigation-expansion="toggleNavigationExpansion"
         />
@@ -35,7 +35,7 @@
 import DesktopWorkspace from "@/views/desktop/workspace/DesktopWorkspace";
 import DesktopSignIn from "@/views/desktop/sign-in/DesktopSignIn";
 import DesktopNavigationMenu from "@/views/desktop/navigation/DesktopNavigationMenu";
-import DesktopHeaderBar from "@/views/desktop/header-bar/DesktopHeaderBar";
+import DesktopHeader from "@/views/desktop/header/DesktopHeader";
 import DesktopNavigationTitle from "@/views/desktop/navigation/DesktopNavigationTitle";
 import {computed, provide} from "vue";
 import {useStore} from "vuex";
@@ -43,7 +43,7 @@ import Authorize from "@/views/Authorize";
 
 export default {
   name: "Desktop",
-  components: {DesktopNavigationTitle, DesktopHeaderBar, DesktopNavigationMenu, DesktopSignIn, DesktopWorkspace},
+  components: {DesktopNavigationTitle, DesktopHeader, DesktopNavigationMenu, DesktopSignIn, DesktopWorkspace},
   setup() {
     const store = useStore()
     const authorize = Authorize()
