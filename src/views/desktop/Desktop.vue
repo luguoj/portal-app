@@ -5,17 +5,14 @@
     </el-aside>
     <el-container>
       <el-header class="ct-header-bar">
-        <desktop-header
-            :navigation-expanded="navigationExpanded"
-            @toggle-navigation-expansion="toggleNavigationExpansion"
-        />
+        <desktop-header/>
       </el-header>
       <el-main class="ct-workspace">
         <desktop-main/>
       </el-main>
     </el-container>
   </el-container>
-  <desktop-sign-in v-if="!authorized" @sign-in="onSignIn"/>
+  <desktop-sign-in/>
 </template>
 
 <script>
@@ -24,7 +21,6 @@ import DesktopHeader from "@/views/desktop/header/DesktopHeader";
 import DesktopMain from "@/views/desktop/main/DesktopMain";
 import {provide} from "vue";
 import {useStore} from "vuex";
-import Authorize from "@/views/desktop/Authorize";
 import {loadNavigationItems} from "@/views/desktop/LoadNavigationItems";
 import DesktopAside from "@/views/desktop/aside/DesktopAside";
 
@@ -38,14 +34,9 @@ export default {
   },
   setup() {
     const store = useStore()
-    const authorize = Authorize()
     const navigationItems = loadNavigationItems()
-
-    provide('logout', authorize.logout)
     provide('navigationItems', navigationItems)
     return {
-      toggleNavigationExpansion: () => store.commit('desktop/toggleNavigationExpansion'),
-      ...authorize,
       navigationItems
     }
   }

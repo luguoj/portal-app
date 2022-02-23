@@ -22,7 +22,7 @@ function getTokenInfo() {
 }
 
 // 令牌信息
-const tokenInfo = {
+export const tokenInfo = {
     username: undefined,
     access_token: undefined,
     token_type: undefined,
@@ -49,6 +49,7 @@ export const REFRESH_TOKEN = 'refresh_token'
 export const USER_CHANGED = 'user_changed'
 export const NOT_AUTHENTICATED = 'not_authenticated'
 export const CERTIFICATION_EXPIRED = 'certification_expired'
+export const SIGN_OUT = 'sign_out'
 
 // 刷新令牌信息
 export function refreshToken() {
@@ -65,7 +66,8 @@ export function refreshToken() {
                     resolve()
                 }
             }).catch((err) => {
-                if (tokenInfo.access_token) {
+                if (tokenInfo.username) {
+                    Object.assign(tokenInfo, {access_token: undefined, token_type: undefined, expires_at: undefined})
                     refreshTokenEvent.emit(CERTIFICATION_EXPIRED)
                 } else {
                     refreshTokenEvent.emit(NOT_AUTHENTICATED)
@@ -80,13 +82,14 @@ export function refreshToken() {
 
 
 // 登出
-export function logout() {
+export function signOut() {
     return new Promise((resolve, reject) => {
         authClient.get('/logout')
             .then(response => {
                 if (response.status === 200) {
                     tokenInfo.access_token = undefined
                     tokenInfo.username = undefined
+                    refreshTokenEvent.emit(SIGN_OUT)
                     resolve()
                 }
             })

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-button type="danger" @click="onLogout" style="width:100%">
+    <div>{{ username }}</div>
+    <el-button type="danger" @click="handleSignOut" style="width:100%">
       <el-icon class="pi pi-sign-out"/>
       <span>退出系统</span>
     </el-button>
@@ -8,15 +9,18 @@
 </template>
 
 <script>
-import {inject} from "vue";
 import {ElMessageBox} from "element-plus";
+import {signOut} from "@/services/psrOAuthClient";
+import {useStore} from "vuex";
+import {computed} from "vue";
 
 export default {
   name: "DesktopHeaderUserPopover",
   setup() {
-    const logout = inject('logout')
+    const store = useStore()
     return {
-      onLogout: () => {
+      username: computed(() => store.state.desktop.username),
+      handleSignOut: () => {
         ElMessageBox.confirm(
             '确认登出当前用户?',
             '登出',
@@ -24,7 +28,7 @@ export default {
               type: 'warning',
             }
         ).then(() => {
-          logout()
+          signOut()
         })
       }
     }

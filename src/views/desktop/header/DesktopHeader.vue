@@ -21,16 +21,17 @@
 <script>
 import DesktopHeaderUserPopover from "@/views/desktop/header/DesktopHeaderUserPopover";
 import DesktopHeaderViewPath from "@/views/desktop/header/DesktopHeaderViewPath";
+import {useStore} from "vuex";
 
 export default {
   name: "DesktopHeader",
   components: {DesktopHeaderViewPath, DesktopHeaderUserPopover},
   props: ['navigationExpanded'],
-  emits: ['toggle-aside-expansion', 'logout'],
-  setup(props, context) {
+  setup() {
+    const store = useStore()
     return {
       toggleNavigationExpansion: () => {
-        context.emit('toggle-aside-expansion')
+        store.commit('desktop/toggleNavigationExpansion')
       }
     }
   }
