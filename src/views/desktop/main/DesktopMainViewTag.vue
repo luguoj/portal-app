@@ -1,7 +1,7 @@
 <template>
   <el-tag
       class="tag"
-      :class="checked?'checked':''"
+      :class="{checked: checked}"
       :closable="closable"
       :size="size"
   >

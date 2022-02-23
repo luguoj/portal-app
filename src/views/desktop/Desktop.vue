@@ -1,20 +1,7 @@
 <template>
   <el-container class="ct-desktop">
     <el-aside width="auto">
-      <el-container class="ct-navigation">
-        <el-header class="ct-title">
-          <DesktopNavigationTitle
-              :navigation-expanded="navigationExpanded"
-          />
-        </el-header>
-        <el-main class="ct-menu">
-          <el-scrollbar>
-            <DesktopNavigationMenu
-                :navigation-expanded="navigationExpanded"
-            />
-          </el-scrollbar>
-        </el-main>
-      </el-container>
+      <desktop-aside/>
     </el-aside>
     <el-container>
       <el-header class="ct-header-bar">
@@ -24,34 +11,42 @@
         />
       </el-header>
       <el-main class="ct-workspace">
-        <DesktopWorkspace/>
+        <desktop-main/>
       </el-main>
     </el-container>
   </el-container>
-  <DesktopSignIn v-if="!authorized" @sign-in="onSignIn"/>
+  <desktop-sign-in v-if="!authorized" @sign-in="onSignIn"/>
 </template>
 
 <script>
-import DesktopWorkspace from "@/views/desktop/workspace/DesktopWorkspace";
 import DesktopSignIn from "@/views/desktop/sign-in/DesktopSignIn";
-import DesktopNavigationMenu from "@/views/desktop/navigation/DesktopNavigationMenu";
 import DesktopHeader from "@/views/desktop/header/DesktopHeader";
-import DesktopNavigationTitle from "@/views/desktop/navigation/DesktopNavigationTitle";
-import {computed, provide} from "vue";
+import DesktopMain from "@/views/desktop/main/DesktopMain";
+import {provide} from "vue";
 import {useStore} from "vuex";
-import Authorize from "@/views/Authorize";
+import Authorize from "@/views/desktop/Authorize";
+import {loadNavigationItems} from "@/views/desktop/LoadNavigationItems";
+import DesktopAside from "@/views/desktop/aside/DesktopAside";
 
 export default {
   name: "Desktop",
-  components: {DesktopNavigationTitle, DesktopHeader, DesktopNavigationMenu, DesktopSignIn, DesktopWorkspace},
+  components: {
+    DesktopAside,
+    DesktopSignIn,
+    DesktopHeader,
+    DesktopMain
+  },
   setup() {
     const store = useStore()
     const authorize = Authorize()
+    const navigationItems = loadNavigationItems()
+
     provide('logout', authorize.logout)
+    provide('navigationItems', navigationItems)
     return {
-      navigationExpanded: computed(() => store.state.desktop.navigationExpanded),
       toggleNavigationExpansion: () => store.commit('desktop/toggleNavigationExpansion'),
-      ...authorize
+      ...authorize,
+      navigationItems
     }
   }
 }

@@ -26,11 +26,11 @@ export default {
   name: "DesktopHeader",
   components: {DesktopHeaderViewPath, DesktopHeaderUserPopover},
   props: ['navigationExpanded'],
-  emits: ['toggle-navigation-expansion', 'logout'],
+  emits: ['toggle-aside-expansion', 'logout'],
   setup(props, context) {
     return {
       toggleNavigationExpansion: () => {
-        context.emit('toggle-navigation-expansion')
+        context.emit('toggle-aside-expansion')
       }
     }
   }

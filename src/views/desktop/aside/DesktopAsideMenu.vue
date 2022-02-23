@@ -1,10 +1,11 @@
 <template>
   <el-menu
+      class="menu"
       :collapse="!navigationExpanded"
       :default-active="activeMenuId"
       router
   >
-    <desktop-navigation-menu-item
+    <desktop-aside-menu-item
         v-for="navigationItem in navigationItems" :key="navigationItem.id"
         :navigation-item="navigationItem"
     />
@@ -12,22 +13,23 @@
 </template>
 
 <script>
-import DesktopNavigationMenuItem from "@/views/desktop/navigation/DesktopNavigationMenuItem";
+import DesktopAsideMenuItem from "@/views/desktop/aside/DesktopAsideMenuItem";
 import {computed} from "vue";
 import {useRoute} from "vue-router";
-import {loadNavigationItems} from "@/views/desktop/navigation/LoadNavigationItems";
+import {inject} from "vue";
 
 export default {
-  name: "DesktopNavigationMenu",
-  components: {DesktopNavigationMenuItem},
+  name: "DesktopAsideMenu",
+  components: {DesktopAsideMenuItem},
   props: {
-    navigationExpanded: Boolean
+    navigationExpanded: Boolean,
+    navigationItems: Array
   },
   setup() {
     const route = useRoute()
-    const navigationItems = loadNavigationItems()
+    const navigationItems = inject('navigationItems')
     const activeMenuId = computed(() => {
-      return route.fullPath
+      return '.' + route.fullPath
     })
     return {
       navigationItems,
@@ -38,7 +40,7 @@ export default {
 </script>
 
 <style scoped>
-.el-menu {
+.menu {
   border: none;
 }
 </style>

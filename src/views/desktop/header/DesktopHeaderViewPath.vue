@@ -11,10 +11,12 @@
 
 <script>
 export default {
-  name: "DesktopHeaderViewPath"
+  name: "DesktopHeaderViewPath",
+  setup() {
+
+  }
 }
 </script>
 
 <style scoped>
-
 </style>

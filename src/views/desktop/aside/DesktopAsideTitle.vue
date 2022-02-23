@@ -13,9 +13,9 @@
 
 <script>
 export default {
-  name: "DesktopNavigationTitle",
+  name: "DesktopAsideTitle",
   props: ['navigationExpanded'],
-  setup(props, context) {
+  setup() {
     return {
       titleIconUrl: './favicon.ico',
       title: process.env.VUE_APP_TITLE,
@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 .ct-inner {
-  padding: 0px 12px;
+  padding: 0 12px;
   line-height: var(--el-header-height);
 
   .icon {
@@ -56,7 +56,7 @@ export default {
 
 @keyframes text-show-ani {
   from {
-    width: 0px;
+    width: 0;
   }
 }
 </style>

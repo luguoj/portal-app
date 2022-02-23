@@ -1,7 +1,7 @@
 <template>
   <div class="psr-modal">
     <iframe
-        ref="signinFrame"
+        ref="signInFrame"
         class="float"
         src=""
         frameborder=0
@@ -18,18 +18,18 @@ export default {
   name: "DesktopSignIn",
   emits: ['sign-in'],
   setup(props,context) {
-    let signinFrame = ref(null)
+    let signInFrame = ref(null)
     const onMessage = function (event) {
       if (event.data === 'login_success') {
         console.log('login message got')
         context.emit('sign-in')
       } else if (event.data === 'login_retry') {
-        console.log('login retry message got', signinFrame.value)
-        signinFrame.value.src = process.env.VUE_APP_PSR_AUTH_CLIENT_URL
+        console.log('login retry message got', signInFrame.value)
+        signInFrame.value.src = process.env.VUE_APP_PSR_AUTH_CLIENT_URL
       }
     }
     onMounted(() => {
-      signinFrame.value.src = process.env.VUE_APP_PSR_AUTH_CLIENT_URL
+      signInFrame.value.src = process.env.VUE_APP_PSR_AUTH_CLIENT_URL
     })
     onBeforeMount(() => {
       window.addEventListener('message', onMessage, false);
@@ -38,7 +38,7 @@ export default {
       window.removeEventListener('message', onMessage)
     })
     return {
-      signinFrame
+      signInFrame
     }
   }
 }

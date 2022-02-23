@@ -3,14 +3,14 @@
     <el-header class="ct-tags">
       <el-scrollbar ref="refScrollbar" @wheel.prevent="handleScroll">
         <div class="ct-scrollbar">
-          <DesktopWorkspaceViewTag
+          <desktop-main-view-tag
               class="tag"
               v-for="view in views"
               :checked="activeView==view"
               @click="activeView=view"
           >
             {{ view.title }}
-          </DesktopWorkspaceViewTag>
+          </desktop-main-view-tag>
         </div>
       </el-scrollbar>
     </el-header>
@@ -22,12 +22,12 @@
 
 <script>
 
-import DesktopWorkspaceViewTag from "@/views/desktop/workspace/DesktopWorkspaceViewTag";
-import {reactive, ref, toRaw} from "vue";
+import DesktopMainViewTag from "@/views/desktop/main/DesktopMainViewTag";
+import {reactive, ref} from "vue";
 
 export default {
   name: "DesktopWorkspace",
-  components: {DesktopWorkspaceViewTag},
+  components: {DesktopMainViewTag},
   setup() {
     const views = reactive([])
     const refScrollbar = ref(null)

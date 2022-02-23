@@ -15,7 +15,7 @@
       <el-icon :class="navigationItem.iconCls"/>
       <span>{{ navigationItem.text }}</span>
     </template>
-    <DesktopNavigationMenuItem
+    <desktop-aside-menu-item
         v-for="child in navigationItem.children" :key="child.id"
         :navigation-item="child"
     />
@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "DesktopNavigationMenuItem",
+  name: "DesktopAsideMenuItem",
   props: ['navigationItem']
 }
 </script>
