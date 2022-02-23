@@ -23,6 +23,7 @@ function getTokenInfo() {
 
 // 令牌信息
 const tokenInfo = {
+    username: undefined,
     access_token: undefined,
     token_type: undefined,
     expires_at: undefined
@@ -45,6 +46,7 @@ let flushing = null
 
 export const refreshTokenEvent = new EventEmitter()
 export const REFRESH_TOKEN = 'refresh_token'
+export const USER_CHANGED = 'user_changed'
 export const NOT_AUTHENTICATED = 'not_authenticated'
 export const CERTIFICATION_EXPIRED = 'certification_expired'
 
@@ -54,9 +56,14 @@ export function refreshToken() {
         tokenInfo.expires_at = 1
         flushing = new Promise((resolve, reject) => {
             getTokenInfo().then((data) => {
-                Object.assign(tokenInfo, data)
-                refreshTokenEvent.emit(REFRESH_TOKEN)
-                resolve()
+                if (tokenInfo.username && tokenInfo.username != data.username) {
+                    refreshTokenEvent.emit(USER_CHANGED)
+                    reject(err)
+                } else {
+                    Object.assign(tokenInfo, data)
+                    refreshTokenEvent.emit(REFRESH_TOKEN)
+                    resolve()
+                }
             }).catch((err) => {
                 if (tokenInfo.access_token) {
                     refreshTokenEvent.emit(CERTIFICATION_EXPIRED)
@@ -78,7 +85,8 @@ export function logout() {
         authClient.get('/logout')
             .then(response => {
                 if (response.status === 200) {
-                    tokenInfo.access_token = null
+                    tokenInfo.access_token = undefined
+                    tokenInfo.username = undefined
                     resolve()
                 }
             })
