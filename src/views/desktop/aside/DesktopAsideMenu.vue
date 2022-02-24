@@ -14,9 +14,11 @@
 
 <script>
 import DesktopAsideMenuItem from "@/views/desktop/aside/DesktopAsideMenuItem";
-import {computed, nextTick, ref, watchEffect} from "vue";
+import {nextTick, onMounted, ref, watch, watchEffect} from "vue";
 import {useRoute} from "vue-router";
-import {loadNavigationItems} from "@/views/desktop/aside/LoadNavigationItems";
+import {navigationItems, refreshNavigationItems} from "@/views/desktop/aside/LoadNavigationItems";
+import {tokenService} from "@/services/Authorization";
+import {AUTHENTICATED} from "@/modules/psr-oauth/context";
 
 export default {
   name: "DesktopAsideMenu",
@@ -28,12 +30,24 @@ export default {
   setup() {
     const route = useRoute()
     const activeMenuId = ref(null)
-    const {navigationItems, navigationItemById, refreshNavigationItems} = loadNavigationItems(() => {
-      activeMenuId.value = null
-      nextTick(() => activeMenuId.value = route.fullPath)
+    onMounted(() => {
+      watchEffect(() => {
+        activeMenuId.value = route.fullPath
+      })
     })
-    watchEffect(() => {
-      activeMenuId.value = route.fullPath
+    let currentUsername = null
+    onMounted(() => {
+      watchEffect(() => {
+        if (tokenService.context().tokenInfo().username
+            && tokenService.context().tokenInfo().username != currentUsername
+            && tokenService.context().tokenInfo().authenticateState === AUTHENTICATED) {
+          currentUsername = tokenService.context().tokenInfo().username
+          refreshNavigationItems().then(() => {
+            activeMenuId.value = null
+            nextTick(() => activeMenuId.value = route.fullPath)
+          })
+        }
+      })
     })
     return {
       navigationItems,

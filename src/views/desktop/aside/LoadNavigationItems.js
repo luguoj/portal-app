@@ -1,10 +1,10 @@
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 import axios from "axios";
 
-const navigationItems = ref([])
-const navigationItemById = {}
+export const navigationItems = ref([])
+export const navigationItemById = {}
 
-function refreshNavigationItems() {
+export function refreshNavigationItems() {
     return axios.get('./navigationItem.json')
         .then((resp) => {
             if (resp && resp.data) {
@@ -23,13 +23,4 @@ function refreshNavigationItems() {
                 navigationItems.value = rootNavigationItems
             }
         })
-}
-
-export function loadNavigationItems(cb) {
-    onMounted(() => {
-        refreshNavigationItems().then(cb)
-    })
-    return {
-        navigationItems, navigationItemById, refreshNavigationItems
-    }
 }
