@@ -10,9 +10,9 @@
 
 <script>
 import {ElMessageBox} from "element-plus";
-import {signOut} from "@/services/psrOAuthClient";
 import {useStore} from "vuex";
 import {computed} from "vue";
+import {tokenService} from "@/services/Authorization";
 
 export default {
   name: "DesktopHeaderUserPopover",
@@ -28,7 +28,7 @@ export default {
               type: 'warning',
             }
         ).then(() => {
-          signOut()
+          tokenService.signOut()
         })
       }
     }

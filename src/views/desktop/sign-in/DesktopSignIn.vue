@@ -1,6 +1,6 @@
 <template>
   <transition>
-    <div class="psr-modal" v-show="!authorized">
+    <div class="psr-modal" v-show="notAuthorized">
       <iframe
           ref="signInFrame"
           class="float"
@@ -14,82 +14,47 @@
 </template>
 
 <script>
-import {computed, onBeforeMount, onBeforeUnmount, onMounted, ref} from "vue";
-import {
-  CERTIFICATION_EXPIRED,
-  NOT_AUTHENTICATED,
-  refreshToken,
-  refreshTokenEvent, SIGN_OUT, signOut,
-  tokenInfo, USER_CHANGED
-} from "@/services/psrOAuthClient";
+import {computed, onBeforeMount, watchEffect} from "vue";
 import {useStore} from "vuex";
 import {ElMessageBox} from "element-plus";
+import {tokenService} from "@/services/Authorization";
+import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/modules/psr-oauth/context";
 
 export default {
   name: "DesktopSignIn",
   setup() {
     const store = useStore()
-    const authorized = computed(() => {
-      return store.state.desktop.username
+
+    const context = tokenService.context()
+    const tokenInfo = context.tokenInfo()
+    const notAuthorized = computed(() => {
+      return tokenInfo.authenticateState === NOT_AUTHENTICATED
     })
-    const signInFrame = ref()
-
-    function onSignIn() {
-      refreshToken().then(
-          () => {
-            store.commit('desktop/signIn', tokenInfo.username)
-          }
-      )
-    }
-
-    function onSignOut() {
-      store.commit('desktop/signOut')
-      signInFrame.value.src = process.env.VUE_APP_PSR_AUTH_CLIENT_URL
-    }
-
-    function onMessage(event) {
-      if (event.data === 'login_success') {
-        console.log('login message got')
-        onSignIn()
-      } else if (event.data === 'login_retry') {
-        console.log('login retry message got', signInFrame.value)
-        signInFrame.value.src = process.env.VUE_APP_PSR_AUTH_CLIENT_URL
-      }
-    }
-
-    onBeforeMount(() => {
-      tokenInfo.username = store.state.desktop.username
+    const signInFrame = tokenService.useSignInFrame()
+    context.onUserChange((username, originUsername) => {
+      ElMessageBox.alert(`用户: ${originUsername} -> ${username}`, '会话用户变更')
     })
-    onMounted(() => {
-      refreshTokenEvent.on(USER_CHANGED, () => {
-        ElMessageBox.alert('会话用户变更，请重新登录', 'Title', {
-          callback: () => {
-            signOut()
-          }
-        })
-      })
-      refreshTokenEvent.on(CERTIFICATION_EXPIRED, () => {
+    watchEffect(() => {
+      if (tokenInfo.authenticateState === CERTIFICATION_EXPIRED) {
         ElMessageBox.alert('身份认证过期，请重新登录', 'Title', {
-          callback: onSignOut
+          callback: () => {
+            tokenInfo.authenticateState = NOT_AUTHENTICATED
+          }
         })
-      })
-      refreshTokenEvent.on(NOT_AUTHENTICATED, onSignOut)
-      refreshTokenEvent.on(SIGN_OUT, onSignOut)
-      if (store.state.desktop.username) {
-        onSignIn()
-      } else {
-        onSignOut()
+      } else if (tokenInfo.authenticateState === NOT_AUTHENTICATED) {
+        store.commit('desktop/signOut')
+      } else if (tokenInfo.authenticateState === AUTHENTICATED) {
+        store.commit('desktop/signIn', tokenInfo.username)
       }
     })
     onBeforeMount(() => {
-      window.addEventListener('message', onMessage, false);
-    })
-    onBeforeUnmount(() => {
-      window.removeEventListener('message', onMessage)
+      if (store.state.desktop.username) {
+        tokenInfo.username = store.state.desktop.username
+      }
     })
     return {
       signInFrame,
-      authorized
+      notAuthorized
     }
   }
 }
