@@ -6,33 +6,39 @@
   },
   {
     "parentId": "1",
-    "id": "./sample-page?pageNo=1-1",
+    "id": "/sample-page?pageNo=1-1",
     "text": "page1-1",
     "iconCls": "pi pi-times",
     "route": {}
   },
   {
     "parentId": "1",
-    "id": "./sample-page?pageNo=1-2",
+    "id": "/sample-page?pageNo=1-2",
     "text": "page1-2",
     "iconCls": "pi pi-times",
     "route": {}
   },
   {
-    "id": "./sample-page?pageNo=2",
+    "id": "/sample-page?pageNo=2",
     "text": "page2",
     "iconCls": "pi pi-times",
     "route": {}
   },
   {
-    "id": "./sample-page?pageNo=3",
+    "id": "/sample-page?pageNo=3",
     "text": "page3",
     "iconCls": "pi pi-times",
     "route": {}
   },
   {
-    "id": "./sample-page1?pageNo=4",
+    "id": "/sample-page1/4",
     "text": "page4",
+    "iconCls": "pi pi-times",
+    "route": {}
+  },
+  {
+    "id": "/sample-page1/5",
+    "text": "page5",
     "iconCls": "pi pi-times",
     "route": {}
   }
