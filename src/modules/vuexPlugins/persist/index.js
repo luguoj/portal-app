@@ -22,8 +22,10 @@ export function createPersistedState(options = {}) {
                 if (process.env.VUE_APP_LOG === 'debug') {
                     console.log('vuex.plugin.persist.saved')
                 }
+                resolve()
             } catch (err) {
                 console.error('vuex.plugin.persist.save', err)
+                reject(err)
             }
         })
     }
