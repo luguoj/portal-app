@@ -19,9 +19,7 @@
 import DesktopSignIn from "@/views/desktop/sign-in/DesktopSignIn";
 import DesktopHeader from "@/views/desktop/header/DesktopHeader";
 import DesktopMain from "@/views/desktop/main/DesktopMain";
-import {provide} from "vue";
 import {useStore} from "vuex";
-import {loadNavigationItems} from "@/views/desktop/LoadNavigationItems";
 import DesktopAside from "@/views/desktop/aside/DesktopAside";
 
 export default {
@@ -34,11 +32,7 @@ export default {
   },
   setup() {
     const store = useStore()
-    const navigationItems = loadNavigationItems()
-    provide('navigationItems', navigationItems)
-    return {
-      navigationItems
-    }
+    return {}
   }
 }
 </script>

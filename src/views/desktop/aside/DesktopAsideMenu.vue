@@ -14,9 +14,9 @@
 
 <script>
 import DesktopAsideMenuItem from "@/views/desktop/aside/DesktopAsideMenuItem";
-import {computed} from "vue";
+import {computed, nextTick, ref, watchEffect} from "vue";
 import {useRoute} from "vue-router";
-import {inject} from "vue";
+import {loadNavigationItems} from "@/views/desktop/aside/LoadNavigationItems";
 
 export default {
   name: "DesktopAsideMenu",
@@ -27,9 +27,13 @@ export default {
   },
   setup() {
     const route = useRoute()
-    const navigationItems = inject('navigationItems')
-    const activeMenuId = computed(() => {
-      return '.' + route.fullPath
+    const activeMenuId = ref(null)
+    const {navigationItems, navigationItemById, refreshNavigationItems} = loadNavigationItems(() => {
+      activeMenuId.value = null
+      nextTick(() => activeMenuId.value = route.fullPath)
+    })
+    watchEffect(() => {
+      activeMenuId.value = route.fullPath
     })
     return {
       navigationItems,
