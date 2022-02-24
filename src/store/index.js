@@ -1,5 +1,5 @@
 import {createStore} from "vuex"
-import {createPersistedSatate} from "@/modules/vuexPlugins/persist";
+import {createPersistedState} from "@/modules/vuexPlugins/persist";
 import desktop from "@/store/desktop";
 
 export const store = createStore({
@@ -12,6 +12,6 @@ export const store = createStore({
         desktop
     },
     plugins: [
-        createPersistedSatate()
+        createPersistedState()
     ]
 })

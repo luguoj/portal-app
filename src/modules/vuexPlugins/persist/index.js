@@ -1,6 +1,6 @@
 import {Queue} from "@/modules/promiseQueue";
 
-export function createPersistedSatate(options = {}) {
+export function createPersistedState(options = {}) {
     const storage = options.storage || localStorage
     const key = options.key || 'vuex'
     const queue = new Queue();
@@ -16,7 +16,7 @@ export function createPersistedSatate(options = {}) {
     }
 
     function save(key, state, storage) {
-        queue.enqueue(() => {
+        queue.enqueue((resolve, reject) => {
             try {
                 storage.setItem(key, JSON.stringify(state))
                 if (process.env.VUE_APP_LOG === 'debug') {
