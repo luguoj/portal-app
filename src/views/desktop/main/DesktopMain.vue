@@ -3,14 +3,20 @@
     <el-header class="ct-tags">
       <el-scrollbar ref="refScrollbar" @wheel.prevent="handleScroll">
         <div class="ct-scrollbar">
-          <desktop-main-view-tag
-              class="tag"
-              v-for="view in views"
-              :checked="activeView==view"
-              @click="activeView=view"
+          <router-link
+              v-for="view in openedViews"
+              :to="view.route"
+              custom
+              v-slot="{navigate}"
           >
-            {{ view.title }}
-          </desktop-main-view-tag>
+            <desktop-main-view-tag
+                class="tag"
+                :checked="activeView==view"
+                @click="navigate"
+            >
+              {{ view.title }}
+            </desktop-main-view-tag>
+          </router-link>
         </div>
       </el-scrollbar>
     </el-header>
@@ -23,23 +29,35 @@
 <script>
 
 import DesktopMainViewTag from "@/views/desktop/main/DesktopMainViewTag";
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
+import {useRouter} from "vue-router";
 
 export default {
   name: "DesktopWorkspace",
   components: {DesktopMainViewTag},
   setup() {
-    const views = reactive([])
+    const openedViews = reactive([])
+    const viewsByPath = {}
     const refScrollbar = ref(null)
     const activeView = ref(null)
-    for (let i = 0; i < 20; i++) {
-      views.push({
-        title: 'page' + i,
-
-      })
-    }
+    const router = useRouter()
+    watch(router.currentRoute, (currentRoute) => {
+      if (currentRoute.name === 'blank' || currentRoute.name === 'error-not-found') {
+        activeView.value = null
+      } else {
+        if (!viewsByPath[currentRoute.fullPath]) {
+          activeView.value = {
+            route: currentRoute
+          }
+          viewsByPath[currentRoute.fullPath] = activeView.value
+          openedViews.push(activeView.value)
+        } else {
+          activeView.value = viewsByPath[currentRoute.fullPath]
+        }
+      }
+    })
     return {
-      views,
+      openedViews,
       refScrollbar,
       activeView,
       handleScroll: (e) => {
