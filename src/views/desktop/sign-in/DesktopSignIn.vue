@@ -1,14 +1,7 @@
 <template>
   <transition>
     <div class="psr-modal" v-show="notAuthorized">
-      <iframe
-          ref="signInFrame"
-          class="float"
-          src=""
-          frameborder=0
-          width="100%"
-          height="100%"
-      />
+      <iframe class="iframe-sign-in" ref="signInFrame"/>
     </div>
   </transition>
 </template>
@@ -63,4 +56,9 @@ export default {
 </script>
 
 <style scoped>
+.iframe-sign-in {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 </style>
