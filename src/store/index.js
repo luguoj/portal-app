@@ -2,7 +2,7 @@ import {createStore} from "vuex"
 import {createPersistedState} from "@/modules/vuexPlugins/persist";
 import desktop from "@/store/desktop";
 
-export const store = createStore({
+const options = {
     state() {
         return {}
     },
@@ -10,8 +10,16 @@ export const store = createStore({
     mutations: {},
     modules: {
         desktop
-    },
+    }
+}
+
+export const store = createStore({
+    ...options,
     plugins: [
         createPersistedState()
     ]
 })
+
+export function resetStore() {
+    store.replaceState(createStore(options).state)
+}

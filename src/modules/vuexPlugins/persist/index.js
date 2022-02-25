@@ -1,4 +1,5 @@
 import {Queue} from "@/modules/promiseQueue";
+import deepmerge from "deepmerge";
 
 export function createPersistedState(options = {}) {
     const storage = options.storage || localStorage
@@ -32,11 +33,8 @@ export function createPersistedState(options = {}) {
 
     return store => {
         const data = load(key, storage)
-        store.clearPersistentData = () => {
-            save(key, {}, storage)
-        }
         if (data) {
-            store.replaceState(data)
+            store.replaceState(deepmerge(store.state, data))
         }
         store.subscribe((mutation, state) => {
             save(key, state, storage)
