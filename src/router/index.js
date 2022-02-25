@@ -1,20 +1,13 @@
 import {createRouter, createWebHashHistory} from "vue-router"
-import ErrorNotFound from "@/views/error/ErrorNotFound";
-import Blank from "@/views/blank/Blank";
+import samplePage from "@/router/sample-page";
+import common from "@/router/common";
 
 export const router = createRouter({
     history: createWebHashHistory(),
     routes: [
-        {
-            name: 'blank',
-            path: '/',
-            component: Blank
-        },
-        {
-            name: 'error-not-found',
-            path: '/:pathMatch(.*)*',
-            component: ErrorNotFound
-        }
+        ...common,
+        ...samplePage,
+
     ]
 })
 
