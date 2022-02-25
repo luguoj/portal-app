@@ -1,4 +1,4 @@
-import {reactive, watch} from "vue";
+import {reactive} from "vue";
 // 未认证
 export const NOT_AUTHENTICATED = 'not_authenticated'
 // 认证过期
@@ -25,14 +25,6 @@ export function PSROAuthContext(tokenService) {
         tokenInfo.authenticateState = NOT_AUTHENTICATED
     }
 
-    // 监听用户切换事件
-    this.onUserChange = (listener) => {
-        watch(() => tokenInfo.username, (username, originUsername) => {
-            if (originUsername && username && originUsername != username) {
-                listener(username, originUsername)
-            }
-        })
-    }
     // 判断令牌是否有效
     this.checkToken = () => {
         if (tokenInfo.access_token) {

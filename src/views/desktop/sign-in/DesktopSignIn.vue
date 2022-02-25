@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import {computed, onBeforeMount, watchEffect} from "vue";
+import {computed, onBeforeMount, watch, watchEffect} from "vue";
 import {useStore} from "vuex";
 import {ElMessageBox} from "element-plus";
 import {tokenService} from "@/services/Authorization";
@@ -31,8 +31,10 @@ export default {
       return tokenInfo.authenticateState === NOT_AUTHENTICATED
     })
     const signInFrame = tokenService.useSignInFrame()
-    context.onUserChange((username, originUsername) => {
-      ElMessageBox.alert(`用户: ${originUsername} -> ${username}`, '会话用户变更')
+    watch(() => tokenInfo.username, (username, originUsername) => {
+      if (originUsername && username) {
+        ElMessageBox.alert(`用户: ${originUsername} -> ${username}`, '会话用户变更')
+      }
     })
     watchEffect(() => {
       if (tokenInfo.authenticateState === CERTIFICATION_EXPIRED) {
