@@ -15,7 +15,7 @@ export function Queue() {
     const chain = () => {
         const nextTask = this.queue.shift()
         if (nextTask) {
-            return nextTask.execute().then(() => {
+            return nextTask.execute().finally(() => {
                 chain()
             })
         } else {
