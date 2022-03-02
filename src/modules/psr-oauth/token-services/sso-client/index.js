@@ -1,6 +1,7 @@
 import axios from "axios";
 import {onBeforeMount, onBeforeUnmount, onMounted, ref, watchEffect} from "vue";
 import {
+    CERTIFICATION_EXPIRED,
     NOT_AUTHENTICATED,
     PSROAuthContext
 } from "@/modules/psr-oauth/context";
@@ -71,11 +72,11 @@ export function PSROAuthSSOClientTokenService(baseURL) {
 
         onMounted(() => {
             watchEffect(() => {
-                if (context.tokenInfo().authenticateState === NOT_AUTHENTICATED) {
+                if (context.tokenInfo().authentication.state === NOT_AUTHENTICATED
+                    || context.tokenInfo().authentication.state === CERTIFICATION_EXPIRED) {
                     signInFrame.value.src = baseURL
                 }
             })
-            context.refreshToken()
         })
         return signInFrame
     }

@@ -1,8 +1,8 @@
 export default {
     namespaced: true,
     states: {
-        username: null,
-        navigationExpanded: true
+        username: '',
+        asideCollapsed:false
     },
     actions: {},
     mutations: {
@@ -12,8 +12,8 @@ export default {
         signIn(state, username) {
             state.username = username
         },
-        toggleNavigationExpansion(state) {
-            state.navigationExpanded = !state.navigationExpanded
+        toggleAside(state) {
+            state.asideCollapsed = !state.asideCollapsed
         }
     }
 }

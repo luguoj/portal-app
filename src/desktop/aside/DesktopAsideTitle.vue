@@ -1,10 +1,10 @@
 <template>
-  <div class="ct-inner">
+  <div class="ct-root">
     <div class="icon">
       <el-image style="width: 40px;height: 40px" fit="fill" :src="titleIconUrl"></el-image>
     </div>
     <transition name="text">
-      <div v-show="navigationExpanded" class="text">
+      <div v-show="showTitle" class="text">
         {{ title }}
       </div>
     </transition>
@@ -12,20 +12,24 @@
 </template>
 
 <script>
+import {computed} from "vue";
+import {useStore} from "vuex";
+
 export default {
   name: "DesktopAsideTitle",
-  props: ['navigationExpanded'],
   setup() {
+    const store = useStore()
     return {
       titleIconUrl: './favicon.ico',
       title: process.env.VUE_APP_TITLE,
+      showTitle: computed(() => !store.state.desktop.asideCollapsed)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.ct-inner {
+.ct-root {
   padding: 0 12px;
   line-height: var(--el-header-height);
 

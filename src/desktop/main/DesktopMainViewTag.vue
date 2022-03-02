@@ -4,6 +4,7 @@
       :class="{checked: checked}"
       :closable="closable"
       :size="size"
+      :effect="!checked?'plain':'light'"
   >
     <slot></slot>
   </el-tag>
@@ -23,7 +24,7 @@ export default {
     },
     size: {
       type: String,
-      default: 'large'
+      default: 'default'
     }
   }
 }
@@ -32,20 +33,6 @@ export default {
 <style scoped>
 .tag {
   cursor: pointer;
-  background-color: var(--el-bg-color);
-  color: var(--el-color-info)
-}
-
-.tag:hover {
-  background-color: #dcdfe6;
-}
-
-.tag.checked {
-  background-color: #deedfc;
-  color: #53a8ff;
-}
-
-.tag.checked:hover {
-  background-color: #c6e2ff;
+  transition: background-color var(--el-transition-duration) linear, border-color var(--el-transition-duration) linear, color var(--el-transition-duration) linear;
 }
 </style>

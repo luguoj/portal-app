@@ -6,7 +6,7 @@
 
 <script>
 import {onMounted} from "vue";
-import Desktop from "@/views/desktop/Desktop";
+import Desktop from "@/desktop/Desktop";
 import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 

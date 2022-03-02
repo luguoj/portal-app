@@ -16,7 +16,8 @@ import {tokenService} from "@/services/Authorization";
 
 export default {
   name: "DesktopHeaderUserPopover",
-  setup() {
+  emits: ['closePopover'],
+  setup(props, context) {
     const store = useStore()
     return {
       username: computed(() => store.state.desktop.username),
@@ -30,6 +31,7 @@ export default {
         ).then(() => {
           tokenService.signOut()
         })
+        context.emit('closePopover')
       }
     }
   }

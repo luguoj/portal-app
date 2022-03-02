@@ -1,14 +1,12 @@
 import {createRouter, createWebHashHistory} from "vue-router"
-import samplePage from "@/router/sample-page";
-import common from "@/router/common";
+import {DESKTOP} from "@/router/desktop";
+import {initMenuRoutes} from "@/router/initMenuRoutes";
+import {MenuRoutes} from "@/router/MenuRoutes";
+
 
 export const router = createRouter({
     history: createWebHashHistory(),
-    routes: [
-        ...common,
-        ...samplePage,
-
-    ]
+    routes: [...DESKTOP]
 })
 
 router.beforeEach(() => {
@@ -18,3 +16,5 @@ router.beforeEach(() => {
 router.afterEach(() => {
     NProgress.done()
 })
+
+export const menuItems = initMenuRoutes(MenuRoutes, router)

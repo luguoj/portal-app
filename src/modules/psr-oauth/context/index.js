@@ -5,24 +5,30 @@ export const NOT_AUTHENTICATED = 'not_authenticated'
 export const CERTIFICATION_EXPIRED = 'certification_expired'
 // 未认证
 export const AUTHENTICATED = 'authenticated'
+// 同步中
+export const SYNCHRONIZING = 'synchronizing'
 
 export function PSROAuthContext(tokenService) {
     // 令牌信息
     const tokenInfo = reactive({
-        authenticateState: null,
-        username: null,
-        access_token: null,
+        authentication: {
+            username: '',
+            state: ''
+        },
+        access_token: '',
         token_type: null,
         expires_at: null
     })
     this.tokenInfo = () => tokenInfo
 
     this.signOut = () => {
-        tokenInfo.username = null
         tokenInfo.access_token = null
         tokenInfo.expires_at = null
         tokenInfo.token_type = null
-        tokenInfo.authenticateState = NOT_AUTHENTICATED
+        tokenInfo.authentication = {
+            username: null,
+            state: NOT_AUTHENTICATED
+        }
     }
 
     // 判断令牌是否有效
@@ -42,25 +48,28 @@ export function PSROAuthContext(tokenService) {
     this.refreshToken = () => {
         if (!flushing) {
             tokenInfo.expires_at = 1
+            tokenInfo.authentication.state = SYNCHRONIZING
             flushing = new Promise((resolve, reject) => {
                 tokenService.getToken().then((data) => {
-                    tokenInfo.username = data.username
                     tokenInfo.token_type = data.token_type
                     tokenInfo.access_token = data.access_token
                     tokenInfo.expires_at = data.expires_at
-                    tokenInfo.authenticateState = AUTHENTICATED
+                    tokenInfo.authentication = {
+                        username: data.username,
+                        state: AUTHENTICATED
+                    }
                     resolve()
                 }).catch((err) => {
-                    if (tokenInfo.username) {
+                    if (tokenInfo.authentication.username) {
                         tokenInfo.access_token = null
                         tokenInfo.expires_at = null
                         tokenInfo.token_type = null
-                        tokenInfo.authenticateState = CERTIFICATION_EXPIRED
+                        tokenInfo.authentication.state = CERTIFICATION_EXPIRED
                     } else {
-                        tokenInfo.authenticateState = NOT_AUTHENTICATED
+                        tokenInfo.authentication.state = NOT_AUTHENTICATED
                     }
                     reject(err)
-                }).then(() => flushing = null)
+                }).finally(() => flushing = null)
             })
             return flushing;
         }

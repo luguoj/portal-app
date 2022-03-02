@@ -1,45 +1,46 @@
 <template>
-  <div class="ct-inner">
+  <div class="ct-root">
     <el-button @click="toggleNavigationExpansion" class="button-icon-only left">
-      <el-icon class="pi pi-bars"></el-icon>
+      <el-icon class="pi pi-bars"/>
     </el-button>
     <el-popover
         placement="bottom"
-        trigger="click"
+        :visible="userPopoverVisible"
     >
       <template #reference>
-        <el-button class="button-icon-only right">
-          <el-icon class="pi pi-user"></el-icon>
+        <el-button class="button-icon-only right" @click="userPopoverVisible=!userPopoverVisible">
+          <el-icon class="pi pi-user"/>
         </el-button>
       </template>
-      <desktop-header-user-popover></desktop-header-user-popover>
+      <desktop-header-user-popover @close-popover="userPopoverVisible=false"/>
     </el-popover>
     <desktop-header-view-path/>
   </div>
 </template>
 
 <script>
-import DesktopHeaderUserPopover from "@/views/desktop/header/DesktopHeaderUserPopover";
-import DesktopHeaderViewPath from "@/views/desktop/header/DesktopHeaderViewPath";
+import DesktopHeaderUserPopover from "@/desktop/header/DesktopHeaderUserPopover";
+import DesktopHeaderViewPath from "@/desktop/header/DesktopHeaderViewPath";
 import {useStore} from "vuex";
+import {ref} from "vue"
 
 export default {
   name: "DesktopHeader",
   components: {DesktopHeaderViewPath, DesktopHeaderUserPopover},
-  props: ['navigationExpanded'],
   setup() {
     const store = useStore()
     return {
       toggleNavigationExpansion: () => {
-        store.commit('desktop/toggleNavigationExpansion')
-      }
+        store.commit('desktop/toggleAside')
+      },
+      userPopoverVisible: ref(false)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.ct-inner {
+.ct-root {
   width: 100%;
   height: 100%;
   overflow: hidden;
