@@ -3,8 +3,6 @@ import {SAMPLE, SAMPLE_PARENT} from "@/router/sample-pages";
 
 export const MenuRoutes = [{
     id: 'desktop',
-    title: '桌面',
-    iconCls: 'pi pi-desktop',
     route: HOME
 }, {
     id: 'sample-pages',

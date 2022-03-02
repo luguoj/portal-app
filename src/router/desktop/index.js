@@ -8,7 +8,9 @@ export const HOME = {
     path: '/',
     component: DesktopViewBlank,
     meta: {
-        isAffix: true
+        isAffix: true,
+        title: '首页',
+        iconCls: 'pi pi-desktop'
     }
 }
 

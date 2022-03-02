@@ -3,6 +3,8 @@ import {reactive} from "vue";
 function initialize(menuItem, router) {
     if (menuItem.route) {
         const route = menuItem.route
+        menuItem.title = menuItem.title || route.meta.title
+        menuItem.iconCls = menuItem.iconCls || route.meta.iconCls
         route.meta = route.meta || {}
         route.meta.menuItem = menuItem
         router.addRoute(route)
