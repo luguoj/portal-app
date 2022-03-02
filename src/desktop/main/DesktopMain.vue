@@ -10,7 +10,7 @@
         >
           <desktop-main-view-tag
               class="tag"
-              :checked="activeViewId===view.fullPath"
+              :checked="activeViewId===view.meta.menuItem.id"
               @click="navigate"
               :closable="!view.meta.isAffix"
           >
@@ -39,26 +39,24 @@ export default {
   components: {PsrElHorizontalScrollBar, DesktopMainViewTag},
   setup() {
     const openedViews = reactive([])
-    const viewByPath = {}
+    const viewByMenuItemId = {}
     const activeViewId = ref(null)
     const router = useRouter()
     const route = useRoute()
     const store = useStore()
 
     function activeTagOnRoute(newRoute) {
-      const menuItemRoutes = newRoute.matched.filter(item => item.meta.menuItem)
-      if (menuItemRoutes.length > 0) {
-        const {fullPath, meta} = newRoute
-        if (!viewByPath[fullPath]) {
-          if (menuItemRoutes.length > 0) {
-            const view = reactive({fullPath, meta})
-            viewByPath[fullPath] = view
-            openedViews.push(view)
-          }
+      const {fullPath, meta} = newRoute
+      if (meta.menuItem) {
+        if (!viewByMenuItemId[meta.menuItem.id]) {
+          const view = viewByMenuItemId[meta.menuItem.id] = reactive({fullPath, meta})
+          openedViews.push(view)
         } else {
-          viewByPath[fullPath].meta = meta
+          viewByMenuItemId[meta.menuItem.id].fullPath = fullPath
         }
-        activeViewId.value = fullPath
+        activeViewId.value = meta.menuItem.id
+      } else {
+        activeViewId.value = null
       }
     }
 
@@ -68,7 +66,7 @@ export default {
       for (let i = 0; i < affixRoutes.length; i++) {
         const {path, meta} = affixRoutes[i]
         const view = reactive({fullPath: path, meta})
-        viewByPath[path] = view
+        viewByMenuItemId[meta.menuItem.id] = view
         openedViews.push(view)
       }
       activeTagOnRoute(route)
