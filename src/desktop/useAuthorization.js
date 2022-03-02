@@ -2,7 +2,7 @@ import {useStore} from "vuex";
 import {useRouter} from "vue-router";
 import {tokenContext, tokenInfo} from "@/services/Authorization";
 import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/modules/psr-oauth/context";
-import {onMounted, watch} from "vue";
+import {watch} from "vue";
 import {ElMessage} from "element-plus";
 import {resetStore} from "@/store";
 import {HOME, SIGN_IN} from "@/router/desktop";
@@ -70,13 +70,12 @@ function authentication() {
                 })
                 console.log('用户身份已认证.', `用户: ${tokenInfo.authentication.username}`)
                 store.commit('desktop/signIn', tokenInfo.authentication.username)
-                router.replace(lastRoute)
+                console.log(lastRoute.path)
+                router.isReady().then(() => router.replace(lastRoute))
             }
         }
     })
-    onMounted(() => {
-        tokenContext.refreshToken()
-    })
+    tokenContext.refreshToken()
 }
 
 export function useAuthorization() {
