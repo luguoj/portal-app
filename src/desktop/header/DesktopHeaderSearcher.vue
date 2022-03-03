@@ -1,5 +1,7 @@
 <template>
   <el-select
+      ref="refSelect"
+      placeholder="搜索 (菜单名称 / 拼音 / 导航路径)"
       class="searcher"
       filterable
       remote
@@ -23,6 +25,7 @@ import pinyin from "pinyin";
 export default {
   name: "DesktopHeaderSearcher",
   setup() {
+    const refSelect = ref()
     const router = useRouter()
     const allOptions = router.getRoutes()
         .filter(route => route.meta.menuItem)
@@ -58,6 +61,7 @@ export default {
     })
     const searchResult = ref([])
     return {
+      refSelect,
       searchResult,
       querySearch: (query) => {
         if (query !== '') {
@@ -68,6 +72,13 @@ export default {
       },
       searcherChange: (val) => {
         router.push(val)
+      },
+      focus: () => {
+        refSelect.value.focus()
+      },
+      clean: () => {
+        refSelect.value.blur()
+        searchResult.value = []
       }
     }
   }

@@ -16,10 +16,10 @@
     </el-popover>
     <div class="ct-path">
       <desktop-header-view-path v-show="!showSearcher" class="view-path"/>
-      <el-button v-show="!showSearcher" @click.stop="showSearcher=true" class="button icon-only right">
+      <el-button v-show="!showSearcher" @click.stop="handleShowSearcher" class="button icon-only right">
         <el-icon class="pi pi-search"/>
       </el-button>
-      <desktop-header-searcher v-show="showSearcher"/>
+      <desktop-header-searcher ref="refSearcher" v-show="showSearcher"/>
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@
 import DesktopHeaderUserPopover from "@/desktop/header/DesktopHeaderUserPopover";
 import DesktopHeaderViewPath from "@/desktop/header/DesktopHeaderViewPath";
 import {useStore} from "vuex";
-import {ref, watch} from "vue"
+import {nextTick, ref, watch} from "vue"
 import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
 import DesktopHeaderSearcher from "@/desktop/header/DesktopHeaderSearcher";
 import {useRoute} from "vue-router";
@@ -39,10 +39,12 @@ export default {
   setup() {
     const store = useStore()
     const route = useRoute()
+    const refSearcher = ref()
     const showSearcher = ref(false)
 
     function hideSearcher() {
       showSearcher.value = false
+      refSearcher.value && refSearcher.value.clean()
     }
 
     watch(showSearcher, newValue => {
@@ -53,10 +55,15 @@ export default {
       }
     })
 
-    watch(route, () => showSearcher.value = false)
+    watch(route, hideSearcher)
     return {
+      refSearcher,
       toggleNavigationExpansion: () => {
         store.commit('desktop/toggleAside')
+      },
+      handleShowSearcher: () => {
+        showSearcher.value = true
+        nextTick(() => refSearcher.value.focus())
       },
       userPopoverVisible: ref(false),
       showSearcher
