@@ -1,10 +1,12 @@
 <template>
   <el-breadcrumb separator="/" class="breadcrumb">
-    <el-breadcrumb-item
-        v-for="viewPathItem in viewPath"
-        :to="viewPathItem.path?{ path: viewPathItem.path }:null"
-    >{{ viewPathItem.title }}
-    </el-breadcrumb-item>
+    <transition-group name="breadcrumb">
+      <el-breadcrumb-item
+          v-for="(viewPathItem,index) in viewPath" :key="index+viewPathItem.title"
+          :to="viewPathItem.path?{ path: viewPathItem.path }:null"
+      >{{ viewPathItem.title }}
+      </el-breadcrumb-item>
+    </transition-group>
   </el-breadcrumb>
 </template>
 
@@ -43,4 +45,22 @@ export default {
 </script>
 
 <style scoped>
+.breadcrumb-enter-from,
+.breadcrumb-leave-to {
+  opacity: 0;
+}
+
+.breadcrumb-leave-active {
+  position: absolute;
+}
+
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+  transition: all var(--el-transition-duration);
+}
+
+.breadcrumb-move {
+  transition: all var(--el-transition-duration);
+}
+
 </style>
