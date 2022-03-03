@@ -4,7 +4,12 @@ function initialize(menuRoutes, router, parent) {
     if (menuRoutes && menuRoutes.length) {
         for (let i = 0; i < menuRoutes.length; i++) {
             const menuRoute = menuRoutes[i];
-            menuRoute.parent = parent
+            menuRoute.allParents = []
+            if (parent) {
+                menuRoute.allParents.push(...parent.allParents)
+                menuRoute.allParents.push(parent)
+                menuRoute.parent = parent
+            }
             if (menuRoute.route) {
                 const route = menuRoute.route
                 menuRoute.title = menuRoute.title || route.meta.title
