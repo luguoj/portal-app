@@ -30,7 +30,6 @@ export default {
 
 <style lang="scss" scoped>
 .ct-root {
-  padding: 0 12px;
   line-height: var(--el-header-height);
 
   .icon {
@@ -39,6 +38,7 @@ export default {
     .el-image {
       vertical-align: middle;
     }
+    margin: 0 12px;
   }
 
   .text {
@@ -46,7 +46,6 @@ export default {
     font-size: var(--el-font-size-extra-large);
     font-weight: bolder;
     white-space: nowrap;
-    padding-left: 12px;
   }
 }
 
