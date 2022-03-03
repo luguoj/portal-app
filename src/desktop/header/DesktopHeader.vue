@@ -1,6 +1,6 @@
 <template>
   <div class="ct-root">
-    <el-button @click="toggleNavigationExpansion" class="button-icon-only left">
+    <el-button @click="toggleNavigationExpansion" class="button icon-only left">
       <el-icon class="pi pi-bars"/>
     </el-button>
     <el-popover
@@ -8,13 +8,19 @@
         :visible="userPopoverVisible"
     >
       <template #reference>
-        <el-button class="button-icon-only right" @click="userPopoverVisible=!userPopoverVisible">
+        <el-button class="button icon-only right" @click="userPopoverVisible=!userPopoverVisible">
           <el-icon class="pi pi-user"/>
         </el-button>
       </template>
       <desktop-header-user-popover @close-popover="userPopoverVisible=false"/>
     </el-popover>
-    <desktop-header-view-path/>
+    <div class="ct-path">
+      <desktop-header-view-path v-show="!showSearcher" class="view-path"/>
+      <el-button v-show="!showSearcher" @click.stop="showSearcher=true" class="button icon-only right">
+        <el-icon class="pi pi-search"/>
+      </el-button>
+      <desktop-header-searcher v-show="showSearcher"/>
+    </div>
   </div>
 </template>
 
@@ -22,18 +28,38 @@
 import DesktopHeaderUserPopover from "@/desktop/header/DesktopHeaderUserPopover";
 import DesktopHeaderViewPath from "@/desktop/header/DesktopHeaderViewPath";
 import {useStore} from "vuex";
-import {ref} from "vue"
+import {ref, watch} from "vue"
+import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
+import DesktopHeaderSearcher from "@/desktop/header/DesktopHeaderSearcher";
+import {useRoute} from "vue-router";
 
 export default {
   name: "DesktopHeader",
-  components: {DesktopHeaderViewPath, DesktopHeaderUserPopover},
+  components: {DesktopHeaderSearcher, PsrElHorizontalScrollBar, DesktopHeaderViewPath, DesktopHeaderUserPopover},
   setup() {
     const store = useStore()
+    const route = useRoute()
+    const showSearcher = ref(false)
+
+    function hideSearcher() {
+      showSearcher.value = false
+    }
+
+    watch(showSearcher, newValue => {
+      if (newValue) {
+        document.body.addEventListener('click', hideSearcher)
+      } else {
+        document.body.removeEventListener('click', hideSearcher)
+      }
+    })
+
+    watch(route, () => showSearcher.value = false)
     return {
       toggleNavigationExpansion: () => {
         store.commit('desktop/toggleAside')
       },
-      userPopoverVisible: ref(false)
+      userPopoverVisible: ref(false),
+      showSearcher
     }
   }
 }
@@ -45,34 +71,46 @@ export default {
   height: 100%;
   overflow: hidden;
 
-  .el-button {
-    margin-top: 14px;
-    margin-bottom: 14px;
-  }
+  .button {
+    margin: 14px 0;
 
-  .el-breadcrumb {
-    //height: var(--el-font-size-base);
-    margin-top: 23px;
-    margin-bottom: 23px;
-  }
+    &.icon-only {
+      width: 32px;
 
-  .left {
-    float: left;
-    margin-right: 12px;
-  }
+      i {
+        font-size: var(--el-font-size-extra-large);
+      }
+    }
 
-  .right {
-    float: right;
-    margin-left: 12px;
-  }
+    &.left {
+      float: left;
+      margin-right: 12px;
+    }
 
-  .button-icon-only {
-    width: 32px;
-
-    i {
-      font-size: var(--el-font-size-extra-large);
+    &.right {
+      float: right;
+      margin-left: 12px;
     }
   }
+
+  .ct-path {
+    float: left;
+    width: calc(100% - 44px - 44px);
+    min-width: fit-content;
+
+    .view-path {
+      margin: 23px 0;
+      float: left;
+    }
+
+    .searcher {
+      margin: 14px 0;
+      float: left;
+      width: 100%;
+    }
+  }
+
+
 }
 
 
