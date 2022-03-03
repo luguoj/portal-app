@@ -21,7 +21,9 @@
       </psr-el-horizontal-scroll-bar>
     </el-header>
     <el-main class="ct-view">
-      <router-view></router-view>
+      <transition name="view" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </el-main>
   </el-container>
 </template>
@@ -104,5 +106,19 @@ export default {
 
 .tag {
   margin: 4px 2px;
+}
+
+.view-enter-active {
+  animation: view-ani var(--el-transition-duration);
+}
+
+.view-leave-active {
+  animation: view-ani reverse var(--el-transition-duration);
+}
+
+@keyframes view-ani {
+  from {
+    opacity: 0;
+  }
 }
 </style>
