@@ -1,6 +1,6 @@
 <template>
   <div class="ct-root">
-    <el-button @click="toggleNavigationExpansion" class="button icon-only left">
+    <el-button type="text" @click="toggleNavigationExpansion" class="button icon-only left">
       <el-icon class="pi pi-bars"/>
     </el-button>
     <el-popover
@@ -8,7 +8,7 @@
         :visible="userPopoverVisible"
     >
       <template #reference>
-        <el-button class="button icon-only right" @click="userPopoverVisible=!userPopoverVisible">
+        <el-button type="text" class="button icon-only right" @click="userPopoverVisible=!userPopoverVisible">
           <el-icon class="pi pi-user"/>
         </el-button>
       </template>
@@ -16,7 +16,7 @@
     </el-popover>
     <div class="ct-path">
       <desktop-header-view-path v-show="!showSearcher" class="view-path"/>
-      <el-button v-show="!showSearcher" @click.stop="handleShowSearcher" class="button icon-only right">
+      <el-button type="text" v-show="!showSearcher" @click.stop="handleShowSearcher" class="button icon-only right">
         <el-icon class="pi pi-search"/>
       </el-button>
       <desktop-header-searcher ref="refSearcher" v-show="showSearcher"/>
