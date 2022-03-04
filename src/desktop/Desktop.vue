@@ -18,9 +18,8 @@
 import DesktopHeader from "@/desktop/header/DesktopHeader";
 import DesktopMain from "@/desktop/main/DesktopMain";
 import DesktopAside from "@/desktop/aside/DesktopAside";
-import {provide} from "vue";
 import {useAuthorization} from "@/desktop/useAuthorization";
-import {menuItems} from "@/router";
+import {useMenuRoute} from "@/desktop/useMenuRoute";
 
 export default {
   name: "Desktop",
@@ -31,7 +30,7 @@ export default {
   },
   setup() {
     useAuthorization()
-    provide('asideMenuItems', menuItems)
+    useMenuRoute()
   }
 }
 </script>

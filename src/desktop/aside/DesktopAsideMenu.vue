@@ -14,7 +14,7 @@
 
 <script>
 import DesktopAsideMenuItem from "@/desktop/aside/DesktopAsideMenuItem";
-import {computed, inject, onMounted, ref, watch} from "vue";
+import {computed, inject, nextTick, onMounted, ref, watch} from "vue";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
 
@@ -25,6 +25,7 @@ export default {
     const store = useStore()
     const route = useRoute()
     const activeMenuItemId = ref()
+    const menuItems = inject('asideMenuItems')
 
     function updateActiveMenuItem() {
       const menuItemRoutes = route.matched.filter(item => item.meta && item.meta.menuItem)
@@ -33,10 +34,14 @@ export default {
 
     onMounted(() => {
       watch(route, updateActiveMenuItem, {immediate: true})
+      watch(menuItems, () => {
+        activeMenuItemId.value = null
+        nextTick(updateActiveMenuItem)
+      })
     })
     return {
       menuCollapse: computed(() => store.state.desktop.asideCollapsed),
-      menuItems: inject('asideMenuItems'),
+      menuItems,
       activeMenuItemId
     }
   }
