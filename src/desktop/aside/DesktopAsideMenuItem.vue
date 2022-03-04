@@ -2,7 +2,7 @@
   <el-menu-item
       v-if="menuItem.route"
       :index="menuItem.id"
-      :route="menuItem.route"
+      :route="{path: menuItem.route.path}"
   >
     <el-icon :class="menuItem.iconCls"/>
     <template #title>{{ menuItem.title }}</template>
