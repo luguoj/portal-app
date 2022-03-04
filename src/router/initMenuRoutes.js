@@ -1,5 +1,3 @@
-import {reactive} from "vue";
-
 function initialize(menuRoutes, router, parent) {
     if (menuRoutes && menuRoutes.length) {
         for (let i = 0; i < menuRoutes.length; i++) {
@@ -26,5 +24,5 @@ function initialize(menuRoutes, router, parent) {
 
 export function initMenuRoutes(menuRoutes, router) {
     initialize(menuRoutes, router)
-    return reactive(menuRoutes)
+    return menuRoutes
 }
