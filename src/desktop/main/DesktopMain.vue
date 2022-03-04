@@ -21,9 +21,16 @@
       </psr-el-horizontal-scroll-bar>
     </el-header>
     <el-main class="ct-view">
-      <transition name="view" mode="out-in">
-        <router-view></router-view>
-      </transition>
+      <router-view v-slot="{Component}">
+        <transition name="view" mode="out-in">
+          <keep-alive :include="keepAliveComponentNames">
+            <component
+                :is="Component"
+                :key="$route.fullPath"
+            />
+          </keep-alive>
+        </transition>
+      </router-view>
     </el-main>
   </el-container>
 </template>
@@ -31,7 +38,7 @@
 <script>
 
 import DesktopMainViewTag from "@/desktop/main/DesktopMainViewTag";
-import {onMounted, reactive, ref, watch} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
 import {useStore} from "vuex";
@@ -51,7 +58,11 @@ export default {
       const {fullPath, meta} = newRoute
       if (meta.menuItem) {
         if (!viewByMenuItemId[meta.menuItem.id]) {
-          const view = viewByMenuItemId[meta.menuItem.id] = reactive({fullPath, meta})
+          const view = viewByMenuItemId[meta.menuItem.id] = {
+            fullPath,
+            meta,
+            componentName: newRoute.matched[0].components.default.name
+          }
           openedViews.push(view)
         } else {
           viewByMenuItemId[meta.menuItem.id].fullPath = fullPath
@@ -67,7 +78,11 @@ export default {
       const affixRoutes = router.getRoutes().filter(item => item.meta.isAffix)
       for (let i = 0; i < affixRoutes.length; i++) {
         const {path, meta} = affixRoutes[i]
-        const view = reactive({fullPath: path, meta})
+        const view = {
+          fullPath: path,
+          meta,
+          componentName: affixRoutes[i].components.default.name
+        }
         viewByMenuItemId[meta.menuItem.id] = view
         openedViews.push(view)
       }
@@ -81,6 +96,7 @@ export default {
     })
     return {
       openedViews,
+      keepAliveComponentNames: computed(() => openedViews.map(view => view.componentName)),
       activeViewId
     }
   }
