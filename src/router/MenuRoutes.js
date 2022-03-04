@@ -1,5 +1,5 @@
 import {HOME} from "@/router/desktop";
-import {SAMPLE, SAMPLE_PARENT} from "@/router/sample-pages";
+import {SAMPLE, SAMPLE_2, SAMPLE_PARENT} from "@/router/sample-pages";
 
 export const MenuRoutes = [{
     id: 'desktop',
@@ -18,5 +18,10 @@ export const MenuRoutes = [{
         title: '嵌套页面',
         iconCls: 'pi pi-book',
         route: SAMPLE_PARENT
+    }, {
+        id: 'sample-2',
+        title: '样例-2',
+        iconCls: 'pi pi-book',
+        route: SAMPLE_2
     }]
 }]
