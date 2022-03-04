@@ -13,6 +13,7 @@
               :checked="activeViewId===view.meta.menuItem.id"
               @click="navigate"
               :closable="!view.meta.isAffix"
+              @close="handleViewClose(view)"
           >
             <el-icon class="tag-icon" :class="view.meta.menuItem?view.meta.menuItem.iconCls:view.meta.iconCls"/>
             {{ view.meta.menuItem ? view.meta.menuItem.title : view.meta.title }}
@@ -97,7 +98,15 @@ export default {
     return {
       openedViews,
       keepAliveComponentNames: computed(() => openedViews.map(view => view.componentName)),
-      activeViewId
+      activeViewId,
+      handleViewClose: (view) => {
+        const index = openedViews.indexOf(view)
+        openedViews.splice(index, 1)
+        delete viewByMenuItemId[view.meta.menuItem.id]
+        if (activeViewId.value === view.meta.menuItem.id) {
+          router.push(openedViews[index - 1].fullPath)
+        }
+      }
     }
   }
 }
