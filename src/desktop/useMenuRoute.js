@@ -35,7 +35,9 @@ export function useMenuRoute() {
 
     let menuRoutePermission = Promise.resolve([])
     router.beforeEach(to => {
-        if (to.meta.menuItem && to.fullPath !== HOME.path) {
+        if (store.state.desktop.username === 'platform_admin') {
+            return true
+        } else if (to.meta.menuItem && to.fullPath !== HOME.path) {
             return menuRoutePermission.then(permissions => {
                 if (permissions.indexOf(to.meta.menuItem.id) < 0) {
                     ElMessage({
@@ -52,9 +54,13 @@ export function useMenuRoute() {
 
     watch(() => store.state.desktop.username, () => {
         asideMenuItems.splice(0, asideMenuItems.length)
-        menuRoutePermission = UserProfile.findMenuRoutePermission(process.env.VUE_APP_PORTAL_ID)
-        menuRoutePermission.then(permissions => {
-            asideMenuItems.push(...filterMenuItemsWithPermissions(menuItems, permissions))
-        })
+        if (store.state.desktop.username === 'platform_admin') {
+            asideMenuItems.push(...menuItems)
+        } else {
+            menuRoutePermission = UserProfile.findMenuRoutePermission(process.env.VUE_APP_PORTAL_ID)
+            menuRoutePermission.then(permissions => {
+                asideMenuItems.push(...filterMenuItemsWithPermissions(menuItems, permissions))
+            })
+        }
     }, {immediate: true})
 }
