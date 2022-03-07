@@ -125,7 +125,7 @@ export default {
   .ct-view {
     background-color: var(--el-color-white);
     height: 100%;
-    padding: 10px;
+    padding: 0;
   }
 }
 
