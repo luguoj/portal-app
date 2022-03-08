@@ -1,4 +1,4 @@
-import {FilterOptions, Sign, Operation, ValueRange} from "@/modules/psr-entity-filter/FilterOptions"
+import {FilterOptions, Sign, Operation, ValueRange} from "@/modules/psr-entity-crud/FilterOptions"
 
 export class FilterOptionsBuilder {
     constructor(filterOptions) {
