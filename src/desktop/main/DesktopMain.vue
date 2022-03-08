@@ -23,14 +23,15 @@
     </el-header>
     <el-main class="ct-view">
       <router-view v-slot="{Component}">
-        <transition name="view" mode="out-in">
+        <!-- TODO 使用过渡动画时，会导致切换失败，待解决 -->
+<!--        <transition name="view" mode="out-in">-->
           <keep-alive :include="keepAliveComponentNames">
             <component
                 :is="Component"
                 :key="$route.fullPath"
             />
           </keep-alive>
-        </transition>
+<!--        </transition>-->
       </router-view>
     </el-main>
   </el-container>
