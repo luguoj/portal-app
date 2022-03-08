@@ -1,6 +1,6 @@
 import {menuItems} from "@/router";
 import {provide, reactive, watch} from "vue";
-import {User} from "@/services/portal";
+import {userService} from "@/services/portal";
 import {HOME} from "@/router/desktop";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
@@ -35,7 +35,7 @@ export function useMenuRoute() {
 
     let menuRoutePermission = Promise.resolve([])
     router.beforeEach(to => {
-        if (store.state.desktop.username === 'platform_admin') {
+        if (store.state.username === 'platform_admin') {
             return true
         } else if (to.meta.menuItem && to.fullPath !== HOME.path) {
             return menuRoutePermission.then(permissions => {
@@ -52,12 +52,12 @@ export function useMenuRoute() {
         }
     })
 
-    watch(() => store.state.desktop.username, () => {
+    watch(() => store.state.username, () => {
         asideMenuItems.splice(0, asideMenuItems.length)
-        if (store.state.desktop.username === 'platform_admin') {
+        if (store.state.username === 'platform_admin') {
             asideMenuItems.push(...menuItems)
         } else {
-            menuRoutePermission = User.findRoutePermissionByPortalId(process.env.VUE_APP_PORTAL_ID)
+            menuRoutePermission = userService.findRoutePermissionByPortalId(process.env.VUE_APP_PORTAL_ID)
             menuRoutePermission.then(permissions => {
                 asideMenuItems.push(...filterMenuItemsWithPermissions(menuItems, permissions))
             })

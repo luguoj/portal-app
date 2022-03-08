@@ -4,10 +4,19 @@ import desktop from "@/store/desktop";
 
 const options = {
     state() {
-        return {}
+        return {
+            username: ''
+        }
     },
     actions: {},
-    mutations: {},
+    mutations: {
+        signOut(state) {
+            state.username = null
+        },
+        signIn(state, username) {
+            state.username = username
+        },
+    },
     modules: {
         desktop
     }

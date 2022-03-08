@@ -20,7 +20,7 @@ export default {
   setup(props, context) {
     const store = useStore()
     return {
-      username: computed(() => store.state.desktop.username),
+      username: computed(() => store.state.username),
       handleSignOut: () => {
         ElMessageBox.confirm(
             '确认登出当前用户?',

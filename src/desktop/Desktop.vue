@@ -18,8 +18,6 @@
 import DesktopHeader from "@/desktop/header/DesktopHeader";
 import DesktopMain from "@/desktop/main/DesktopMain";
 import DesktopAside from "@/desktop/aside/DesktopAside";
-import {useAuthorization} from "@/desktop/useAuthorization";
-import {useMenuRoute} from "@/desktop/useMenuRoute";
 
 export default {
   name: "Desktop",
@@ -29,8 +27,7 @@ export default {
     DesktopMain
   },
   setup() {
-    useAuthorization()
-    useMenuRoute()
+
   }
 }
 </script>

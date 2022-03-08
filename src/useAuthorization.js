@@ -11,9 +11,9 @@ function authentication() {
     const store = useStore()
     const router = useRouter()
     // 初始化设置tokenInfo用户名为前一次访问的用户
-    if (store.state.desktop.username) {
+    if (store.state.username) {
         tokenInfo.authentication = {
-            username: store.state.desktop.username,
+            username: store.state.username,
             state: AUTHENTICATED
         }
     }
@@ -46,22 +46,22 @@ function authentication() {
             })
             goSignIn()
         } else if (state === NOT_AUTHENTICATED) {
-            if (store.state.desktop.username) {
+            if (store.state.username) {
                 ElMessage('已登出.')
-                console.log('已登出', `用户: ${store.state.desktop.username}`)
+                console.log('已登出', `用户: ${store.state.username}`)
             }
             resetStore()
-            store.commit('desktop/signOut')
+            store.commit('signOut')
             goSignIn()
         } else if (state === AUTHENTICATED) {
-            if (store.state.desktop.username && tokenInfo.authentication.username !== store.state.desktop.username) {
-                console.log('用户身份切换.', `用户: ${store.state.desktop.username} -> ${tokenInfo.authentication.username}`)
+            if (store.state.username && tokenInfo.authentication.username !== store.state.username) {
+                console.log('用户身份切换.', `用户: ${store.state.username} -> ${tokenInfo.authentication.username}`)
                 ElMessage({
                     message: '用户身份切换.',
                     type: 'warning',
                 })
                 resetStore()
-                store.commit('desktop/signIn', tokenInfo.authentication.username)
+                store.commit('signIn', tokenInfo.authentication.username)
                 router.replace({path: HOME.path})
             } else {
                 ElMessage({
@@ -69,7 +69,7 @@ function authentication() {
                     type: 'success',
                 })
                 console.log('用户身份已认证.', `用户: ${tokenInfo.authentication.username}`)
-                store.commit('desktop/signIn', tokenInfo.authentication.username)
+                store.commit('signIn', tokenInfo.authentication.username)
                 console.log(lastRoute.path)
                 router.isReady().then(() => router.replace(lastRoute))
             }

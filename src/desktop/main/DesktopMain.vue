@@ -91,7 +91,7 @@ export default {
       activeTagOnRoute(route)
     }
 
-    watch(() => store.state.desktop.username, initTags, {immediate: true})
+    watch(() => store.state.username, initTags, {immediate: true})
 
     onMounted(() => {
       watch(route, activeTagOnRoute)
