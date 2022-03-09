@@ -49,4 +49,8 @@ export default {
   background: var(--el-color-white);
   border-radius: 3px;
 }
+
+html {
+  font-size: var(--el-font-size-base)
+}
 </style>
