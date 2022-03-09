@@ -30,8 +30,23 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
+}
 
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--el-scrollbar-bg-color, var(--el-text-color-secondary));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--el-color-white);
+  border-radius: 3px;
 }
 </style>
