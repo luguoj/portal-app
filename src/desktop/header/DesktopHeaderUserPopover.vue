@@ -1,11 +1,22 @@
 <template>
-  <div>
-    <div>{{ username }}</div>
-    <el-button type="danger" @click="handleSignOut" style="width:100%">
-      <el-icon class="pi pi-sign-out"/>
-      <span>退出系统</span>
-    </el-button>
-  </div>
+  <el-popover
+      placement="bottom"
+      :visible="visible"
+  >
+    <template #reference>
+      <slot name="reference">
+      </slot>
+    </template>
+    <div>
+      <div>{{ username }}</div>
+      <psr-el-async-action-button type="danger" :action="handleSignOut" style="width:100%">
+        <template #icon>
+          <el-icon class="pi pi-sign-out"/>
+        </template>
+        <span>退出系统</span>
+      </psr-el-async-action-button>
+    </div>
+  </el-popover>
 </template>
 
 <script>
@@ -13,25 +24,34 @@ import {ElMessageBox} from "element-plus";
 import {useStore} from "vuex";
 import {computed} from "vue";
 import {tokenService} from "@/services/Authorization";
+import PsrElAsyncActionButton from "@/components/psr-element-plus/buttons/PsrElAsyncActionButton";
 
 export default {
   name: "DesktopHeaderUserPopover",
-  emits: ['closePopover'],
+  components: {PsrElAsyncActionButton},
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['update:visible'],
   setup(props, context) {
     const store = useStore()
     return {
       username: computed(() => store.state.username),
       handleSignOut: () => {
-        ElMessageBox.confirm(
+        return ElMessageBox.confirm(
             '确认登出当前用户?',
             '登出',
             {
               type: 'warning',
             }
         ).then(() => {
-          tokenService.signOut()
+          return tokenService.signOut().finally(() =>
+              context.emit('update:visible', false)
+          )
         })
-        context.emit('closePopover')
       }
     }
   }

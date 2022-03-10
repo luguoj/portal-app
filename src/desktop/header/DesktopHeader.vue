@@ -3,17 +3,15 @@
     <el-button type="text" @click="toggleNavigationExpansion" class="button icon-only left">
       <el-icon class="pi pi-bars"/>
     </el-button>
-    <el-popover
-        placement="bottom"
-        :visible="userPopoverVisible"
+    <desktop-header-user-popover
+        v-model:visible="userPopoverVisible"
     >
       <template #reference>
         <el-button type="text" class="button icon-only right" @click="userPopoverVisible=!userPopoverVisible">
           <el-icon class="pi pi-user"/>
         </el-button>
       </template>
-      <desktop-header-user-popover @close-popover="userPopoverVisible=false"/>
-    </el-popover>
+    </desktop-header-user-popover>
     <div class="ct-path">
       <desktop-header-view-path v-show="!showSearcher" class="view-path"/>
       <el-button type="text" v-show="!showSearcher" @click.stop="handleShowSearcher" class="button icon-only right">
