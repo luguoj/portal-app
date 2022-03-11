@@ -34,4 +34,28 @@ export class EntityCRUDService {
             option.data
         ).then(handleResp)
     }
+
+    update(option) {
+        return this.client.put(`${this.contextPath}/${option.data.id}`,
+            option.data
+        ).then(handleResp)
+    }
+
+    patch(option) {
+        const {id, version} = option.data
+        const data = {id, version}
+        for (let i = 0; i < option.fields.length; i++) {
+            const field = option.fields[i];
+            data[field] = option.data[field]
+        }
+        return this.client.patch(`${this.contextPath}/${option.data.id}/${option.fields.join(',')}`,
+            data
+        ).then(handleResp)
+    }
+
+    delete(option) {
+        return this.client.delete(`${this.contextPath}/${option.ids.join(',')}`,
+            option.data
+        ).then(handleResp)
+    }
 }
