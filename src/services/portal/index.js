@@ -1,18 +1,13 @@
-import axios from "axios";
-import {withToken} from "@/modules/psr-oauth/axios-inteceptors";
-import {tokenService} from "@/services/Authorization";
+import {useGatewayClient} from "@/services/useGatewayClient";
+import {EntityCRUDService} from "@/modules/psr-entity-crud";
 
-const client = withToken(axios.create({
-    baseURL: process.env.VUE_APP_PSR_GATEWAY_URL + '/portal/api'
-}), tokenService)
+const client = useGatewayClient({contextPath: '/portal/api'})
 
-export const ModuleEntity = {
-    findAll: () => {
-        return client.get('/entity/org.psr.platform.portal.entity.ModuleEntity')
-    }
+export const portalEntityCRUDService = {
+    group: new EntityCRUDService(client, 'org.psr.platform.portal.entity.GroupEntity'),
 }
 
-export const User = {
+export const userService = {
     findRoutePermissionByPortalId: (portalId) => {
         return client.get('/user/route_permission', {params: {portalId: portalId}})
             .then((resp) => {
