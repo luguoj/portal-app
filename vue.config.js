@@ -7,7 +7,7 @@ module.exports = {
     configureWebpack: {
         plugins: [
             AutoImport({
-                resolvers: [ElementPlusResolver()]
+                resolvers: [ElementPlusResolver({importStyle: false})]
             }),
             Components({
                 resolvers: [ElementPlusResolver()]
