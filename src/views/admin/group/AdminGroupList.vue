@@ -108,10 +108,10 @@
       <template #body="slotProps">
         <el-space wrap>
           <router-link
-              :to="{name:ROUTE_NAME_ADMIN.GROUP_AUTHORITY,params:{groupId:slotProps.data.id}}"
+              :to="{name:ROUTE_NAME_ADMIN.GROUP_PERMISSION,params:{groupId:slotProps.data.id}}"
               v-slot="{navigate}"
           >
-            <el-button type="text" size="small" @click="navigate">授权</el-button>
+            <el-button type="text" size="small" @click="navigate">许可</el-button>
           </router-link>
           <router-link
               :to="{name:ROUTE_NAME_ADMIN.GROUP_USER,params:{groupId:slotProps.data.id}}"

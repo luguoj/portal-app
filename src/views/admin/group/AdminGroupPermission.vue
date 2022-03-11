@@ -16,7 +16,7 @@ import {useRouter} from "vue-router";
 import {ROUTE_NAME_ADMIN} from "@/router/admin";
 
 export default {
-  name: "AdminGroupAuthority",
+  name: "AdminGroupPermission",
   props: {
     groupId: {
       type: String
