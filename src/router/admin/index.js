@@ -5,6 +5,13 @@ import AdminGroupList from "@/views/admin/group/AdminGroupList";
 import AdminGroupAuthority from "@/views/admin/group/AdminGroupAuthority";
 import AdminGroupUser from "@/views/admin/group/AdminGroupUser";
 
+export const ROUTE_NAME_ADMIN = {
+    GROUP: 'admin-group',
+    GROUP_LIST: 'admin-group-list',
+    GROUP_AUTHORITY: 'admin-group-authority',
+    GROUP_USER: 'admin-group-user'
+}
+
 export const ADMIN_PERMISSION = {
     name: 'admin-permission',
     path: '/admin/permission',
@@ -16,19 +23,19 @@ export const ADMIN_USER = {
     component: AdminUser
 }
 export const ADMIN_GROUP = {
-    name: 'admin-group',
+    name: ROUTE_NAME_ADMIN.GROUP,
     path: '/admin/group',
     component: AdminGroup,
     redirect: '',
     children: [{
-        name: 'admin-group-list',
+        name: ROUTE_NAME_ADMIN.GROUP_LIST,
         path: '',
         component: AdminGroupList,
         meta: {
             title: '分组清单'
         }
     }, {
-        name: 'admin-group-authority',
+        name: ROUTE_NAME_ADMIN.GROUP_AUTHORITY,
         path: ':groupId/authority',
         component: AdminGroupAuthority,
         props: true,
@@ -36,7 +43,7 @@ export const ADMIN_GROUP = {
             title: '分组授权'
         }
     }, {
-        name: 'admin-group-user',
+        name: ROUTE_NAME_ADMIN.GROUP_USER,
         path: ':groupId/user',
         component: AdminGroupUser,
         props: true,
