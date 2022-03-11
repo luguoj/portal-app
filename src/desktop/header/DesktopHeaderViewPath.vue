@@ -31,7 +31,10 @@ export default {
             title: parent.title,
             path: parent.route ? parent.route.path : ''
           })))
-          result.push({title: route.meta.menuItem.title, path: route.path})
+          result.push({title: route.meta.menuItem.title, path: route.meta.menuItem.route.path})
+          if (route.meta.menuItem.route !== route.matched[route.matched.length - 1]) {
+            result.push({title: route.meta.title, path: route.path})
+          }
         } else if (route.meta.title) {
           // 否则直接追加匹配的路由标题
           result.push({title: route.meta.title, path: route.path})

@@ -23,16 +23,25 @@ export const ADMIN_GROUP = {
     children: [{
         name: 'admin-group-list',
         path: '',
-        component: AdminGroupList
+        component: AdminGroupList,
+        meta: {
+            title: '分组清单'
+        }
     }, {
         name: 'admin-group-authority',
         path: ':groupId/authority',
         component: AdminGroupAuthority,
-        props: true
+        props: true,
+        meta: {
+            title: '分组授权'
+        }
     }, {
         name: 'admin-group-user',
         path: ':groupId/user',
         component: AdminGroupUser,
-        props: true
+        props: true,
+        meta: {
+            title: '分组用户'
+        }
     }]
 }

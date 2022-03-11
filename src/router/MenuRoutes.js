@@ -16,7 +16,7 @@ export const MenuRoutes = [{
         route: ADMIN_PERMISSION
     }, {
         id: 'admin-group',
-        title: '用户分组',
+        title: '分组',
         iconCls: 'pi pi-tag',
         route: ADMIN_GROUP
     }, {
