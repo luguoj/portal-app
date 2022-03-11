@@ -13,7 +13,7 @@
 <script>
 import {useRoute} from "vue-router";
 import {computed} from "vue";
-import {HOME} from "@/router/desktop";
+import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/router/desktop";
 
 export default {
   name: "DesktopHeaderViewPath",
@@ -21,10 +21,10 @@ export default {
     const route = useRoute()
     const viewPath = computed(() => {
       const result = [{
-        title: HOME.meta.title,
-        path: HOME.path
+        title: HOME_TITLE,
+        path: ROUTE_PATH_DESKTOP.HOME
       }]
-      if (route.fullPath !== HOME.path) {
+      if (route.fullPath !== ROUTE_PATH_DESKTOP.HOME) {
         if (route.meta.menuItem) {
           // 如果关联菜单项目，则追加菜单路径
           result.push(...route.meta.menuItem.allParents.map(parent => ({
@@ -32,7 +32,8 @@ export default {
             path: parent.route ? parent.route.path : ''
           })))
           result.push({title: route.meta.menuItem.title, path: route.meta.menuItem.route.path})
-          if (route.meta.menuItem.route !== route.matched[route.matched.length - 1]) {
+          // 如果当前路由是命中菜单路由的嵌套路由，则追加一层当前路由路径
+          if (route.meta.menuItem.route.name !== route.matched[route.matched.length - 1].name) {
             result.push({title: route.meta.title, path: route.path})
           }
         } else if (route.meta.title) {

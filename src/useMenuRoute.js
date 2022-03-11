@@ -1,7 +1,7 @@
 import {menuItems} from "@/router";
 import {provide, reactive, watch} from "vue";
 import {userService} from "@/services/portal";
-import {HOME} from "@/router/desktop";
+import {ROUTE_NAME_DESKTOP, ROUTE_PATH_DESKTOP} from "@/router/desktop";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {useStore} from "vuex";
@@ -20,7 +20,7 @@ function filterMenuItemsWithPermissions(menuItems, permissions) {
             }
         } else if (item.route && permissions.indexOf(item.id) >= 0) {
             return {...item}
-        } else if (item.route === HOME) {
+        } else if (item.route.name === ROUTE_NAME_DESKTOP.HOME) {
             return {...item}
         }
         return null
@@ -37,7 +37,7 @@ export function useMenuRoute() {
     router.beforeEach(to => {
         if (store.state.username === 'platform_admin') {
             return true
-        } else if (to.meta.menuItem && to.fullPath !== HOME.path) {
+        } else if (to.meta.menuItem && to.fullPath !== ROUTE_PATH_DESKTOP.HOME) {
             return menuRoutePermission.then(permissions => {
                 if (permissions.indexOf(to.meta.menuItem.id) < 0) {
                     ElMessage({

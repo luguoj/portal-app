@@ -5,7 +5,7 @@ import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/modules
 import {watch} from "vue";
 import {ElMessage} from "element-plus";
 import {resetStore} from "@/store";
-import {HOME, SIGN_IN} from "@/router/desktop";
+import {ROUTE_PATH_DESKTOP} from "@/router/desktop";
 
 function authentication() {
     const store = useStore()
@@ -17,11 +17,11 @@ function authentication() {
             state: AUTHENTICATED
         }
     }
-    let lastRoute = {path: HOME.path}
+    let lastRoute = {path: ROUTE_PATH_DESKTOP.HOME}
 
     watch(() => router.currentRoute.value.fullPath, path => {
         // 防止用户手动跳转到登录页面
-        if (path === SIGN_IN.path) {
+        if (path === ROUTE_PATH_DESKTOP.SIGN_IN) {
             if (tokenInfo.authentication.state === AUTHENTICATED) {
                 router.replace(lastRoute)
             }
@@ -31,8 +31,8 @@ function authentication() {
     })
 
     function goSignIn() {
-        if (router.currentRoute.value.fullPath !== SIGN_IN.path) {
-            router.replace({path: SIGN_IN.path})
+        if (router.currentRoute.value.fullPath !== ROUTE_PATH_DESKTOP.SIGN_IN) {
+            router.replace({path: ROUTE_PATH_DESKTOP.SIGN_IN})
         }
     }
 
@@ -62,7 +62,7 @@ function authentication() {
                 })
                 resetStore()
                 store.commit('signIn', tokenInfo.authentication.username)
-                router.replace({path: HOME.path})
+                router.replace({path: ROUTE_PATH_DESKTOP.HOME})
             } else {
                 ElMessage({
                     message: '用户身份已认证.',
