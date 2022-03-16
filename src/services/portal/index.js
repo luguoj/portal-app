@@ -5,6 +5,7 @@ const client = useGatewayClient({contextPath: '/portal/api'})
 
 export const portalEntityCRUDService = {
     group: new EntityCRUDService(client, 'org.psr.platform.portal.entity.GroupEntity'),
+    groupPermission: new EntityCRUDService(client, 'org.psr.platform.portal.entity.GroupPermissionEntity')
 }
 
 export const userService = {

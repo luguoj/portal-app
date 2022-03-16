@@ -1,7 +1,7 @@
 <template>
   <DataTable
       ref="tableRef"
-      class="table p-datatable-sm psr-shadow"
+      class="table p-datatable-sm"
       responsiveLayout="scroll"
       :scrollable="true"
       scrollHeight="flex"
@@ -64,7 +64,7 @@
         </template>
       </el-button>
     </template>
-    <Column field="enabled" header="有效" :showFilterMenu="false"
+    <Column field="enabled" header="状态" :showFilterMenu="false"
             style="width:5rem;min-width:5rem;max-width:5rem;">
       <template #body="slotProps">
         <el-icon class="pi" :class="slotProps.data[slotProps.field]?'pi-check':'pi-ban'" style="width:100%;"/>
@@ -76,7 +76,7 @@
     <Column
         field="code"
         header="编码"
-        :style="{width:'120px'}"
+        :style="{width:'360px'}"
         :sortable="true"
     >
       <template #body="slotProps">
@@ -89,7 +89,7 @@
     <Column
         field="description"
         header="描述"
-        :style="{width:'240px'}"
+        :style="{width:'360px'}"
         :sortable="true"
     >
       <template #body="slotProps">
@@ -139,7 +139,7 @@
 
 <script>
 import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
-import {reactive, ref, watch} from "vue";
+import {reactive, ref, shallowReactive, watch} from "vue";
 import {portalEntityCRUDService} from "@/services/portal";
 import AdminGroupEdit from "@/views/admin/group/AdminGroupEditDialog";
 import AdminGroupEditDialog from "@/views/admin/group/AdminGroupEditDialog";
@@ -172,7 +172,7 @@ export default {
       filterOptions: null
     }
     const tableRef = ref()
-    const tableProps = reactive({
+    const tableProps = shallowReactive({
       offset: 0,
       limit: 20,
       limitSelectOptions: [10, 20, 50, 100],
@@ -181,12 +181,12 @@ export default {
         totalElements: 0
       },
       loading: false,
-      filters: {
+      filters: reactive({
         'portalId': {value: process.env.VUE_APP_PORTAL_ID, matchMode: FilterMatchMode.EQUALS},
         'code': {value: null, matchMode: FilterMatchMode.CONTAINS},
         'description': {value: null, matchMode: FilterMatchMode.CONTAINS},
         'enabled': {value: null, matchMode: FilterMatchMode.EQUALS}
-      }
+      })
     })
     const editDialogProps = reactive({
       data: {},

@@ -18,7 +18,8 @@ export const ROUTE_ADMIN_PERMISSION = {
     component: AdminPermission,
     meta: {
         title: '许可',
-        iconCls: 'pi pi-key'
+        iconCls: 'pi pi-key',
+        requirePermission: true
     }
 }
 
@@ -28,7 +29,8 @@ export const ROUTE_ADMIN_USER = {
     component: AdminUser,
     meta: {
         title: '用户',
-        iconCls: 'pi pi-users'
+        iconCls: 'pi pi-users',
+        requirePermission: true
     }
 }
 
@@ -39,15 +41,16 @@ export const ROUTE_ADMIN_GROUP = {
     meta: {
         title: '分组',
         iconCls: 'pi pi-tag',
+        requirePermission: true
     },
-    redirect: '',
     children: [{
         name: ROUTE_NAME_ADMIN.GROUP_LIST,
         path: '',
         component: AdminGroupList,
         meta: {
             title: '分组清单',
-            requirePermission: true
+            requirePermission: true,
+            actions: ['add', 'edit', 'delete']
         }
     }, {
         name: ROUTE_NAME_ADMIN.GROUP_PERMISSION,
