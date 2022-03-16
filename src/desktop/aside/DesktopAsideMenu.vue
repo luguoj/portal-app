@@ -6,7 +6,7 @@
       router
   >
     <desktop-aside-menu-item
-        v-for="menuItem in menuItems" :key="menuItem.id"
+        v-for="menuItem in menuItems" :key="menuItem.id||menuItem.route.name"
         :menu-item="menuItem"
     />
   </el-menu>
@@ -28,8 +28,11 @@ export default {
     const menuItems = inject('asideMenuItems')
 
     function updateActiveMenuItem() {
-      const menuItemRoutes = route.matched.filter(item => item.meta && item.meta.menuItem)
-      activeMenuItemId.value = menuItemRoutes.length ? menuItemRoutes[menuItemRoutes.length - 1].meta.menuItem.id : ''
+      if (route.matched.length > 0) {
+        activeMenuItemId.value = route.matched[0].name
+      } else {
+        activeMenuItemId.value = ''
+      }
     }
 
     onMounted(() => {

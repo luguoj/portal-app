@@ -12,51 +12,62 @@ export const ROUTE_NAME_ADMIN = {
     GROUP_USER: 'admin-group-user'
 }
 
-export function routeAdminPermission() {
-    return {
-        name: 'admin-permission',
-        path: '/admin/permission',
-        component: AdminPermission
+export const ROUTE_ADMIN_PERMISSION = {
+    name: 'admin-permission',
+    path: '/admin/permission',
+    component: AdminPermission,
+    meta: {
+        title: '许可',
+        iconCls: 'pi pi-key'
     }
 }
 
-export function routeAdminUser() {
-    return {
-        name: 'admin-user',
-        path: '/admin/user',
-        component: AdminUser
+export const ROUTE_ADMIN_USER = {
+    name: 'admin-user',
+    path: '/admin/user',
+    component: AdminUser,
+    meta: {
+        title: '用户',
+        iconCls: 'pi pi-users'
     }
 }
 
-export function routeAdminGroup() {
-    return {
-        name: ROUTE_NAME_ADMIN.GROUP,
-        path: '/admin/group',
-        component: AdminGroup,
-        redirect: '',
-        children: [{
-            name: ROUTE_NAME_ADMIN.GROUP_LIST,
-            path: '',
-            component: AdminGroupList,
-            meta: {
-                title: '分组清单'
-            }
-        }, {
-            name: ROUTE_NAME_ADMIN.GROUP_PERMISSION,
-            path: ':groupId/permission',
-            component: AdminGroupPermission,
-            props: true,
-            meta: {
-                title: '分组许可'
-            }
-        }, {
-            name: ROUTE_NAME_ADMIN.GROUP_USER,
-            path: ':groupId/user',
-            component: AdminGroupUser,
-            props: true,
-            meta: {
-                title: '分组用户'
-            }
-        }]
-    }
+export const ROUTE_ADMIN_GROUP = {
+    name: ROUTE_NAME_ADMIN.GROUP,
+    path: '/admin/group',
+    component: AdminGroup,
+    meta: {
+        title: '分组',
+        iconCls: 'pi pi-tag',
+    },
+    redirect: '',
+    children: [{
+        name: ROUTE_NAME_ADMIN.GROUP_LIST,
+        path: '',
+        component: AdminGroupList,
+        meta: {
+            title: '分组清单',
+            requirePermission: true
+        }
+    }, {
+        name: ROUTE_NAME_ADMIN.GROUP_PERMISSION,
+        path: ':groupId/permission',
+        component: AdminGroupPermission,
+        props: true,
+        meta: {
+            title: '分组许可',
+            requirePermission: true
+        }
+    }, {
+        name: ROUTE_NAME_ADMIN.GROUP_USER,
+        path: ':groupId/user',
+        component: AdminGroupUser,
+        props: true,
+        meta: {
+            title: '分组用户',
+            requirePermission: true
+        }
+    }]
 }
+
+export const ROUTES_ADMIN = [ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_GROUP, ROUTE_ADMIN_USER]

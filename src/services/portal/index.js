@@ -8,8 +8,8 @@ export const portalEntityCRUDService = {
 }
 
 export const userService = {
-    findRoutePermissionByPortalId: (portalId) => {
-        return client.get('/user/route_permission', {params: {portalId: portalId}})
+    findPermissionByPortalId: (portalId) => {
+        return client.get('/user/permission', {params: {portalId: portalId}})
             .then((resp) => {
                 if (resp && resp.data) {
                     return resp.data

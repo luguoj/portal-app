@@ -10,13 +10,13 @@ import Desktop from "@/desktop/Desktop";
 import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import {useAuthorization} from "@/useAuthorization";
-import {useMenuRoute} from "@/useMenuRoute";
+import {usePermission} from "@/usePermission";
 
 export default {
   name: 'App',
   setup() {
     useAuthorization()
-    useMenuRoute()
+    usePermission()
     onMounted(() => {
       window.NProgress.done()
     })

@@ -3,20 +3,23 @@
     <el-header class="ct-tags">
       <psr-el-horizontal-scroll-bar class="psr-shadow">
         <router-link
-            v-for="view in openedViews"
-            :to="view.fullPath"
+            v-for="cachedRoute in cachedRoutes"
+            :to="cachedRoute.path"
             custom
             v-slot="{navigate}"
         >
           <desktop-main-view-tag
               class="tag"
-              :checked="activeViewId===view.meta.menuItem.id"
+              :checked="activeRouteName===cachedRoute.name"
               @click="navigate"
-              :closable="!view.meta.isAffix"
-              @close="handleViewClose(view)"
+              :closable="!cachedRoute.meta.isAffix"
+              @close="handleTagClose(cachedRoute)"
           >
-            <el-icon class="tag-icon" :class="view.meta.menuItem?view.meta.menuItem.iconCls:view.meta.iconCls"/>
-            {{ view.meta.menuItem ? view.meta.menuItem.title : view.meta.title }}
+            <el-icon
+                class="tag-icon"
+                :class="cachedRoute.meta.iconCls"
+            />
+            {{ cachedRoute.meta.title }}
           </desktop-main-view-tag>
         </router-link>
       </psr-el-horizontal-scroll-bar>
@@ -24,14 +27,14 @@
     <el-main class="ct-view">
       <router-view v-slot="{Component}">
         <!-- TODO 使用过渡动画时，会导致切换失败，待解决 -->
-<!--        <transition name="view" mode="out-in">-->
-          <keep-alive :include="keepAliveComponentNames">
-            <component
-                :is="Component"
-                :key="$route.fullPath"
-            />
-          </keep-alive>
-<!--        </transition>-->
+        <!--        <transition name="view" mode="out-in">-->
+        <keep-alive :include="keepAliveComponentNames">
+          <component
+              :is="Component"
+              :key="$route.fullPath"
+          />
+        </keep-alive>
+        <!--        </transition>-->
       </router-view>
     </el-main>
   </el-container>
@@ -49,44 +52,46 @@ export default {
   name: "DesktopWorkspace",
   components: {PsrElHorizontalScrollBar, DesktopMainViewTag},
   setup() {
-    const openedViews = reactive([])
-    const viewByMenuItemId = {}
-    const activeViewId = ref(null)
+    const cachedRoutes = reactive([])
+    const cachedRouteByName = {}
+    const activeRouteName = ref(null)
     const router = useRouter()
     const route = useRoute()
     const store = useStore()
 
     function activeTagOnRoute(newRoute) {
-      const {fullPath, meta} = newRoute
-      if (meta.menuItem) {
-        if (!viewByMenuItemId[meta.menuItem.id]) {
-          const view = viewByMenuItemId[meta.menuItem.id] = {
-            fullPath,
-            meta,
-            componentName: newRoute.matched[0].components.default.name
+      if (newRoute.matched.length > 0) {
+        const {name, components, meta} = newRoute.matched[0]
+        if (meta.title) {
+          if (!cachedRouteByName[name]) {
+            const cachedRoute = cachedRouteByName[name] = reactive({
+              name,
+              component: components['default'],
+              meta,
+              path: newRoute.fullPath
+            })
+            cachedRoutes.push(cachedRoute)
+          } else {
+            cachedRouteByName[name].path = newRoute.fullPath
           }
-          openedViews.push(view)
-        } else {
-          viewByMenuItemId[meta.menuItem.id].fullPath = fullPath
         }
-        activeViewId.value = meta.menuItem.id
+        activeRouteName.value = name
       } else {
-        activeViewId.value = null
+        activeRouteName.value = null
       }
     }
 
     function initTags() {
-      openedViews.splice(0, openedViews.length)
-      const affixRoutes = router.getRoutes().filter(item => item.meta.isAffix)
-      for (let i = 0; i < affixRoutes.length; i++) {
-        const {path, meta} = affixRoutes[i]
-        const view = {
-          fullPath: path,
+      cachedRoutes.splice(0, cachedRoutes.length)
+      const affixRoutes = router.getRoutes().filter(route => route.meta.isAffix)
+      for (const {name, path, components, meta} of affixRoutes) {
+        const cachedRoute = cachedRouteByName[name] = {
+          name,
+          component: components['default'],
           meta,
-          componentName: affixRoutes[i].components.default.name
+          path
         }
-        viewByMenuItemId[meta.menuItem.id] = view
-        openedViews.push(view)
+        cachedRoutes.push(cachedRoute)
       }
       activeTagOnRoute(route)
     }
@@ -97,15 +102,15 @@ export default {
       watch(route, activeTagOnRoute)
     })
     return {
-      openedViews,
-      keepAliveComponentNames: computed(() => openedViews.map(view => view.componentName)),
-      activeViewId,
-      handleViewClose: (view) => {
-        const index = openedViews.indexOf(view)
-        openedViews.splice(index, 1)
-        delete viewByMenuItemId[view.meta.menuItem.id]
-        if (activeViewId.value === view.meta.menuItem.id) {
-          router.push(openedViews[index - 1].fullPath)
+      cachedRoutes,
+      keepAliveComponentNames: computed(() => cachedRoutes.map(route => route.component.name)),
+      activeRouteName,
+      handleTagClose: (cachedRoute) => {
+        const index = cachedRoutes.indexOf(cachedRoute)
+        cachedRoutes.splice(index, 1)
+        delete cachedRouteByName[cachedRoute.name]
+        if (activeRouteName.value === cachedRoute.name) {
+          router.push(cachedRoutes[index - 1].path)
         }
       }
     }

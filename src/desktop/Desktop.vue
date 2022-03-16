@@ -18,6 +18,8 @@
 import DesktopHeader from "@/desktop/header/DesktopHeader";
 import DesktopMain from "@/desktop/main/DesktopMain";
 import DesktopAside from "@/desktop/aside/DesktopAside";
+import {provide} from "vue";
+import {initAsideMenuItems} from "@/desktop/initAsideMenuItems";
 
 export default {
   name: "Desktop",
@@ -27,7 +29,7 @@ export default {
     DesktopMain
   },
   setup() {
-
+    provide('asideMenuItems', initAsideMenuItems())
   }
 }
 </script>

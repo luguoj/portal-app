@@ -13,7 +13,7 @@
       </template>
     </desktop-header-user-popover>
     <div class="ct-path">
-      <desktop-header-view-path v-show="!showSearcher" class="view-path"/>
+      <desktop-header-route-path v-show="!showSearcher" class="view-path"/>
       <el-button type="text" v-show="!showSearcher" @click.stop="handleShowSearcher" class="button icon-only right">
         <el-icon class="pi pi-search"/>
       </el-button>
@@ -24,7 +24,7 @@
 
 <script>
 import DesktopHeaderUserPopover from "@/desktop/header/DesktopHeaderUserPopover";
-import DesktopHeaderViewPath from "@/desktop/header/DesktopHeaderViewPath";
+import DesktopHeaderRoutePath from "@/desktop/header/DesktopHeaderRoutePath";
 import {useStore} from "vuex";
 import {nextTick, ref, watch} from "vue"
 import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
@@ -33,7 +33,7 @@ import {useRoute} from "vue-router";
 
 export default {
   name: "DesktopHeader",
-  components: {DesktopHeaderSearcher, PsrElHorizontalScrollBar, DesktopHeaderViewPath, DesktopHeaderUserPopover},
+  components: {DesktopHeaderSearcher, PsrElHorizontalScrollBar, DesktopHeaderRoutePath, DesktopHeaderUserPopover},
   setup() {
     const store = useStore()
     const route = useRoute()
