@@ -35,19 +35,26 @@ export default {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  color: transparent;
+  width: 6px
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--el-scrollbar-bg-color, var(--el-text-color-secondary));
-  border-radius: 3px;
+::-webkit-scrollbar:horizontal {
+  height: 6px
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--el-color-white);
-  border-radius: 3px;
+  border-radius: 10px
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #0003;
+  border-radius: 10px;
+  transition: all .2s ease-in-out
+}
+
+::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+  background-color: #0000004d
 }
 
 html {
