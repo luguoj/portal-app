@@ -44,6 +44,6 @@ export default {
 .ct-header {
   height: unset;
   padding: 12px 10px;
-  border-bottom: 1px solid var(--el-border-color-base);
+  border-bottom: 1px solid var(--el-border-color);
 }
 </style>
