@@ -1,24 +1,38 @@
 <template>
-  <div class="ct-root">
-    <el-button type="text" @click="toggleNavigationExpansion" class="button icon-only left">
-      <el-icon class="pi pi-bars"/>
+  <div class="ct-path">
+    <el-button type="text" @click="toggleNavigationExpansion" class="button icon-only">
+      <template #icon>
+        <el-icon class="pi pi-bars"/>
+      </template>
     </el-button>
+    <psr-el-horizontal-scroll-bar v-show="!showSearcher" class="view-path">
+      <desktop-header-route-path/>
+    </psr-el-horizontal-scroll-bar>
+    <el-button type="text" @click.stop="handleShowSearcher" v-show="!showSearcher" class="button icon-only">
+      <template #icon>
+        <el-icon class="pi pi-search"/>
+      </template>
+    </el-button>
+    <desktop-header-searcher
+        v-show="showSearcher"
+        ref="refSearcher"
+        class="searcher"
+        :class="{show:showSearcher}"
+    />
     <desktop-header-user-popover
         v-model:visible="userPopoverVisible"
     >
       <template #reference>
-        <el-button type="text" class="button icon-only right" @click="userPopoverVisible=!userPopoverVisible">
-          <el-icon class="pi pi-user"/>
+        <el-button type="text" class="button icon-only" @click="userPopoverVisible=!userPopoverVisible">
+          <template #icon>
+            <el-icon class="pi pi-user"/>
+          </template>
         </el-button>
       </template>
     </desktop-header-user-popover>
-    <div class="ct-path">
-      <desktop-header-route-path v-show="!showSearcher" class="view-path"/>
-      <el-button type="text" v-show="!showSearcher" @click.stop="handleShowSearcher" class="button icon-only right">
-        <el-icon class="pi pi-search"/>
-      </el-button>
-      <desktop-header-searcher ref="refSearcher" v-show="showSearcher"/>
-    </div>
+  </div>
+  <div class="ct-tags">
+    <desktop-header-tag-bar/>
   </div>
 </template>
 
@@ -30,10 +44,17 @@ import {nextTick, ref, watch} from "vue"
 import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
 import DesktopHeaderSearcher from "@/desktop/header/DesktopHeaderSearcher";
 import {useRoute} from "vue-router";
+import DesktopHeaderTagBar from "@/desktop/header/DesktopHeaderTagBar";
 
 export default {
   name: "DesktopHeader",
-  components: {DesktopHeaderSearcher, PsrElHorizontalScrollBar, DesktopHeaderRoutePath, DesktopHeaderUserPopover},
+  components: {
+    DesktopHeaderSearcher,
+    PsrElHorizontalScrollBar,
+    DesktopHeaderRoutePath,
+    DesktopHeaderUserPopover,
+    DesktopHeaderTagBar
+  },
   setup() {
     const store = useStore()
     const route = useRoute()
@@ -71,13 +92,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ct-root {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+.ct-path {
+  height: 32px;
 
   .button {
-    margin: 14px 0;
+    display: inline-block;
+    vertical-align: middle;
 
     &.icon-only {
       width: 32px;
@@ -86,37 +106,25 @@ export default {
         font-size: var(--el-font-size-extra-large);
       }
     }
-
-    &.left {
-      float: left;
-      margin-right: 12px;
-    }
-
-    &.right {
-      float: right;
-      margin-left: 12px;
-    }
   }
 
-  .ct-path {
-    float: left;
-    width: calc(100% - 44px - 44px);
-    min-width: fit-content;
-
-    .view-path {
-      margin: 23px 0;
-      float: left;
-    }
-
-    .searcher {
-      margin: 14px 0;
-      float: left;
-      width: 100%;
-    }
+  .view-path {
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 32px - 32px - 32px);
+    height: 20px;
+    margin-top: 6px;
   }
 
+  .searcher {
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 32px - 32px);
+  }
 
 }
 
-
+.ct-tags {
+  height: 28px;
+}
 </style>

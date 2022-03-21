@@ -1,10 +1,11 @@
 <template>
-  <el-breadcrumb separator="/" class="breadcrumb">
-    <el-breadcrumb-item :to="HOME_PATH">{{ HOME_TITLE }}</el-breadcrumb-item>
+  <el-breadcrumb separator="/" class="breadcrumb path">
+    <el-breadcrumb-item :to="HOME_PATH" class="path-item">{{ HOME_TITLE }}</el-breadcrumb-item>
     <transition-group name="breadcrumb">
       <el-breadcrumb-item
           v-for="routePathItem in routePath" :key="routePathItem.key"
           :to="routePathItem.path?{ path: routePathItem.path }:null"
+          class="path-item"
       >{{ routePathItem.title }}
       </el-breadcrumb-item>
     </transition-group>
@@ -98,6 +99,16 @@ export default {
 </script>
 
 <style scoped>
+.path {
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.path-item {
+  display: inline-block;
+  float: none;
+}
+
 .breadcrumb-enter-from,
 .breadcrumb-leave-to {
   opacity: 0;

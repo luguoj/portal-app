@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import DesktopAsideMenuItem from "@/desktop/aside/DesktopAsideMenuItem";
+import DesktopAsideMenuItem from "@/desktop/aside-menu/DesktopAsideMenuItem";
 import {computed, inject, nextTick, onMounted, ref, watch} from "vue";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";

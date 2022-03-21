@@ -2,7 +2,6 @@
   <el-select
       ref="refSelect"
       placeholder="搜索 (菜单名称 / 拼音 / 导航路径)"
-      class="searcher"
       filterable
       remote
       :remote-method="querySearch"

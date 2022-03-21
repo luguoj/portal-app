@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "DesktopWorkspaceViewTag",
+  name: "DesktopHeaderTag",
   props: {
     checked: {
       type: Boolean,

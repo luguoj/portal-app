@@ -16,7 +16,7 @@ import {computed} from "vue";
 import {useStore} from "vuex";
 
 export default {
-  name: "DesktopAsideTitle",
+  name: "DesktopTitle",
   setup() {
     const store = useStore()
     return {
