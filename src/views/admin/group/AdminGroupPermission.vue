@@ -150,7 +150,7 @@ export default {
 
     function loadGroupPermissionEntities() {
       portalEntityCRUDService.groupPermission.findAll({
-        filterOptions: new FilterOptionsBuilder().field('groupId').iEqual(groupEntity.id).then().get()
+        filterOptions: new FilterOptionsBuilder().field('groupId').iEqual(groupEntity.value.id).then().get()
       }).then(data => {
         for (let i = 0; i < data.content.length; i++) {
           const groupPermissionEntity = data.content[i];
