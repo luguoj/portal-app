@@ -36,17 +36,17 @@
   </div>
 </template>
 
-<script>
-import DesktopHeaderUserPopover from "@/desktop/header/DesktopHeaderUserPopover";
-import DesktopHeaderRoutePath from "@/desktop/header/DesktopHeaderRoutePath";
+<script lang="ts">
+import DesktopHeaderUserPopover from "@/desktop/header/DesktopHeaderUserPopover.vue";
+import DesktopHeaderRoutePath from "@/desktop/header/DesktopHeaderRoutePath.vue";
 import {useStore} from "vuex";
-import {nextTick, ref, watch} from "vue"
-import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
-import DesktopHeaderSearcher from "@/desktop/header/DesktopHeaderSearcher";
+import {defineComponent, nextTick, ref, watch} from "vue"
+import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import DesktopHeaderSearcher from "@/desktop/header/DesktopHeaderSearcher.vue";
 import {useRoute} from "vue-router";
-import DesktopHeaderTagBar from "@/desktop/header/DesktopHeaderTagBar";
+import DesktopHeaderTagBar from "@/desktop/header/DesktopHeaderTagBar.vue";
 
-export default {
+export default defineComponent({
   name: "DesktopHeader",
   components: {
     DesktopHeaderSearcher,
@@ -88,7 +88,7 @@ export default {
       showSearcher
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

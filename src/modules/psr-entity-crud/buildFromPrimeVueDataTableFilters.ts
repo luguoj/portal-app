@@ -1,7 +1,7 @@
 import {FilterOptionsBuilder} from "@/modules/psr-entity-crud/FilterOptionsBuilder";
 import {FilterMatchMode} from "primevue/api";
 
-export function buildFromPrimeVueDataTableFilters(filters) {
+export function buildFromPrimeVueDataTableFilters(filters: any) {
     const filterOptionsBuilder = new FilterOptionsBuilder()
     for (const field in filters) {
         const filter = filters[field]

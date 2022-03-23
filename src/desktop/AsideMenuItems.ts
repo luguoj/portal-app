@@ -9,8 +9,17 @@ import {
     ROUTE_SAMPLE_2,
     ROUTE_SAMPLE_PARENT,
 } from "@/router/sample-pages";
+import {RouteRecordRaw} from "vue-router";
 
-export const ASIDE_MENU_ITEMS = [{
+export interface MenuItem {
+    id: string,
+    title?: string
+    iconCls?: string,
+    children?: MenuItem[],
+    route?: RouteRecordRaw
+}
+
+export const ASIDE_MENU_ITEMS: MenuItem[] = [{
     id: 'desktop',
     route: ROUTE_HOME
 }, {

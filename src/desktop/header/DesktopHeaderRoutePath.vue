@@ -14,7 +14,7 @@
 
 <script>
 import {useRoute} from "vue-router";
-import {computed, inject} from "vue";
+import {computed, defineComponent, inject} from "vue";
 import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/router/desktop";
 
 function buildRoutePathByNameUseRoute(routePathByName, route, basePath) {
@@ -54,7 +54,7 @@ function buildRoutePathByNameUseAsideMenuItem(routePathByName, asideMenuItem, ba
 }
 
 
-export default {
+export default defineComponent({
   name: "DesktopHeaderRoutePath",
   setup() {
     const route = useRoute()
@@ -95,7 +95,7 @@ export default {
       routePath
     }
   }
-}
+})
 </script>
 
 <style scoped>

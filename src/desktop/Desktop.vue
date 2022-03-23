@@ -21,15 +21,15 @@
   </el-container>
 </template>
 
-<script>
-import DesktopHeader from "@/desktop/header/DesktopHeader";
-import DesktopMain from "@/desktop/main/DesktopMain";
-import {provide, ref} from "vue";
+<script lang="ts">
+import {defineComponent, provide, ref} from "vue";
+import DesktopHeader from "@/desktop/header/DesktopHeader.vue";
+import DesktopMain from "@/desktop/main/DesktopMain.vue";
+import DesktopTitle from "@/desktop/title/DesktopTitle.vue";
+import DesktopAsideMenu from "@/desktop/aside-menu/DesktopAsideMenu.vue";
 import {initAsideMenuItems} from "@/desktop/initAsideMenuItems";
-import DesktopTitle from "@/desktop/title/DesktopTitle";
-import DesktopAsideMenu from "@/desktop/aside-menu/DesktopAsideMenu";
 
-export default {
+export default defineComponent({
   name: "Desktop",
   components: {
     DesktopTitle,
@@ -41,7 +41,7 @@ export default {
     provide('asideMenuItems', initAsideMenuItems())
     provide('cachedRoutes', ref([]))
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -4,30 +4,32 @@
   </el-config-provider>
 </template>
 
-<script>
-import {onMounted} from "vue";
-import Desktop from "@/desktop/Desktop";
+<script lang="ts">
+import {defineComponent, onMounted} from "vue";
+import Desktop from "@/desktop/Desktop.vue";
 import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import {useAuthorization} from "@/useAuthorization";
 import {usePermission} from "@/usePermission";
 
-export default {
+declare const NProgress: any
+
+export default defineComponent({
   name: 'App',
+  components: {
+    Desktop, ElConfigProvider
+  },
   setup() {
     useAuthorization()
     usePermission()
     onMounted(() => {
-      window.NProgress.done()
+      NProgress.done()
     })
     return {
       locale: zhCn,
     }
-  },
-  components: {
-    Desktop, ElConfigProvider
   }
-}
+})
 </script>
 
 <style lang="scss">

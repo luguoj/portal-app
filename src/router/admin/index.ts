@@ -1,9 +1,10 @@
-import AdminPermission from "@/views/admin/permission/AdminPermission";
-import AdminUser from "@/views/admin/user/AdminUser";
-import AdminGroup from "@/views/admin/group/AdminGroup";
-import AdminGroupList from "@/views/admin/group/AdminGroupList";
-import AdminGroupPermission from "@/views/admin/group/AdminGroupPermission";
-import AdminGroupUser from "@/views/admin/group/AdminGroupUser";
+import AdminPermission from "@/views/admin/permission/AdminPermission.vue";
+import AdminUser from "@/views/admin/user/AdminUser.vue";
+import AdminGroup from "@/views/admin/group/AdminGroup.vue";
+import AdminGroupList from "@/views/admin/group/AdminGroupList.vue";
+import AdminGroupPermission from "@/views/admin/group/AdminGroupPermission.vue";
+import AdminGroupUser from "@/views/admin/group/AdminGroupUser.vue";
+import {RouteRecordRaw} from "vue-router";
 
 export const ROUTE_NAME_ADMIN = {
     GROUP: 'admin-group',
@@ -12,7 +13,7 @@ export const ROUTE_NAME_ADMIN = {
     GROUP_USER: 'admin-group-user'
 }
 
-export const ROUTE_ADMIN_PERMISSION = {
+export const ROUTE_ADMIN_PERMISSION: RouteRecordRaw = {
     name: 'admin-permission',
     path: '/admin/permission',
     component: AdminPermission,
@@ -23,7 +24,7 @@ export const ROUTE_ADMIN_PERMISSION = {
     }
 }
 
-export const ROUTE_ADMIN_USER = {
+export const ROUTE_ADMIN_USER: RouteRecordRaw = {
     name: 'admin-user',
     path: '/admin/user',
     component: AdminUser,
@@ -34,7 +35,7 @@ export const ROUTE_ADMIN_USER = {
     }
 }
 
-export const ROUTE_ADMIN_GROUP = {
+export const ROUTE_ADMIN_GROUP: RouteRecordRaw = {
     name: ROUTE_NAME_ADMIN.GROUP,
     path: '/admin/group',
     component: AdminGroup,
@@ -73,4 +74,4 @@ export const ROUTE_ADMIN_GROUP = {
     }]
 }
 
-export const ROUTES_ADMIN = [ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_GROUP, ROUTE_ADMIN_USER]
+export const ROUTES_ADMIN: Array<RouteRecordRaw> = [ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_GROUP, ROUTE_ADMIN_USER]

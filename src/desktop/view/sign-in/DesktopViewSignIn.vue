@@ -6,18 +6,20 @@
   </transition>
 </template>
 
-<script>
-import {tokenService} from "@/services/Authorization";
+<script lang="ts">
+import {useSignInFrame} from "@/modules/psr-oauth/token-services/sso-client/useSignInFrame";
+import {tokenContext} from "@/services/Authorization";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   name: "DesktopViewSignIn",
   setup() {
-    const signInFrame = tokenService.useSignInFrame()
+    const signInFrame = useSignInFrame(tokenContext)
     return {
       signInFrame,
     }
   }
-}
+})
 </script>
 
 <style scoped>

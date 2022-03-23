@@ -19,14 +19,14 @@
   </el-popover>
 </template>
 
-<script>
+<script lang="ts">
 import {ElMessageBox} from "element-plus";
 import {useStore} from "vuex";
-import {computed} from "vue";
+import {computed, defineComponent} from "vue";
 import {tokenService} from "@/services/Authorization";
-import PsrElAsyncActionButton from "@/components/psr-element-plus/buttons/PsrElAsyncActionButton";
+import PsrElAsyncActionButton from "@/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
 
-export default {
+export default defineComponent({
   name: "DesktopHeaderUserPopover",
   components: {PsrElAsyncActionButton},
   props: {
@@ -55,7 +55,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style scoped>

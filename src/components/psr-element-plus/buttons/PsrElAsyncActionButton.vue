@@ -7,10 +7,10 @@
   </el-button>
 </template>
 
-<script>
-import {computed, ref} from "vue";
+<script lang="ts">
+import {computed, defineComponent, ref} from "vue";
 
-export default {
+export default defineComponent({
   name: "PsrElAsyncActionButton",
   props: ['action', 'actionParams'],
   setup(props, context) {
@@ -37,8 +37,7 @@ export default {
       }
     }
   }
-
-}
+})
 </script>
 
 <style scoped>

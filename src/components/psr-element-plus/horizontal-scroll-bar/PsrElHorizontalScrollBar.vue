@@ -1,28 +1,32 @@
 <template>
-  <el-scrollbar class="ct-scrollbar" ref="refScrollbar" @wheel.prevent="handleScroll">
+  <el-scrollbar class="ct-scrollbar" ref="vmScrollbar.ref" @wheel.prevent="vmScrollbar.handleScroll">
     <div class="ct-scrollbar-inner">
       <slot></slot>
     </div>
   </el-scrollbar>
 </template>
 
-<script>
-import {ref} from "vue";
+<script lang="ts">
+import {defineComponent, Ref, ref} from "vue";
 
-export default {
-  name: "PsrElHorizontalScrollBar",
-  setup() {
-    const refScrollbar = ref(null)
+class ScrollbarViewModel {
+  ref: Ref = ref()
 
-    function handleScroll(e) {
-      const wheelDelta = e.wheelDelta || -e.deltaY * 40
-      const scrollbar = refScrollbar.value
-      scrollbar.setScrollLeft(scrollbar.wrap$.scrollLeft - wheelDelta)
-    }
-
-    return {refScrollbar, handleScroll}
+  handleScroll(e: any) {
+    const wheelDelta = e.wheelDelta || -e.deltaY * 40
+    const scrollbar = this.ref.value
+    scrollbar.setScrollLeft(scrollbar.wrap$.scrollLeft - wheelDelta)
   }
 }
+
+export default defineComponent({
+  name: "PsrElHorizontalScrollBar",
+  setup() {
+    return {
+      vmScrollbar: new ScrollbarViewModel()
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
