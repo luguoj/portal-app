@@ -11,7 +11,9 @@
 </template>
 
 <script>
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
   name: "DesktopHeaderTag",
   props: {
     checked: {
@@ -27,7 +29,7 @@ export default {
       default: 'default'
     }
   }
-}
+})
 </script>
 
 <style scoped>

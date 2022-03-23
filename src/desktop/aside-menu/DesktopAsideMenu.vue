@@ -14,11 +14,11 @@
 
 <script>
 import DesktopAsideMenuItem from "@/desktop/aside-menu/DesktopAsideMenuItem";
-import {computed, inject, nextTick, onMounted, ref, watch} from "vue";
+import {computed, inject, nextTick, onMounted, ref, watch, defineComponent} from "vue";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
 
-export default {
+export default defineComponent({
   name: "DesktopAsideMenu",
   components: {DesktopAsideMenuItem},
   setup() {
@@ -48,7 +48,7 @@ export default {
       activeMenuItemId
     }
   }
-}
+})
 </script>
 
 <style scoped>

@@ -26,11 +26,11 @@
 <script>
 import DesktopHeaderTag from "@/desktop/header/DesktopHeaderTag";
 import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
-import {inject, onMounted, reactive, watch, ref} from "vue";
+import {inject, onMounted, reactive, watch, ref, defineComponent} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {useStore} from "vuex";
 
-export default {
+export default defineComponent({
   name: "DesktopHeaderTagBar",
   components: {
     PsrElHorizontalScrollBar,
@@ -99,7 +99,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

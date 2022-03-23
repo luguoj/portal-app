@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import {computed} from "vue";
+import {defineComponent, computed} from "vue";
 import {useStore} from "vuex";
 
-export default {
+export default defineComponent({
   name: "DesktopTitle",
   setup() {
     const store = useStore()
@@ -25,7 +25,7 @@ export default {
       showTitle: computed(() => !store.state.desktop.asideCollapsed)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -38,6 +38,7 @@ export default {
     .el-image {
       vertical-align: middle;
     }
+
     margin: 0 12px;
   }
 

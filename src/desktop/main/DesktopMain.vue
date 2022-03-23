@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import {computed, inject} from "vue";
+import {defineComponent, computed, inject} from "vue";
 
-export default {
+export default defineComponent({
   name: "DesktopWorkspace",
   setup() {
     const cachedRoutes = inject('cachedRoutes')
@@ -27,7 +27,7 @@ export default {
       keepAliveComponentNames: computed(() => cachedRoutes.value.map(route => route.component.name))
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

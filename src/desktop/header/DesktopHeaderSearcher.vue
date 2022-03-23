@@ -17,11 +17,11 @@
 
 <script>
 import {useRouter} from "vue-router";
-import {ref} from "vue";
+import {ref,defineComponent} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
 
-export default {
+export default defineComponent({
   name: "DesktopHeaderSearcher",
   setup() {
     const refSelect = ref()
@@ -81,7 +81,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style scoped>

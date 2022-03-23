@@ -23,10 +23,12 @@
 </template>
 
 <script>
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
   name: "DesktopAsideMenuItem",
   props: ['menuItem']
-}
+})
 </script>
 
 <style scoped>
