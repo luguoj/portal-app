@@ -1,5 +1,5 @@
 {
-  "name": "desktop-app",
+  "name": "@psr/desktop-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
