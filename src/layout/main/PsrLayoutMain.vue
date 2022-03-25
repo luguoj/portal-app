@@ -14,11 +14,11 @@
 
 <script lang="ts">
 import {defineComponent, computed, inject} from "vue";
-import {CachedRoute} from "@/desktop/Desktop.vue";
+import {CachedRoute} from "@/layout/PsrLayout.vue";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 
 export default defineComponent({
-  name: "DesktopWorkspace",
+  name: "psr-layout-main",
   setup() {
     const cachedRoutes = inject('cachedRoutes') as UnwrapNestedRefs<CachedRoute[]>
     return {

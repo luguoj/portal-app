@@ -6,20 +6,20 @@
       </template>
     </el-button>
     <psr-el-horizontal-scroll-bar v-show="!showSearcher" class="view-path">
-      <desktop-header-route-path/>
+      <psr-layout-header-route-path/>
     </psr-el-horizontal-scroll-bar>
     <el-button type="text" @click.stop="handleShowSearcher" v-show="!showSearcher" class="button icon-only">
       <template #icon>
         <el-icon class="pi pi-search"/>
       </template>
     </el-button>
-    <desktop-header-searcher
+    <psr-layout-header-searcher
         v-show="showSearcher"
         ref="refSearcher"
         class="searcher"
         :class="{show:showSearcher}"
     />
-    <desktop-header-user-popover
+    <psr-layout-header-user-popover
         v-model:visible="userPopoverVisible"
     >
       <template #reference>
@@ -29,31 +29,31 @@
           </template>
         </el-button>
       </template>
-    </desktop-header-user-popover>
+    </psr-layout-header-user-popover>
   </div>
   <div class="ct-tags">
-    <desktop-header-tag-bar/>
+    <psr-layout-header-tag-bar/>
   </div>
 </template>
 
 <script lang="ts">
-import DesktopHeaderUserPopover from "@/desktop/header/DesktopHeaderUserPopover.vue";
-import DesktopHeaderRoutePath from "@/desktop/header/DesktopHeaderRoutePath.vue";
-import {useStore} from "vuex";
-import {defineComponent, nextTick, ref, watch} from "vue"
+import PsrLayoutHeaderUserPopover from "@/layout/header/PsrLayoutHeaderUserPopover.vue";
+import PsrLayoutHeaderRoutePath from "@/layout/header/PsrLayoutHeaderRoutePath.vue";
 import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
-import DesktopHeaderSearcher from "@/desktop/header/DesktopHeaderSearcher.vue";
+import PsrLayoutHeaderSearcher from "@/layout/header/PsrLayoutHeaderSearcher.vue";
+import PsrLayoutHeaderTagBar from "@/layout/header/PsrLayoutHeaderTagBar.vue";
+import {defineComponent, nextTick, ref, watch} from "vue"
+import {useStore} from "vuex";
 import {useRoute} from "vue-router";
-import DesktopHeaderTagBar from "@/desktop/header/DesktopHeaderTagBar.vue";
 
 export default defineComponent({
-  name: "DesktopHeader",
+  name: "psr-layout-header",
   components: {
-    DesktopHeaderSearcher,
     PsrElHorizontalScrollBar,
-    DesktopHeaderRoutePath,
-    DesktopHeaderUserPopover,
-    DesktopHeaderTagBar
+    PsrLayoutHeaderSearcher,
+    PsrLayoutHeaderRoutePath,
+    PsrLayoutHeaderUserPopover,
+    PsrLayoutHeaderTagBar
   },
   setup() {
     const store = useStore()
@@ -78,7 +78,7 @@ export default defineComponent({
     return {
       refSearcher,
       toggleNavigationExpansion: () => {
-        store.commit('desktop/toggleAside')
+        store.commit('layout/toggleAside')
       },
       handleShowSearcher: () => {
         showSearcher.value = true

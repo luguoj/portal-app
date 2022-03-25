@@ -6,7 +6,7 @@
         custom
         v-slot="{navigate}"
     >
-      <desktop-header-tag
+      <psr-layout-header-tag
           class="tag"
           :checked="activeRouteName===cachedRoute.name"
           @click="navigate"
@@ -18,27 +18,27 @@
             :class="cachedRoute.tag.iconCls"
         />
         {{ cachedRoute.tag.title }}
-      </desktop-header-tag>
+      </psr-layout-header-tag>
     </router-link>
   </psr-el-horizontal-scroll-bar>
 </template>
 
 <script lang="ts">
-import DesktopHeaderTag from "@/desktop/header/DesktopHeaderTag.vue";
+import PsrLayoutHeaderTag from "@/layout/header/PsrLayoutHeaderTag.vue";
 import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
 import {inject, onMounted, watch, ref, defineComponent, reactive} from "vue";
 import {RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
 import {useStore} from "vuex";
 import {PSRRouteMetaTag} from "@/router/RouteMeta";
-import {CachedRoute} from "@/desktop/Desktop.vue";
+import {CachedRoute} from "@/layout/PsrLayout.vue";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 
 
 export default defineComponent({
-  name: "DesktopHeaderTagBar",
+  name: "psr-layout-header-tag-bar",
   components: {
     PsrElHorizontalScrollBar,
-    DesktopHeaderTag
+    PsrLayoutHeaderTag
   },
   setup() {
     const cachedRoutes = inject('cachedRoutes') as UnwrapNestedRefs<CachedRoute[]>

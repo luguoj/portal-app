@@ -15,7 +15,7 @@
       <el-icon :class="menuItem.iconCls"/>
       <span>{{ menuItem.title }}</span>
     </template>
-    <desktop-aside-menu-item
+    <psr-layout-aside-menu-item
         v-for="child in menuItem.children" :key="child.id"
         :menu-item="child"
     />
@@ -26,7 +26,7 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "DesktopAsideMenuItem",
+  name: "psr-layout-aside-menu-item",
   props: ['menuItem']
 })
 </script>

@@ -42,7 +42,7 @@ function buildSelectOptions(selectOptions: SelectOption[], menuItems: MenuItem[]
 }
 
 export default defineComponent({
-  name: "DesktopHeaderSearcher",
+  name: "psr-layout-header-searcher",
   setup() {
     const refSelect = ref()
     const navigationMenuItems = inject('navigationMenuItems') as Ref<MenuItem[]>

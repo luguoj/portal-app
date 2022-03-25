@@ -16,7 +16,7 @@ import {defineComponent, computed} from "vue";
 import {useStore} from "vuex";
 
 export default defineComponent({
-  name: "DesktopTitle",
+  name: "psr-layout-title",
   setup() {
     const store = useStore()
     return {

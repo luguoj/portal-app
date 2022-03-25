@@ -27,8 +27,10 @@ import {tokenService} from "@/services/Authorization";
 import PsrElAsyncActionButton from "@/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
 
 export default defineComponent({
-  name: "DesktopHeaderUserPopover",
-  components: {PsrElAsyncActionButton},
+  name: "psr-layout-header-user-popover",
+  components: {
+    PsrElAsyncActionButton
+  },
   props: {
     visible: {
       type: Boolean,

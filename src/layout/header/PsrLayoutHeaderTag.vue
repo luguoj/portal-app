@@ -14,7 +14,7 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "DesktopHeaderTag",
+  name: "psr-layout-header-tag",
   props: {
     checked: {
       type: Boolean,

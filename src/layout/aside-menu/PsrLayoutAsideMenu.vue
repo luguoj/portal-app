@@ -5,7 +5,7 @@
       :default-active="activeMenuItemId"
       router
   >
-    <desktop-aside-menu-item
+    <psr-layout-aside-menu-item
         v-for="menuItem in menuItems" :key="menuItem.id"
         :menu-item="menuItem"
     />
@@ -13,15 +13,17 @@
 </template>
 
 <script lang="ts">
-import DesktopAsideMenuItem from "@/desktop/aside-menu/DesktopAsideMenuItem.vue";
+import PsrLayoutAsideMenuItem from "@/layout/aside-menu/PsrLayoutAsideMenuItem.vue";
 import {computed, inject, nextTick, onMounted, ref, watch, defineComponent, Ref} from "vue";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
 import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
 
 export default defineComponent({
-  name: "DesktopAsideMenu",
-  components: {DesktopAsideMenuItem},
+  name: "psr-layout-aside-menu",
+  components: {
+    PsrLayoutAsideMenuItem
+  },
   setup() {
     const store = useStore()
     const route = useRoute()

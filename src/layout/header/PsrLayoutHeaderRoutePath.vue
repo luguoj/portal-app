@@ -18,10 +18,10 @@ import {computed, defineComponent, inject, Ref} from "vue";
 import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/router/desktop";
 import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
 import {PSRRouteRecordRaw} from "@/router/RouteRecordRaw";
-import { PSRRouteMeta } from "@/router/RouteMeta";
+import {PSRRouteMeta} from "@/router/RouteMeta";
 
 interface RoutePathItem {
-  key: string|symbol,
+  key: string | symbol,
   title: string,
   iconCls?: string,
   path?: string
@@ -65,19 +65,19 @@ function buildRoutePathByNameUseNavigationMenuItem(routePathByName: Record<strin
 
 
 export default defineComponent({
-  name: "DesktopHeaderRoutePath",
+  name: "psr-layout-header-route-path",
   setup() {
     const route = useRoute()
     const navigationMenuItems = inject('navigationMenuItems') as Ref<MenuItem[]>
     const navigationMenuItemRoutePathByName = computed(() => {
-      const result: Record<string|symbol, RoutePathItem[]> = {}
+      const result: Record<string | symbol, RoutePathItem[]> = {}
       for (const navigationMenuItem of navigationMenuItems.value) {
         buildRoutePathByNameUseNavigationMenuItem(result, navigationMenuItem, [])
       }
       return result
     })
     const routePath = computed(() => {
-      const result:RoutePathItem[] = []
+      const result: RoutePathItem[] = []
       if (route.fullPath !== ROUTE_PATH_DESKTOP.HOME) {
         if (navigationMenuItemRoutePathByName.value && navigationMenuItemRoutePathByName.value[route.name!]) {
           // 如果关联菜单项目，则追加菜单路径

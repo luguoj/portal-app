@@ -1,14 +1,14 @@
 <template>
   <el-config-provider :locale="locale">
-    <Desktop></Desktop>
+    <psr-layout></psr-layout>
   </el-config-provider>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted} from "vue";
-import Desktop from "@/desktop/Desktop.vue";
+import PsrLayout from "@/layout/PsrLayout.vue";
 import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import {defineComponent, onMounted} from "vue";
 import {useAuthorization} from "@/useAuthorization";
 import {usePermission} from "@/usePermission";
 import {useNavigationMenu} from "@/navigation-menu";
@@ -18,7 +18,8 @@ declare const NProgress: any
 export default defineComponent({
   name: 'App',
   components: {
-    Desktop, ElConfigProvider
+    PsrLayout,
+    ElConfigProvider
   },
   setup() {
     useAuthorization()

@@ -1,6 +1,6 @@
-import DesktopViewBlank from "@/desktop/view/blank/DesktopViewBlank.vue";
-import DesktopViewErrorNotFound from "@/desktop/view/error/DesktopViewErrorNotFound.vue";
-import DesktopViewSignIn from "@/desktop/view/sign-in/DesktopViewSignIn.vue";
+import DesktopViewBlank from "@/layout/view/blank/DesktopViewBlank.vue";
+import DesktopViewErrorNotFound from "@/layout/view/error/DesktopViewErrorNotFound.vue";
+import DesktopViewSignIn from "@/layout/view/sign-in/DesktopViewSignIn.vue";
 import {PSRRouteRecordRaw} from "@/router/RouteRecordRaw";
 
 export const ROUTE_NAME_DESKTOP = {

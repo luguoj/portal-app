@@ -3,30 +3,30 @@
     <el-aside width="auto">
       <el-container class="ct-aside">
         <el-header class="ct-title">
-          <desktop-title/>
+          <psr-layout-title/>
         </el-header>
         <el-main class="ct-menu">
-          <desktop-aside-menu/>
+          <psr-layout-aside-menu/>
         </el-main>
       </el-container>
     </el-aside>
     <el-container>
       <el-header class="ct-header-bar">
-        <desktop-header/>
+        <psr-layout-header/>
       </el-header>
       <el-main class="ct-main">
-        <desktop-main/>
+        <psr-layout-main/>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script lang="ts">
+import PsrLayoutHeader from "@/layout/header/PsrLayoutHeader.vue";
+import PsrLayoutMain from "@/layout/main/PsrLayoutMain.vue";
+import PsrLayoutTitle from "@/layout/title/PsrLayoutTitle.vue";
+import PsrLayoutAsideMenu from "@/layout/aside-menu/PsrLayoutAsideMenu.vue";
 import {defineComponent, provide, reactive} from "vue";
-import DesktopHeader from "@/desktop/header/DesktopHeader.vue";
-import DesktopMain from "@/desktop/main/DesktopMain.vue";
-import DesktopTitle from "@/desktop/title/DesktopTitle.vue";
-import DesktopAsideMenu from "@/desktop/aside-menu/DesktopAsideMenu.vue";
 import {PSRRouteMetaTag} from "@/router/RouteMeta";
 
 export interface CachedRoute {
@@ -37,12 +37,12 @@ export interface CachedRoute {
 }
 
 export default defineComponent({
-  name: "Desktop",
+  name: "psr-layout",
   components: {
-    DesktopTitle,
-    DesktopAsideMenu,
-    DesktopHeader,
-    DesktopMain
+    PsrLayoutTitle,
+    PsrLayoutAsideMenu,
+    PsrLayoutHeader,
+    PsrLayoutMain
   },
   setup() {
     provide('cachedRoutes', reactive([] as CachedRoute[]))
