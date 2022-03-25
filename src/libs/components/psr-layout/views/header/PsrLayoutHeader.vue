@@ -39,12 +39,14 @@
 <script lang="ts">
 import PsrLayoutHeaderUserPopover from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderUserPopover.vue";
 import PsrLayoutHeaderRoutePath from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderRoutePath.vue";
-import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import PsrElHorizontalScrollBar
+  from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
 import PsrLayoutHeaderSearcher from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderSearcher.vue";
 import PsrLayoutHeaderTagBar from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderTagBar.vue";
 import {defineComponent, nextTick, ref, watch} from "vue"
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
+import {PSR_LAYOUT_MODULE_NAME} from "@/libs/components/psr-layout";
 
 export default defineComponent({
   name: "psr-layout-header",
@@ -78,7 +80,7 @@ export default defineComponent({
     return {
       refSearcher,
       toggleNavigationExpansion: () => {
-        store.commit('layout/toggleAside')
+        store.commit(PSR_LAYOUT_MODULE_NAME + '/toggleAside')
       },
       handleShowSearcher: () => {
         showSearcher.value = true

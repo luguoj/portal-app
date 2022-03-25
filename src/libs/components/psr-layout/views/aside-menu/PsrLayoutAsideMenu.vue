@@ -18,6 +18,7 @@ import {computed, inject, nextTick, onMounted, ref, watch, defineComponent, Ref}
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
 import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
+import {PSR_LAYOUT_MODULE_NAME} from "@/libs/components/psr-layout";
 
 export default defineComponent({
   name: "psr-layout-aside-menu",
@@ -46,7 +47,7 @@ export default defineComponent({
       })
     })
     return {
-      menuCollapse: computed(() => store.state.layout.asideCollapsed),
+      menuCollapse: computed(() => store.state[PSR_LAYOUT_MODULE_NAME].asideCollapsed),
       menuItems,
       activeMenuItemId
     }
