@@ -1,42 +1,18 @@
-# desktop-app
+# 目录结构
 
-## Project setup
+1. 源码 [src](./src/README.md)
+2. 发布 [public](./public)
 
-```
-npm install
-```
+# 文件
 
-### Compiles and hot-reloads for development
+1. [.env](./.env)
 
-```
-npm run serve
-```
+适用于所有构建环境的环境变量
 
-### Compiles and minifies for production
+2. [.env.development](./.env.development)
 
-```
-npm run build
-```
+适用于开发环境的环境变量
 
-### Lints and fixes files
+3. [.env.development.local](./.env.development.local)
 
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-# 项目结构
-
-## 源码目录 ./src
-
-| 目录                             | 用途   |
-|:-------------------------------|:-----|
-| [views](./src/views/README.md) | 应用视图 |
-|                                |      |
-|                                |      |
-|                                |      |
-|                                |      |
-
+适用于本地开发调试使用的环境变量，会被版本控制忽略
