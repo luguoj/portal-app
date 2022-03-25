@@ -22,12 +22,19 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, provide, ref} from "vue";
+import {defineComponent, provide, reactive} from "vue";
 import DesktopHeader from "@/desktop/header/DesktopHeader.vue";
 import DesktopMain from "@/desktop/main/DesktopMain.vue";
 import DesktopTitle from "@/desktop/title/DesktopTitle.vue";
 import DesktopAsideMenu from "@/desktop/aside-menu/DesktopAsideMenu.vue";
-import {initAsideMenuItems} from "@/desktop/initAsideMenuItems";
+import {PSRRouteMetaTag} from "@/router/RouteMeta";
+
+export interface CachedRoute {
+  name: string | symbol,
+  componentName: string,
+  tag: PSRRouteMetaTag,
+  path: string
+}
 
 export default defineComponent({
   name: "Desktop",
@@ -38,8 +45,7 @@ export default defineComponent({
     DesktopMain
   },
   setup() {
-    provide('asideMenuItems', initAsideMenuItems())
-    provide('cachedRoutes', ref([]))
+    provide('cachedRoutes', reactive([] as CachedRoute[]))
   }
 })
 </script>

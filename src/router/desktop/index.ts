@@ -1,7 +1,7 @@
 import DesktopViewBlank from "@/desktop/view/blank/DesktopViewBlank.vue";
 import DesktopViewErrorNotFound from "@/desktop/view/error/DesktopViewErrorNotFound.vue";
 import DesktopViewSignIn from "@/desktop/view/sign-in/DesktopViewSignIn.vue";
-import {RouteRecordRaw} from "vue-router";
+import {PSRRouteRecordRaw} from "@/router/RouteRecordRaw";
 
 export const ROUTE_NAME_DESKTOP = {
     HOME: 'home',
@@ -17,28 +17,30 @@ export const ROUTE_PATH_DESKTOP = {
 }
 export const HOME_TITLE = '首页'
 export const HOME_ICON_CLASS = 'pi pi-home'
-export const ROUTE_HOME: RouteRecordRaw = {
+export const ROUTE_HOME: PSRRouteRecordRaw = {
     name: ROUTE_NAME_DESKTOP.HOME,
     path: ROUTE_PATH_DESKTOP.HOME,
     component: DesktopViewBlank,
     meta: {
-        isAffix: true,
-        title: HOME_TITLE,
-        iconCls: HOME_ICON_CLASS
+        tag: {
+            isAffix: true,
+            title: HOME_TITLE,
+            iconCls: HOME_ICON_CLASS
+        }
     }
 }
 
-export const ROUTE_SIGN_IN: RouteRecordRaw = {
+export const ROUTE_SIGN_IN: PSRRouteRecordRaw = {
     name: ROUTE_NAME_DESKTOP.SIGN_IN,
     path: ROUTE_PATH_DESKTOP.SIGN_IN,
     component: DesktopViewSignIn,
 }
 
-export const ROUTE_ERROR_NOT_FOUND: RouteRecordRaw = {
+export const ROUTE_ERROR_NOT_FOUND: PSRRouteRecordRaw = {
     name: ROUTE_NAME_DESKTOP.ERROR_NOT_FOUND,
     path: ROUTE_PATH_DESKTOP.ERROR_NOT_FOUND,
     component: DesktopViewErrorNotFound,
     props: true
 }
 
-export const ROUTES_DESKTOP: Array<RouteRecordRaw> = [ROUTE_HOME, ROUTE_SIGN_IN, ROUTE_ERROR_NOT_FOUND]
+export const ROUTES_DESKTOP: Array<PSRRouteRecordRaw> = [ROUTE_HOME, ROUTE_SIGN_IN, ROUTE_ERROR_NOT_FOUND]

@@ -6,17 +6,18 @@
       router
   >
     <desktop-aside-menu-item
-        v-for="menuItem in menuItems" :key="menuItem.id||menuItem.route.name"
+        v-for="menuItem in menuItems" :key="menuItem.id"
         :menu-item="menuItem"
     />
   </el-menu>
 </template>
 
-<script>
-import DesktopAsideMenuItem from "@/desktop/aside-menu/DesktopAsideMenuItem";
-import {computed, inject, nextTick, onMounted, ref, watch, defineComponent} from "vue";
+<script lang="ts">
+import DesktopAsideMenuItem from "@/desktop/aside-menu/DesktopAsideMenuItem.vue";
+import {computed, inject, nextTick, onMounted, ref, watch, defineComponent, Ref} from "vue";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
+import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
 
 export default defineComponent({
   name: "DesktopAsideMenu",
@@ -25,7 +26,7 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const activeMenuItemId = ref()
-    const menuItems = inject('asideMenuItems')
+    const menuItems = inject('navigationMenuItems') as Ref<MenuItem[]>
 
     function updateActiveMenuItem() {
       if (route.matched.length > 0) {

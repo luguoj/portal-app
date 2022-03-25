@@ -4,8 +4,8 @@
       :index="menuItem.id"
       :route="{path: menuItem.route.path}"
   >
-    <el-icon :class="menuItem.iconCls || menuItem.route?.meta.iconCls"/>
-    <template #title>{{ menuItem.title || menuItem.route?.meta.title }}</template>
+    <el-icon :class="menuItem.iconCls"/>
+    <template #title>{{ menuItem.title }}</template>
   </el-menu-item>
   <el-sub-menu
       v-else
@@ -22,7 +22,7 @@
   </el-sub-menu>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent} from "vue";
 
 export default defineComponent({

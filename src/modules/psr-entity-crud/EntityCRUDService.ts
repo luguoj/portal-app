@@ -7,20 +7,38 @@ function handleResp(resp: AxiosResponse) {
     return null
 }
 
-interface Page {
+export interface Pageable {
     offset?: number,
     limit?: number,
     sort?: string,
-    dir?: 'asc' | 'desc',
+    dir?: 'ASC' | 'DESC',
 }
 
-interface Entity extends Record<string, any> {
+export interface Page<E extends Entity> {
+    content: E[],
+    totalElements:number,
+    totalPages:number,
+}
+
+export interface Entity extends Record<string, any> {
     id?: string;
     version?: number;
 }
 
+export interface DictionaryEntryEntity extends Entity {
+    code?: string
+    description?: string
+    enabled?: boolean
+}
 
-export class EntityCRUDService {
+export interface DocumentEntity extends Entity {
+    number?: string
+    description?: string
+    abandoned?: boolean
+}
+
+
+export class EntityCRUDService<E extends Entity> {
     private readonly _client: AxiosInstance;
     private readonly _domainType: string;
     private readonly _contextPath: string;
@@ -31,28 +49,28 @@ export class EntityCRUDService {
         this._contextPath = `/entity/${domainType}`
     }
 
-    findAllById(ids: string[]): Promise<Entity[]> {
+    findAllById(ids: string[]): Promise<E[]> {
         return this._client.get(`${this._contextPath}/${ids.join(',')}`).then(handleResp)
     }
 
-    findAll(filterOptions?: any, page?: Page): Promise<any> {
+    findAll(filterOptions?: any, pageable?: Pageable): Promise<Page<E>> {
         return this._client.get(`${this._contextPath}`, {
             params: {
-                ...page,
+                ...pageable,
                 filter_options: filterOptions ? JSON.stringify(filterOptions) : null
             }
         }).then(handleResp)
     }
 
-    create(entity: Entity) {
+    create(entity: E): Promise<E> {
         return this._client.post(`${this._contextPath}`, entity).then(handleResp)
     }
 
-    update(entity: Entity) {
+    update(entity: E): Promise<E> {
         return this._client.put(`${this._contextPath}/${entity.id}`, entity).then(handleResp)
     }
 
-    patch(fields: string[], entity: Entity) {
+    patch(fields: string[], entity: E): Promise<E> {
         const {id, version} = entity
         const data: Entity = {id, version}
         for (let i = 0; i < fields.length; i++) {

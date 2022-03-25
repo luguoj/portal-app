@@ -1,5 +1,5 @@
 import {computed, provide, Ref, ref, watch} from "vue";
-import {userService} from "@/services/portal";
+import {portalService} from "@/services/portal";
 import {ROUTE_PATH_DESKTOP} from "@/router/desktop";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
@@ -17,7 +17,7 @@ export function usePermission() {
     // 用户切换则更新许可
     const store = useStore()
     watch(() => store.state.username, () => {
-        permissionPromise = userService.findPermissionByPortalId(appPortalId)
+        permissionPromise = portalService.user.findPermissionByPortalId(appPortalId)
         permissionPromise.then(newPermissions => {
             permissions.value = newPermissions
         })

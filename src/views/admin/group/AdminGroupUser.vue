@@ -11,11 +11,12 @@
   </el-container>
 </template>
 
-<script>
+<script lang="ts">
 import {useRouter} from "vue-router";
 import {ROUTE_NAME_ADMIN} from "@/router/admin";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   name: "AdminGroupUser",
   props: {
     groupId: {
@@ -33,7 +34,7 @@ export default {
       handleGoBack
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

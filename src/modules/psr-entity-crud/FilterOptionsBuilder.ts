@@ -21,7 +21,7 @@ export class FilterOptionsBuilder {
     }
 
     get() {
-        return this.filterOptions
+        return this.filterOptions.record()
     }
 }
 

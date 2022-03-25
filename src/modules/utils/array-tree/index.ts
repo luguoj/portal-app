@@ -17,13 +17,13 @@ export function filterFromBottom<T extends Record<string | number | symbol, any>
     for (let i = 0; i < nodes.length; i++) {
         const node = {...nodes[i]};
         const flag = filterFn(node)
-        let filteredChildren: T[] | null = null
+        let filteredChildren: T[] = []
         const children = getChildren(node, childrenProperty)
         if (children) {
             filteredChildren = filterFromBottom(children, filterFn, childrenProperty)
             node[childrenProperty] = filteredChildren as T[keyof T]
         }
-        if (flag || filteredChildren) {
+        if (flag || filteredChildren.length > 0) {
             result.push(node)
         }
     }

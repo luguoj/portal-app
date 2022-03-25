@@ -12,18 +12,28 @@
   </el-breadcrumb>
 </template>
 
-<script>
+<script lang="ts">
 import {useRoute} from "vue-router";
-import {computed, defineComponent, inject} from "vue";
+import {computed, defineComponent, inject, Ref} from "vue";
 import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/router/desktop";
+import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
+import {PSRRouteRecordRaw} from "@/router/RouteRecordRaw";
+import { PSRRouteMeta } from "@/router/RouteMeta";
 
-function buildRoutePathByNameUseRoute(routePathByName, route, basePath) {
+interface RoutePathItem {
+  key: string|symbol,
+  title: string,
+  iconCls?: string,
+  path?: string
+}
+
+function buildRoutePathByNameUseRoute(routePathByName: Record<string, RoutePathItem[]>, route: PSRRouteRecordRaw, basePath: RoutePathItem[]) {
   const path = [...basePath]
-  if (route.meta?.title) {
+  if (route.meta?.tag) {
     path.push({
       key: route.name,
-      title: route.meta.title,
-      iconCls: route.meta.iconCls,
+      title: route.meta.tag.title,
+      iconCls: route.meta.tag.iconCls,
       path: route.path
     })
   }
@@ -35,19 +45,19 @@ function buildRoutePathByNameUseRoute(routePathByName, route, basePath) {
   }
 }
 
-function buildRoutePathByNameUseAsideMenuItem(routePathByName, asideMenuItem, basePath) {
-  const {route, children} = asideMenuItem
+function buildRoutePathByNameUseNavigationMenuItem(routePathByName: Record<string, RoutePathItem[]>, navigationMenuItem: MenuItem, basePath: RoutePathItem[]) {
+  const {route, children} = navigationMenuItem
   if (route) {
     buildRoutePathByNameUseRoute(routePathByName, route, basePath)
   } else {
-    const path = [...basePath, {
-      key: asideMenuItem.id,
-      title: asideMenuItem.title,
-      iconCls: asideMenuItem.iconCls
+    const path: RoutePathItem[] = [...basePath, {
+      key: navigationMenuItem.id,
+      title: navigationMenuItem.title,
+      iconCls: navigationMenuItem.iconCls
     }]
     if (children) {
       for (const child of children) {
-        buildRoutePathByNameUseAsideMenuItem(routePathByName, child, path)
+        buildRoutePathByNameUseNavigationMenuItem(routePathByName, child, path)
       }
     }
   }
@@ -58,30 +68,30 @@ export default defineComponent({
   name: "DesktopHeaderRoutePath",
   setup() {
     const route = useRoute()
-    const asideMenuItems = inject('asideMenuItems')
-    const asideMenuItemRoutePathByName = computed(() => {
-      const result = {}
-      for (const asideMenuItem of asideMenuItems) {
-        buildRoutePathByNameUseAsideMenuItem(result, asideMenuItem, [])
+    const navigationMenuItems = inject('navigationMenuItems') as Ref<MenuItem[]>
+    const navigationMenuItemRoutePathByName = computed(() => {
+      const result: Record<string|symbol, RoutePathItem[]> = {}
+      for (const navigationMenuItem of navigationMenuItems.value) {
+        buildRoutePathByNameUseNavigationMenuItem(result, navigationMenuItem, [])
       }
       return result
     })
     const routePath = computed(() => {
-      const result = []
+      const result:RoutePathItem[] = []
       if (route.fullPath !== ROUTE_PATH_DESKTOP.HOME) {
-        if (asideMenuItemRoutePathByName.value
-            && asideMenuItemRoutePathByName.value[route.name]) {
+        if (navigationMenuItemRoutePathByName.value && navigationMenuItemRoutePathByName.value[route.name!]) {
           // 如果关联菜单项目，则追加菜单路径
-          result.push(...asideMenuItemRoutePathByName.value[route.name])
+          result.push(...navigationMenuItemRoutePathByName.value[route.name!])
         } else {
           // 否则直接追加匹配的路由标题
           for (const routeMatched of route.matched) {
-            if (routeMatched.meta?.title) {
+            const meta = routeMatched.meta as PSRRouteMeta
+            if (meta?.tag?.title) {
               result.push({
-                key: routeMatched.name,
-                title: routeMatched.meta.title,
-                iconCls: routeMatched.meta.iconCls,
-                patch: route.path
+                key: routeMatched.name!,
+                title: meta.tag.title,
+                iconCls: meta.tag.iconCls,
+                path: route.path
               })
             }
           }

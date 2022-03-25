@@ -27,7 +27,7 @@ function save(key: string, state: any, storage: any, queue: Queue) {
     })
 }
 
-export function createStatePersistPlugin(storage:any = localStorage, key:string = "vuex"): Plugin<any> {
+export function createStatePersistPlugin(storage:any = localStorage, key = "vuex"): Plugin<any> {
     const queue: Queue = new Queue()
     return (store: Store<any>) => {
         const data = load(key, storage)

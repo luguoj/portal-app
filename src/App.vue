@@ -11,6 +11,7 @@ import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import {useAuthorization} from "@/useAuthorization";
 import {usePermission} from "@/usePermission";
+import {useNavigationMenu} from "@/navigation-menu";
 
 declare const NProgress: any
 
@@ -22,6 +23,8 @@ export default defineComponent({
   setup() {
     useAuthorization()
     usePermission()
+    useNavigationMenu()
+
     onMounted(() => {
       NProgress.done()
     })

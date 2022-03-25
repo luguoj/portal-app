@@ -15,61 +15,71 @@
   </el-select>
 </template>
 
-<script>
+<script lang="ts">
 import {useRouter} from "vue-router";
-import {ref,defineComponent} from "vue";
+import {ref, defineComponent, inject, Ref, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
+import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
+
+interface SelectOption {
+  title: string,
+  titlePinyin: string,
+  path: string
+}
+
+function buildSelectOptions(selectOptions: SelectOption[], menuItems: MenuItem[], base?: SelectOption) {
+  for (const menuItem of menuItems) {
+    const title = (base ? `${base.title} / ` : '') + menuItem.title
+    const titlePinyin = (base ? base.titlePinyin : '') + pinyin(menuItem.title, {style: pinyin.STYLE_NORMAL}).join('')
+    if (menuItem.route) {
+      const path = menuItem.route.path
+      selectOptions.push({title, titlePinyin, path})
+    } else if (menuItem.children.length > 0) {
+      buildSelectOptions(selectOptions, menuItem.children, {title, titlePinyin, path: ""})
+    }
+  }
+}
 
 export default defineComponent({
   name: "DesktopHeaderSearcher",
   setup() {
     const refSelect = ref()
+    const navigationMenuItems = inject('navigationMenuItems') as Ref<MenuItem[]>
     const router = useRouter()
-    const allOptions = router.getRoutes()
-        .filter(route => route.meta.menuItem)
-        .map(route => {
-          const titles = []
-          titles.push(...route.meta.menuItem.allParents.map(parent => parent.title))
-          titles.push(route.meta.menuItem.title)
-          const title = titles.join(' / ')
-          const titlePinyin = pinyin(title, {style: pinyin.STYLE_NORMAL}).join('')
-          return {
-            title,
-            titlePinyin,
-            path: route.path
-          }
-        })
-    const fuse = new Fuse(allOptions, {
-      shouldSort: true,
-      threshold: 0.4,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      minMatchCharLength: 1,
-      keys: [{
-        name: 'title',
-        weight: 0.5
-      }, {
-        name: 'titlePinyin',
-        weight: 0.4
-      }, {
-        name: 'path',
-        weight: 0.1
-      }]
+    const fuse = computed(()=>{
+      const selectOptions:SelectOption[] = []
+      buildSelectOptions(selectOptions,navigationMenuItems.value)
+      return new Fuse<SelectOption>(selectOptions, {
+        shouldSort: true,
+        threshold: 0.4,
+        location: 0,
+        distance: 100,
+        minMatchCharLength: 1,
+        keys: [{
+          name: 'title',
+          weight: 0.5
+        }, {
+          name: 'titlePinyin',
+          weight: 0.4
+        }, {
+          name: 'path',
+          weight: 0.1
+        }]
+      })
     })
-    const searchResult = ref([])
+    const searchResult = ref([] as Fuse.FuseResult<SelectOption>[])
     return {
       refSelect,
       searchResult,
-      querySearch: (query) => {
+      querySearch: (query: string) => {
         if (query !== '') {
-          searchResult.value = fuse.search(query)
+          searchResult.value = fuse.value.search(query)
         } else {
           searchResult.value = []
         }
       },
-      searcherChange: (val) => {
+      searcherChange: (val: string) => {
         router.push(val)
       },
       focus: () => {

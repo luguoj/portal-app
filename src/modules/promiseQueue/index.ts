@@ -18,7 +18,7 @@ interface Task<T> {
 
 export class Queue {
     queue: Task<any>[] = []
-    flushing: boolean = false
+    flushing = false
 
     enqueue<T>(executor: Executor<T>): Promise<T> {
         const p = new Promise((resolve: ResolveCallback<T>, reject: RejectCallback) => {

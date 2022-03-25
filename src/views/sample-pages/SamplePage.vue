@@ -8,22 +8,20 @@
   </section>
 </template>
 
-<script>
-import {ModuleEntity} from "@/services/portal";
-import {ref} from "vue";
+<script lang="ts">
+import {defineComponent, ref} from "vue";
 
-export default {
+export default defineComponent({
   name: "SamplePage",
   components: {},
   setup() {
     return {
       input: ref(),
       click: () => {
-        ModuleEntity.findAll()
       }
     }
   }
-}
+})
 </script>
 
 <style scoped>

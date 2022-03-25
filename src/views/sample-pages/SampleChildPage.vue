@@ -5,14 +5,16 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
   name: "SampleChildPage",
   props: {
     pageNo: String
   }
-}
+})
 </script>
 
 <style scoped>

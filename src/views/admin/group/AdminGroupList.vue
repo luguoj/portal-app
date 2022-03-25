@@ -12,8 +12,8 @@
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       currentPageReportTemplate="{first} - {last} / {totalRecords}"
       :lazy="true"
-      v-model:first="tableProps.offset"
-      :rows="tableProps.limit"
+      v-model:first="tableProps.pageable.offset"
+      :rows="tableProps.pageable.limit"
       @page="onDataTableEvent($event)"
       @sort="onDataTableEvent($event)"
       :value="tableProps.data.content"
@@ -48,7 +48,7 @@
       没有数据.
     </template>
     <template #paginatorstart>
-      <el-select v-model="tableProps.limit" size="large" style="width:5.5rem;">
+      <el-select v-model="tableProps.pageable.limit" size="large" style="width:5.5rem;">
         <el-option
             v-for="limit in tableProps.limitSelectOptions"
             :key="limit"
@@ -137,22 +137,24 @@
   />
 </template>
 
-<script>
-import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar";
-import {reactive, ref, shallowReactive, watch} from "vue";
-import {portalEntityCRUDService} from "@/services/portal";
-import AdminGroupEdit from "@/views/admin/group/AdminGroupEditDialog";
-import AdminGroupEditDialog from "@/views/admin/group/AdminGroupEditDialog";
+<script lang="ts">
+import PsrElHorizontalScrollBar from "@/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import {defineComponent, reactive, ref, shallowReactive, watch} from "vue";
+import {portalService} from "@/services/portal";
+import AdminGroupEdit from "@/views/admin/group/AdminGroupEditDialog.vue";
+import AdminGroupEditDialog from "@/views/admin/group/AdminGroupEditDialog.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import PsrElAsyncActionButton from "@/components/psr-element-plus/buttons/PsrElAsyncActionButton";
+import PsrElAsyncActionButton from "@/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import {FilterMatchMode} from "primevue/api";
 import TriStateCheckbox from "primevue/tristatecheckbox";
 import {buildFromPrimeVueDataTableFilters} from "@/modules/psr-entity-crud/buildFromPrimeVueDataTableFilters";
 import {ROUTE_NAME_ADMIN} from "@/router/admin";
+import {Page, Pageable} from "@/modules/psr-entity-crud";
+import {GroupEntity} from "@/services/portal/CRUDService";
 
-export default {
+export default defineComponent({
   name: "AdminGroupList",
   components: {
     DataTable,
@@ -164,22 +166,14 @@ export default {
     PsrElHorizontalScrollBar
   },
   setup() {
-    const queryOptions = {
-      offset: 0,
-      limit: 0,
-      sort: null,
-      dir: null,
-      filterOptions: null
-    }
     const tableRef = ref()
     const tableProps = shallowReactive({
-      offset: 0,
-      limit: 20,
+      pageable: reactive({
+        offset: 0,
+        limit: 20,
+      } as Pageable),
       limitSelectOptions: [10, 20, 50, 100],
-      data: {
-        content: [],
-        totalElements: 0
-      },
+      data: {} as Page<GroupEntity>,
       loading: false,
       filters: reactive({
         'portalId': {value: process.env.VUE_APP_PORTAL_ID, matchMode: FilterMatchMode.EQUALS},
@@ -196,17 +190,15 @@ export default {
 
     function loadTableData() {
       tableProps.loading = true
-      queryOptions.filterOptions = buildFromPrimeVueDataTableFilters(tableProps.filters)
-      return portalEntityCRUDService.group.findAll(queryOptions)
+      const filterOptions = buildFromPrimeVueDataTableFilters(tableProps.filters)
+      return portalService.crud.group.findAll(filterOptions, tableProps.pageable)
           .then(data => {
             tableProps.data = data
           }).finally(() => tableProps.loading = false)
     }
 
     function handleFind() {
-      tableProps.offset = 0
-      queryOptions.offset = tableProps.offset
-      queryOptions.limit = tableProps.limit
+      tableProps.pageable.offset = 0
       loadTableData()
     }
 
@@ -219,20 +211,20 @@ export default {
       }
     }
 
-    const onDataTableEvent = (event) => {
-      queryOptions.offset = event.first
-      queryOptions.limit = event.rows
+    const onDataTableEvent = (event: any) => {
+      tableProps.pageable.offset = event.first
+      tableProps.pageable.limit = event.rows
       if (event.sortField) {
-        queryOptions.sort = event.sortField
-        queryOptions.dir = event.sortOrder > 0 ? 'ASC' : 'DESC'
+        tableProps.pageable.sort = event.sortField
+        tableProps.pageable.dir = event.sortOrder > 0 ? 'ASC' : 'DESC'
       } else {
-        queryOptions.sort = null
-        queryOptions.dir = null
+        delete tableProps.pageable.sort
+        delete tableProps.pageable.dir
       }
       loadTableData()
     }
 
-    watch(() => tableProps.limit, handleFind)
+    watch(() => tableProps.pageable.limit, handleFind)
 
     function handleExport() {
       tableRef.value.exportCSV();
@@ -247,26 +239,27 @@ export default {
       handleAdd: () => {
         editDialogProps.visible = true
       },
-      handleEdit: (row) => {
+      handleEdit: (row: GroupEntity[]) => {
         editDialogProps.data = row
         editDialogProps.visible = true
       },
-      handleDelete: (row) => {
-        return ElMessageBox.confirm(
-            `是否删除${row.code} - ${row.description}`,
-            '确认删除'
-        ).then(() => {
-          return portalEntityCRUDService.group.delete({
-            ids: [row.id]
-          }).then(() => {
-            ElMessage({
-              message: '删除成功.',
-              type: 'success',
+      handleDelete: (row: GroupEntity) => {
+        if (row && row.id) {
+          const ids: string[] = [row.id]
+          return ElMessageBox.confirm(
+              `是否删除${row.code} - ${row.description}`,
+              '确认删除'
+          ).then(() => {
+            return portalService.crud.group.delete(ids).then(() => {
+              ElMessage({
+                message: '删除成功.',
+                type: 'success',
+              })
+              handleFind()
             })
-            handleFind()
+          }).catch(() => {
           })
-        }).catch(() => {
-        })
+        }
       },
       onDataTableEvent,
       onDataChanged: handleFind,
@@ -274,7 +267,7 @@ export default {
       ROUTE_NAME_ADMIN
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -4,7 +4,7 @@ import AdminGroup from "@/views/admin/group/AdminGroup.vue";
 import AdminGroupList from "@/views/admin/group/AdminGroupList.vue";
 import AdminGroupPermission from "@/views/admin/group/AdminGroupPermission.vue";
 import AdminGroupUser from "@/views/admin/group/AdminGroupUser.vue";
-import {RouteRecordRaw} from "vue-router";
+import {PSRRouteRecordRaw} from "@/router/RouteRecordRaw";
 
 export const ROUTE_NAME_ADMIN = {
     GROUP: 'admin-group',
@@ -13,45 +13,54 @@ export const ROUTE_NAME_ADMIN = {
     GROUP_USER: 'admin-group-user'
 }
 
-export const ROUTE_ADMIN_PERMISSION: RouteRecordRaw = {
+export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
     name: 'admin-permission',
     path: '/admin/permission',
     component: AdminPermission,
     meta: {
-        title: '许可',
-        iconCls: 'pi pi-key',
-        requirePermission: true
+        tag: {
+            title: '许可',
+            iconCls: 'pi pi-key',
+        },
+        permission: {}
     }
 }
 
-export const ROUTE_ADMIN_USER: RouteRecordRaw = {
+export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
     name: 'admin-user',
     path: '/admin/user',
     component: AdminUser,
     meta: {
-        title: '用户',
-        iconCls: 'pi pi-users',
-        requirePermission: true
+        tag: {
+            title: '用户',
+            iconCls: 'pi pi-users'
+        },
+        permission: {}
     }
 }
 
-export const ROUTE_ADMIN_GROUP: RouteRecordRaw = {
+export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
     name: ROUTE_NAME_ADMIN.GROUP,
     path: '/admin/group',
     component: AdminGroup,
     meta: {
-        title: '分组',
-        iconCls: 'pi pi-tag',
-        requirePermission: true
+        tag: {
+            title: '分组',
+            iconCls: 'pi pi-tag'
+        },
+        permission: {}
     },
     children: [{
         name: ROUTE_NAME_ADMIN.GROUP_LIST,
         path: '',
         component: AdminGroupList,
         meta: {
-            title: '分组清单',
-            requirePermission: true,
-            actions: ['add', 'edit', 'delete']
+            tag: {
+                title: '分组清单',
+            },
+            permission: {
+                actions: ['add', 'edit', 'delete']
+            }
         }
     }, {
         name: ROUTE_NAME_ADMIN.GROUP_PERMISSION,
@@ -59,8 +68,10 @@ export const ROUTE_ADMIN_GROUP: RouteRecordRaw = {
         component: AdminGroupPermission,
         props: true,
         meta: {
-            title: '分组许可',
-            requirePermission: true
+            tag: {
+                title: '分组许可',
+            },
+            permission: {}
         }
     }, {
         name: ROUTE_NAME_ADMIN.GROUP_USER,
@@ -68,10 +79,12 @@ export const ROUTE_ADMIN_GROUP: RouteRecordRaw = {
         component: AdminGroupUser,
         props: true,
         meta: {
-            title: '分组用户',
-            requirePermission: true
+            tag: {
+                title: '分组用户',
+            },
+            permission: {}
         }
     }]
 }
 
-export const ROUTES_ADMIN: Array<RouteRecordRaw> = [ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_GROUP, ROUTE_ADMIN_USER]
+export const ROUTES_ADMIN: Array<PSRRouteRecordRaw> = [ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_GROUP, ROUTE_ADMIN_USER]

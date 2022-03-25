@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :title="creating?'创建':'编辑'" :before-close="beforeClose" v-model="visible">
-    <el-form ref="formRef" v-model="formData">
+  <el-dialog :title="creating?'创建':'编辑'" :before-close="beforeClose" :model-value="visible">
+    <el-form v-model="formData">
       <el-form-item label="编码">
         <el-input v-model="formData.code"/>
       </el-form-item>
@@ -23,14 +23,20 @@
   </el-dialog>
 </template>
 
-<script>
-import {ElMessage, ElMessageBox} from "element-plus";
-import {computed, ref, toRaw, watch} from "vue";
+<script lang="ts">
+import {ElForm, ElMessage, ElMessageBox} from "element-plus";
+import {defineComponent, computed, ref, toRaw, watch, PropType} from "vue";
 import {cloneDeep, isEqual} from "lodash";
-import {portalEntityCRUDService} from "@/services/portal";
-import PsrElAsyncActionButton from "@/components/psr-element-plus/buttons/PsrElAsyncActionButton";
+import PsrElAsyncActionButton from "@/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
+import {portalService} from "@/services/portal";
+import {GroupEntity} from "@/services/portal/CRUDService";
 
-function defaultData() {
+if (typeof process.env.VUE_APP_PORTAL_ID !== 'string') {
+  throw new Error("缺少环境变量: process.env.VUE_APP_PORTAL_ID")
+}
+const portalId: string = process.env.VUE_APP_PORTAL_ID
+
+function defaultData(): GroupEntity {
   return {
     id: '',
     version: 0,
@@ -40,7 +46,7 @@ function defaultData() {
   }
 }
 
-export default {
+export default defineComponent({
   name: "AdminGroupEditDialog",
   components: {PsrElAsyncActionButton},
   props: {
@@ -49,15 +55,15 @@ export default {
       default: false
     },
     data: {
-      type: Object,
-      default: null
+      type: Object as PropType<GroupEntity>,
+      required: true,
+      default: {}
     }
   },
   emits: ['update:visible', 'update:data', 'dataChanged'],
   setup(props, context) {
-    const formRef = ref()
-    const originalData = ref()
-    const formData = ref()
+    const originalData = ref<GroupEntity>({})
+    const formData = ref<GroupEntity>({})
     const creating = computed(() => !props.data || !props.data.id)
     const formDirty = computed(() => {
       return !isEqual(formData.value, originalData.value)
@@ -76,10 +82,10 @@ export default {
 
     function hide() {
       context.emit('update:visible', false)
-      context.emit('update:data', null)
+      context.emit('update:data', {})
     }
 
-    function handleChanged(data) {
+    function handleChanged(data: GroupEntity) {
       ElMessage({
         message: '保存成功.',
         type: 'success',
@@ -89,20 +95,16 @@ export default {
     }
 
     function handleSubmit() {
-      if (creating.value === true) {
-        return portalEntityCRUDService.group.create({
-          data: {
-            portalId: process.env.VUE_APP_PORTAL_ID,
-            ...formData.value
-          }
+      if (creating.value) {
+        return portalService.crud.group.create({
+          portalId,
+          ...formData.value
         }).then(handleChanged)
       } else {
-        return portalEntityCRUDService.group.patch({
-          fields: ['code', 'description', 'enabled'],
-          data: {
-            ...formData.value
-          }
-        }).then(handleChanged)
+        return portalService.crud.group.patch(
+            ['code', 'description', 'enabled'],
+            formData.value
+        ).then(handleChanged)
       }
     }
 
@@ -128,7 +130,6 @@ export default {
     }
 
     return {
-      formRef,
       formData,
       formDirty,
       creating,
@@ -136,7 +137,7 @@ export default {
       beforeClose
     }
   }
-}
+})
 </script>
 
 <style scoped>

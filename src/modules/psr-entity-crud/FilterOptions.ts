@@ -9,6 +9,10 @@ export class FilterOptions {
         this._record[key] = valueRanges
         return this
     }
+
+    record() {
+        return this._record
+    }
 }
 
 export type ValueType = string | boolean | number | Date

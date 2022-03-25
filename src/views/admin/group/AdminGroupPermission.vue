@@ -24,7 +24,9 @@
           </el-button>
         </router-link>
         <el-divider direction="vertical"/>
-        <el-button type="primary" class="button" @click="handleRefresh">
+        <span>分组: {{ groupEntity.code }}</span>
+        <el-divider direction="vertical"/>
+        <el-button type="primary" class="button" @click="initTableData">
           <template #icon>
             <el-icon class="pi pi-refresh"/>
           </template>
@@ -44,19 +46,20 @@
         </el-button>
       </el-space>
     </template>
-    <Column field="title" header="路由" :expander="true" style="min-width:720px">
+    <Column field="title" header="许可" :expander="true" style="min-width:720px">
       <template #filter>
-        <el-input type="text" placeholder="过滤 (路由名称 / 标题 / 拼音)" v-model="tableProps.filters['global']" class="p-column-filter"/>
+        <el-input type="text" placeholder="过滤 (路由名称 / 标题 / 拼音)" v-model="tableProps.filters['global']"
+                  class="p-column-filter"/>
       </template>
       <template #body="slotProps">
         <el-checkbox
             :label="slotProps.node.data.title"
-            v-model="groupPermissions[slotProps.node.key].access"
+            v-model="routeRoutePermissionStatusMap[slotProps.node.key].access"
         />
         <el-divider direction="vertical"/>
         <el-checkbox-group
-            :disabled="!groupPermissions[slotProps.node.key].access"
-            v-model="groupPermissions[slotProps.node.key].actions"
+            :disabled="!routeRoutePermissionStatusMap[slotProps.node.key].access"
+            v-model="routeRoutePermissionStatusMap[slotProps.node.key].actions"
         >
           <el-checkbox
               v-for="action in slotProps.node.data.actions" :key="`${slotProps.node.key}:${action}`"
@@ -70,20 +73,74 @@
   </TreeTable>
 </template>
 
-<script>
+<script lang="ts">
 import {ROUTE_NAME_ADMIN} from "@/router/admin";
 import TreeTable from "primevue/treetable";
-import {onMounted, reactive, ref} from "vue";
-import {portalEntityCRUDService} from "@/services/portal";
+import {defineComponent, onMounted, reactive, ref, shallowReactive} from "vue";
+import {portalService} from "@/services/portal";
 import Column from "primevue/column";
-import pinyin from "pinyin";
 import {useRouter} from "vue-router";
 import {FilterOptionsBuilder} from "@/modules/psr-entity-crud";
 import Checkbox from "primevue/checkbox";
 import {Queue} from "@/modules/promiseQueue";
+import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService";
+import {PSRRouteRecordRaw} from "@/router/RouteRecordRaw";
+import {UnwrapNestedRefs} from "@vue/reactivity";
+import pinyin from "pinyin";
 
+interface RoutePermissionStatus {
+  access: boolean,
+  actions: string[],
+  entity: GroupPermissionEntity | null
+}
 
-export default {
+interface RoutePermissionNode {
+  key: string,
+  data: {
+    name: string,
+    title?: string | undefined,
+    titlePinyin?: string,
+    iconCls?: string | null,
+    actions?: string[] | null
+  },
+  children?: RoutePermissionNode[]
+}
+
+function buildRoutePermissionNodes(
+    routes: PSRRouteRecordRaw[],
+    routeRoutePermissionStatusMap: UnwrapNestedRefs<Record<string, RoutePermissionStatus>>
+) {
+  const nodes: RoutePermissionNode[] = []
+  for (let i = 0; i < routes.length; i++) {
+    const route = routes[i];
+    const children: RoutePermissionNode[] = []
+    if (route.children && route.children.length > 0) {
+      children.push(...buildRoutePermissionNodes(route.children, routeRoutePermissionStatusMap))
+    }
+    if (route.meta?.permission || children.length > 0) {
+      const node: RoutePermissionNode = {
+        key: route.name,
+        data: {
+          name: route.name,
+          title: route.meta?.tag?.title,
+          iconCls: route.meta?.tag?.iconCls,
+          actions: route.meta?.permission?.actions
+        }
+      }
+      if (children) {
+        node.children = children
+      }
+      if (node.data.title) {
+        node.data.titlePinyin = pinyin(node.data.title, {style: pinyin.STYLE_NORMAL}).join('')
+      }
+      routeRoutePermissionStatusMap[route.name] = {access: false, actions: [], entity: null}
+      nodes.push(node)
+    }
+  }
+  return nodes
+}
+
+export default defineComponent({
   name: "AdminGroupPermission",
   components: {
     TreeTable,
@@ -92,150 +149,114 @@ export default {
   },
   props: {
     groupId: {
-      type: String
+      type: String,
+      required: true
     }
   },
   setup(props) {
     const router = useRouter()
-    const groupEntity = ref({})
-
-
-    portalEntityCRUDService.group.findAllById({
-      ids: [props.groupId]
-    }).then(data => {
-      if (data && data.length > 0) {
-        groupEntity.value = data[0]
-      }
-    })
-
-    const groupPermissions = reactive({})
-    const tableProps = reactive({
-      data: [],
+    const groupEntity = ref({} as GroupEntity)
+    const routeRoutePermissionStatusByName = reactive({} as Record<string, RoutePermissionStatus>)
+    const tableProps = shallowReactive({
+      data: [] as RoutePermissionNode[],
       filters: {global: ''},
       loading: false
     })
 
-    function buildRouteNodes(routes) {
-      const nodes = []
-      for (let i = 0; i < routes.length; i++) {
-        const route = routes[i];
-        let children = []
-        if (route.children && route.children.length > 0) {
-          children = buildRouteNodes(route.children)
-        }
-        if (route.meta?.requirePermission || route.meta?.actions || children.length > 0) {
-          groupPermissions[route.name] = {access: false, actions: [], entity: null}
-          const node = {
-            key: route.name,
-            data: {
-              title: route.meta?.title || route.name,
-              titlePinyin: pinyin(route.meta?.title, {style: pinyin.STYLE_NORMAL}).join(''),
-              iconCls: route.meta?.iconCls,
-              actions: route.meta?.actions
-
-            },
-            children
-          }
-          nodes.push(node)
-        }
-      }
-      return nodes
-    }
-
     function initTableData() {
       tableProps.loading = true
-      tableProps.data = buildRouteNodes(router.options.routes)
-      loadGroupPermissionEntities()
-    }
-
-    function loadGroupPermissionEntities() {
-      portalEntityCRUDService.groupPermission.findAll({
-        filterOptions: new FilterOptionsBuilder().field('groupId').iEqual(groupEntity.value.id).then().get()
-      }).then(data => {
-        for (let i = 0; i < data.content.length; i++) {
-          const groupPermissionEntity = data.content[i];
-          if (groupPermissions[groupPermissionEntity.route]) {
-            groupPermissions[groupPermissionEntity.route].access = true
-            groupPermissions[groupPermissionEntity.route].actions = groupPermissionEntity.actions?.split(',')
-            groupPermissions[groupPermissionEntity.route].entity = groupPermissionEntity
-          } else {
-            groupPermissions[groupPermissionEntity.route] = {
-              access: false,
-              actions: [],
-              entity: groupPermissionEntity
+      tableProps.data = buildRoutePermissionNodes(router.options.routes as PSRRouteRecordRaw[], routeRoutePermissionStatusByName)
+      portalService.crud.group.findAllById([props.groupId]).then(data => {
+        if (data && data.length > 0) {
+          groupEntity.value = data[0]
+          return portalService.crud.groupPermission.findAll(
+              new FilterOptionsBuilder().field('groupId').iEqual(data[0].id!).then().get()
+          ).then(data => {
+            for (let i = 0; i < data.content.length; i++) {
+              const groupPermissionEntity = data.content[i];
+              routeRoutePermissionStatusByName[groupPermissionEntity.route!] = {
+                access: true,
+                actions: groupPermissionEntity.actions?.split(',') || [],
+                entity: groupPermissionEntity
+              }
             }
-          }
+          })
         }
       }).finally(() => {
         tableProps.loading = false
       })
     }
 
+    function handleClearFilters() {
+      tableProps.filters.global = ''
+    }
+
+    const saveQueue = new Queue()
+
+    function handleSave() {
+      if (saveQueue.flushing) {
+        return
+      }
+      saveQueue.enqueue(resolve => {
+        tableProps.loading = true
+        resolve(true)
+      })
+      for (const routeName in routeRoutePermissionStatusByName) {
+        const groupPermission = routeRoutePermissionStatusByName[routeName]
+        if (groupPermission.access) {
+          if (!groupPermission.entity) {
+            saveQueue.enqueue<GroupPermissionEntity>((resolve, reject) => {
+              portalService.crud.groupPermission.create({
+                groupId: groupEntity.value.id,
+                route: routeName,
+                actions: groupPermission.actions?.join(',')
+              }).then(resolve).catch(reject)
+            }).then(data => {
+              groupPermission.entity = data
+            })
+          } else {
+            const actions = groupPermission.actions?.join(',')
+            if (actions !== groupPermission.entity.actions) {
+              const {id, version} = groupPermission.entity
+              saveQueue.enqueue<GroupPermissionEntity>((resolve, reject) => {
+                portalService.crud.groupPermission.patch(
+                    ['actions'],
+                    {id, version, actions}
+                ).then(resolve).catch(reject)
+              }).then(data => groupPermission.entity = data)
+            }
+          }
+        } else {
+          if (groupPermission.entity) {
+            const ids = [groupPermission.entity.id!]
+            saveQueue.enqueue((resolve, reject) => {
+              portalService.crud.groupPermission.delete(ids)
+                  .then(resolve).catch(reject)
+            }).then(() => groupPermission.entity = null)
+          }
+        }
+      }
+      saveQueue.enqueue(resolve => {
+        tableProps.loading = false
+        resolve(true)
+      })
+    }
+
     onMounted(() => {
       initTableData()
     })
-    const saveQueue = new Queue()
+
     return {
       groupEntity,
       tableProps,
-      groupPermissions,
+      routeRoutePermissionStatusMap: routeRoutePermissionStatusByName,
       backRouteName: ROUTE_NAME_ADMIN.GROUP_LIST,
-      handleRefresh: () => {
-        initTableData()
-      },
-      handleClearFilters: () => {
-        tableProps.filters.value.global = ''
-      },
-      handleSave: () => {
-        saveQueue.enqueue(resolve => {
-          tableProps.loading = true
-          resolve()
-        })
-        for (const routeName in groupPermissions) {
-          const groupPermission = groupPermissions[routeName]
-          if (groupPermission.access) {
-            if (!groupPermission.entity) {
-              saveQueue.enqueue((resolve, reject) => {
-                portalEntityCRUDService.groupPermission.create({
-                  data: {
-                    groupId: groupEntity.value.id,
-                    route: routeName,
-                    actions: groupPermission.actions?.join(',')
-                  }
-                }).then(resolve).catch(reject)
-              }).then(data => {
-                groupPermission.entity = data
-              })
-            } else {
-              const actions = groupPermission.actions?.join(',')
-              if (actions !== groupPermission.entity.actions) {
-                const {id, version} = groupPermission.entity
-                saveQueue.enqueue((resolve, reject) => {
-                  portalEntityCRUDService.groupPermission.patch({
-                    fields: ['actions'],
-                    data: {id, version, actions}
-                  }).then(resolve).catch(reject)
-                }).then(data => groupPermission.entity = data)
-              }
-            }
-          } else {
-            if (groupPermission.entity) {
-              saveQueue.enqueue((resolve, reject) => {
-                portalEntityCRUDService.groupPermission.delete({
-                  ids: [groupPermission.entity.id]
-                }).then(resolve).catch(reject)
-              }).then(() => groupPermission.entity = null)
-            }
-          }
-        }
-        saveQueue.enqueue(resolve => {
-          tableProps.loading = false
-          resolve()
-        })
-      }
+      initTableData,
+      handleClearFilters,
+      handleSave
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
