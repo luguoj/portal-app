@@ -1,7 +1,7 @@
 import {Module} from "vuex";
-import {PSRRouteRecordRaw} from "@/libs/commons/router/RouteRecordRaw";
+import {PSRRouteRecordRaw} from "@/libs/commons/router";
 
-export interface AppConfigModule {
+export interface ModuleConfig {
     name: string,
     store?: Module<any, any>,
     routes?: Array<PSRRouteRecordRaw>

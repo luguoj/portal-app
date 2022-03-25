@@ -1,4 +1,4 @@
-import {PSRRouteRecordRaw} from "@/libs/commons/router/RouteRecordRaw";
+import {PSRRouteRecordRaw} from "@/libs/commons/router";
 
 export const ROUTE_SAMPLE: PSRRouteRecordRaw = {
     name: 'sample',

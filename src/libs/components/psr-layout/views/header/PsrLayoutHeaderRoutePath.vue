@@ -17,8 +17,7 @@ import {useRoute} from "vue-router";
 import {computed, defineComponent, inject, Ref} from "vue";
 import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/libs/components/psr-layout/route";
 import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
-import {PSRRouteRecordRaw} from "@/libs/commons/router/RouteRecordRaw";
-import {PSRRouteMeta} from "@/libs/commons/router/RouteMeta";
+import {PSRRouteRecordRaw, PSRRouteMeta} from "@/libs/commons/router";
 
 interface RoutePathItem {
   key: string | symbol,

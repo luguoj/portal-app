@@ -82,9 +82,9 @@ import Column from "primevue/column";
 import {useRouter} from "vue-router";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
 import Checkbox from "primevue/checkbox";
-import {Queue} from "@/libs/commons/promiseQueue";
+import {Queue} from "@/libs/commons/promise-queue";
 import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService";
-import {PSRRouteRecordRaw} from "@/libs/commons/router/RouteRecordRaw";
+import {PSRRouteRecordRaw} from "@/libs/commons/router";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 import pinyin from "pinyin";
 

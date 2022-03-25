@@ -29,7 +29,7 @@ import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizon
 import {inject, onMounted, watch, ref, defineComponent, reactive} from "vue";
 import {RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
 import {useStore} from "vuex";
-import {PSRRouteMetaTag} from "@/libs/commons/router/RouteMeta";
+import {PSRRouteMetaTag} from "@/libs/commons/router";
 import {CachedRoute} from "@/libs/components/psr-layout/views/PsrLayout.vue";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 

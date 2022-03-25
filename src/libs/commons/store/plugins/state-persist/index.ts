@@ -1,5 +1,5 @@
 import deepmerge from "deepmerge";
-import {Queue, RejectCallback, ResolveCallback} from "@/libs/commons/promiseQueue";
+import {Queue, RejectCallback, ResolveCallback} from "@/libs/commons/promise-queue";
 import {Plugin, Store} from "vuex";
 
 function load(key: string, storage: any) {

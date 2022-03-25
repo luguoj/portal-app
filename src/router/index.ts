@@ -1,5 +1,5 @@
 import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router'
-import {Modules} from "@/AppConfig";
+import {Modules} from "@/modules";
 
 declare const NProgress: any
 

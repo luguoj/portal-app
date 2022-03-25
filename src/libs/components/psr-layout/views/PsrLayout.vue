@@ -27,7 +27,7 @@ import PsrLayoutMain from "@/libs/components/psr-layout/views/main/PsrLayoutMain
 import PsrLayoutTitle from "@/libs/components/psr-layout/views/title/PsrLayoutTitle.vue";
 import PsrLayoutAsideMenu from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenu.vue";
 import {defineComponent, provide, reactive} from "vue";
-import {PSRRouteMetaTag} from "@/libs/commons/router/RouteMeta";
+import {PSRRouteMetaTag} from "@/libs/commons/router";
 
 export interface CachedRoute {
   name: string | symbol,

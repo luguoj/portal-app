@@ -1,7 +1,7 @@
 import {createStore, ModuleTree, StoreOptions} from 'vuex'
 import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persist";
 import {State} from "@/store/State";
-import {Modules} from "@/AppConfig";
+import {Modules} from "@/modules";
 
 const modules: ModuleTree<any> = {}
 for (const module of Modules) {
