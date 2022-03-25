@@ -47,7 +47,7 @@ function defaultData(): GroupEntity {
 }
 
 export default defineComponent({
-  name: "AdminGroupEditDialog",
+  name: "admin-console-group-edit-dialog",
   components: {PsrElAsyncActionButton},
   props: {
     visible: {

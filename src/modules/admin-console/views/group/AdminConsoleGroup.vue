@@ -1,6 +1,6 @@
 <template>
   <router-view v-slot="{Component}">
-    <keep-alive include="AdminGroupList,AdminGroupPermission">
+    <keep-alive include="admin-console-group-ist,admin-console-group-permission">
       <component :is="Component"/>
     </keep-alive>
   </router-view>
@@ -10,7 +10,7 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "AdminGroup"
+  name: "admin-console-group"
 })
 </script>
 

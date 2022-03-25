@@ -140,7 +140,7 @@ function buildRoutePermissionNodes(
 }
 
 export default defineComponent({
-  name: "AdminGroupPermission",
+  name: "admin-console-group-permission",
   components: {
     TreeTable,
     Column

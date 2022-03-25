@@ -1,9 +1,9 @@
-import AdminPermission from "@/modules/admin-console/views/permission/AdminPermission.vue";
-import AdminUser from "@/modules/admin-console/views/user/AdminUser.vue";
-import AdminGroup from "@/modules/admin-console/views/group/AdminGroup.vue";
-import AdminGroupList from "@/modules/admin-console/views/group/AdminGroupList.vue";
-import AdminGroupPermission from "@/modules/admin-console/views/group/AdminGroupPermission.vue";
-import AdminGroupUser from "@/modules/admin-console/views/group/AdminGroupUser.vue";
+import AdminPermission from "@/modules/admin-console/views/permission/AdminConsolePermission.vue";
+import AdminUser from "@/modules/admin-console/views/user/AdminConsoleUser.vue";
+import AdminGroup from "@/modules/admin-console/views/group/AdminConsoleGroup.vue";
+import AdminGroupList from "@/modules/admin-console/views/group/AdminConsoleGroupList.vue";
+import AdminGroupPermission from "@/modules/admin-console/views/group/AdminConsoleGroupPermission.vue";
+import AdminGroupUser from "@/modules/admin-console/views/group/AdminConsoleGroupUser.vue";
 import {PSRRouteRecordRaw} from "@/libs/commons/router";
 
 export const ROUTE_NAME_ADMIN = {

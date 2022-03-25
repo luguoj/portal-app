@@ -1,12 +1,12 @@
 <template>
-<h1>user</h1>
+  <h1>许可</h1>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "AdminUser"
+  name: "admin-console-permission"
 })
 </script>
 

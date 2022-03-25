@@ -127,7 +127,7 @@
       </template>
     </Column>
   </DataTable>
-  <admin-group-edit-dialog
+  <admin-console-group-edit-dialog
       v-model:visible="editDialogProps.visible"
       v-model:data="editDialogProps.data"
       @data-changed="onDataChanged"
@@ -137,7 +137,7 @@
 <script lang="ts">
 import {defineComponent, reactive, ref, shallowReactive, watch} from "vue";
 import {portalService} from "@/services/portal";
-import AdminGroupEditDialog from "@/modules/admin-console/views/group/AdminGroupEditDialog.vue";
+import AdminConsoleGroupEditDialog from "@/modules/admin-console/views/group/AdminConsoleGroupEditDialog.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
 import DataTable from "primevue/datatable";
@@ -150,13 +150,13 @@ import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
 
 export default defineComponent({
-  name: "AdminGroupList",
+  name: "admin-console-group-list",
   components: {
     DataTable,
     Column,
     TriStateCheckbox,
     PsrElAsyncActionButton,
-    AdminGroupEditDialog
+    AdminConsoleGroupEditDialog
   },
   setup() {
     const tableRef = ref()

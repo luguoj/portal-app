@@ -17,7 +17,7 @@ import {ROUTE_NAME_ADMIN} from "@/modules/admin-console/route";
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "AdminGroupUser",
+  name: "admin-console-group-user",
   props: {
     groupId: {
       type: String
