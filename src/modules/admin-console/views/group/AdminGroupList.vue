@@ -1,0 +1,283 @@
+<template>
+  <DataTable
+      ref="tableRef"
+      class="table p-datatable-sm"
+      responsiveLayout="scroll"
+      :scrollable="true"
+      scrollHeight="flex"
+      scrollDirection="both"
+      :resizableColumns="true"
+      columnResizeMode="expand"
+      :paginator="true"
+      paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+      currentPageReportTemplate="{first} - {last} / {totalRecords}"
+      :lazy="true"
+      v-model:first="tableProps.pageable.offset"
+      :rows="tableProps.pageable.limit"
+      @page="onDataTableEvent($event)"
+      @sort="onDataTableEvent($event)"
+      :value="tableProps.data.content"
+      :totalRecords="tableProps.data.totalElements"
+      v-loading="tableProps.loading"
+      v-model:filters="tableProps.filters"
+      filterDisplay="row"
+  >
+    <template #header>
+      <el-space wrap>
+        <el-button type="primary" class="button" @click="handleFind">
+          <template #icon>
+            <el-icon class="pi pi-search"/>
+          </template>
+          查找
+        </el-button>
+        <el-button type="primary" class="button" @click="handleClearFilters">
+          <template #icon>
+            <el-icon class="pi pi-filter-slash"/>
+          </template>
+          重置
+        </el-button>
+        <el-button type="primary" class="button" @click="handleAdd">
+          <template #icon>
+            <el-icon #icon class="pi pi-plus"/>
+          </template>
+          添加
+        </el-button>
+      </el-space>
+    </template>
+    <template #empty>
+      没有数据.
+    </template>
+    <template #paginatorstart>
+      <el-select v-model="tableProps.pageable.limit" size="large" style="width:5.5rem;">
+        <el-option
+            v-for="limit in tableProps.limitSelectOptions"
+            :key="limit"
+            :value="limit"
+            :lable="limit"
+        />
+      </el-select>
+    </template>
+    <template #paginatorend>
+      <el-button type="text" size="large" @click="handleExport">
+        <template #icon>
+          <el-icon class="pi pi-external-link"/>
+        </template>
+      </el-button>
+    </template>
+    <Column field="enabled" header="状态" :showFilterMenu="false"
+            style="width:5rem;min-width:5rem;max-width:5rem;">
+      <template #body="slotProps">
+        <el-icon class="pi" :class="slotProps.data[slotProps.field]?'pi-check':'pi-ban'" style="width:100%;"/>
+      </template>
+      <template #filter="{filterModel,filterCallback}">
+        <TriStateCheckbox v-model="filterModel.value" @change="filterCallback()"/>
+      </template>
+    </Column>
+    <Column
+        field="code"
+        header="编码"
+        :style="{width:'360px'}"
+        :sortable="true"
+    >
+      <template #body="slotProps">
+        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ slotProps.data[slotProps.field] }}</div>
+      </template>
+      <template #filter="{filterModel,filterCallback}">
+        <el-input v-model="filterModel.value" @change="filterCallback()"/>
+      </template>
+    </Column>
+    <Column
+        field="description"
+        header="描述"
+        :style="{width:'360px'}"
+        :sortable="true"
+    >
+      <template #body="slotProps">
+        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ slotProps.data[slotProps.field] }}</div>
+      </template>
+      <template #filter="{filterModel,filterCallback}">
+        <el-input v-model="filterModel.value" @change="filterCallback()"/>
+      </template>
+    </Column>
+    <Column
+        header="操作"
+        frozen
+        alignFrozen="right"
+        :style="{width:'153px','min-width':'153px','max-width':'153px'}"
+    >
+      <template #body="slotProps">
+        <el-space wrap>
+          <router-link
+              :to="{name:ROUTE_NAME_ADMIN.GROUP_PERMISSION,params:{groupId:slotProps.data.id}}"
+              v-slot="{navigate}"
+          >
+            <el-button type="text" size="small" @click="navigate">许可</el-button>
+          </router-link>
+          <router-link
+              :to="{name:ROUTE_NAME_ADMIN.GROUP_USER,params:{groupId:slotProps.data.id}}"
+              v-slot="{navigate}"
+          >
+            <el-button type="text" size="small">用户</el-button>
+          </router-link>
+          <el-button type="text" size="small" @click="handleEdit(slotProps.data)">编辑</el-button>
+          <psr-el-async-action-button
+              type="text" size="small"
+              :action="handleDelete"
+              :action-params="slotProps.data"
+          >删除
+          </psr-el-async-action-button>
+        </el-space>
+      </template>
+    </Column>
+  </DataTable>
+  <admin-group-edit-dialog
+      v-model:visible="editDialogProps.visible"
+      v-model:data="editDialogProps.data"
+      @data-changed="onDataChanged"
+  />
+</template>
+
+<script lang="ts">
+import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import {defineComponent, reactive, ref, shallowReactive, watch} from "vue";
+import {portalService} from "@/services/portal";
+import AdminGroupEdit from "@/modules/admin-console/views/group/AdminGroupEditDialog.vue";
+import AdminGroupEditDialog from "@/modules/admin-console/views/group/AdminGroupEditDialog.vue";
+import {ElMessage, ElMessageBox} from "element-plus";
+import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import {FilterMatchMode} from "primevue/api";
+import TriStateCheckbox from "primevue/tristatecheckbox";
+import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud/buildFromPrimeVueDataTableFilters";
+import {ROUTE_NAME_ADMIN} from "@/modules/admin-console/route";
+import {Page, Pageable} from "@/libs/services/psr-entity-crud";
+import {GroupEntity} from "@/services/portal/CRUDService";
+
+export default defineComponent({
+  name: "AdminGroupList",
+  components: {
+    DataTable,
+    Column,
+    TriStateCheckbox,
+    PsrElAsyncActionButton,
+    AdminGroupEditDialog,
+    AdminGroupEdit,
+    PsrElHorizontalScrollBar
+  },
+  setup() {
+    const tableRef = ref()
+    const tableProps = shallowReactive({
+      pageable: reactive({
+        offset: 0,
+        limit: 20,
+      } as Pageable),
+      limitSelectOptions: [10, 20, 50, 100],
+      data: {} as Page<GroupEntity>,
+      loading: false,
+      filters: reactive({
+        'portalId': {value: process.env.VUE_APP_PORTAL_ID, matchMode: FilterMatchMode.EQUALS},
+        'code': {value: null, matchMode: FilterMatchMode.CONTAINS},
+        'description': {value: null, matchMode: FilterMatchMode.CONTAINS},
+        'enabled': {value: null, matchMode: FilterMatchMode.EQUALS}
+      })
+    })
+    const editDialogProps = reactive({
+      data: {},
+      creating: true,
+      visible: false
+    })
+
+    function loadTableData() {
+      tableProps.loading = true
+      const filterOptions = buildFromPrimeVueDataTableFilters(tableProps.filters)
+      return portalService.crud.group.findAll(filterOptions, tableProps.pageable)
+          .then(data => {
+            tableProps.data = data
+          }).finally(() => tableProps.loading = false)
+    }
+
+    function handleFind() {
+      tableProps.pageable.offset = 0
+      loadTableData()
+    }
+
+    function handleClearFilters() {
+      tableProps.filters = {
+        'portalId': {value: process.env.VUE_APP_PORTAL_ID, matchMode: FilterMatchMode.EQUALS},
+        'code': {value: null, matchMode: FilterMatchMode.CONTAINS},
+        'description': {value: null, matchMode: FilterMatchMode.CONTAINS},
+        'enabled': {value: null, matchMode: FilterMatchMode.EQUALS}
+      }
+    }
+
+    const onDataTableEvent = (event: any) => {
+      tableProps.pageable.offset = event.first
+      tableProps.pageable.limit = event.rows
+      if (event.sortField) {
+        tableProps.pageable.sort = event.sortField
+        tableProps.pageable.dir = event.sortOrder > 0 ? 'ASC' : 'DESC'
+      } else {
+        delete tableProps.pageable.sort
+        delete tableProps.pageable.dir
+      }
+      loadTableData()
+    }
+
+    watch(() => tableProps.pageable.limit, handleFind)
+
+    function handleExport() {
+      tableRef.value.exportCSV();
+    }
+
+    return {
+      tableRef,
+      tableProps,
+      editDialogProps,
+      handleFind,
+      handleClearFilters,
+      handleAdd: () => {
+        editDialogProps.visible = true
+      },
+      handleEdit: (row: GroupEntity[]) => {
+        editDialogProps.data = row
+        editDialogProps.visible = true
+      },
+      handleDelete: (row: GroupEntity) => {
+        if (row && row.id) {
+          const ids: string[] = [row.id]
+          return ElMessageBox.confirm(
+              `是否删除${row.code} - ${row.description}`,
+              '确认删除'
+          ).then(() => {
+            return portalService.crud.group.delete(ids).then(() => {
+              ElMessage({
+                message: '删除成功.',
+                type: 'success',
+              })
+              handleFind()
+            })
+          }).catch(() => {
+          })
+        }
+      },
+      onDataTableEvent,
+      onDataChanged: handleFind,
+      handleExport,
+      ROUTE_NAME_ADMIN
+    }
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+.table {
+  width: 100%;
+  height: 100%;
+}
+
+.ct-main {
+  height: 100%;
+  padding-top: 0;
+}
+</style>

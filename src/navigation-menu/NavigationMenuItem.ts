@@ -1,4 +1,4 @@
-import {PSRRouteRecordRaw} from "@/router/RouteRecordRaw";
+import {PSRRouteRecordRaw} from "@/libs/commons/router/RouteRecordRaw";
 
 export type MenuItemRaw = MenuItemSubMenuRaw | MenuItemRouteItemRaw
 

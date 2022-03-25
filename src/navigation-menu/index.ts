@@ -1,4 +1,4 @@
-import {ROUTE_HOME} from "@/router/desktop";
+import {ROUTE_HOME} from "@/libs/components/psr-layout/route";
 import {watch, inject, Ref, ref, provide} from "vue";
 import {useStore} from "vuex";
 import {
@@ -6,15 +6,15 @@ import {
     MenuItem,
     MenuItemRaw
 } from "@/navigation-menu/NavigationMenuItem";
-import {ROUTE_ADMIN_GROUP, ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_USER} from "@/router/admin";
-import {ROUTE_SAMPLE, ROUTE_SAMPLE_2, ROUTE_SAMPLE_PARENT} from "@/router/sample-pages";
-import {filterFromBottom} from "@/modules/utils/array-tree";
+import {ROUTE_ADMIN_GROUP, ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_USER} from "@/modules/admin-console/route";
+import {ROUTE_SAMPLE, ROUTE_SAMPLE_2, ROUTE_SAMPLE_PARENT} from "@/modules/sample-page/route";
+import {filterFromBottom} from "@/libs/commons/utils/array-tree";
 
 const NAVIGATION_MENU_ITEMS: MenuItemRaw[] = [{
     id: 'desktop',
     route: ROUTE_HOME
 }, {
-    id: 'admin',
+    id: 'admin-console',
     title: '门户管理',
     iconCls: 'pi pi-cog',
     children: [{
@@ -28,7 +28,7 @@ const NAVIGATION_MENU_ITEMS: MenuItemRaw[] = [{
         route: ROUTE_ADMIN_USER
     }]
 }, {
-    id: 'sample-pages',
+    id: 'sample-page',
     title: '样例页面',
     iconCls: 'pi pi-book',
     children: [{

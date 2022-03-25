@@ -1,3 +1,3 @@
-export interface StoreState {
+export interface State {
     username: string
 }

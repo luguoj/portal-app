@@ -1,4 +1,4 @@
-import {DictionaryEntryEntity, Entity, EntityCRUDService} from "@/modules/psr-entity-crud";
+import {DictionaryEntryEntity, Entity, EntityCRUDService} from "@/libs/services/psr-entity-crud";
 import {AxiosInstance} from "axios";
 
 const DOMAIN_TYPES = {

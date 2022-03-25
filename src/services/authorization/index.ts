@@ -1,5 +1,5 @@
 import {useGatewayClient} from "@/services/useGatewayClient";
-import {EntityCRUDService} from "@/modules/psr-entity-crud";
+import {EntityCRUDService} from "@/libs/services/psr-entity-crud";
 
 const client = useGatewayClient('/authorization/api')
 const DOMAIN_TYPES = {

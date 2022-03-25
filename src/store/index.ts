@@ -1,9 +1,16 @@
-import {createStore, StoreOptions} from 'vuex'
-import {createStatePersistPlugin} from "@/modules/vuexPlugins/persist";
-import {StoreState} from "@/store/State";
-import {desktop} from "@/store/desktop";
+import {createStore, ModuleTree, StoreOptions} from 'vuex'
+import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persist";
+import {State} from "@/store/State";
+import {Modules} from "@/AppConfig";
 
-const options: StoreOptions<StoreState> = {
+const modules: ModuleTree<any> = {}
+for (const module of Modules) {
+    if (module.store) {
+        modules[module.name] = module.store
+    }
+}
+
+const options: StoreOptions<State> = {
     state: {
         username: ''
     },
@@ -17,11 +24,9 @@ const options: StoreOptions<StoreState> = {
         },
     },
     actions: {},
-    modules: {
-        desktop
-    }
+    modules
 }
-export const store = createStore<StoreState>({
+export const store = createStore<State>({
     ...options,
     plugins: [
         createStatePersistPlugin()

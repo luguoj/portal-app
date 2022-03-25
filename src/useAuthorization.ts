@@ -1,11 +1,11 @@
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
 import {tokenContext, tokenInfo} from "@/services/Authorization";
-import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/modules/psr-oauth/context";
+import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/libs/services/psr-oauth/context";
 import {watch} from "vue";
 import {ElMessage} from "element-plus";
 import {resetStore} from "@/store";
-import {ROUTE_PATH_DESKTOP} from "@/router/desktop";
+import {ROUTE_PATH_DESKTOP} from "@/libs/components/psr-layout/route";
 
 function authentication() {
     const store = useStore()

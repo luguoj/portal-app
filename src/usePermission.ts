@@ -1,6 +1,6 @@
 import {computed, provide, Ref, ref, watch} from "vue";
 import {portalService} from "@/services/portal";
-import {ROUTE_PATH_DESKTOP} from "@/router/desktop";
+import {ROUTE_PATH_DESKTOP} from "@/libs/components/psr-layout/route";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {useStore} from "vuex";

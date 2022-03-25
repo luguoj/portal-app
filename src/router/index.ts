@@ -1,17 +1,18 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
-import {ROUTES_DESKTOP} from "@/router/desktop";
-import {ROUTES_SAMPLE_PAGES} from "@/router/sample-pages";
-import {ROUTES_ADMIN} from "@/router/admin";
+import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router'
+import {Modules} from "@/AppConfig";
 
 declare const NProgress: any
 
+const routes: RouteRecordRaw[] = []
+for (const module of Modules) {
+    if (module.routes) {
+        routes.push(...module.routes)
+    }
+}
+
 const router = createRouter({
     history: createWebHashHistory(),
-    routes: [
-        ...ROUTES_DESKTOP,
-        ...ROUTES_SAMPLE_PAGES,
-        ...ROUTES_ADMIN
-    ]
+    routes
 })
 router.beforeEach(() => {
     NProgress.start()

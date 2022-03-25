@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import PsrLayout from "@/layout/PsrLayout.vue";
+import PsrLayout from "@/libs/components/psr-layout/views/PsrLayout.vue";
 import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import {defineComponent, onMounted} from "vue";

@@ -1,4 +1,4 @@
-import {usePSROAuthInterceptor} from "@/modules/psr-oauth";
+import {usePSROAuthInterceptor} from "@/libs/services/psr-oauth";
 import axios from "axios";
 import {stringify} from "qs";
 import {tokenContext} from "@/services/Authorization";
