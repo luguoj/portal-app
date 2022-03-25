@@ -38,7 +38,7 @@
         </el-button>
         <el-button type="primary" class="button" @click="handleAdd">
           <template #icon>
-            <el-icon #icon class="pi pi-plus"/>
+            <el-icon class="pi pi-plus"/>
           </template>
           添加
         </el-button>
@@ -113,10 +113,7 @@
           >
             <el-button type="text" size="small" @click="navigate">许可</el-button>
           </router-link>
-          <router-link
-              :to="{name:ROUTE_NAME_ADMIN.GROUP_USER,params:{groupId:slotProps.data.id}}"
-              v-slot="{navigate}"
-          >
+          <router-link :to="{name:ROUTE_NAME_ADMIN.GROUP_USER,params:{groupId:slotProps.data.id}}">
             <el-button type="text" size="small">用户</el-button>
           </router-link>
           <el-button type="text" size="small" @click="handleEdit(slotProps.data)">编辑</el-button>
@@ -138,10 +135,8 @@
 </template>
 
 <script lang="ts">
-import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
 import {defineComponent, reactive, ref, shallowReactive, watch} from "vue";
 import {portalService} from "@/services/portal";
-import AdminGroupEdit from "@/modules/admin-console/views/group/AdminGroupEditDialog.vue";
 import AdminGroupEditDialog from "@/modules/admin-console/views/group/AdminGroupEditDialog.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
@@ -161,9 +156,7 @@ export default defineComponent({
     Column,
     TriStateCheckbox,
     PsrElAsyncActionButton,
-    AdminGroupEditDialog,
-    AdminGroupEdit,
-    PsrElHorizontalScrollBar
+    AdminGroupEditDialog
   },
   setup() {
     const tableRef = ref()
@@ -258,6 +251,10 @@ export default defineComponent({
               handleFind()
             })
           }).catch(() => {
+            ElMessage({
+              message: '删除失败.',
+              type: 'error',
+            })
           })
         }
       },

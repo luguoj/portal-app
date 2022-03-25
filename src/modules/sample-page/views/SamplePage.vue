@@ -18,6 +18,7 @@ export default defineComponent({
     return {
       input: ref(),
       click: () => {
+        console.log('click')
       }
     }
   }

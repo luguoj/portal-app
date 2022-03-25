@@ -57,7 +57,7 @@ export default defineComponent({
     data: {
       type: Object as PropType<GroupEntity>,
       required: true,
-      default: {}
+      default: defaultData
     }
   },
   emits: ['update:visible', 'update:data', 'dataChanged'],

@@ -1,7 +1,7 @@
 <template>
   <psr-el-horizontal-scroll-bar>
     <router-link
-        v-for="cachedRoute in cachedRoutes"
+        v-for="cachedRoute in cachedRoutes" :key="cachedRoute.componentName"
         :to="cachedRoute.path"
         custom
         v-slot="{navigate}"
@@ -25,7 +25,8 @@
 
 <script lang="ts">
 import PsrLayoutHeaderTag from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderTag.vue";
-import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import PsrElHorizontalScrollBar
+  from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
 import {inject, onMounted, watch, ref, defineComponent, reactive} from "vue";
 import {RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
 import {useStore} from "vuex";

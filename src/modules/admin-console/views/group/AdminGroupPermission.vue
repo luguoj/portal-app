@@ -9,7 +9,7 @@
       :value="tableProps.data"
       v-loading="tableProps.loading"
   >
-    <template #header class="ct-header">
+    <template #header>
       <el-space wrap>
         <router-link
             :to="{name:backRouteName}"
@@ -40,7 +40,7 @@
         </el-button>
         <el-button type="primary" class="button" @click="handleSave">
           <template #icon>
-            <el-icon #icon class="pi pi-save"/>
+            <el-icon class="pi pi-save"/>
           </template>
           保存
         </el-button>
@@ -81,7 +81,6 @@ import {portalService} from "@/services/portal";
 import Column from "primevue/column";
 import {useRouter} from "vue-router";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
-import Checkbox from "primevue/checkbox";
 import {Queue} from "@/libs/commons/promise-queue";
 import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService";
 import {PSRRouteRecordRaw} from "@/libs/commons/router";
@@ -144,8 +143,7 @@ export default defineComponent({
   name: "AdminGroupPermission",
   components: {
     TreeTable,
-    Column,
-    Checkbox
+    Column
   },
   props: {
     groupId: {
