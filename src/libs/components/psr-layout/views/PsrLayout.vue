@@ -26,9 +26,10 @@ import PsrLayoutHeader from "@/libs/components/psr-layout/views/header/PsrLayout
 import PsrLayoutMain from "@/libs/components/psr-layout/views/main/PsrLayoutMain.vue";
 import PsrLayoutTitle from "@/libs/components/psr-layout/views/title/PsrLayoutTitle.vue";
 import PsrLayoutAsideMenu from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenu.vue";
-import {defineComponent, provide, reactive} from "vue";
+import {defineComponent} from "vue";
 import {PSRRouteMetaTag} from "@/libs/commons/router/psr-router-interface";
 import { provideAsideMenuItems } from "./AsideMenuItemProvider";
+import {provideCachedRoutes} from "@/libs/components/psr-layout/views/CachedRouteProvider";
 
 export interface CachedRoute {
   name: string | symbol,
@@ -47,7 +48,7 @@ export default defineComponent({
   },
   setup() {
     provideAsideMenuItems()
-    provide('cachedRoutes', reactive([] as CachedRoute[]))
+    provideCachedRoutes()
   }
 })
 </script>

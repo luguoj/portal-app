@@ -13,14 +13,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed, inject} from "vue";
-import {CachedRoute} from "@/libs/components/psr-layout/views/PsrLayout.vue";
-import {UnwrapNestedRefs} from "@vue/reactivity";
+import {defineComponent, computed} from "vue";
+import {useCachedRoutes} from "@/libs/components/psr-layout/views/CachedRouteProvider";
 
 export default defineComponent({
   name: "psr-layout-main",
   setup() {
-    const cachedRoutes = inject('cachedRoutes') as UnwrapNestedRefs<CachedRoute[]>
+    const cachedRoutes = useCachedRoutes()
     return {
       keepAliveComponentNames: computed(() => {
         const names: string[] = []

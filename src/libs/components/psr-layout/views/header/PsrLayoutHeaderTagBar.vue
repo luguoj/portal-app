@@ -27,12 +27,12 @@
 import PsrLayoutHeaderTag from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderTag.vue";
 import PsrElHorizontalScrollBar
   from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
-import {inject, onMounted, watch, ref, defineComponent, reactive} from "vue";
+import {onMounted, watch, ref, defineComponent, reactive} from "vue";
 import {RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
 import {useStore} from "vuex";
 import {PSRRouteMetaTag} from "@/libs/commons/router/psr-router-interface";
 import {CachedRoute} from "@/libs/components/psr-layout/views/PsrLayout.vue";
-import {UnwrapNestedRefs} from "@vue/reactivity";
+import {useCachedRoutes} from "@/libs/components/psr-layout/views/CachedRouteProvider";
 
 
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
     PsrLayoutHeaderTag
   },
   setup() {
-    const cachedRoutes = inject('cachedRoutes') as UnwrapNestedRefs<CachedRoute[]>
+    const cachedRoutes = useCachedRoutes()
     const cachedRouteByName: Record<string | symbol, CachedRoute> = {}
     const activeRouteName = ref(null as string | symbol | null)
     const router = useRouter()
