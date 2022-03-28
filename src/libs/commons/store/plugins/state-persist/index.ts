@@ -27,7 +27,7 @@ function save(key: string, state: any, storage: any, queue: Queue) {
     })
 }
 
-export function createStatePersistPlugin(storage:any = localStorage, key = "vuex"): Plugin<any> {
+export function createStatePersistPlugin(storage: any = localStorage, key = "vuex"): Plugin<any> {
     const queue: Queue = new Queue()
     return (store: Store<any>) => {
         const data = load(key, storage)
@@ -35,7 +35,13 @@ export function createStatePersistPlugin(storage:any = localStorage, key = "vuex
             store.replaceState(deepmerge(store.state, data))
         }
         store.subscribe((mutation, state) => {
-            save(key, state, storage,queue)
+            save(key, state, storage, queue)
         })
+        const originReplaceStateFn = Store.prototype.replaceState
+
+        Store.prototype.replaceState = function replaceState(state) {
+            save(key, state, storage, queue)
+            originReplaceStateFn.apply(store,[state])
+        };
     }
 }
