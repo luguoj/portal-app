@@ -14,11 +14,12 @@
 
 <script lang="ts">
 import PsrLayoutAsideMenuItem from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenuItem.vue";
-import {computed, inject, nextTick, onMounted, ref, watch, defineComponent, Ref} from "vue";
+import {computed, nextTick, onMounted, ref, watch, defineComponent, Ref} from "vue";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
-import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
 import {PSR_LAYOUT_MODULE_NAME} from "@/libs/components/psr-layout";
+import { NavigationMenuItem } from "@/libs/commons/navigation-menu";
+import {useAsideMenuItems} from "@/libs/components/psr-layout/views/AsideMenuItemProvider";
 
 export default defineComponent({
   name: "psr-layout-aside-menu",
@@ -29,7 +30,7 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const activeMenuItemId = ref()
-    const menuItems = inject('navigationMenuItems') as Ref<MenuItem[]>
+    const menuItems = useAsideMenuItems() as Ref<NavigationMenuItem[]>
 
     function updateActiveMenuItem() {
       if (route.matched.length > 0) {

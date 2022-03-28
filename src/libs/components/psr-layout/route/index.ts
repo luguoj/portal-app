@@ -3,7 +3,7 @@ import PsrLayoutPageErrorNotFound from "@/libs/components/psr-layout/views/page/
 import PsrLayoutPageSignIn from "@/libs/components/psr-layout/views/page/sign-in/PsrLayoutPageSignIn.vue";
 import {PSRRouteRecordRaw} from "@/libs/commons/router";
 
-export const ROUTE_NAME_DESKTOP = {
+export const PSR_LAYOUT_ROUTE_NAME = {
     HOME: 'home',
     SIGN_IN: 'sign-in',
     ERROR_NOT_FOUND: 'error-not-found',
@@ -18,7 +18,7 @@ export const ROUTE_PATH_DESKTOP = {
 export const HOME_TITLE = '首页'
 export const HOME_ICON_CLASS = 'pi pi-home'
 export const ROUTE_HOME: PSRRouteRecordRaw = {
-    name: ROUTE_NAME_DESKTOP.HOME,
+    name: PSR_LAYOUT_ROUTE_NAME.HOME,
     path: ROUTE_PATH_DESKTOP.HOME,
     component: PsrLayoutPageBlank,
     meta: {
@@ -31,13 +31,13 @@ export const ROUTE_HOME: PSRRouteRecordRaw = {
 }
 
 export const ROUTE_SIGN_IN: PSRRouteRecordRaw = {
-    name: ROUTE_NAME_DESKTOP.SIGN_IN,
+    name: PSR_LAYOUT_ROUTE_NAME.SIGN_IN,
     path: ROUTE_PATH_DESKTOP.SIGN_IN,
     component: PsrLayoutPageSignIn,
 }
 
 export const ROUTE_ERROR_NOT_FOUND: PSRRouteRecordRaw = {
-    name: ROUTE_NAME_DESKTOP.ERROR_NOT_FOUND,
+    name: PSR_LAYOUT_ROUTE_NAME.ERROR_NOT_FOUND,
     path: ROUTE_PATH_DESKTOP.ERROR_NOT_FOUND,
     component: PsrLayoutPageErrorNotFound,
     props: true

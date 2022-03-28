@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import {ROUTE_NAME_ADMIN} from "@/modules/admin-console/route";
+import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import TreeTable from "primevue/treetable";
 import {defineComponent, onMounted, reactive, ref, shallowReactive} from "vue";
 import {portalService} from "@/services/portal";
@@ -248,7 +248,7 @@ export default defineComponent({
       groupEntity,
       tableProps,
       routeRoutePermissionStatusMap: routeRoutePermissionStatusByName,
-      backRouteName: ROUTE_NAME_ADMIN.GROUP_LIST,
+      backRouteName: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST,
       initTableData,
       handleClearFilters,
       handleSave

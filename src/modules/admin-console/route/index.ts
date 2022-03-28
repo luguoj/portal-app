@@ -6,15 +6,17 @@ import AdminGroupPermission from "@/modules/admin-console/views/group/AdminConso
 import AdminGroupUser from "@/modules/admin-console/views/group/AdminConsoleGroupUser.vue";
 import {PSRRouteRecordRaw} from "@/libs/commons/router";
 
-export const ROUTE_NAME_ADMIN = {
-    GROUP: 'admin-group',
-    GROUP_LIST: 'admin-group-list',
-    GROUP_PERMISSION: 'admin-group-permission',
-    GROUP_USER: 'admin-group-user'
+export const ADMIN_CONSOLE_ROUTE_NAME = {
+    GROUP: 'admin-console-group',
+    GROUP_LIST: 'admin-console-group-list',
+    GROUP_PERMISSION: 'admin-console-group-permission',
+    GROUP_USER: 'admin-console-group-user',
+    PERMISSION: 'admin-console-permission',
+    USER: 'admin-console-user'
 }
 
 export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
-    name: 'admin-permission',
+    name: ADMIN_CONSOLE_ROUTE_NAME.PERMISSION,
     path: '/admin-console/permission',
     component: AdminPermission,
     meta: {
@@ -27,7 +29,7 @@ export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
 }
 
 export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
-    name: 'admin-user',
+    name: ADMIN_CONSOLE_ROUTE_NAME.USER,
     path: '/admin-console/user',
     component: AdminUser,
     meta: {
@@ -40,7 +42,7 @@ export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
 }
 
 export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
-    name: ROUTE_NAME_ADMIN.GROUP,
+    name: ADMIN_CONSOLE_ROUTE_NAME.GROUP,
     path: '/admin-console/group',
     component: AdminGroup,
     meta: {
@@ -51,7 +53,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
         permission: {}
     },
     children: [{
-        name: ROUTE_NAME_ADMIN.GROUP_LIST,
+        name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST,
         path: '',
         component: AdminGroupList,
         meta: {
@@ -63,7 +65,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
             }
         }
     }, {
-        name: ROUTE_NAME_ADMIN.GROUP_PERMISSION,
+        name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION,
         path: ':groupId/permission',
         component: AdminGroupPermission,
         props: true,
@@ -74,7 +76,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
             permission: {}
         }
     }, {
-        name: ROUTE_NAME_ADMIN.GROUP_USER,
+        name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER,
         path: ':groupId/user',
         component: AdminGroupUser,
         props: true,

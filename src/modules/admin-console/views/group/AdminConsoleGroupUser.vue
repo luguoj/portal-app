@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import {useRouter} from "vue-router";
-import {ROUTE_NAME_ADMIN} from "@/modules/admin-console/route";
+import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {defineComponent} from "vue";
 
 export default defineComponent({
@@ -27,7 +27,7 @@ export default defineComponent({
     const router = useRouter()
 
     function handleGoBack() {
-      router.push({name: ROUTE_NAME_ADMIN.GROUP_LIST})
+      router.push({name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST})
     }
 
     return {

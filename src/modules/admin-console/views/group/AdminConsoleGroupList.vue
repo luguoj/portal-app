@@ -108,12 +108,12 @@
       <template #body="slotProps">
         <el-space wrap>
           <router-link
-              :to="{name:ROUTE_NAME_ADMIN.GROUP_PERMISSION,params:{groupId:slotProps.data.id}}"
+              :to="{name:ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION,params:{groupId:slotProps.data.id}}"
               v-slot="{navigate}"
           >
             <el-button type="text" size="small" @click="navigate">许可</el-button>
           </router-link>
-          <router-link :to="{name:ROUTE_NAME_ADMIN.GROUP_USER,params:{groupId:slotProps.data.id}}">
+          <router-link :to="{name:ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER,params:{groupId:slotProps.data.id}}">
             <el-button type="text" size="small">用户</el-button>
           </router-link>
           <el-button type="text" size="small" @click="handleEdit(slotProps.data)">编辑</el-button>
@@ -145,7 +145,7 @@ import Column from "primevue/column";
 import {FilterMatchMode} from "primevue/api";
 import TriStateCheckbox from "primevue/tristatecheckbox";
 import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud/buildFromPrimeVueDataTableFilters";
-import {ROUTE_NAME_ADMIN} from "@/modules/admin-console/route";
+import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
 
@@ -261,7 +261,7 @@ export default defineComponent({
       onDataTableEvent,
       onDataChanged: handleFind,
       handleExport,
-      ROUTE_NAME_ADMIN
+      ADMIN_CONSOLE_ROUTE_NAME
     }
   }
 })

@@ -14,10 +14,11 @@
 
 <script lang="ts">
 import {useRoute} from "vue-router";
-import {computed, defineComponent, inject, Ref} from "vue";
+import {computed, defineComponent, Ref} from "vue";
 import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/libs/components/psr-layout/route";
-import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
 import {PSRRouteRecordRaw, PSRRouteMeta} from "@/libs/commons/router";
+import {NavigationMenuItem} from "@/libs/commons/navigation-menu";
+import {useAsideMenuItems} from "@/libs/components/psr-layout/views/AsideMenuItemProvider";
 
 interface RoutePathItem {
   key: string | symbol,
@@ -44,19 +45,19 @@ function buildRoutePathByNameUseRoute(routePathByName: Record<string, RoutePathI
   }
 }
 
-function buildRoutePathByNameUseNavigationMenuItem(routePathByName: Record<string, RoutePathItem[]>, navigationMenuItem: MenuItem, basePath: RoutePathItem[]) {
-  const {route, children} = navigationMenuItem
+function buildRoutePathByNameUseMenuItem(routePathByName: Record<string, RoutePathItem[]>, menuItem: NavigationMenuItem, basePath: RoutePathItem[]) {
+  const {route, children} = menuItem
   if (route) {
     buildRoutePathByNameUseRoute(routePathByName, route, basePath)
   } else {
     const path: RoutePathItem[] = [...basePath, {
-      key: navigationMenuItem.id,
-      title: navigationMenuItem.title,
-      iconCls: navigationMenuItem.iconCls
+      key: menuItem.id,
+      title: menuItem.title,
+      iconCls: menuItem.iconCls
     }]
     if (children) {
       for (const child of children) {
-        buildRoutePathByNameUseNavigationMenuItem(routePathByName, child, path)
+        buildRoutePathByNameUseMenuItem(routePathByName, child, path)
       }
     }
   }
@@ -67,20 +68,20 @@ export default defineComponent({
   name: "psr-layout-header-route-path",
   setup() {
     const route = useRoute()
-    const navigationMenuItems = inject('navigationMenuItems') as Ref<MenuItem[]>
-    const navigationMenuItemRoutePathByName = computed(() => {
+    const menuItems = useAsideMenuItems() as Ref<NavigationMenuItem[]>
+    const menuItemRoutePathByName = computed(() => {
       const result: Record<string | symbol, RoutePathItem[]> = {}
-      for (const navigationMenuItem of navigationMenuItems.value) {
-        buildRoutePathByNameUseNavigationMenuItem(result, navigationMenuItem, [])
+      for (const menuItem of menuItems.value) {
+        buildRoutePathByNameUseMenuItem(result, menuItem, [])
       }
       return result
     })
     const routePath = computed(() => {
       const result: RoutePathItem[] = []
       if (route.fullPath !== ROUTE_PATH_DESKTOP.HOME) {
-        if (navigationMenuItemRoutePathByName.value && navigationMenuItemRoutePathByName.value[route.name!]) {
+        if (menuItemRoutePathByName.value && menuItemRoutePathByName.value[route.name!]) {
           // 如果关联菜单项目，则追加菜单路径
-          result.push(...navigationMenuItemRoutePathByName.value[route.name!])
+          result.push(...menuItemRoutePathByName.value[route.name!])
         } else {
           // 否则直接追加匹配的路由标题
           for (const routeMatched of route.matched) {

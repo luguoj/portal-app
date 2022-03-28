@@ -1,7 +1,7 @@
 <template>
   <el-select
       ref="refSelect"
-      placeholder="搜索 (菜单名称 / 拼音 / 导航路径)"
+      placeholder="搜索 (菜单名称 / 拼音)"
       filterable
       remote
       :remote-method="querySearch"
@@ -17,10 +17,11 @@
 
 <script lang="ts">
 import {useRouter} from "vue-router";
-import {ref, defineComponent, inject, Ref, computed} from "vue";
+import {ref, defineComponent, Ref, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
-import {MenuItem} from "@/navigation-menu/NavigationMenuItem";
+import { NavigationMenuItem } from "@/libs/commons/navigation-menu";
+import {useAsideMenuItems} from "@/libs/components/psr-layout/views/AsideMenuItemProvider";
 
 interface SelectOption {
   title: string,
@@ -28,7 +29,7 @@ interface SelectOption {
   path: string
 }
 
-function buildSelectOptions(selectOptions: SelectOption[], menuItems: MenuItem[], base?: SelectOption) {
+function buildSelectOptions(selectOptions: SelectOption[], menuItems: NavigationMenuItem[], base?: SelectOption) {
   for (const menuItem of menuItems) {
     const title = (base ? `${base.title} / ` : '') + menuItem.title
     const titlePinyin = (base ? base.titlePinyin : '') + pinyin(menuItem.title, {style: pinyin.STYLE_NORMAL}).join('')
@@ -45,11 +46,11 @@ export default defineComponent({
   name: "psr-layout-header-searcher",
   setup() {
     const refSelect = ref()
-    const navigationMenuItems = inject('navigationMenuItems') as Ref<MenuItem[]>
+    const menuItems = useAsideMenuItems() as Ref<NavigationMenuItem[]>
     const router = useRouter()
     const fuse = computed(()=>{
       const selectOptions:SelectOption[] = []
-      buildSelectOptions(selectOptions,navigationMenuItems.value)
+      buildSelectOptions(selectOptions,menuItems.value)
       return new Fuse<SelectOption>(selectOptions, {
         shouldSort: true,
         threshold: 0.4,
@@ -61,10 +62,7 @@ export default defineComponent({
           weight: 0.5
         }, {
           name: 'titlePinyin',
-          weight: 0.4
-        }, {
-          name: 'path',
-          weight: 0.1
+          weight: 0.5
         }]
       })
     })
