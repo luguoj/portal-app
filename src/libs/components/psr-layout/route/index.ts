@@ -1,7 +1,7 @@
 import PsrLayoutPageBlank from "@/libs/components/psr-layout/views/page/blank/PsrLayoutPageBlank.vue";
 import PsrLayoutPageErrorNotFound from "@/libs/components/psr-layout/views/page/error/PsrLayoutPageErrorNotFound.vue";
 import PsrLayoutPageSignIn from "@/libs/components/psr-layout/views/page/sign-in/PsrLayoutPageSignIn.vue";
-import {PSRRouteRecordRaw} from "@/libs/commons/router";
+import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 
 export const PSR_LAYOUT_ROUTE_NAME = {
     HOME: 'home',

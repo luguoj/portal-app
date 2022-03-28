@@ -1,4 +1,4 @@
-import {PSRRouteRecordRaw} from "@/libs/commons/router";
+import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 
 export type NavigationMenuItem = MenuItemSubMenu | MenuItemRouteItem
 export const MenuInvalid: NavigationMenuItem = {id: '', title: "", iconCls: "", children: []}

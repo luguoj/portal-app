@@ -4,7 +4,7 @@ import AdminGroup from "@/modules/admin-console/views/group/AdminConsoleGroup.vu
 import AdminGroupList from "@/modules/admin-console/views/group/AdminConsoleGroupList.vue";
 import AdminGroupPermission from "@/modules/admin-console/views/group/AdminConsoleGroupPermission.vue";
 import AdminGroupUser from "@/modules/admin-console/views/group/AdminConsoleGroupUser.vue";
-import {PSRRouteRecordRaw} from "@/libs/commons/router";
+import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 
 export const ADMIN_CONSOLE_ROUTE_NAME = {
     GROUP: 'admin-console-group',

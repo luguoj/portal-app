@@ -1,5 +1,5 @@
 import {RouteComponent, RouteLocationNormalized} from "vue-router";
-import {PSRRouteMeta} from "@/libs/commons/router";
+import {PSRRouteMeta} from "@/libs/commons/router/psr-router-interface/index";
 
 
 export type PSRRouteRecordRaw = PSRRouteRecordNestSingleView | PSRRouteRecordNestMultipleView

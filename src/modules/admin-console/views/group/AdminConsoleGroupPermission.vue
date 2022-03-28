@@ -83,7 +83,7 @@ import {useRouter} from "vue-router";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
 import {Queue} from "@/libs/commons/promise-queue";
 import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService";
-import {PSRRouteRecordRaw} from "@/libs/commons/router";
+import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 import pinyin from "pinyin";
 

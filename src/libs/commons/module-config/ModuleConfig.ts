@@ -1,5 +1,5 @@
 import {Module} from "vuex";
-import {PSRRouteRecordRaw} from "@/libs/commons/router";
+import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 import {NavigationMenuItemRaw} from "@/libs/commons/navigation-menu/NavigationMenuItemRaw";
 
 export interface ModuleConfig {

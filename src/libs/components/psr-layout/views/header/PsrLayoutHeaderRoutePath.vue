@@ -16,7 +16,7 @@
 import {useRoute} from "vue-router";
 import {computed, defineComponent, Ref} from "vue";
 import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/libs/components/psr-layout/route";
-import {PSRRouteRecordRaw, PSRRouteMeta} from "@/libs/commons/router";
+import {PSRRouteRecordRaw, PSRRouteMeta} from "@/libs/commons/router/psr-router-interface";
 import {NavigationMenuItem} from "@/libs/commons/navigation-menu";
 import {useAsideMenuItems} from "@/libs/components/psr-layout/views/AsideMenuItemProvider";
 
