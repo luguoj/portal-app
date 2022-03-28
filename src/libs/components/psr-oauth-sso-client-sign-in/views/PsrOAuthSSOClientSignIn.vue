@@ -11,7 +11,7 @@ import {useSignInFrame} from "@/libs/services/psr-oauth/context";
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "psr-layout-page-sign-in",
+  name: "psr-oauth-sso-client-sign-in",
   setup() {
     const signInFrame = useSignInFrame()
     return {

@@ -1,17 +1,14 @@
 import PsrLayoutPageBlank from "@/libs/components/psr-layout/views/page/blank/PsrLayoutPageBlank.vue";
 import PsrLayoutPageErrorNotFound from "@/libs/components/psr-layout/views/page/error/PsrLayoutPageErrorNotFound.vue";
-import PsrLayoutPageSignIn from "@/libs/components/psr-layout/views/page/sign-in/PsrLayoutPageSignIn.vue";
 import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 
 export const PSR_LAYOUT_ROUTE_NAME = {
     HOME: 'home',
-    SIGN_IN: 'sign-in',
     ERROR_NOT_FOUND: 'error-not-found',
     INITIALIZING: 'initializing'
 }
 export const ROUTE_PATH_DESKTOP = {
     HOME: '/',
-    SIGN_IN: '/sign-in',
     ERROR_NOT_FOUND: '/:pathMatch(.*)*',
     INITIALIZING: '/initializing'
 }
@@ -30,12 +27,6 @@ export const ROUTE_HOME: PSRRouteRecordRaw = {
     }
 }
 
-export const ROUTE_SIGN_IN: PSRRouteRecordRaw = {
-    name: PSR_LAYOUT_ROUTE_NAME.SIGN_IN,
-    path: ROUTE_PATH_DESKTOP.SIGN_IN,
-    component: PsrLayoutPageSignIn,
-}
-
 export const ROUTE_ERROR_NOT_FOUND: PSRRouteRecordRaw = {
     name: PSR_LAYOUT_ROUTE_NAME.ERROR_NOT_FOUND,
     path: ROUTE_PATH_DESKTOP.ERROR_NOT_FOUND,
@@ -43,4 +34,4 @@ export const ROUTE_ERROR_NOT_FOUND: PSRRouteRecordRaw = {
     props: true
 }
 
-export const routes: Array<PSRRouteRecordRaw> = [ROUTE_HOME, ROUTE_SIGN_IN, ROUTE_ERROR_NOT_FOUND]
+export const routes: Array<PSRRouteRecordRaw> = [ROUTE_HOME, ROUTE_ERROR_NOT_FOUND]

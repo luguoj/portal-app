@@ -4,7 +4,7 @@ import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/libs/se
 import {watch} from "vue";
 import {ElMessage} from "element-plus";
 import {resetStore} from "@/store";
-import {ROUTE_PATH_DESKTOP} from "@/libs/components/psr-layout/route";
+import {ROUTE_SIGN_IN_PATH} from "@/libs/components/psr-oauth-sso-client-sign-in/route";
 import {useTokenContext} from "@/libs/services/psr-oauth/context";
 
 function routeByAuthorization() {
@@ -14,7 +14,7 @@ function routeByAuthorization() {
     const tokenInfo = tokenContext.tokenInfo()
     watch(() => router.currentRoute.value.fullPath, path => {
         // 防止用户手动跳转到登录页面
-        if (path === ROUTE_PATH_DESKTOP.SIGN_IN) {
+        if (path === ROUTE_SIGN_IN_PATH) {
             if (tokenInfo.authentication.state === AUTHENTICATED) {
                 router.replace({path: store.state.userLastRoutePath})
             }
@@ -24,13 +24,13 @@ function routeByAuthorization() {
     })
 
     function goSignIn() {
-        if (router.currentRoute.value.fullPath !== ROUTE_PATH_DESKTOP.SIGN_IN) {
-            router.replace({path: ROUTE_PATH_DESKTOP.SIGN_IN})
+        if (router.currentRoute.value.fullPath !== ROUTE_SIGN_IN_PATH) {
+            router.replace({path: ROUTE_SIGN_IN_PATH})
         }
     }
 
     watch(() => tokenInfo.authentication.state, state => {
-        console.log('routeByAuthorization',state)
+        console.log('routeByAuthorization', state)
         if (state === CERTIFICATION_EXPIRED) {
             console.log('身份认证过期, 请重新登录.', `用户: ${tokenInfo.authentication.username}`)
             ElMessage({
@@ -59,7 +59,7 @@ function storeUsernameByAuthentication() {
     }
     // 认证状态处理
     watch(() => tokenInfo.authentication.state, state => {
-        console.log('storeUsernameByAuthentication',state)
+        console.log('storeUsernameByAuthentication', state)
         if (state === NOT_AUTHENTICATED) {
             if (store.state.username) {
                 ElMessage('已登出.')
