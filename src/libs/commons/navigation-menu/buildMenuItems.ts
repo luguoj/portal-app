@@ -3,7 +3,7 @@ import {MenuInvalid, NavigationMenuItem} from "./NavigationMenuItem";
 
 export function buildMenuItems(menuItems: NavigationMenuItemRaw[]): NavigationMenuItem[] {
     return menuItems.map(item => {
-        if (!!item.children) {
+        if (item.children != undefined) {
             if (item.children.length > 0) {
                 const newChildren = buildMenuItems(item.children)
                 if (newChildren.length > 0) {
