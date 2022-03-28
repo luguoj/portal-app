@@ -23,9 +23,8 @@
 import {ElMessageBox} from "element-plus";
 import {useStore} from "vuex";
 import {computed, defineComponent} from "vue";
-import {tokenContext} from "@/services/Authorization";
 import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
-import {useSignOutHandler} from "@/libs/services/psr-oauth/token-services/sso-client/useSignOutHandler";
+import {useTokenContext} from "@/libs/services/psr-oauth/context";
 
 export default defineComponent({
   name: "psr-layout-header-user-popover",
@@ -41,7 +40,7 @@ export default defineComponent({
   emits: ['update:visible'],
   setup(props, context) {
     const store = useStore()
-    const signOutHandler = useSignOutHandler(tokenContext)
+    const tokenContext = useTokenContext()
     return {
       username: computed(() => store.state.username),
       handleSignOut: () => {
@@ -52,7 +51,7 @@ export default defineComponent({
               type: 'warning',
             }
         ).then(() => {
-          signOutHandler().finally(() =>
+          tokenContext.signOut().finally(() =>
               context.emit('update:visible', false)
           )
         })

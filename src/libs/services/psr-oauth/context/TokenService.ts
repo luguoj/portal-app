@@ -6,6 +6,8 @@ interface TokenData {
 }
 
 interface TokenService {
+    baseURL(): string;
+
     getToken(): Promise<TokenData>;
 
     signOut(): Promise<any>;

@@ -1,9 +1,10 @@
 // 使用登录框架
 import {onBeforeMount, onBeforeUnmount, onMounted, ref, watchEffect} from "vue";
-import {CERTIFICATION_EXPIRED, NOT_AUTHENTICATED, PSROAuthContext} from "@/libs/services/psr-oauth/context";
-import {PSROAuthSSOClientTokenService} from "@/libs/services/psr-oauth";
+import {CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "./TokenContext";
+import {useTokenContext} from "./TokenContext"
 
-export function useSignInFrame(context: PSROAuthContext<PSROAuthSSOClientTokenService>) {
+export function useSignInFrame() {
+    const context = useTokenContext()
     const signInFrame = ref()
 
     function onMessage(event: any) {

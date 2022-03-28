@@ -7,14 +7,13 @@
 </template>
 
 <script lang="ts">
-import {useSignInFrame} from "@/libs/services/psr-oauth/token-services/sso-client/useSignInFrame";
-import {tokenContext} from "@/services/Authorization";
+import {useSignInFrame} from "@/libs/services/psr-oauth/context";
 import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "psr-layout-page-sign-in",
   setup() {
-    const signInFrame = useSignInFrame(tokenContext)
+    const signInFrame = useSignInFrame()
     return {
       signInFrame,
     }

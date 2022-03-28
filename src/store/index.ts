@@ -3,36 +3,43 @@ import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persi
 import {State} from "@/store/State";
 import {Modules} from "@/modules";
 
-const modules: ModuleTree<any> = {}
-for (const module of Modules) {
-    if (module.store) {
-        modules[module.name] = module.store
+
+function options(): StoreOptions<State> {
+    const modules: ModuleTree<any> = {}
+    for (const module of Modules) {
+        if (module.store) {
+            modules[module.name] = module.store
+        }
+    }
+    return {
+        state: {
+            username: '',
+            userLastRoutePath: '/'
+        },
+        getters: {},
+        mutations: {
+            signOut(state) {
+                state.username = ''
+            },
+            signIn(state, username) {
+                state.username = username
+            },
+            updateUserLastRoutePath(state, value) {
+                state.userLastRoutePath = value
+            }
+        },
+        actions: {},
+        modules
     }
 }
 
-const options: StoreOptions<State> = {
-    state: {
-        username: ''
-    },
-    getters: {},
-    mutations: {
-        signOut(state) {
-            state.username = ''
-        },
-        signIn(state, username) {
-            state.username = username
-        },
-    },
-    actions: {},
-    modules
-}
 export const store = createStore<State>({
-    ...options,
+    ...options(),
     plugins: [
         createStatePersistPlugin()
     ]
 })
 
 export function resetStore() {
-    store.replaceState(createStore(options).state)
+    store.replaceState(createStore(options()).state)
 }
