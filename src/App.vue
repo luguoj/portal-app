@@ -9,7 +9,7 @@ import PsrLayout from "@/libs/components/psr-layout/views/PsrLayout.vue";
 import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import {defineComponent, onMounted} from "vue";
-import {useAuthorization} from "@/useAuthorization";
+import {handleAuthorization} from "@/handleAuthorization";
 import {usePermission} from "@/usePermission";
 
 declare const NProgress: any
@@ -21,7 +21,7 @@ export default defineComponent({
     ElConfigProvider
   },
   setup() {
-    useAuthorization()
+    handleAuthorization()
     usePermission()
 
     onMounted(() => {
