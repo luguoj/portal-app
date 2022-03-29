@@ -1,22 +1,14 @@
-import {App, inject} from "vue";
-import {NavigationMenuItemRaw} from "@/libs/commons/navigation-menu/NavigationMenuItemRaw";
-import {buildMenuItems} from "@/libs/commons/navigation-menu/buildMenuItems";
-import {NavigationMenuItem} from "@/libs/commons/navigation-menu/NavigationMenuItem";
+import {inject} from "vue";
+import {NavigationMenuItemRaw} from "./NavigationMenuItemRaw";
+import {NavigationMenu} from "./NavigationMenu";
 
-const KEY = 'psr-navigation-menu-items'
+const KEY = 'psr-navigation-menu'
 
-export function createNavigationMenu(
-    options: {
-        menus: NavigationMenuItemRaw[]
-    }
-) {
-    return {
-        install(app: App) {
-            app.provide(KEY, buildMenuItems(options.menus))
-        }
-    }
+
+export function createNavigationMenu(options: { menus: NavigationMenuItemRaw[] }) {
+    return new NavigationMenu(options.menus, KEY)
 }
 
-export function useNavigationMenuItems(): NavigationMenuItem[] {
-    return inject(KEY) as NavigationMenuItem[];
+export function useNavigationMenu(): NavigationMenu {
+    return inject(KEY) as NavigationMenu;
 }
