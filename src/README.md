@@ -6,6 +6,6 @@
 
 # 文件
 
-1. 模块配置文件 [modules.ts](modules.ts)
+1. 应用上下文配置 [appContext.ts](appContext.ts)
 
-导入功能模块，为router,store提供配置信息
+导入功能模块，为router,store,navigation-menu登提供配置信息

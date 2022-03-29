@@ -1,4 +1,4 @@
-import {ModuleConfig} from "@/libs/commons/module-config";
+import {ModuleConfig} from "@/libs/commons/app-context";
 import {routes} from "./route";
 import {menus} from "./menus";
 
