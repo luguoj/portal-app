@@ -27,16 +27,8 @@ import PsrLayoutMain from "@/libs/components/psr-layout/views/main/PsrLayoutMain
 import PsrLayoutTitle from "@/libs/components/psr-layout/views/title/PsrLayoutTitle.vue";
 import PsrLayoutAsideMenu from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenu.vue";
 import {defineComponent} from "vue";
-import {PSRRouteMetaTag} from "@/libs/commons/router/psr-router-interface";
-import { provideAsideMenuItems } from "./AsideMenuItemProvider";
-import {provideCachedRoutes} from "@/libs/components/psr-layout/views/CachedRouteProvider";
-
-export interface CachedRoute {
-  name: string | symbol,
-  componentName: string,
-  tag: PSRRouteMetaTag,
-  path: string
-}
+import {provideAsideMenuItems} from "./AsideMenuItemProvider";
+import {provideRouteCache} from "@/libs/commons/route-cache/RouteCacheProvider";
 
 export default defineComponent({
   name: "psr-layout",
@@ -48,7 +40,7 @@ export default defineComponent({
   },
   setup() {
     provideAsideMenuItems()
-    provideCachedRoutes()
+    provideRouteCache()
   }
 })
 </script>

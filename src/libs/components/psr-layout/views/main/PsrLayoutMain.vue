@@ -14,16 +14,16 @@
 
 <script lang="ts">
 import {defineComponent, computed} from "vue";
-import {useCachedRoutes} from "@/libs/components/psr-layout/views/CachedRouteProvider";
+import {useRouteCache} from "@/libs/commons/route-cache/RouteCacheProvider";
 
 export default defineComponent({
   name: "psr-layout-main",
   setup() {
-    const cachedRoutes = useCachedRoutes()
+    const routeCache = useRouteCache()
     return {
       keepAliveComponentNames: computed(() => {
         const names: string[] = []
-        for (const cachedRoute of cachedRoutes) {
+        for (const cachedRoute of routeCache.cachedRoutes) {
           names.push(cachedRoute.componentName)
         }
         return names
