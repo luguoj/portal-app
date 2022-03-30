@@ -10,7 +10,6 @@ import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import {defineComponent, onMounted} from "vue";
 import {handleAuthorization} from "@/handleAuthorization";
-import {usePermission} from "@/usePermission";
 
 declare const NProgress: any
 
@@ -22,8 +21,6 @@ export default defineComponent({
   },
   setup() {
     handleAuthorization()
-    usePermission()
-
     onMounted(() => {
       NProgress.done()
     })
