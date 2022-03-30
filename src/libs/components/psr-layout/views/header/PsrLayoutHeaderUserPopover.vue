@@ -1,6 +1,7 @@
 <template>
     <div>
       <div>{{ username }}</div>
+      <el-divider style="margin:12px 0"/>
       <psr-el-async-action-button type="danger" :action="handleSignOut" style="width:100%">
         <template #icon>
           <el-icon class="pi pi-sign-out"/>
