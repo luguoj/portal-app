@@ -3,8 +3,10 @@ import {State} from "./State";
 
 export const store: Module<State, any> = {
     namespaced: true,
-    state: {
-        asideCollapsed: false
+    state() {
+        return {
+            asideCollapsed: false
+        }
     },
     mutations: {
         toggleAside(state) {

@@ -7,7 +7,7 @@ export interface StoreRootState {
 
 export function buildStoreOptions(storeModules: ModuleTree<any>): StoreOptions<StoreRootState> {
     return {
-        state: () => {
+        state() {
             return {
                 username: '',
                 userLastRoutePath: '/'
