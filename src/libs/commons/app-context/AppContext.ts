@@ -35,7 +35,7 @@ export class AppContext {
     }
 
     use(plugin: AppPlugin) {
-        this.plugins[plugin.name] = plugin
+        this.plugins[plugin.injectKey] = plugin
         return this
     }
 
