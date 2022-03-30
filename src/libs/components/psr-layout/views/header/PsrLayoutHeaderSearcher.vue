@@ -17,11 +17,10 @@
 
 <script lang="ts">
 import {useRouter} from "vue-router";
-import {ref, defineComponent, Ref, computed} from "vue";
+import {ref, defineComponent, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
-import { NavigationMenuItem } from "@/libs/commons/navigation-menu";
-import {useAsideMenuItems} from "@/libs/components/psr-layout/views/AsideMenuItemProvider";
+import {NavigationMenuItem, useNavigationMenu} from "@/libs/commons/navigation-menu";
 
 interface SelectOption {
   title: string,
@@ -46,11 +45,11 @@ export default defineComponent({
   name: "psr-layout-header-searcher",
   setup() {
     const refSelect = ref()
-    const menuItems = useAsideMenuItems() as Ref<NavigationMenuItem[]>
+    const menuItems = useNavigationMenu().menuItems
     const router = useRouter()
-    const fuse = computed(()=>{
-      const selectOptions:SelectOption[] = []
-      buildSelectOptions(selectOptions,menuItems.value)
+    const fuse = computed(() => {
+      const selectOptions: SelectOption[] = []
+      buildSelectOptions(selectOptions, menuItems.value)
       return new Fuse<SelectOption>(selectOptions, {
         shouldSort: true,
         threshold: 0.4,

@@ -14,11 +14,10 @@
 
 <script lang="ts">
 import {useRoute} from "vue-router";
-import {computed, defineComponent, Ref} from "vue";
+import {computed, defineComponent} from "vue";
 import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/libs/components/psr-layout/route";
 import {PSRRouteRecordRaw, PSRRouteMeta} from "@/libs/commons/router/psr-router-interface";
-import {NavigationMenuItem} from "@/libs/commons/navigation-menu";
-import {useAsideMenuItems} from "@/libs/components/psr-layout/views/AsideMenuItemProvider";
+import {NavigationMenuItem, useNavigationMenu} from "@/libs/commons/navigation-menu";
 
 interface RoutePathItem {
   key: string | symbol,
@@ -68,7 +67,7 @@ export default defineComponent({
   name: "psr-layout-header-route-path",
   setup() {
     const route = useRoute()
-    const menuItems = useAsideMenuItems() as Ref<NavigationMenuItem[]>
+    const menuItems = useNavigationMenu().menuItems
     const menuItemRoutePathByName = computed(() => {
       const result: Record<string | symbol, RoutePathItem[]> = {}
       for (const menuItem of menuItems.value) {
