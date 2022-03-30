@@ -6,7 +6,7 @@ const KEY = 'psr-navigation-menu'
 
 
 export function createNavigationMenu(options: { menus: NavigationMenuItemRaw[] }) {
-    return new NavigationMenu(options.menus, KEY)
+    return new NavigationMenu(KEY, options.menus)
 }
 
 export function useNavigationMenu(): NavigationMenu {
