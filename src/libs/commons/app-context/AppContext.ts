@@ -8,6 +8,8 @@ import {NavigationMenu} from "@/libs/commons/navigation-menu";
 import {buildStore} from "./buildStore";
 import {buildRouter} from "./buildRouter";
 import {buildNavigationMenu} from "./buildNavigationMenu";
+import {AppPermission, PermissionPromise} from "./plugins/permission";
+import {createAppPermission} from "./plugins/permission/AppPermissionProvider";
 
 export interface AppContextOptions {
     modules: ModuleConfig[]
@@ -21,6 +23,7 @@ export class AppContext {
     readonly store: Store<StoreRootState>
     readonly router: Router
     readonly navigationMenu: NavigationMenu
+    readonly permission: AppPermission
     readonly plugins: Record<string, AppPlugin> = {}
 
     constructor(
@@ -32,6 +35,7 @@ export class AppContext {
         this.store = buildStore(options.modules, options.storePlugins)
         this.router = buildRouter(options.modules)
         this.navigationMenu = buildNavigationMenu(options.modules)
+        this.permission = createAppPermission({service: options.permission})
     }
 
     use(plugin: AppPlugin) {
@@ -43,6 +47,7 @@ export class AppContext {
         app.provide(this._injectKey, this)
         app.use(this.store)
         app.use(this.router)
+        app.use(this.permission)
         app.use(this.navigationMenu, this)
         for (const pluginsKey in this.plugins) {
             app.use(this.plugins[pluginsKey], this)
