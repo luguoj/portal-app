@@ -1,6 +1,6 @@
 <template>
   <router-view v-slot="{Component}">
-    <keep-alive include="admin-console-group-ist,admin-console-group-permission">
+    <keep-alive include="admin-console-group-list,admin-console-group-permission">
       <component :is="Component"/>
     </keep-alive>
   </router-view>
