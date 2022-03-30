@@ -1,24 +1,24 @@
 import {App, ref, Ref, watch, watchEffect} from "vue";
 import {ElMessage} from "element-plus";
-import {AppContext, AppPlugin} from "@/libs/commons/app-context";
+import {AppContext} from "../../AppContext";
+import {AppPlugin} from "../../AppPlugin"
 
 export type PermissionByRouteName = Record<string | symbol, string[]>
 export type PermissionPromise = Promise<PermissionByRouteName>
 export const DenyAll: PermissionByRouteName = {}
 export const PermitAll: PermissionByRouteName = {'permit-all': []}
 
-export class AppPermission implements AppPlugin {
-    readonly injectKey: string
+export class AppPermission extends AppPlugin {
     readonly permission: Ref<PermissionPromise> = ref(Promise.resolve(DenyAll))
     private readonly _permissionService: (username: string) => PermissionPromise
 
     constructor(injectKey: string, permissionService: (username: string) => PermissionPromise) {
-        this.injectKey = injectKey
+        super(injectKey);
         this._permissionService = permissionService
     }
 
     install(app: App, appContext: AppContext) {
-        app.provide(this.injectKey, this)
+        super.install(app, appContext)
         // 通过许可控制路由跳转
         appContext.router.beforeEach(to => {
             if (to.meta.requirePermission) {
@@ -44,7 +44,7 @@ export class AppPermission implements AppPlugin {
     }
 
     // 创建操作许可标识
-    createActionPermissionFlag(routeName: string, actions: string[]) {
+    useActionPermissionFlag(routeName: string, actions: string[]) {
         const flag = ref(false)
         // 判断操作是否满足许可
         watchEffect(() => {

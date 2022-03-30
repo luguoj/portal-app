@@ -18,7 +18,7 @@ import {computed, nextTick, onMounted, ref, watch, defineComponent, Ref} from "v
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
 import {PSR_LAYOUT_MODULE_NAME} from "@/libs/components/psr-layout";
-import {useNavigationMenu} from "@/libs/commons/navigation-menu";
+import {useNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
 
 export default defineComponent({
   name: "psr-layout-aside-menu",

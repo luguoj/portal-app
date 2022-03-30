@@ -20,7 +20,7 @@ import {useRouter} from "vue-router";
 import {ref, defineComponent, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
-import {NavigationMenuItem, useNavigationMenu} from "@/libs/commons/navigation-menu";
+import {NavigationMenuItem, useNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
 
 interface SelectOption {
   title: string,

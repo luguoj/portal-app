@@ -1,15 +1,21 @@
-import {ModuleConfig} from "./ModuleConfig";
+import {extractModuleConfigs, ModuleConfig} from "./ModuleConfig";
 import {AppPlugin} from "./AppPlugin";
 import {App} from "vue";
-import {Plugin as StorePlugin, Store} from "vuex";
-import {Router} from "vue-router";
-import {StoreRootState} from "@/libs/commons/app-context/StoreRootState";
-import {NavigationMenu} from "@/libs/commons/navigation-menu";
-import {buildStore} from "./buildStore";
-import {buildRouter} from "./buildRouter";
-import {buildNavigationMenu} from "./buildNavigationMenu";
-import {AppPermission, PermissionPromise} from "./plugins/permission";
-import {createAppPermission} from "./plugins/permission/AppPermissionProvider";
+import {createStore, ModuleTree, Plugin as StorePlugin, Store, StoreOptions} from "vuex";
+import {Router, RouteRecordRaw} from "vue-router";
+import {
+    createNavigationMenu,
+    NavigationMenu,
+    NavigationMenuItemRaw
+} from "./plugins/navigation-menu";
+import {
+    AppPermission,
+    PermissionPromise,
+    createAppPermission
+} from "./plugins/permission";
+import {buildStore, buildStoreOptions, StoreRootState} from "./store";
+import {buildRouter} from "./router";
+import {filterNavigationMenuByPermission} from "./filterNavigationMenuByPermission";
 
 export interface AppContextOptions {
     modules: ModuleConfig[]
@@ -19,9 +25,15 @@ export interface AppContextOptions {
 
 export class AppContext {
     private readonly _injectKey: string
-    private _moduleConfigs: ModuleConfig[]
+    private readonly _moduleConfigs: {
+        menus: NavigationMenuItemRaw[]
+        stores: ModuleTree<any>
+        routes: RouteRecordRaw[]
+    }
+    private readonly _storeOptions: StoreOptions<StoreRootState>
     readonly store: Store<StoreRootState>
     readonly router: Router
+    readonly navigationMenuRaw: NavigationMenuItemRaw[]
     readonly navigationMenu: NavigationMenu
     readonly permission: AppPermission
     readonly plugins: Record<string, AppPlugin> = {}
@@ -31,11 +43,18 @@ export class AppContext {
         options: AppContextOptions
     ) {
         this._injectKey = injectKey
-        this._moduleConfigs = options.modules
-        this.store = buildStore(options.modules, options.storePlugins)
-        this.router = buildRouter(options.modules)
-        this.navigationMenu = buildNavigationMenu(options.modules)
+        this._moduleConfigs = extractModuleConfigs(options.modules)
+        // 初始化store
+        this._storeOptions = buildStoreOptions(this._moduleConfigs.stores)
+        this.store = buildStore(this._moduleConfigs.stores, options.storePlugins)
+        // 初始化router
+        this.router = buildRouter(this._moduleConfigs.routes)
+        // 初始化navigation-menu
+        this.navigationMenuRaw = this._moduleConfigs.menus
+        this.navigationMenu = createNavigationMenu()
+        // 初始化permission
         this.permission = createAppPermission({service: options.permission})
+        filterNavigationMenuByPermission(this)
     }
 
     use(plugin: AppPlugin) {
@@ -55,6 +74,6 @@ export class AppContext {
     }
 
     resetStore() {
-        this.store.replaceState(buildStore(this._moduleConfigs).state)
+        this.store.replaceState(createStore(this._storeOptions).state)
     }
 }

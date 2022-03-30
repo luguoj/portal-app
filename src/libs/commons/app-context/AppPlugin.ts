@@ -1,7 +1,14 @@
 import {App} from "vue";
 import {AppContext} from "./AppContext";
 
-export interface AppPlugin {
+export class AppPlugin {
     injectKey: string
-    install: (app: App, appContext: AppContext) => void
+
+    constructor(injectKey: string) {
+        this.injectKey = injectKey
+    }
+
+    install(app: App, appContext: AppContext) {
+        app.provide(this.injectKey, this)
+    }
 }
