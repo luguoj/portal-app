@@ -9,25 +9,29 @@ import {buildStore} from "./buildStore";
 import {buildRouter} from "./buildRouter";
 import {buildNavigationMenu} from "./buildNavigationMenu";
 
+export interface AppContextOptions {
+    modules: ModuleConfig[]
+    permission: (username: string) => PermissionPromise
+    storePlugins?: StorePlugin<any>[]
+}
 
 export class AppContext {
-    private readonly _moduleConfigs: ModuleConfig[]
     private readonly _injectKey: string
+    private _moduleConfigs: ModuleConfig[]
     readonly store: Store<StoreRootState>
     readonly router: Router
     readonly navigationMenu: NavigationMenu
     readonly plugins: Record<string, AppPlugin> = {}
 
     constructor(
-        moduleConfigs: ModuleConfig[],
         injectKey: string,
-        storePlugins?: StorePlugin<any>[],
+        options: AppContextOptions
     ) {
-        this._moduleConfigs = moduleConfigs
         this._injectKey = injectKey
-        this.store = buildStore(moduleConfigs, storePlugins)
-        this.router = buildRouter(moduleConfigs)
-        this.navigationMenu = buildNavigationMenu(moduleConfigs)
+        this._moduleConfigs = options.modules
+        this.store = buildStore(options.modules, options.storePlugins)
+        this.router = buildRouter(options.modules)
+        this.navigationMenu = buildNavigationMenu(options.modules)
     }
 
     use(plugin: AppPlugin) {
