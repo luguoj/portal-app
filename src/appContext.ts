@@ -5,6 +5,7 @@ import {Admin} from "@/modules/admin-console";
 import {PsrOAuthSSOClientSignIn} from "@/libs/components/psr-oauth-sso-client-sign-in";
 import {portalService} from "@/services/portal";
 import {createAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/AppRouteCacheProvider";
+import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persist";
 
 if (process.env.VUE_APP_PORTAL_ID === undefined) {
     throw new Error("缺少环境变量: process.env.VUE_APP_PORTAL_ID")
@@ -26,5 +27,6 @@ export const appContext = createAppContext({
         } else {
             return portalService.user.findPermissionByPortalId(appPortalId)
         }
-    }
+    },
+    storePlugins: [createStatePersistPlugin()]
 }).use(createAppRouteCache())
