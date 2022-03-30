@@ -1,7 +1,7 @@
 import {ROUTE_HOME} from "@/libs/components/psr-layout/route";
-import {NavigationMenuItemRaw} from "@/libs/commons/app-context/plugins/navigation-menu/NavigationMenuItemRaw";
+import {AppNavigationMenuItemRaw} from "@/libs/commons/app-context/plugins/navigation-menu/AppNavigationMenuItemRaw";
 
-export const menus: NavigationMenuItemRaw[] = [{
+export const menus: AppNavigationMenuItemRaw[] = [{
     id: 'desktop',
     route: ROUTE_HOME
 }]

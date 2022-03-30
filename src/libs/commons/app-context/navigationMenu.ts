@@ -1,6 +1,6 @@
-import {createNavigationMenu} from "./plugins/navigation-menu";
+import {createAppNavigationMenu} from "./plugins/navigation-menu";
 
 
 export function buildNavigationMenu() {
-    return createNavigationMenu()
+    return createAppNavigationMenu()
 }

@@ -1,16 +1,16 @@
 import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 
-export type NavigationMenuItemRaw = MenuItemSubMenuRaw | MenuItemRouteItemRaw
+export type AppNavigationMenuItemRaw = AppMenuItemSubMenuRaw | AppMenuItemRouteItemRaw
 
-interface MenuItemSubMenuRaw {
+interface AppMenuItemSubMenuRaw {
     id: string,
     title: string
     iconCls: string,
-    children: NavigationMenuItemRaw[],
+    children: AppNavigationMenuItemRaw[],
     route?: never
 }
 
-interface MenuItemRouteItemRaw {
+interface AppMenuItemRouteItemRaw {
     id: string,
     title?: string
     iconCls?: string,

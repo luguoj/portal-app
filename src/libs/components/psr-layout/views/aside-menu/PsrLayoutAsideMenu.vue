@@ -18,7 +18,7 @@ import {computed, nextTick, onMounted, ref, watch, defineComponent, Ref} from "v
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
 import {PSR_LAYOUT_MODULE_NAME} from "@/libs/components/psr-layout";
-import {useNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
+import {useAppNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
 
 export default defineComponent({
   name: "psr-layout-aside-menu",
@@ -29,7 +29,7 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const activeMenuItemId = ref()
-    const menuItems = useNavigationMenu().menuItems
+    const menuItems = useAppNavigationMenu().menuItems
 
     function updateActiveMenuItem() {
       if (route.matched.length > 0) {

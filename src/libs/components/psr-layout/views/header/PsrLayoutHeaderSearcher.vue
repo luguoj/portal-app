@@ -20,7 +20,7 @@ import {useRouter} from "vue-router";
 import {ref, defineComponent, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
-import {NavigationMenuItem, useNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
+import {AppNavigationMenuItem, useAppNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
 
 interface SelectOption {
   title: string,
@@ -28,7 +28,7 @@ interface SelectOption {
   path: string
 }
 
-function buildSelectOptions(selectOptions: SelectOption[], menuItems: NavigationMenuItem[], base?: SelectOption) {
+function buildSelectOptions(selectOptions: SelectOption[], menuItems: AppNavigationMenuItem[], base?: SelectOption) {
   for (const menuItem of menuItems) {
     const title = (base ? `${base.title} / ` : '') + menuItem.title
     const titlePinyin = (base ? base.titlePinyin : '') + pinyin(menuItem.title, {style: pinyin.STYLE_NORMAL}).join('')
@@ -45,7 +45,7 @@ export default defineComponent({
   name: "psr-layout-header-searcher",
   setup() {
     const refSelect = ref()
-    const menuItems = useNavigationMenu().menuItems
+    const menuItems = useAppNavigationMenu().menuItems
     const router = useRouter()
     const fuse = computed(() => {
       const selectOptions: SelectOption[] = []

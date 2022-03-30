@@ -4,9 +4,9 @@ import {App} from "vue";
 import {createStore, ModuleTree, Plugin as StorePlugin, Store, StoreOptions} from "vuex";
 import {Router, RouteRecordRaw} from "vue-router";
 import {
-    createNavigationMenu,
-    NavigationMenu,
-    NavigationMenuItemRaw
+    createAppNavigationMenu,
+    AppNavigationMenu,
+    AppNavigationMenuItemRaw
 } from "./plugins/navigation-menu";
 import {
     AppPermission,
@@ -26,15 +26,15 @@ export interface AppContextOptions {
 export class AppContext {
     private readonly _injectKey: string
     private readonly _moduleConfigs: {
-        menus: NavigationMenuItemRaw[]
+        menus: AppNavigationMenuItemRaw[]
         stores: ModuleTree<any>
         routes: RouteRecordRaw[]
     }
     private readonly _storeOptions: StoreOptions<StoreRootState>
     readonly store: Store<StoreRootState>
     readonly router: Router
-    readonly navigationMenuRaw: NavigationMenuItemRaw[]
-    readonly navigationMenu: NavigationMenu
+    private readonly _navigationMenuRaw: AppNavigationMenuItemRaw[]
+    readonly navigationMenu: AppNavigationMenu
     readonly permission: AppPermission
     readonly plugins: Record<string, AppPlugin> = {}
 
@@ -50,11 +50,11 @@ export class AppContext {
         // 初始化router
         this.router = buildRouter(this._moduleConfigs.routes)
         // 初始化navigation-menu
-        this.navigationMenuRaw = this._moduleConfigs.menus
-        this.navigationMenu = createNavigationMenu()
+        this._navigationMenuRaw = this._moduleConfigs.menus
+        this.navigationMenu = createAppNavigationMenu()
         // 初始化permission
         this.permission = createAppPermission({service: options.permission})
-        filterNavigationMenuByPermission(this)
+        filterNavigationMenuByPermission(this._navigationMenuRaw, this.navigationMenu, this.permission)
     }
 
     use(plugin: AppPlugin) {

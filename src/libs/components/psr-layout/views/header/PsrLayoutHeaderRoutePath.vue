@@ -17,7 +17,7 @@ import {useRoute} from "vue-router";
 import {computed, defineComponent} from "vue";
 import {HOME_TITLE, ROUTE_PATH_DESKTOP} from "@/libs/components/psr-layout/route";
 import {PSRRouteRecordRaw, PSRRouteMeta} from "@/libs/commons/router/psr-router-interface";
-import {NavigationMenuItem, useNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
+import {AppNavigationMenuItem, useAppNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
 
 interface RoutePathItem {
   key: string | symbol,
@@ -44,7 +44,7 @@ function buildRoutePathByNameUseRoute(routePathByName: Record<string, RoutePathI
   }
 }
 
-function buildRoutePathByNameUseMenuItem(routePathByName: Record<string, RoutePathItem[]>, menuItem: NavigationMenuItem, basePath: RoutePathItem[]) {
+function buildRoutePathByNameUseMenuItem(routePathByName: Record<string, RoutePathItem[]>, menuItem: AppNavigationMenuItem, basePath: RoutePathItem[]) {
   const {route, children} = menuItem
   if (route) {
     buildRoutePathByNameUseRoute(routePathByName, route, basePath)
@@ -67,7 +67,7 @@ export default defineComponent({
   name: "psr-layout-header-route-path",
   setup() {
     const route = useRoute()
-    const menuItems = useNavigationMenu().menuItems
+    const menuItems = useAppNavigationMenu().menuItems
     const menuItemRoutePathByName = computed(() => {
       const result: Record<string | symbol, RoutePathItem[]> = {}
       for (const menuItem of menuItems.value) {
