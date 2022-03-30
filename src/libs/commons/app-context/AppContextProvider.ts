@@ -1,7 +1,7 @@
 import {AppContext} from "./AppContext";
 import {ModuleConfig} from "./ModuleConfig";
 import {inject} from "vue";
-import {Plugin} from "vuex";
+import {Plugin as StorePlugin} from "vuex";
 
 const APP_CONTEXT_KEY = 'psr-app-context'
 
@@ -15,5 +15,5 @@ export function createAppContext(options: AppContextOptions) {
 
 export interface AppContextOptions {
     modules: ModuleConfig[]
-    storePlugins?: Plugin<any>[]
+    storePlugins?: StorePlugin<any>[]
 }
