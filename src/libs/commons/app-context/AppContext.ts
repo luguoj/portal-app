@@ -47,7 +47,7 @@ export class AppContext {
         app.provide(this._injectKey, this)
         app.use(this.store)
         app.use(this.router)
-        app.use(this.permission)
+        app.use(this.permission, this)
         app.use(this.navigationMenu, this)
         for (const pluginsKey in this.plugins) {
             app.use(this.plugins[pluginsKey], this)
