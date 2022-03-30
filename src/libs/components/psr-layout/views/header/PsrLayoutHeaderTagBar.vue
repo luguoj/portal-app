@@ -27,7 +27,7 @@
 import PsrLayoutHeaderTag from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderTag.vue";
 import PsrElHorizontalScrollBar
   from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
-import {onMounted, watch,  defineComponent} from "vue";
+import {watch,  defineComponent} from "vue";
 import {useRoute} from "vue-router";
 import {useStore} from "vuex";
 import {useRouteCache} from "@/libs/commons/route-cache/RouteCacheProvider";
@@ -47,9 +47,6 @@ export default defineComponent({
 
     watch(() => store.state.username, () => routeCache.init(), {immediate: true})
 
-    onMounted(() => {
-      watch(route, (route) => routeCache.onRoute(route))
-    })
     return {
       cachedRoutes: routeCache.cachedRoutes,
       activeRouteName: routeCache.activeRouteName,

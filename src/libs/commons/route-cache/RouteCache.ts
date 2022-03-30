@@ -1,6 +1,6 @@
 import {RouteLocationNormalizedLoaded, Router} from "vue-router";
 import {UnwrapNestedRefs} from "@vue/reactivity";
-import {reactive, ref, Ref} from "vue";
+import {reactive, ref, Ref, watch} from "vue";
 import {PSRRouteMetaTag} from "@/libs/commons/router/psr-router-interface";
 import {CachedRoute} from "./CachedRoute";
 
@@ -12,6 +12,7 @@ export class RouteCache {
 
     constructor(router: Router) {
         this._router = router
+        watch(this._router.currentRoute, (route) => this.onRoute(route))
     }
 
     init() {
