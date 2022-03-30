@@ -16,6 +16,7 @@ export class RouteCache {
 
     init() {
         this.cachedRoutes.splice(0, this.cachedRoutes.length)
+        this.cachedRouteByName = {}
         const affixRoutes = this._router.getRoutes().filter(route => {
             if (route.meta.tag) {
                 const tag = route.meta.tag as PSRRouteMetaTag
