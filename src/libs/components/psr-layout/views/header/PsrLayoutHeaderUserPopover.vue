@@ -1,12 +1,4 @@
 <template>
-  <el-popover
-      placement="bottom"
-      :visible="visible"
-  >
-    <template #reference>
-      <slot name="reference">
-      </slot>
-    </template>
     <div>
       <div>{{ username }}</div>
       <psr-el-async-action-button type="danger" :action="handleSignOut" style="width:100%">
@@ -16,7 +8,6 @@
         <span>退出系统</span>
       </psr-el-async-action-button>
     </div>
-  </el-popover>
 </template>
 
 <script lang="ts">
@@ -31,13 +22,6 @@ export default defineComponent({
   components: {
     PsrElAsyncActionButton
   },
-  props: {
-    visible: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emits: ['update:visible'],
   setup(props, context) {
     const store = useStore()
     const tokenContext = useTokenContext()

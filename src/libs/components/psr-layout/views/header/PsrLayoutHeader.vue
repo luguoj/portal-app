@@ -19,17 +19,16 @@
         class="searcher"
         :class="{show:showSearcher}"
     />
-    <psr-layout-header-user-popover
-        v-model:visible="userPopoverVisible"
-    >
+    <el-popover placement="bottom" trigger="hover">
       <template #reference>
-        <el-button type="text" class="button icon-only" @click="userPopoverVisible=!userPopoverVisible">
+        <el-button type="text" class="button icon-only">
           <template #icon>
             <el-icon class="pi pi-user"/>
           </template>
         </el-button>
       </template>
-    </psr-layout-header-user-popover>
+      <psr-layout-header-user-popover/>
+    </el-popover>
   </div>
   <div class="ct-tags">
     <psr-layout-header-tag-bar/>
