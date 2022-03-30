@@ -27,11 +27,9 @@
 import PsrLayoutHeaderTag from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderTag.vue";
 import PsrElHorizontalScrollBar
   from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
-import {watch,  defineComponent} from "vue";
-import {useRoute} from "vue-router";
-import {useStore} from "vuex";
-import {useRouteCache} from "@/libs/commons/route-cache/RouteCacheProvider";
-import {CachedRoute} from "@/libs/commons/route-cache";
+import {defineComponent} from "vue";
+import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/AppRouteCacheProvider";
+import {AppRouteCacheItem} from "@/libs/commons/app-context/plugins/route-cache";
 
 
 export default defineComponent({
@@ -41,16 +39,11 @@ export default defineComponent({
     PsrLayoutHeaderTag
   },
   setup() {
-    const routeCache = useRouteCache()
-    const route = useRoute()
-    const store = useStore()
-
-    watch(() => store.state.username, () => routeCache.init(), {immediate: true})
-
+    const routeCache = useAppRouteCache()
     return {
       cachedRoutes: routeCache.cachedRoutes,
       activeRouteName: routeCache.activeRouteName,
-      handleTagClose: (cachedRoute: CachedRoute) => {
+      handleTagClose: (cachedRoute: AppRouteCacheItem) => {
         routeCache.delete(cachedRoute)
       }
     }

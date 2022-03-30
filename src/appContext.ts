@@ -4,6 +4,7 @@ import {SamplePage} from "@/modules/sample-page";
 import {Admin} from "@/modules/admin-console";
 import {PsrOAuthSSOClientSignIn} from "@/libs/components/psr-oauth-sso-client-sign-in";
 import {portalService} from "@/services/portal";
+import {createAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/AppRouteCacheProvider";
 
 if (process.env.VUE_APP_PORTAL_ID === undefined) {
     throw new Error("缺少环境变量: process.env.VUE_APP_PORTAL_ID")
@@ -26,4 +27,4 @@ export const appContext = createAppContext({
             return portalService.user.findPermissionByPortalId(appPortalId)
         }
     }
-})
+}).use(createAppRouteCache())

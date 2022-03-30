@@ -27,7 +27,6 @@ import PsrLayoutMain from "@/libs/components/psr-layout/views/main/PsrLayoutMain
 import PsrLayoutTitle from "@/libs/components/psr-layout/views/title/PsrLayoutTitle.vue";
 import PsrLayoutAsideMenu from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenu.vue";
 import {defineComponent} from "vue";
-import {provideRouteCache} from "@/libs/commons/route-cache/RouteCacheProvider";
 
 export default defineComponent({
   name: "psr-layout",
@@ -38,7 +37,6 @@ export default defineComponent({
     PsrLayoutMain
   },
   setup() {
-    provideRouteCache()
   }
 })
 </script>

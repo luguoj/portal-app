@@ -14,12 +14,12 @@
 
 <script lang="ts">
 import {defineComponent, computed} from "vue";
-import {useRouteCache} from "@/libs/commons/route-cache/RouteCacheProvider";
+import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/AppRouteCacheProvider";
 
 export default defineComponent({
   name: "psr-layout-main",
   setup() {
-    const routeCache = useRouteCache()
+    const routeCache = useAppRouteCache()
     return {
       keepAliveComponentNames: computed(() => {
         const names: string[] = []

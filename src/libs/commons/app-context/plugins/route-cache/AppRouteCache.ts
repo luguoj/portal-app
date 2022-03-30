@@ -1,24 +1,26 @@
 import {RouteLocationNormalizedLoaded, Router} from "vue-router";
 import {UnwrapNestedRefs} from "@vue/reactivity";
-import {reactive, ref, Ref, watch} from "vue";
+import {App, reactive, ref, Ref, watch} from "vue";
 import {PSRRouteMetaTag} from "@/libs/commons/router/psr-router-interface";
-import {CachedRoute} from "./CachedRoute";
+import {AppRouteCacheItem} from "./AppRouteCacheItem";
+import {AppPlugin} from "../../AppPlugin";
+import {AppContext} from "../../AppContext";
 
-export class RouteCache {
-    private _router: Router
-    cachedRoutes: UnwrapNestedRefs<CachedRoute[]> = reactive([] as CachedRoute[])
-    cachedRouteByName: Record<string | symbol, CachedRoute> = {}
+export class AppRouteCache extends AppPlugin {
+    cachedRoutes: UnwrapNestedRefs<AppRouteCacheItem[]> = reactive([] as AppRouteCacheItem[])
+    cachedRouteByName: Record<string | symbol, AppRouteCacheItem> = {}
     activeRouteName: Ref<string | symbol | null> = ref(null as string | symbol | null)
 
-    constructor(router: Router) {
-        this._router = router
-        watch(this._router.currentRoute, (route) => this.onRoute(route))
+    install(app: App, appContext: AppContext) {
+        super.install(app, appContext);
+        watch(() => appContext.store.state.username, () => this.init(appContext.router), {immediate: true})
+        watch(appContext.router.currentRoute, (route) => this.onRoute(route))
     }
 
-    init() {
+    init(router: Router) {
         this.cachedRoutes.splice(0, this.cachedRoutes.length)
         this.cachedRouteByName = {}
-        const affixRoutes = this._router.getRoutes().filter(route => {
+        const affixRoutes = router.getRoutes().filter(route => {
             if (route.meta.tag) {
                 const tag = route.meta.tag as PSRRouteMetaTag
                 return tag!.isAffix
@@ -34,7 +36,7 @@ export class RouteCache {
             })
             this.cachedRoutes.push(cachedRoute)
         }
-        this.onRoute(this._router.currentRoute.value)
+        this.onRoute(router.currentRoute.value)
     }
 
     onRoute(newRoute: RouteLocationNormalizedLoaded) {
@@ -60,12 +62,12 @@ export class RouteCache {
         }
     }
 
-    delete(cachedRoute: CachedRoute) {
+    delete(cachedRoute: AppRouteCacheItem) {
         const index = this.cachedRoutes.indexOf(cachedRoute)
         this.cachedRoutes.splice(index, 1)
         delete this.cachedRouteByName[cachedRoute.name]
         if (this.activeRouteName.value === cachedRoute.name) {
-            this._router.push(this.cachedRoutes[index - 1].path)
+            this.appContext!.router.push(this.cachedRoutes[index - 1].path)
         }
     }
 }
