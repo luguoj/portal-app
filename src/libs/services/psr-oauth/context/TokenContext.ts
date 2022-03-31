@@ -110,7 +110,7 @@ export class PSROAuthContext<TS extends TokenService> {
     }
 }
 
-export function createTokenContext<TS extends TokenService>(options: { tokenService: TokenService }) {
+export function createTokenContext<TS extends TokenService>(options: { tokenService: TS }) {
     return new PSROAuthContext(options.tokenService)
 }
 
