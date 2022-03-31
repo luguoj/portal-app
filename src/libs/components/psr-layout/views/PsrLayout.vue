@@ -35,8 +35,6 @@ export default defineComponent({
     PsrLayoutAsideMenu,
     PsrLayoutHeader,
     PsrLayoutMain
-  },
-  setup() {
   }
 })
 </script>
