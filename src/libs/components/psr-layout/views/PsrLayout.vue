@@ -62,13 +62,13 @@ export default defineComponent({
   .ct-title {
     background-color: var(--el-color-white);
     padding: 0;
-    border-bottom: 1px solid var(--el-border-color);
+    border-bottom: var(--psr-border);
   }
 
   .ct-menu {
     background-color: var(--el-color-white);
     padding: 0;
-    border-right: 1px solid var(--el-border-color);
+    border-right: var(--psr-border);
   }
 }
 </style>

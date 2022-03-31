@@ -45,6 +45,6 @@ export default defineComponent({
 .ct-header {
   height: unset;
   padding: 12px 10px;
-  border-bottom: 1px solid var(--el-border-color);
+  border-bottom: var(--psr-border);
 }
 </style>
