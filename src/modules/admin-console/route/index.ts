@@ -1,5 +1,4 @@
 import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
-import {defineAsyncComponent} from "vue";
 
 export const ADMIN_CONSOLE_ROUTE_NAME = {
     GROUP: 'admin-console-group',
@@ -13,7 +12,7 @@ export const ADMIN_CONSOLE_ROUTE_NAME = {
 export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.PERMISSION,
     path: '/admin-console/permission',
-    component: defineAsyncComponent(() => import("../views/permission/AdminConsolePermission.vue")),
+    component: () => import("../views/permission/AdminConsolePermission.vue"),
     meta: {
         tag: {
             title: '许可',
@@ -26,7 +25,7 @@ export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
 export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.USER,
     path: '/admin-console/user',
-    component: defineAsyncComponent(() => import("../views/user/AdminConsoleUser.vue")),
+    component: () => import("../views/user/AdminConsoleUser.vue"),
     meta: {
         tag: {
             title: '用户',
@@ -39,7 +38,7 @@ export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
 export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.GROUP,
     path: '/admin-console/group',
-    component: defineAsyncComponent(() => import("../views/group/AdminConsoleGroup.vue")),
+    component: () => import("../views/group/AdminConsoleGroup.vue"),
     meta: {
         tag: {
             title: '分组',
@@ -50,7 +49,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
     children: [{
         name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST,
         path: '',
-        component: defineAsyncComponent(() => import("../views/group/AdminConsoleGroupList.vue")),
+        component: () => import("../views/group/AdminConsoleGroupList.vue"),
         meta: {
             tag: {
                 title: '分组清单',
@@ -62,7 +61,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
     }, {
         name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION,
         path: ':groupId/permission',
-        component: defineAsyncComponent(() => import("../views/group/AdminConsoleGroupPermission.vue")),
+        component: () => import("../views/group/AdminConsoleGroupPermission.vue"),
         props: true,
         meta: {
             tag: {
@@ -73,7 +72,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
     }, {
         name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER,
         path: ':groupId/user',
-        component: defineAsyncComponent(() => import("../views/group/AdminConsoleGroupUser.vue")),
+        component: () => import("../views/group/AdminConsoleGroupUser.vue"),
         props: true,
         meta: {
             tag: {
