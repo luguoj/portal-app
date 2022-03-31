@@ -1,6 +1,6 @@
 <template>
   <el-container class="ct-root" v-loading="tableProps.loading">
-    <el-header class="ct-header">
+    <el-header class="psr-el-toolbar">
       <el-space wrap>
         <el-button class="button" @click="handleFind">
           <template #icon>
@@ -282,12 +282,5 @@ export default defineComponent({
 
 .ct-main {
   padding: 0;
-}
-
-.ct-header {
-  height: unset;
-  padding: 0.5rem;
-  background-color: var(--el-border-color-extra-light);
-  border-bottom: var(--psr-border);
 }
 </style>
