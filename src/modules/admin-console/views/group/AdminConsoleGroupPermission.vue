@@ -1,15 +1,6 @@
 <template>
-  <TreeTable
-      ref="tableRef"
-      class="table p-treetable-sm"
-      :scrollable="true"
-      scrollHeight="flex"
-      :filters="tableProps.filters"
-      filterMode="lenient"
-      :value="tableProps.data"
-      v-loading="tableProps.loading"
-  >
-    <template #header>
+  <el-container class="ct-root" v-loading="tableProps.loading">
+    <el-header class="psr-el-toolbar">
       <el-space wrap>
         <router-link
             :to="{name:backRouteName}"
@@ -26,59 +17,75 @@
         <el-divider direction="vertical"/>
         <span>分组: {{ groupEntity.code }}</span>
         <el-divider direction="vertical"/>
-        <el-button type="primary" class="button" @click="initTableData">
+        <el-button class="button" @click="initTableData">
           <template #icon>
             <el-icon class="pi pi-refresh"/>
           </template>
           刷新
         </el-button>
-        <el-button type="primary" class="button" @click="handleClearFilters">
+        <el-button class="button" @click="handleClearFilters">
           <template #icon>
             <el-icon class="pi pi-filter-slash"/>
           </template>
           重置
         </el-button>
-        <el-button type="primary" class="button" @click="handleSave">
+        <el-button class="button" @click="handleSave">
           <template #icon>
             <el-icon class="pi pi-save"/>
           </template>
           保存
         </el-button>
       </el-space>
-    </template>
-    <Column field="title" header="许可" :expander="true" style="min-width:720px">
-      <template #filter>
-        <el-input type="text" placeholder="过滤 (路由名称 / 标题 / 拼音)" v-model="tableProps.filters['global']"
-                  class="p-column-filter"/>
-      </template>
-      <template #body="slotProps">
-        <el-checkbox
-            :label="slotProps.node.data.title"
-            v-model="routeRoutePermissionStatusMap[slotProps.node.key].access"
-        />
-        <el-divider direction="vertical"/>
-        <el-checkbox-group
-            :disabled="!routeRoutePermissionStatusMap[slotProps.node.key].access"
-            v-model="routeRoutePermissionStatusMap[slotProps.node.key].actions"
-        >
-          <el-checkbox
-              v-for="action in slotProps.node.data.actions" :key="`${slotProps.node.key}:${action}`"
-              :label="action"
-          />
-        </el-checkbox-group>
-      </template>
-    </Column>
-    <Column field="name" hidden/>
-    <Column field="titlePinyin" hidden/>
-  </TreeTable>
+    </el-header>
+    <el-main class="ct-main">
+      <p-tree-table
+          ref="tableRef"
+          class="table p-treetable-sm"
+          :scrollable="true"
+          scrollHeight="flex"
+          :filters="tableProps.filters"
+          filterMode="lenient"
+          :value="tableProps.data"
+      >
+        <p-column field="title" header="许可" :expander="true" style="min-width:720px">
+          <template #filter>
+            <el-input
+                type="text"
+                placeholder="过滤 (路由名称 / 标题 / 拼音)"
+                v-model="tableProps.filters.global"
+                class="p-column-filter"
+            />
+          </template>
+          <template #body="slotProps">
+            <el-checkbox
+                :label="`[${slotProps.node.data.name}]${slotProps.node.data.title}`"
+                v-model="routeRoutePermissionStatusMap[slotProps.node.key].access"
+            />
+            <el-divider direction="vertical"/>
+            <el-checkbox-group
+                :disabled="!routeRoutePermissionStatusMap[slotProps.node.key].access"
+                v-model="routeRoutePermissionStatusMap[slotProps.node.key].actions"
+            >
+              <el-checkbox
+                  v-for="action in slotProps.node.data.actions" :key="`${slotProps.node.key}:${action}`"
+                  :label="action"
+              />
+            </el-checkbox-group>
+          </template>
+        </p-column>
+        <p-column field="name" hidden/>
+        <p-column field="titlePinyin" hidden/>
+      </p-tree-table>
+    </el-main>
+  </el-container>
 </template>
 
 <script lang="ts">
 import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
-import TreeTable from "primevue/treetable";
+import PTreeTable from "primevue/treetable";
 import {defineComponent, onMounted, reactive, ref, shallowReactive} from "vue";
 import {portalService} from "@/services/portal";
-import Column from "primevue/column";
+import PColumn from "primevue/column";
 import {useRouter} from "vue-router";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
 import {Queue} from "@/libs/commons/promise-queue";
@@ -142,8 +149,8 @@ function buildRoutePermissionNodes(
 export default defineComponent({
   name: "admin-console-group-permission",
   components: {
-    TreeTable,
-    Column
+    PTreeTable,
+    PColumn
   },
   props: {
     groupId: {
@@ -157,7 +164,7 @@ export default defineComponent({
     const routeRoutePermissionStatusByName = reactive({} as Record<string, RoutePermissionStatus>)
     const tableProps = shallowReactive({
       data: [] as RoutePermissionNode[],
-      filters: {global: ''},
+      filters: reactive({global: ''}),
       loading: false
     })
 
