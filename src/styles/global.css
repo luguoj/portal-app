@@ -12,30 +12,7 @@
     z-index: 2147483647;
 }
 
-.psr-border {
-    border: 1px solid var(--el-border-color);
-}
-
-.psr-border-dashed {
-    border: 2px dashed var(--el-border-color);
-}
-
-.psr-border-radius-small {
-    border-radius: var(--el-border-radius-small);
-}
-
-.psr-border-radius {
-    border-radius: var(--el-border-radius-base);
-}
-
-.psr-border-radius-round {
-    border-radius: var(--el-border-radius-round);
-}
-
-.psr-shadow {
-    box-shadow: var(--el-box-shadow-base);
-}
-
-.psr-shadow-light {
-    box-shadow: var(--el-box-shadow-light);
+:root {
+    --psr-border: 1px solid var(--el-border-color);
+    --psr-border-dashed: 2px dashed var(--el-border-color);
 }
