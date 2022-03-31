@@ -1,132 +1,135 @@
 <template>
-  <DataTable
-      ref="tableRef"
-      class="table p-datatable-sm"
-      responsiveLayout="scroll"
-      :scrollable="true"
-      scrollHeight="flex"
-      scrollDirection="both"
-      :resizableColumns="true"
-      columnResizeMode="expand"
-      :paginator="true"
-      paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      currentPageReportTemplate="{first} - {last} / {totalRecords}"
-      :lazy="true"
-      v-model:first="tableProps.pageable.offset"
-      :rows="tableProps.pageable.limit"
-      @page="onDataTableEvent($event)"
-      @sort="onDataTableEvent($event)"
-      :value="tableProps.data.content"
-      :totalRecords="tableProps.data.totalElements"
-      v-loading="tableProps.loading"
-      v-model:filters="tableProps.filters"
-      filterDisplay="row"
-  >
-    <template #header>
+  <el-container class="ct-root" v-loading="tableProps.loading">
+    <el-header class="ct-header">
       <el-space wrap>
-        <el-button type="primary" class="button" @click="handleFind">
+        <el-button class="button" @click="handleFind">
           <template #icon>
             <el-icon class="pi pi-search"/>
           </template>
           查找
         </el-button>
-        <el-button type="primary" class="button" @click="handleClearFilters">
+        <el-button class="button" @click="handleClearFilters">
           <template #icon>
             <el-icon class="pi pi-filter-slash"/>
           </template>
           重置
         </el-button>
-        <el-button type="primary" class="button" @click="handleAdd">
+        <el-button class="button" @click="handleAdd">
           <template #icon>
             <el-icon class="pi pi-plus"/>
           </template>
           添加
         </el-button>
       </el-space>
-    </template>
-    <template #empty>
-      没有数据.
-    </template>
-    <template #paginatorstart>
-      <el-select v-model="tableProps.pageable.limit" size="large" style="width:5.5rem;">
-        <el-option
-            v-for="limit in tableProps.limitSelectOptions"
-            :key="limit"
-            :value="limit"
-            :lable="limit"
-        />
-      </el-select>
-    </template>
-    <template #paginatorend>
-      <el-button type="text" size="large" @click="handleExport">
-        <template #icon>
-          <el-icon class="pi pi-external-link"/>
+    </el-header>
+    <el-main class="ct-main">
+      <p-data-table
+          ref="tableRef"
+          class="table p-datatable-sm"
+          responsiveLayout="scroll"
+          :scrollable="true"
+          scrollHeight="flex"
+          scrollDirection="both"
+          :resizableColumns="true"
+          columnResizeMode="expand"
+          :paginator="true"
+          paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+          currentPageReportTemplate="{first} - {last} / {totalRecords}"
+          :lazy="true"
+          v-model:first="tableProps.pageable.offset"
+          :rows="tableProps.pageable.limit"
+          @page="onDataTableEvent($event)"
+          @sort="onDataTableEvent($event)"
+          :value="tableProps.data.content"
+          :totalRecords="tableProps.data.totalElements"
+          v-model:filters="tableProps.filters"
+          filterDisplay="row"
+      >
+        <template #empty>
+          没有数据.
         </template>
-      </el-button>
-    </template>
-    <Column field="enabled" header="状态" :showFilterMenu="false"
-            style="width:5rem;min-width:5rem;max-width:5rem;">
-      <template #body="slotProps">
-        <el-icon class="pi" :class="slotProps.data[slotProps.field]?'pi-check':'pi-ban'" style="width:100%;"/>
-      </template>
-      <template #filter="{filterModel,filterCallback}">
-        <TriStateCheckbox v-model="filterModel.value" @change="filterCallback()"/>
-      </template>
-    </Column>
-    <Column
-        field="code"
-        header="编码"
-        :style="{width:'360px'}"
-        :sortable="true"
-    >
-      <template #body="slotProps">
-        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ slotProps.data[slotProps.field] }}</div>
-      </template>
-      <template #filter="{filterModel,filterCallback}">
-        <el-input v-model="filterModel.value" @change="filterCallback()"/>
-      </template>
-    </Column>
-    <Column
-        field="description"
-        header="描述"
-        :style="{width:'360px'}"
-        :sortable="true"
-    >
-      <template #body="slotProps">
-        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ slotProps.data[slotProps.field] }}</div>
-      </template>
-      <template #filter="{filterModel,filterCallback}">
-        <el-input v-model="filterModel.value" @change="filterCallback()"/>
-      </template>
-    </Column>
-    <Column
-        header="操作"
-        frozen
-        alignFrozen="right"
-        :style="{width:'153px','min-width':'153px','max-width':'153px'}"
-    >
-      <template #body="slotProps">
-        <el-space wrap>
-          <router-link
-              :to="{name:ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION,params:{groupId:slotProps.data.id}}"
-              v-slot="{navigate}"
-          >
-            <el-button type="text" size="small" @click="navigate">许可</el-button>
-          </router-link>
-          <router-link :to="{name:ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER,params:{groupId:slotProps.data.id}}">
-            <el-button type="text" size="small">用户</el-button>
-          </router-link>
-          <el-button type="text" size="small" @click="handleEdit(slotProps.data)">编辑</el-button>
-          <psr-el-async-action-button
-              type="text" size="small"
-              :action="handleDelete"
-              :action-params="slotProps.data"
-          >删除
-          </psr-el-async-action-button>
-        </el-space>
-      </template>
-    </Column>
-  </DataTable>
+        <template #paginatorstart>
+          <el-select v-model="tableProps.pageable.limit" size="large" style="width:5.5rem;">
+            <el-option
+                v-for="limit in tableProps.limitSelectOptions"
+                :key="limit"
+                :value="limit"
+                :lable="limit"
+            />
+          </el-select>
+        </template>
+        <template #paginatorend>
+          <el-button type="text" size="large" @click="handleExport">
+            <template #icon>
+              <el-icon class="pi pi-external-link"/>
+            </template>
+          </el-button>
+        </template>
+        <p-column field="enabled" header="状态" :showFilterMenu="false"
+                  style="width:5rem;min-width:5rem;max-width:5rem;">
+          <template #body="slotProps">
+            <el-icon class="pi" :class="slotProps.data[slotProps.field]?'pi-check':'pi-ban'" style="width:100%;"/>
+          </template>
+          <template #filter="{filterModel,filterCallback}">
+            <p-tri-state-checkbox v-model="filterModel.value" @change="filterCallback()"/>
+          </template>
+        </p-column>
+        <p-column
+            field="code"
+            header="编码"
+            :style="{width:'360px'}"
+            :sortable="true"
+        >
+          <template #body="slotProps">
+            <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ slotProps.data[slotProps.field] }}</div>
+          </template>
+          <template #filter="{filterModel,filterCallback}">
+            <el-input v-model="filterModel.value" @change="filterCallback()"/>
+          </template>
+        </p-column>
+        <p-column
+            field="description"
+            header="描述"
+            :style="{width:'360px'}"
+            :sortable="true"
+        >
+          <template #body="slotProps">
+            <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ slotProps.data[slotProps.field] }}</div>
+          </template>
+          <template #filter="{filterModel,filterCallback}">
+            <el-input v-model="filterModel.value" @change="filterCallback()"/>
+          </template>
+        </p-column>
+        <p-column
+            header="操作"
+            frozen
+            alignFrozen="right"
+            :style="{width:'153px','min-width':'153px','max-width':'153px'}"
+        >
+          <template #body="slotProps">
+            <el-space wrap>
+              <router-link
+                  :to="{name:ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION,params:{groupId:slotProps.data.id}}"
+                  v-slot="{navigate}"
+              >
+                <el-button type="text" size="small" @click="navigate">许可</el-button>
+              </router-link>
+              <router-link :to="{name:ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER,params:{groupId:slotProps.data.id}}">
+                <el-button type="text" size="small">用户</el-button>
+              </router-link>
+              <el-button type="text" size="small" @click="handleEdit(slotProps.data)">编辑</el-button>
+              <psr-el-async-action-button
+                  type="text" size="small"
+                  :action="handleDelete"
+                  :action-params="slotProps.data"
+              >删除
+              </psr-el-async-action-button>
+            </el-space>
+          </template>
+        </p-column>
+      </p-data-table>
+    </el-main>
+  </el-container>
   <admin-console-group-edit-dialog
       v-model:visible="editDialogProps.visible"
       v-model:data="editDialogProps.data"
@@ -140,10 +143,10 @@ import {portalService} from "@/services/portal";
 import AdminConsoleGroupEditDialog from "@/modules/admin-console/views/group/AdminConsoleGroupEditDialog.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
+import PDataTable from "primevue/datatable";
+import PColumn from "primevue/column";
 import {FilterMatchMode} from "primevue/api";
-import TriStateCheckbox from "primevue/tristatecheckbox";
+import PTriStateCheckbox from "primevue/tristatecheckbox";
 import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud/buildFromPrimeVueDataTableFilters";
 import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
@@ -152,9 +155,9 @@ import {GroupEntity} from "@/services/portal/CRUDService";
 export default defineComponent({
   name: "admin-console-group-list",
   components: {
-    DataTable,
-    Column,
-    TriStateCheckbox,
+    PDataTable,
+    PColumn,
+    PTriStateCheckbox,
     PsrElAsyncActionButton,
     AdminConsoleGroupEditDialog
   },
@@ -273,8 +276,18 @@ export default defineComponent({
   height: 100%;
 }
 
-.ct-main {
+.ct-root {
   height: 100%;
-  padding-top: 0;
+}
+
+.ct-main {
+  padding: 0;
+}
+
+.ct-header {
+  height: unset;
+  padding: 0.5rem;
+  background-color: var(--el-border-color-extra-light);
+  border-bottom: var(--psr-border);
 }
 </style>
