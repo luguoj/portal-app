@@ -93,6 +93,7 @@ import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService"
 import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 import pinyin from "pinyin";
+import {computeModuleRouteName} from "psr-app-context/computeModuleRoute";
 
 interface RoutePermissionStatus {
   access: boolean,
@@ -250,12 +251,12 @@ export default defineComponent({
     onMounted(() => {
       initTableData()
     })
-
+    const backRouteName = computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST)
     return {
       groupEntity,
       tableProps,
       routeRoutePermissionStatusMap: routeRoutePermissionStatusByName,
-      backRouteName: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST,
+      backRouteName,
       initTableData,
       handleClearFilters,
       handleSave

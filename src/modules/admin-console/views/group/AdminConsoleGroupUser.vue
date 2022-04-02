@@ -15,6 +15,7 @@
 import {useRouter} from "vue-router";
 import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {defineComponent} from "vue";
+import {computeModuleRouteName} from "psr-app-context/computeModuleRoute";
 
 export default defineComponent({
   name: "admin-console-group-user",
@@ -26,8 +27,10 @@ export default defineComponent({
   setup() {
     const router = useRouter()
 
+    const backRouteName = computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST)
+
     function handleGoBack() {
-      router.push({name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST})
+      router.push({name: backRouteName})
     }
 
     return {

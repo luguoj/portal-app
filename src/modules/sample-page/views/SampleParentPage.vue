@@ -2,7 +2,7 @@
   <el-container>
     <el-header><h1>This is parent page.</h1></el-header>
     <router-link :to="{
-      name: `${layoutMeta?.name}/sample-parent/sample-child`,
+      name: childRoute,
       params:{
         pageNo:'asdb/asdff'
       }
@@ -16,13 +16,13 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {useAppContext} from "psr-app-context/";
+import {computeModuleRouteName} from "psr-app-context/computeModuleRoute";
 
 export default defineComponent({
   name: "SampleParentPage",
   setup() {
-    const layoutMeta =  useAppContext().currentLayout.meta
-    return {layoutMeta}
+    const childRoute = computeModuleRouteName("sample-parent/sample-child")
+    return {childRoute}
   }
 })
 </script>

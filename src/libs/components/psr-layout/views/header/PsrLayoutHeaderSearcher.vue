@@ -21,6 +21,7 @@ import {ref, defineComponent, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
 import {AppNavigationMenuItem, useAppNavigationMenu} from "psr-app-context/plugins/navigation-menu";
+import {computeModuleRoutePath} from "psr-app-context/computeModuleRoute";
 
 interface SelectOption {
   title: string,
@@ -44,6 +45,7 @@ function buildSelectOptions(selectOptions: SelectOption[], menuItems: AppNavigat
 export default defineComponent({
   name: "psr-layout-header-searcher",
   setup() {
+    const modulePathPrefix = computeModuleRoutePath("")
     const refSelect = ref()
     const menuItems = useAppNavigationMenu().menuItems
     const router = useRouter()
@@ -66,19 +68,22 @@ export default defineComponent({
         }]
       })
     })
+
+    function querySearch(query: string) {
+      if (query !== '') {
+        searchResult.value = fuse.value.search(query)
+      } else {
+        searchResult.value = []
+      }
+    }
+
     const searchResult = ref([] as Fuse.FuseResult<SelectOption>[])
     return {
       refSelect,
       searchResult,
-      querySearch: (query: string) => {
-        if (query !== '') {
-          searchResult.value = fuse.value.search(query)
-        } else {
-          searchResult.value = []
-        }
-      },
+      querySearch,
       searcherChange: (val: string) => {
-        router.push(val)
+        router.push(modulePathPrefix + val)
       },
       focus: () => {
         refSelect.value.focus()

@@ -25,7 +25,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
 import {AppNavigationMenuItem} from "psr-app-context/plugins/navigation-menu";
-import {useAppContext} from "psr-app-context/";
+import {computeModuleRoutePath} from "psr-app-context/computeModuleRoute";
 
 export default defineComponent({
   name: "psr-layout-aside-menu-item",
@@ -36,16 +36,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const {meta: layoutMeta} = useAppContext().currentLayout
     const {id, title, iconCls, route, children} = props.menuItem
-    let routePath: string | undefined
-    if (route) {
-      console.log('layout') //todo
-      routePath = layoutMeta.value?.path
-      if (route.path) {
-        routePath += '/' + route.path
-      }
-    }
+    let routePath = route ? computeModuleRoutePath(route.path) : null
     return {
       id,
       title,

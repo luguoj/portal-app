@@ -109,12 +109,12 @@
           <template #body="slotProps">
             <el-space wrap>
               <router-link
-                  :to="{name:ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION,params:{groupId:slotProps.data.id}}"
+                  :to="{name:rowActionRoutes.permission,params:{groupId:slotProps.data.id}}"
                   v-slot="{navigate}"
               >
                 <el-button type="text" size="small" @click="navigate">许可</el-button>
               </router-link>
-              <router-link :to="{name:ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER,params:{groupId:slotProps.data.id}}">
+              <router-link :to="{name:rowActionRoutes.user,params:{groupId:slotProps.data.id}}">
                 <el-button type="text" size="small">用户</el-button>
               </router-link>
               <el-button type="text" size="small" @click="handleEdit(slotProps.data)">编辑</el-button>
@@ -151,6 +151,7 @@ import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud
 import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
+import {computeModuleRouteName} from "psr-app-context/computeModuleRoute";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -226,6 +227,10 @@ export default defineComponent({
       tableRef.value.exportCSV();
     }
 
+    const rowActionRoutes = {
+      permission: computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION),
+      user: computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER)
+    }
     return {
       tableRef,
       tableProps,
@@ -264,7 +269,7 @@ export default defineComponent({
       onDataTableEvent,
       onDataChanged: handleFind,
       handleExport,
-      ADMIN_CONSOLE_ROUTE_NAME
+      rowActionRoutes
     }
   }
 })
