@@ -1,12 +1,15 @@
 import {store} from "@/libs/components/psr-layout/store";
+import {AppLayoutConfig} from "psr-app-context/layout/AppLayoutConfig";
 import {routes} from "@/libs/components/psr-layout/route";
-import {ModuleConfig} from "@/libs/commons/app-context";
-import {menus} from "@/libs/components/psr-layout/menus";
+import {menus} from "./menus"
 
-export const PSR_LAYOUT_MODULE_NAME = 'psr-layout'
-export const PsrLayout: ModuleConfig = {
-    name: PSR_LAYOUT_MODULE_NAME,
+export const PsrLayout: AppLayoutConfig = {
+    modules: [],
+    name: 'psr-layout',
     store,
+    component: () => import("./views/PsrLayout.vue"),
     routes,
+    iconCls: "pi pi-home",
+    title: "首页",
     menus
 }

@@ -2,11 +2,12 @@ import {App, ref, Ref, watch, watchEffect} from "vue";
 import {ElMessage} from "element-plus";
 import {AppContext} from "../../AppContext";
 import {AppPlugin} from "../../AppPlugin"
+import {PSRRouteMetaPermission} from "@/libs/commons/router/psr-router-interface";
 
-export type PermissionByRouteName = Record<string | symbol, string[]>
-export type PermissionPromise = Promise<PermissionByRouteName>
-export const DenyAll: PermissionByRouteName = {}
-export const PermitAll: PermissionByRouteName = {'permit-all': []}
+export type PermissionsByKey = Record<string | symbol, string[]>
+export type PermissionPromise = Promise<PermissionsByKey>
+export const DenyAll: PermissionsByKey = {}
+export const PermitAll: PermissionsByKey = {'permit-all': []}
 
 export class AppPermission extends AppPlugin {
     readonly permission: Ref<PermissionPromise> = ref(Promise.resolve(DenyAll))
@@ -21,11 +22,11 @@ export class AppPermission extends AppPlugin {
         super.install(app, appContext)
         // 通过许可控制路由跳转
         appContext.router.beforeEach(to => {
-            if (to.meta.requirePermission) {
-                const routeName = to.name!
-                return this.permission.value.then(permissionByRouteName => {
-                    if (permissionByRouteName !== PermitAll
-                        && !permissionByRouteName[routeName]) {
+            if (to.meta.permission) {
+                const {key} = to.meta.permission as PSRRouteMetaPermission
+                return this.permission.value.then(permissionByKey => {
+                    if (permissionByKey !== PermitAll
+                        && !permissionByKey[key]) {
                         ElMessage({
                             showClose: true,
                             message: '无权访问此页面.',

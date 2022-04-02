@@ -1,11 +1,12 @@
-import {createAppContext, DenyAll, PermitAll} from "@/libs/commons/app-context";
+import {createAppContext, DenyAll, PermitAll} from "psr-app-context/";
 import {PsrLayout} from "@/libs/components/psr-layout";
 import {SamplePage} from "@/modules/sample-page";
 import {Admin} from "@/modules/admin-console";
-import {PsrOAuthSSOClientSignIn} from "@/libs/components/psr-oauth-sso-client-sign-in";
 import {portalService} from "@/services/portal";
-import {createAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/AppRouteCacheProvider";
+import {createAppRouteCache} from "psr-app-context/plugins/route-cache/AppRouteCacheProvider";
 import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persist";
+import {Dashboard} from "@/modules/dashboard";
+import PsrLayoutPageSignIn from "@/libs/components/psr-oauth-sso-client-sign-in/views/PsrOAuthSSOClientSignIn.vue";
 
 if (process.env.VUE_APP_PORTAL_ID === undefined) {
     throw new Error("缺少环境变量: process.env.VUE_APP_PORTAL_ID")
@@ -13,12 +14,32 @@ if (process.env.VUE_APP_PORTAL_ID === undefined) {
 const appPortalId: string = process.env.VUE_APP_PORTAL_ID
 
 export const appContext = createAppContext({
-    modules: [
-        PsrLayout,
-        PsrOAuthSSOClientSignIn,
-        SamplePage,
-        Admin
-    ],
+    layouts: [{
+        ...PsrLayout,
+        name: 'platform-console',
+        title: '平台控制台',
+        modules: [
+            Dashboard,
+            Admin,
+            SamplePage
+        ],
+        permission: true
+    }, {
+        ...PsrLayout,
+        name: 'sample-console',
+        title: '样例控制台',
+        iconCls: 'pi pi-book',
+        modules: [
+            Dashboard,
+            SamplePage
+        ],
+        permission: true
+    }, {
+        name: 'sign-in',
+        title: '登录',
+        iconCls: 'pi pi-sign',
+        component: PsrLayoutPageSignIn
+    }],
     permission: (username: string) => {
         if (username === '') {
             return Promise.resolve(DenyAll)

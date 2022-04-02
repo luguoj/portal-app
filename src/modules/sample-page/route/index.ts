@@ -2,7 +2,7 @@ import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
 
 export const ROUTE_SAMPLE: PSRRouteRecordRaw = {
     name: 'sample',
-    path: '/sample',
+    path: 'sample',
     component: () => import('@/modules/sample-page/views/SamplePage.vue'),
     meta: {
         tag: {
@@ -14,7 +14,7 @@ export const ROUTE_SAMPLE: PSRRouteRecordRaw = {
 
 export const ROUTE_SAMPLE_2: PSRRouteRecordRaw = {
     name: 'sample-2',
-    path: '/sample-2',
+    path: 'sample-2',
     component: () => import('@/modules/sample-page/views/SamplePage.vue'),
     meta: {
         tag: {
@@ -26,7 +26,7 @@ export const ROUTE_SAMPLE_2: PSRRouteRecordRaw = {
 
 export const ROUTE_SAMPLE_PARENT: PSRRouteRecordRaw = {
     name: 'sample-parent',
-    path: '/sample-parent',
+    path: 'sample-parent',
     component: () => import('@/modules/sample-page/views/SampleParentPage.vue'),
     meta: {
         tag: {

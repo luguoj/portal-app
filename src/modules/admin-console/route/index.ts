@@ -11,40 +11,40 @@ export const ADMIN_CONSOLE_ROUTE_NAME = {
 
 export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.PERMISSION,
-    path: '/admin-console/permission',
+    path: 'admin-console/permission',
     component: () => import("../views/permission/AdminConsolePermission.vue"),
     meta: {
         tag: {
             title: '许可',
             iconCls: 'pi pi-key',
         },
-        permission: {}
+        permission: {key: ADMIN_CONSOLE_ROUTE_NAME.PERMISSION}
     }
 }
 
 export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.USER,
-    path: '/admin-console/user',
+    path: 'admin-console/user',
     component: () => import("../views/user/AdminConsoleUser.vue"),
     meta: {
         tag: {
             title: '用户',
             iconCls: 'pi pi-users'
         },
-        permission: {}
+        permission: {key: ADMIN_CONSOLE_ROUTE_NAME.USER}
     }
 }
 
 export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.GROUP,
-    path: '/admin-console/group',
+    path: 'admin-console/group',
     component: () => import("../views/group/AdminConsoleGroup.vue"),
     meta: {
         tag: {
             title: '分组',
             iconCls: 'pi pi-tag'
         },
-        permission: {}
+        permission: {key: ADMIN_CONSOLE_ROUTE_NAME.GROUP}
     },
     children: [{
         name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST,
@@ -55,7 +55,8 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
                 title: '分组清单',
             },
             permission: {
-                actions: ['add', 'edit', 'delete']
+                key: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST,
+                permissions: ['add', 'edit', 'delete']
             }
         }
     }, {
@@ -67,7 +68,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
             tag: {
                 title: '分组许可',
             },
-            permission: {}
+            permission: {key: ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION}
         }
     }, {
         name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER,
@@ -78,7 +79,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
             tag: {
                 title: '分组用户',
             },
-            permission: {}
+            permission: {key: ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER}
         }
     }]
 }

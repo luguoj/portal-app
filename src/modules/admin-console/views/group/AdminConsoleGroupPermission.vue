@@ -130,7 +130,7 @@ function buildRoutePermissionNodes(
           name: route.name,
           title: route.meta?.tag?.title,
           iconCls: route.meta?.tag?.iconCls,
-          actions: route.meta?.permission?.actions
+          actions: route.meta?.permission?.permissions
         }
       }
       if (children) {

@@ -8,9 +8,8 @@ export const PSR_LAYOUT_ROUTE_NAME = {
     INITIALIZING: 'initializing'
 }
 export const ROUTE_PATH_DESKTOP = {
-    HOME: '/',
-    ERROR_NOT_FOUND: '/:pathMatch(.*)*',
-    INITIALIZING: '/initializing'
+    HOME: '',
+    ERROR_NOT_FOUND: ':pathMatch(.*)*'
 }
 export const HOME_TITLE = '首页'
 export const HOME_ICON_CLASS = 'pi pi-home'
@@ -34,4 +33,7 @@ export const ROUTE_ERROR_NOT_FOUND: PSRRouteRecordRaw = {
     props: true
 }
 
-export const routes: Array<PSRRouteRecordRaw> = [ROUTE_HOME, ROUTE_ERROR_NOT_FOUND]
+export const routes: Array<PSRRouteRecordRaw> = [
+    // ROUTE_ERROR_NOT_FOUND,
+    ROUTE_HOME
+]

@@ -14,11 +14,11 @@
 
 <script lang="ts">
 import PsrLayoutAsideMenuItem from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenuItem.vue";
-import {computed, nextTick, onMounted, ref, watch, defineComponent, Ref} from "vue";
+import {computed, nextTick, onMounted, ref, watch, defineComponent} from "vue";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
-import {PSR_LAYOUT_MODULE_NAME} from "@/libs/components/psr-layout";
-import {useAppNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
+import {moduleRouteMatched} from "psr-app-context/router";
+import {useAppContext} from "psr-app-context/";
 
 export default defineComponent({
   name: "psr-layout-aside-menu",
@@ -29,11 +29,12 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const activeMenuItemId = ref()
-    const menuItems = useAppNavigationMenu().menuItems
+    const {meta: layoutMeta, navigationMenuItems: menuItems} = useAppContext().currentLayout
 
     function updateActiveMenuItem() {
-      if (route.matched.length > 0) {
-        activeMenuItemId.value = route.matched[0].name
+      const _moduleRouteMatched = moduleRouteMatched(route)
+      if (_moduleRouteMatched && layoutMeta.value) {
+        activeMenuItemId.value = _moduleRouteMatched.name!.toString().substring(layoutMeta.value.name.length + 1)
       } else {
         activeMenuItemId.value = ''
       }
@@ -46,8 +47,15 @@ export default defineComponent({
         nextTick(updateActiveMenuItem)
       })
     })
+    const menuCollapse = computed(() => {
+      if (layoutMeta.value) {
+        return store.state[layoutMeta.value.name].asideCollapsed
+      } else {
+        return false
+      }
+    })
     return {
-      menuCollapse: computed(() => store.state[PSR_LAYOUT_MODULE_NAME].asideCollapsed),
+      menuCollapse,
       menuItems,
       activeMenuItemId
     }

@@ -1,5 +1,5 @@
 export * from './AppContext'
 export * from './AppContextProvider'
-export * from './ModuleConfig'
+export * from './module/AppModuleConfig'
 export * from './AppPlugin'
 export * from './plugins/permission'

@@ -1,11 +1,13 @@
-import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
+import {createRouter, createWebHashHistory, RouteLocationNormalizedLoaded, RouteRecordRaw} from "vue-router";
 
 declare const NProgress: any
 
-export function buildRouter(routes: RouteRecordRaw[]) {
+export function buildRouter(
+    layoutRoutes: RouteRecordRaw[]
+) {
     const router = createRouter({
         history: createWebHashHistory(),
-        routes
+        routes: layoutRoutes
     })
     router.beforeEach(() => {
         NProgress.start()
@@ -14,4 +16,11 @@ export function buildRouter(routes: RouteRecordRaw[]) {
         NProgress.done()
     })
     return router
+}
+
+export function moduleRouteMatched(route: RouteLocationNormalizedLoaded) {
+    if (route.matched.length > 1) {
+        return route.matched[1]
+    }
+    return null
 }

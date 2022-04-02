@@ -4,10 +4,13 @@ import {ref} from "vue";
 import {AppPlugin} from "../../AppPlugin";
 
 export class AppNavigationMenu extends AppPlugin {
-    readonly menuItems = ref<AppNavigationMenuItem[]>([])
+    readonly menuItems = ref<Record<string | symbol, AppNavigationMenuItem[]>>({})
 
-    update(navigationMenuRaw: AppNavigationMenuItemRaw[]) {
-        this.menuItems.value = buildMenuItems(navigationMenuRaw)
+    update(navigationMenuRaw: Record<string, AppNavigationMenuItemRaw[]>) {
+        this.menuItems.value = {}
+        for (const layoutName in navigationMenuRaw) {
+            this.menuItems.value[layoutName] = buildMenuItems(navigationMenuRaw[layoutName])
+        }
     }
 }
 

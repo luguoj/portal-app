@@ -1,11 +1,10 @@
 <template>
   <el-config-provider :locale="locale">
-    <psr-layout></psr-layout>
+    <router-view></router-view>
   </el-config-provider>
 </template>
 
 <script lang="ts">
-import PsrLayout from "@/libs/components/psr-layout/views/PsrLayout.vue";
 import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import {defineComponent, onMounted} from "vue";
@@ -16,7 +15,6 @@ declare const NProgress: any
 export default defineComponent({
   name: 'App',
   components: {
-    PsrLayout,
     ElConfigProvider
   },
   setup() {

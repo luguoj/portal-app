@@ -12,6 +12,7 @@ export interface PSRRouteMetaTag {
 }
 
 export interface PSRRouteMetaPermission {
-    actions?: string[]
+    key: string,
+    permissions?: string[]
 }
 

@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import {defineComponent, computed} from "vue";
-import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/AppRouteCacheProvider";
+import {useAppRouteCache} from "psr-app-context/plugins/route-cache/AppRouteCacheProvider";
 
 export default defineComponent({
   name: "psr-layout-main",

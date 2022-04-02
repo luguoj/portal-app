@@ -1,12 +1,11 @@
-import {extractModuleConfigs, ModuleConfig} from "./ModuleConfig";
 import {AppPlugin} from "./AppPlugin";
-import {App} from "vue";
+import {App, ref, Ref, watchEffect} from "vue";
 import {createStore, ModuleTree, Plugin as StorePlugin, Store, StoreOptions} from "vuex";
 import {Router, RouteRecordRaw} from "vue-router";
 import {
     createAppNavigationMenu,
     AppNavigationMenu,
-    AppNavigationMenuItemRaw
+    AppNavigationMenuItemRaw, AppNavigationMenuItem
 } from "./plugins/navigation-menu";
 import {
     AppPermission,
@@ -16,45 +15,65 @@ import {
 import {buildStore, buildStoreOptions, StoreRootState} from "./store";
 import {buildRouter} from "./router";
 import {filterNavigationMenuByPermission} from "./filterNavigationMenuByPermission";
+import {AppLayoutConfig} from "psr-app-context/layout/AppLayoutConfig";
+import {extractAppLayoutConfigs} from "psr-app-context/layout/extractAppLayoutConfigs";
+import {AppLayoutMeta} from "psr-app-context/layout/AppLayoutMeta";
 
 export interface AppContextOptions {
-    modules: ModuleConfig[]
+    layouts: AppLayoutConfig[]
     permission: (username: string) => PermissionPromise
     storePlugins?: StorePlugin<any>[]
 }
 
 export class AppContext {
     private readonly _injectKey: string
-    private readonly _moduleConfigs: {
-        menus: AppNavigationMenuItemRaw[]
+    private readonly _configs: {
+        menus: Record<string, AppNavigationMenuItemRaw[]>
         stores: ModuleTree<any>
         routes: RouteRecordRaw[]
     }
     private readonly _storeOptions: StoreOptions<StoreRootState>
     readonly store: Store<StoreRootState>
     readonly router: Router
-    private readonly _navigationMenuRaw: AppNavigationMenuItemRaw[]
+    private readonly _navigationMenuRaw: Record<string, AppNavigationMenuItemRaw[]>
     readonly navigationMenu: AppNavigationMenu
     readonly permission: AppPermission
     readonly plugins: Record<string, AppPlugin> = {}
+    readonly currentLayout: {
+        meta: Ref<AppLayoutMeta | null>,
+        navigationMenuItems: Ref<AppNavigationMenuItem[] | null>
+    } = {
+        meta: ref(null),
+        navigationMenuItems: ref(null)
+    };
 
     constructor(
         injectKey: string,
         options: AppContextOptions
     ) {
         this._injectKey = injectKey
-        this._moduleConfigs = extractModuleConfigs(options.modules)
+        this._configs = extractAppLayoutConfigs(options.layouts)
         // 初始化store
-        this._storeOptions = buildStoreOptions(this._moduleConfigs.stores)
-        this.store = buildStore(this._moduleConfigs.stores, options.storePlugins)
+        this._storeOptions = buildStoreOptions(this._configs.stores)
+        this.store = buildStore(this._configs.stores, options.storePlugins)
         // 初始化router
-        this.router = buildRouter(this._moduleConfigs.routes)
+        this.router = buildRouter(this._configs.routes)
         // 初始化navigation-menu
-        this._navigationMenuRaw = this._moduleConfigs.menus
+        this._navigationMenuRaw = this._configs.menus
         this.navigationMenu = createAppNavigationMenu()
         // 初始化permission
         this.permission = createAppPermission({service: options.permission})
         filterNavigationMenuByPermission(this._navigationMenuRaw, this.navigationMenu, this.permission)
+        // 路由跳转切换布局信息
+        watchEffect(()=>{
+            const route = this.router.currentRoute.value
+            if (route.matched.length > 0 && route.name !== 'root' && route.matched[0].name !== this.currentLayout.meta.value?.name) {
+                const layoutMeta = route.matched[0] as unknown as AppLayoutMeta
+                console.log('切换应用上下文布局信息')
+                this.currentLayout.meta.value = layoutMeta
+                this.currentLayout.navigationMenuItems.value = this.navigationMenu.menuItems.value[layoutMeta.name]
+            }
+        })
     }
 
     use(plugin: AppPlugin) {

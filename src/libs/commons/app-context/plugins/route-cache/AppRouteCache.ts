@@ -5,6 +5,7 @@ import {PSRRouteMetaTag} from "@/libs/commons/router/psr-router-interface";
 import {AppRouteCacheItem} from "./AppRouteCacheItem";
 import {AppPlugin} from "../../AppPlugin";
 import {AppContext} from "../../AppContext";
+import {moduleRouteMatched} from "../../router";
 
 export class AppRouteCache extends AppPlugin {
     cachedRoutes: UnwrapNestedRefs<AppRouteCacheItem[]> = reactive([] as AppRouteCacheItem[])
@@ -14,6 +15,9 @@ export class AppRouteCache extends AppPlugin {
     install(app: App, appContext: AppContext) {
         super.install(app, appContext);
         watch(() => appContext.store.state.username, () => this.init(appContext.router), {immediate: true})
+        appContext.router.beforeEach((to, from) => {
+            // TODO 切换布局时初始化路由缓存
+        })
         watch(appContext.router.currentRoute, (route) => this.onRoute(route))
     }
 
@@ -40,8 +44,9 @@ export class AppRouteCache extends AppPlugin {
     }
 
     onRoute(newRoute: RouteLocationNormalizedLoaded) {
-        if (newRoute.matched.length > 0) {
-            const {name, components, meta} = newRoute.matched[0]
+        const _moduleRouteMatched = moduleRouteMatched(newRoute)
+        if (_moduleRouteMatched) {
+            const {name, components, meta} = _moduleRouteMatched
             if (meta.tag) {
                 const tag = meta.tag as PSRRouteMetaTag
                 if (!this.cachedRouteByName[name!]) {

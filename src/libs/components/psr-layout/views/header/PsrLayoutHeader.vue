@@ -45,7 +45,7 @@ import PsrLayoutHeaderTagBar from "@/libs/components/psr-layout/views/header/Psr
 import {defineComponent, nextTick, ref, watch} from "vue"
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
-import {PSR_LAYOUT_MODULE_NAME} from "@/libs/components/psr-layout";
+import {useAppContext} from "psr-app-context/";
 
 export default defineComponent({
   name: "psr-layout-header",
@@ -61,6 +61,7 @@ export default defineComponent({
     const route = useRoute()
     const refSearcher = ref()
     const showSearcher = ref(false)
+    const {meta: layoutMeta} = useAppContext().currentLayout
 
     function hideSearcher() {
       showSearcher.value = false
@@ -75,12 +76,16 @@ export default defineComponent({
       }
     })
 
+    function toggleNavigationExpansion() {
+      if (layoutMeta.value) {
+        store.commit(`${layoutMeta.value.name}/toggleAside`)
+      }
+    }
+
     watch(route, hideSearcher)
     return {
       refSearcher,
-      toggleNavigationExpansion: () => {
-        store.commit(PSR_LAYOUT_MODULE_NAME + '/toggleAside')
-      },
+      toggleNavigationExpansion,
       handleShowSearcher: () => {
         showSearcher.value = true
         nextTick(() => refSearcher.value.focus())

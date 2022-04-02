@@ -14,16 +14,24 @@
 <script lang="ts">
 import {defineComponent, computed} from "vue";
 import {useStore} from "vuex";
-import {PSR_LAYOUT_MODULE_NAME} from "@/libs/components/psr-layout";
+import {useAppContext} from "psr-app-context/";
 
 export default defineComponent({
   name: "psr-layout-title",
   setup() {
     const store = useStore()
+    const layoutMeta = useAppContext().currentLayout.meta
+    const showTitle = computed(() => {
+      if (layoutMeta.value) {
+        return !store.state[layoutMeta.value.name].asideCollapsed
+      } else {
+        return true
+      }
+    })
     return {
       titleIconUrl: './favicon.ico',
       title: process.env.VUE_APP_TITLE,
-      showTitle: computed(() => !store.state[PSR_LAYOUT_MODULE_NAME].asideCollapsed)
+      showTitle
     }
   }
 })

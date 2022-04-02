@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts">
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {ref, defineComponent, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
-import {AppNavigationMenuItem, useAppNavigationMenu} from "@/libs/commons/app-context/plugins/navigation-menu";
+import {AppNavigationMenuItem, useAppNavigationMenu} from "psr-app-context/plugins/navigation-menu";
 
 interface SelectOption {
   title: string,
@@ -47,9 +47,10 @@ export default defineComponent({
     const refSelect = ref()
     const menuItems = useAppNavigationMenu().menuItems
     const router = useRouter()
+    const route = useRoute()
     const fuse = computed(() => {
       const selectOptions: SelectOption[] = []
-      buildSelectOptions(selectOptions, menuItems.value)
+      buildSelectOptions(selectOptions, menuItems.value[route.matched[0].name!])
       return new Fuse<SelectOption>(selectOptions, {
         shouldSort: true,
         threshold: 0.4,

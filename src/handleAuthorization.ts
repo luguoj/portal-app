@@ -1,13 +1,14 @@
 import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/libs/services/psr-oauth/context";
 import {watch} from "vue";
 import {ElMessage} from "element-plus";
-import {ROUTE_SIGN_IN_PATH} from "@/libs/components/psr-oauth-sso-client-sign-in/route";
 import {useTokenContext} from "@/libs/services/psr-oauth/context";
-import {AppContext, useAppContext} from "@/libs/commons/app-context";
+import {AppContext, useAppContext} from "psr-app-context/";
+
+export const ROUTE_SIGN_IN_NAME = 'sign-in'
 
 function goSignIn(appContext: AppContext) {
-    if (appContext.router.currentRoute.value.fullPath !== ROUTE_SIGN_IN_PATH) {
-        appContext.router.replace({path: ROUTE_SIGN_IN_PATH})
+    if (appContext.router.currentRoute.value.name !== ROUTE_SIGN_IN_NAME) {
+        appContext.router.replace({name: ROUTE_SIGN_IN_NAME})
     }
 }
 
@@ -64,7 +65,7 @@ export function handleAuthorization() {
 
     // 禁止已经认证用户跳转到登录页面
     router.beforeEach(to => {
-        if (to.path === ROUTE_SIGN_IN_PATH) {
+        if (to.name === ROUTE_SIGN_IN_NAME) {
             if (tokenInfo.authentication.state === AUTHENTICATED) {
                 return false
             }
@@ -73,7 +74,7 @@ export function handleAuthorization() {
     })
     // 成功跳转记录路径
     router.afterEach(to => {
-        if (to.fullPath !== ROUTE_SIGN_IN_PATH) {
+        if (to.name !== ROUTE_SIGN_IN_NAME) {
             store.commit('updateUserLastRoutePath', to.fullPath)
         }
     })
