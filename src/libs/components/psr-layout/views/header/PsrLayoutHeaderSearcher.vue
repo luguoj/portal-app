@@ -1,7 +1,7 @@
 <template>
   <el-select
       ref="refSelect"
-      placeholder="搜索 (菜单名称 / 拼音)"
+      placeholder="搜索 (菜单名称 / 拼音 / 拼音首字母)"
       filterable
       remote
       :remote-method="querySearch"
@@ -26,18 +26,21 @@ import {computeModuleRoutePath} from "psr-app-context/computeModuleRoute";
 interface SelectOption {
   title: string,
   titlePinyin: string,
+  titlePinyinHeader: string,
   path: string
 }
 
 function buildSelectOptions(selectOptions: SelectOption[], menuItems: AppNavigationMenuItem[], base?: SelectOption) {
   for (const menuItem of menuItems) {
     const title = (base ? `${base.title} / ` : '') + menuItem.title
-    const titlePinyin = (base ? base.titlePinyin : '') + pinyin(menuItem.title, {style: pinyin.STYLE_NORMAL}).join('')
-    if (menuItem.route) {
+    const titlePinyinByWord = pinyin(menuItem.title, {style: pinyin.STYLE_NORMAL})
+    const titlePinyin = (base ? base.titlePinyin : '') + titlePinyinByWord.join('')
+    const titlePinyinHeader = (base ? base.titlePinyinHeader : '') + titlePinyinByWord.map(word => word[0].substring(0, 1)).join('')
+    if (menuItem.route != undefined) {
       const path = menuItem.route.path
-      selectOptions.push({title, titlePinyin, path})
+      selectOptions.push({title, titlePinyin, titlePinyinHeader, path})
     } else if (menuItem.children.length > 0) {
-      buildSelectOptions(selectOptions, menuItem.children, {title, titlePinyin, path: ""})
+      buildSelectOptions(selectOptions, menuItem.children, {title, titlePinyin, titlePinyinHeader, path: ""})
     }
   }
 }
@@ -55,16 +58,19 @@ export default defineComponent({
       buildSelectOptions(selectOptions, menuItems.value[route.matched[0].name!])
       return new Fuse<SelectOption>(selectOptions, {
         shouldSort: true,
-        threshold: 0.4,
+        threshold: 0.1,
         location: 0,
         distance: 100,
         minMatchCharLength: 1,
         keys: [{
           name: 'title',
-          weight: 0.5
+          weight: 0.4
         }, {
           name: 'titlePinyin',
-          weight: 0.5
+          weight: 0.3
+        }, {
+          name: 'titlePinyinHeader',
+          weight: 0.3
         }]
       })
     })
