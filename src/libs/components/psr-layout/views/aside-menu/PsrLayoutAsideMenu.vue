@@ -13,12 +13,12 @@
 </template>
 
 <script lang="ts">
+import {computed, defineComponent, nextTick, onMounted, Ref, ref, watch} from "vue";
 import PsrLayoutAsideMenuItem from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenuItem.vue";
-import {computed, nextTick, onMounted, ref, watch, defineComponent} from "vue";
 import {useStore} from "vuex";
-import {useRoute} from "vue-router";
-import {moduleRouteMatched} from "psr-app-context/router";
 import {useAppContext} from "psr-app-context/";
+import {AppNavigationMenuItem} from "psr-app-context/navigation-menu";
+import {State} from "../../store/State";
 
 export default defineComponent({
   name: "psr-layout-aside-menu",
@@ -26,33 +26,34 @@ export default defineComponent({
     PsrLayoutAsideMenuItem
   },
   setup() {
-    const store = useStore()
-    const route = useRoute()
     const activeMenuItemId = ref()
-    const {meta: layoutMeta, navigationMenuItems: menuItems} = useAppContext().currentLayout
+    const store = useStore()
+    const appContext = useAppContext();
+    const currentRoute = appContext.currentRoute
+    const menuItems: Ref<AppNavigationMenuItem[]> = appContext.navigationMenu.currentLayoutMenuItems
+    const menuCollapse = computed<boolean>(() => {
+      if (currentRoute.value.layout) {
+        const state = store.state[currentRoute.value.layout.name] as State
+        return state.asideCollapsed
+      } else {
+        return false
+      }
+    })
 
     function updateActiveMenuItem() {
-      const _moduleRouteMatched = moduleRouteMatched(route)
-      if (_moduleRouteMatched && layoutMeta.value) {
-        activeMenuItemId.value = _moduleRouteMatched.name!.toString().substring(layoutMeta.value.name.length + 1)
+      if (currentRoute.value.module) {
+        activeMenuItemId.value = currentRoute.value.module.name
       } else {
         activeMenuItemId.value = ''
       }
     }
 
     onMounted(() => {
-      watch(route, updateActiveMenuItem, {immediate: true})
+      watch(currentRoute, updateActiveMenuItem, {immediate: true})
       watch(menuItems, () => {
         activeMenuItemId.value = null
         nextTick(updateActiveMenuItem)
       })
-    })
-    const menuCollapse = computed(() => {
-      if (layoutMeta.value) {
-        return store.state[layoutMeta.value.name].asideCollapsed
-      } else {
-        return false
-      }
     })
     return {
       menuCollapse,
@@ -62,9 +63,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped>
-.menu {
-  border: none;
-}
-</style>

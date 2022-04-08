@@ -1,22 +1,22 @@
 <template>
   <el-menu-item
-      v-if="routePath"
+      v-if="menuItem.route"
       :index="menuItem.id"
-      :route="{path:routePath}"
+      :route="{path:menuItem.route.path}"
   >
-    <el-icon :class="iconCls"/>
-    <template #title>{{ title }}</template>
+    <el-icon :class="menuItem.iconCls"/>
+    <template #title>{{ menuItem.title }}</template>
   </el-menu-item>
   <el-sub-menu
       v-else
-      :index="id"
+      :index="menuItem.id"
   >
     <template #title>
-      <el-icon :class="iconCls"/>
-      <span>{{ title }}</span>
+      <el-icon :class="menuItem.iconCls"/>
+      <span>{{ menuItem.title }}</span>
     </template>
     <psr-layout-aside-menu-item
-        v-for="child in children" :key="child.id"
+        v-for="child in menuItem.children" :key="child.id"
         :menu-item="child"
     />
   </el-sub-menu>
@@ -24,8 +24,7 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
-import {AppNavigationMenuItem} from "psr-app-context/plugins/navigation-menu";
-import {computeModuleRoutePath} from "psr-app-context/computeModuleRoute";
+import {AppNavigationMenuItem} from "psr-app-context/navigation-menu";
 
 export default defineComponent({
   name: "psr-layout-aside-menu-item",
@@ -33,17 +32,6 @@ export default defineComponent({
     menuItem: {
       type: Object as PropType<AppNavigationMenuItem>,
       required: true
-    }
-  },
-  setup(props) {
-    const {id, title, iconCls, route, children} = props.menuItem
-    let routePath = route ? computeModuleRoutePath(route.path) : null
-    return {
-      id,
-      title,
-      iconCls,
-      children,
-      routePath
     }
   }
 })
