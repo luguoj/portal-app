@@ -23,7 +23,7 @@ export default defineComponent({
     return {
       keepAliveComponentNames: computed(() => {
         const names: string[] = []
-        for (const cachedRoute of routeCache.cachedRoutes) {
+        for (const cachedRoute of routeCache.cachedRoutes.value) {
           names.push(cachedRoute.componentName)
         }
         return names

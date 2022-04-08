@@ -10,6 +10,6 @@ export const PsrLayout: AppLayoutConfig = {
     component: () => import("./views/PsrLayout.vue"),
     routes,
     iconCls: "pi pi-home",
-    title: "首页",
+    title: "布局",
     menus
 }

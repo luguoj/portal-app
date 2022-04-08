@@ -20,10 +20,10 @@ export default defineComponent({
   name: "psr-layout-title",
   setup() {
     const store = useStore()
-    const layoutMeta = useAppContext().currentLayout.meta
+    const currentRoute = useAppContext().currentRoute
     const showTitle = computed(() => {
-      if (layoutMeta.value) {
-        return !store.state[layoutMeta.value.name].asideCollapsed
+      if (currentRoute.value.layout) {
+        return !store.state[currentRoute.value.layout.name].asideCollapsed
       } else {
         return true
       }
