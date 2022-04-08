@@ -5,8 +5,8 @@ import {Admin} from "@/modules/admin-console";
 import {portalService} from "@/services/portal";
 import {createAppRouteCache} from "psr-app-context/plugins/route-cache/AppRouteCacheProvider";
 import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persist";
-import {Dashboard} from "@/modules/dashboard";
-import PsrLayoutPageSignIn from "@/libs/components/psr-oauth-sso-client-sign-in/views/PsrOAuthSSOClientSignIn.vue";
+import PsrErrorNotFound from "@/libs/components/psr/views/PsrErrorNotFound.vue";
+import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClientSignIn.vue";
 
 if (process.env.VUE_APP_PORTAL_ID === undefined) {
     throw new Error("缺少环境变量: process.env.VUE_APP_PORTAL_ID")
@@ -19,7 +19,6 @@ export const appContext = createAppContext({
         name: 'platform-console',
         title: '平台控制台',
         modules: [
-            Dashboard,
             Admin,
             SamplePage
         ],
@@ -30,15 +29,9 @@ export const appContext = createAppContext({
         title: '样例控制台',
         iconCls: 'pi pi-book',
         modules: [
-            Dashboard,
             SamplePage
         ],
         permission: true
-    }, {
-        name: 'sign-in',
-        title: '登录',
-        iconCls: 'pi pi-sign',
-        component: PsrLayoutPageSignIn
     }],
     permission: (username: string) => {
         if (username === '') {
@@ -49,5 +42,9 @@ export const appContext = createAppContext({
             return portalService.user.findPermissionByPortalId(appPortalId)
         }
     },
-    storePlugins: [createStatePersistPlugin()]
+    storePlugins: [createStatePersistPlugin()],
+    pages: {
+        signIn: PsrOAuthSSOClientSignIn,
+        errorNotFound: PsrErrorNotFound
+    }
 }).use(createAppRouteCache())
