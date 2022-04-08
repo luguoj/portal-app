@@ -1,7 +1,7 @@
 import {App} from "vue";
 import {AppContext} from "./AppContext";
 
-export class AppPlugin {
+export abstract class AppPlugin {
     injectKey: string
     appContext?: AppContext
 
@@ -13,4 +13,6 @@ export class AppPlugin {
         this.appContext = appContext
         app.provide(this.injectKey, this)
     }
+
+    abstract onLayoutChange(): void
 }

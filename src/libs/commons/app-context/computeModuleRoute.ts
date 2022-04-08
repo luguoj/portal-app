@@ -1,11 +1,11 @@
 import {useAppContext} from "./AppContextProvider";
 
 export function computeModuleRouteName(name: string) {
-    const {meta: layoutMeta} = useAppContext().currentLayout
-    return layoutMeta.value?.name + '/' + name
+    const route = useAppContext().currentRoute
+    return route.value.layout?.name + '/' + name
 }
 
-export function computeModuleRoutePath(path: string) {
-    const {meta: layoutMeta} = useAppContext().currentLayout
-    return layoutMeta.value?.path + '/' + path
-}
+// export function computeModuleRoutePath(path: string) {
+//     const layoutMeta = useAppContext().currentLayoutMeta
+//     return layoutMeta.value?.path + '/' + path
+// }
