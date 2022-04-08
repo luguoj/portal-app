@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import {ref, defineComponent, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
-import {AppNavigationMenuItem, useAppNavigationMenu} from "psr-app-context/plugins/navigation-menu";
-import {computeModuleRoutePath} from "psr-app-context/computeModuleRoute";
+import {AppNavigationMenuItem} from "psr-app-context/navigation-menu";
+import {useAppContext} from "psr-app-context/";
 
 interface SelectOption {
   title: string,
@@ -48,14 +48,14 @@ function buildSelectOptions(selectOptions: SelectOption[], menuItems: AppNavigat
 export default defineComponent({
   name: "psr-layout-header-searcher",
   setup() {
-    const modulePathPrefix = computeModuleRoutePath("")
     const refSelect = ref()
-    const menuItems = useAppNavigationMenu().menuItems
+    const menuItems = useAppContext().navigationMenu.currentLayoutMenuItems
     const router = useRouter()
-    const route = useRoute()
     const fuse = computed(() => {
       const selectOptions: SelectOption[] = []
-      buildSelectOptions(selectOptions, menuItems.value[route.matched[0].name!])
+      if (menuItems.value) {
+        buildSelectOptions(selectOptions, menuItems.value)
+      }
       return new Fuse<SelectOption>(selectOptions, {
         shouldSort: true,
         threshold: 0.1,
@@ -89,7 +89,7 @@ export default defineComponent({
       searchResult,
       querySearch,
       searcherChange: (val: string) => {
-        router.push(modulePathPrefix + val)
+        router.push(val)
       },
       focus: () => {
         refSelect.value.focus()
