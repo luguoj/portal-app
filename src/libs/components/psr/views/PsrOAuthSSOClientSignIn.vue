@@ -23,7 +23,7 @@ export default defineComponent({
 
 <style scoped>
 .psr-modal {
-  z-index: 2003;
+  z-index: 2000;
 }
 
 .iframe-sign-in {
