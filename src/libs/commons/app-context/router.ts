@@ -17,10 +17,3 @@ export function buildRouter(
     })
     return router
 }
-
-// export function moduleRouteMatched(route: RouteLocationNormalizedLoaded) {
-//     if (route.matched.length > 1) {
-//         return route.matched[1]
-//     }
-//     return null
-// }
