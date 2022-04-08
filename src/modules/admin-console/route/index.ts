@@ -1,4 +1,4 @@
-import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
+import {PSRRouteRecordRaw} from "psr-app-context/route";
 
 export const ADMIN_CONSOLE_ROUTE_NAME = {
     GROUP: 'admin-console-group',
@@ -18,7 +18,7 @@ export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
             title: '许可',
             iconCls: 'pi pi-key',
         },
-        permission: {key: ADMIN_CONSOLE_ROUTE_NAME.PERMISSION}
+        permission: []
     }
 }
 
@@ -31,7 +31,7 @@ export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
             title: '用户',
             iconCls: 'pi pi-users'
         },
-        permission: {key: ADMIN_CONSOLE_ROUTE_NAME.USER}
+        permission: []
     }
 }
 
@@ -44,7 +44,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
             title: '分组',
             iconCls: 'pi pi-tag'
         },
-        permission: {key: ADMIN_CONSOLE_ROUTE_NAME.GROUP}
+        permission: []
     },
     children: [{
         name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST,
@@ -54,10 +54,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
             tag: {
                 title: '分组清单',
             },
-            permission: {
-                key: ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST,
-                permissions: ['add', 'edit', 'delete']
-            }
+            permission: ['add', 'edit', 'delete']
         }
     }, {
         name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION,
@@ -68,7 +65,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
             tag: {
                 title: '分组许可',
             },
-            permission: {key: ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION}
+            permission: []
         }
     }, {
         name: ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER,
@@ -79,7 +76,7 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
             tag: {
                 title: '分组用户',
             },
-            permission: {key: ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER}
+            permission: []
         }
     }]
 }

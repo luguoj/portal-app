@@ -5,19 +5,10 @@ export const menus = [{
     title: '样例页面',
     iconCls: 'pi pi-book',
     children: [{
-        id: 'sample',
-        title: '样例',
-        iconCls: 'pi pi-book',
         route: ROUTE_SAMPLE
     }, {
-        id: 'sample-parent',
-        title: '嵌套页面',
-        iconCls: 'pi pi-book',
         route: ROUTE_SAMPLE_PARENT
     }, {
-        id: 'sample-2',
-        title: '样例-2',
-        iconCls: 'pi pi-book',
         route: ROUTE_SAMPLE_2
     }]
 }]

@@ -5,13 +5,10 @@ export const menus = [{
     title: '管理员控制台',
     iconCls: 'pi pi-cog',
     children: [{
-        id: 'admin-console-permission',
         route: ROUTE_ADMIN_PERMISSION
     }, {
-        id: 'admin-console-group',
         route: ROUTE_ADMIN_GROUP
     }, {
-        id: 'admin-console-user',
         route: ROUTE_ADMIN_USER
     }]
 }]

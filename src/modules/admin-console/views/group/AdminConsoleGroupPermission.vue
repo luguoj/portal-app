@@ -90,7 +90,7 @@ import {useRouter} from "vue-router";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
 import {Queue} from "@/libs/commons/promise-queue";
 import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService";
-import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
+import {PSRRouteRecordRaw} from "psr-app-context/route";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 import pinyin from "pinyin";
 import {computeModuleRouteName} from "psr-app-context/computeModuleRoute";
@@ -131,7 +131,7 @@ function buildRoutePermissionNodes(
           name: route.name,
           title: route.meta?.tag?.title,
           iconCls: route.meta?.tag?.iconCls,
-          actions: route.meta?.permission?.permissions
+          actions: route.meta?.permission || []
         }
       }
       if (children) {

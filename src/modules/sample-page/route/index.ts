@@ -1,4 +1,4 @@
-import {PSRRouteRecordRaw} from "@/libs/commons/router/psr-router-interface";
+import {PSRRouteRecordRaw} from "psr-app-context/route";
 
 export const ROUTE_SAMPLE: PSRRouteRecordRaw = {
     name: 'sample',
@@ -8,7 +8,8 @@ export const ROUTE_SAMPLE: PSRRouteRecordRaw = {
         tag: {
             title: '样例页面',
             iconCls: 'pi pi-book'
-        }
+        },
+        permission: []
     }
 }
 
@@ -37,13 +38,23 @@ export const ROUTE_SAMPLE_PARENT: PSRRouteRecordRaw = {
     children: [{
         name: 'sample-parent/sample-child',
         path: ':pageNo',
+        meta: {
+            tag: {
+                title: '样例子页面1'
+            }
+        },
         component: () => import('@/modules/sample-page/views/SampleChildPage.vue'),
         props: true,
         children: [{
             name: 'sample-parent/sample-child/sample-child2',
             path: ':pageNo2',
+            meta: {
+                tag: {
+                    title: '样例子页面2'
+                }
+            },
             component: () => import('@/modules/sample-page/views/SampleChildPage.vue'),
-            props: (route: any) => ({pageNo: route.params.pageNo2})
+            props: (route) => ({pageNo: route.params.pageNo2})
         }]
     }]
 }
