@@ -1,18 +1,22 @@
-import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/libs/services/psr-oauth/context";
+import {
+    AUTHENTICATED,
+    CERTIFICATION_EXPIRED,
+    NOT_AUTHENTICATED,
+    useTokenContext
+} from "@/libs/services/psr-oauth/context";
 import {watch} from "vue";
 import {ElMessage} from "element-plus";
-import {useTokenContext} from "@/libs/services/psr-oauth/context";
-import {AppContext, useAppContext} from "@/libs/commons/app-context/";
+import {PsrAppContext, useAppContext} from "@/libs/commons/app-context/";
 
 export const ROUTE_SIGN_IN_NAME = 'sign-in'
 
-function goSignIn(appContext: AppContext) {
-    if (appContext.router.currentRoute.value.name !== ROUTE_SIGN_IN_NAME) {
-        appContext.router.replace({name: ROUTE_SIGN_IN_NAME})
+function goSignIn(appContext: PsrAppContext) {
+    if (appContext.router.router.currentRoute.value.name !== ROUTE_SIGN_IN_NAME) {
+        appContext.router.router.replace({name: ROUTE_SIGN_IN_NAME})
     }
 }
 
-function onCertificationExpired(appContext: AppContext, username: string) {
+function onCertificationExpired(appContext: PsrAppContext, username: string) {
     console.log('身份认证过期, 请重新登录.', `用户: ${username}`)
     ElMessage({
         message: `用户: ${username} 身份认证过期, 请重新登录.`,
@@ -21,23 +25,23 @@ function onCertificationExpired(appContext: AppContext, username: string) {
     goSignIn(appContext)
 }
 
-function onNotAuthenticated(appContext: AppContext, username?: string) {
+function onNotAuthenticated(appContext: PsrAppContext, username?: string) {
     if (username) {
         ElMessage(`用户: ${username} 已登出.`)
         console.log('已登出', `用户: ${username}`)
     }
-    appContext.resetStore()
+    appContext.store.resetStore()
     goSignIn(appContext)
 }
 
-function onAuthenticated(appContext: AppContext, newUsername: string, oldUsername?: string) {
+function onAuthenticated(appContext: PsrAppContext, newUsername: string, oldUsername?: string) {
     if (oldUsername && newUsername !== oldUsername) {
         console.log('用户身份切换.', `用户: ${oldUsername} -> ${newUsername}`)
         ElMessage({
             message: `用户身份切换.: ${oldUsername} -> ${newUsername}`,
             type: 'warning',
         })
-        appContext.resetStore()
+        appContext.store.resetStore()
     } else {
         ElMessage({
             message: `用户 ${newUsername} 身份已认证.`,
@@ -45,8 +49,8 @@ function onAuthenticated(appContext: AppContext, newUsername: string, oldUsernam
         })
         console.log('用户身份已认证.', `用户: ${newUsername}`)
     }
-    appContext.store.commit('updateUsername', newUsername)
-    appContext.router.isReady().then(() => appContext.router.replace({path: appContext.store.state.userLastRoutePath}))
+    appContext.store.store.commit('updateUsername', newUsername)
+    appContext.router.router.isReady().then(() => appContext.router.router.replace({path: appContext.store.store.state.userLastRoutePath}))
 }
 
 export function handleAuthorization() {
@@ -54,11 +58,11 @@ export function handleAuthorization() {
     const tokenInfo = tokenContext.tokenInfo()
     const appContext = useAppContext()
     const store = appContext.store
-    const router = appContext.router
+    const router = appContext.router.router
     // 初始化设置tokenInfo用户名为前一次访问的用户
-    if (store.state.username) {
+    if (store.store.state.username) {
         tokenInfo.authentication = {
-            username: store.state.username,
+            username: store.store.state.username,
             state: AUTHENTICATED
         }
     }
@@ -75,7 +79,7 @@ export function handleAuthorization() {
     // 成功跳转记录路径
     router.afterEach(to => {
         if (to.name !== ROUTE_SIGN_IN_NAME) {
-            store.commit('updateUserLastRoutePath', to.fullPath)
+            store.store.commit('updateUserLastRoutePath', to.fullPath)
         }
     })
 
@@ -85,9 +89,9 @@ export function handleAuthorization() {
         if (state === CERTIFICATION_EXPIRED) {
             onCertificationExpired(appContext, tokenInfo.authentication.username)
         } else if (state === NOT_AUTHENTICATED) {
-            onNotAuthenticated(appContext, store.state.username)
+            onNotAuthenticated(appContext, store.store.state.username)
         } else if (state === AUTHENTICATED) {
-            onAuthenticated(appContext, tokenInfo.authentication.username, store.state.username)
+            onAuthenticated(appContext, tokenInfo.authentication.username, store.store.state.username)
         }
     })
     tokenContext.refreshToken()

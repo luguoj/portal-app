@@ -1,7 +1,7 @@
 import PsrLayoutPageBlank from "@/libs/components/psr-layout/views/page/blank/PsrLayoutPageBlank.vue";
-import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
+import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
 
-export const ROUTE_HOME: PSRRouteRecordRaw = {
+export const ROUTE_HOME: PsrAppRouteRecordRaw = {
     name: 'home',
     path: '',
     component: PsrLayoutPageBlank,
@@ -14,4 +14,4 @@ export const ROUTE_HOME: PSRRouteRecordRaw = {
     }
 }
 
-export const routes: Array<PSRRouteRecordRaw> = [ROUTE_HOME]
+export const routes: Array<PsrAppRouteRecordRaw> = [ROUTE_HOME]

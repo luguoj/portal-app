@@ -16,12 +16,12 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {computeModuleRouteName} from "@/libs/commons/app-context/computeModuleRoute";
+import {useAppContext} from "@/libs/commons/app-context";
 
 export default defineComponent({
   name: "SampleParentPage",
   setup() {
-    const childRoute = computeModuleRouteName("sample-parent/sample-child")
+    const childRoute = useAppContext().router.computeModuleRouteName("sample-parent/sample-child")
     return {childRoute}
   }
 })

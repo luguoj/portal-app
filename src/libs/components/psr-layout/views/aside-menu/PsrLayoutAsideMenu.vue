@@ -17,7 +17,7 @@ import {computed, defineComponent, nextTick, onMounted, Ref, ref, watch} from "v
 import PsrLayoutAsideMenuItem from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenuItem.vue";
 import {useStore} from "vuex";
 import {useAppContext} from "@/libs/commons/app-context/";
-import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
+import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 import {State} from "../../store/State";
 
 export default defineComponent({
@@ -29,8 +29,8 @@ export default defineComponent({
     const activeMenuItemId = ref()
     const store = useStore()
     const appContext = useAppContext();
-    const currentRoute = appContext.currentRoute
-    const menuItems: Ref<AppNavigationMenuItem[]> = appContext.navigationMenu.currentLayoutMenuItems
+    const currentRoute = appContext.router.current
+    const menuItems: Ref<PsrAppNavigationMenuItem[]> = appContext.navigationMenu.currentLayoutMenuItems
     const menuCollapse = computed<boolean>(() => {
       if (currentRoute.value.layout) {
         const state = store.state[currentRoute.value.layout.name] as State

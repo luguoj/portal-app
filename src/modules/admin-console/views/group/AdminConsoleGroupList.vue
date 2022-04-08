@@ -151,7 +151,7 @@ import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud
 import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
-import {computeModuleRouteName} from "@/libs/commons/app-context/computeModuleRoute";
+import {useAppContext} from "@/libs/commons/app-context";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -163,6 +163,7 @@ export default defineComponent({
     AdminConsoleGroupEditDialog
   },
   setup() {
+    const router = useAppContext().router
     const tableRef = ref()
     const tableProps = shallowReactive({
       pageable: reactive({
@@ -226,10 +227,9 @@ export default defineComponent({
     function handleExport() {
       tableRef.value.exportCSV();
     }
-
     const rowActionRoutes = {
-      permission: computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION),
-      user: computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER)
+      permission: router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION),
+      user: router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER)
     }
     return {
       tableRef,

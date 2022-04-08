@@ -41,19 +41,19 @@
 
 <script lang="ts">
 import {computed, defineComponent, ref, watch} from "vue";
-import {PSRRouteMeta, PSRRouteRecord} from "@/libs/commons/app-context/route";
-import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
+import {PsrAppRouteRecord} from "@/libs/commons/app-context/route";
+import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 import {PermitAll, useAppContext} from "@/libs/commons/app-context/";
-import {AppLayoutRouteRecord} from "@/libs/commons/app-context/layout/AppLayoutRouteRecord";
+import {PsrAppRouteMeta} from "@/libs/commons/app-context/route/types/PsrAppRouteMeta";
 
 interface RoutePathItem {
   key: string | symbol,
   title: string,
   iconCls?: string,
-  route?: PSRRouteRecord
+  route?: PsrAppRouteRecord
 }
 
-function buildRoutePathByNameUseRoute(routePathByName: Record<string, RoutePathItem[]>, route: PSRRouteRecord, basePath: RoutePathItem[], layoutName: string) {
+function buildRoutePathByNameUseRoute(routePathByName: Record<string, RoutePathItem[]>, route: PsrAppRouteRecord, basePath: RoutePathItem[], layoutName: string) {
   const path = [...basePath]
   if (route.meta?.tag) {
     path.push({
@@ -71,7 +71,7 @@ function buildRoutePathByNameUseRoute(routePathByName: Record<string, RoutePathI
   }
 }
 
-function buildRoutePathByNameUseMenuItem(routePathByName: Record<string, RoutePathItem[]>, menuItem: AppNavigationMenuItem, basePath: RoutePathItem[]) {
+function buildRoutePathByNameUseMenuItem(routePathByName: Record<string, RoutePathItem[]>, menuItem: PsrAppNavigationMenuItem, basePath: RoutePathItem[]) {
   const {route, children} = menuItem
   if (route) {
     buildRoutePathByNameUseRoute(routePathByName, route, basePath, menuItem.layoutName)
@@ -93,7 +93,8 @@ export default defineComponent({
   name: "psr-layout-header-route-path",
   setup() {
     const appContext = useAppContext()
-    const {currentRoute, navigationMenu: {currentLayoutMenuItems: menuItems}} = appContext
+    const currentRoute = appContext.router.current
+    const menuItems = appContext.navigationMenu.menuItems
     const layoutRoutePath = computed(() => {
       if (currentRoute.value.layout) {
         const {name, path, meta: {tag: {title, iconCls}}} = currentRoute.value.layout
@@ -128,7 +129,7 @@ export default defineComponent({
             // 否则直接追加匹配的路由标题
             for (let i = 1; i < route.matched.length; i++) {
               const routeMatched = route.matched[i];
-              const meta = routeMatched.meta as PSRRouteMeta
+              const meta = routeMatched.meta as PsrAppRouteMeta
               if (meta?.tag) {
                 result.push({
                   key: routeMatched.name!,
@@ -143,20 +144,20 @@ export default defineComponent({
       return result
     })
 
-    const layoutMetas = ref<AppLayoutRouteRecord[]>([])
+    const layoutMetas = ref<PsrAppRouteRecord[]>([])
     // 根据许可过滤布局元数据
     watch(() => appContext.permission.permission.value, permissionValue => {
       permissionValue.then(permissionByRouteName => {
         if (permissionByRouteName === PermitAll) {
-          layoutMetas.value = appContext.router.options.routes.filter(route => route.meta?.layout) as unknown as AppLayoutRouteRecord[]
+          layoutMetas.value = appContext.router.router.options.routes.filter(route => route.meta?.layout) as unknown as PsrAppRouteRecord[]
         } else {
-          layoutMetas.value = appContext.router.options.routes.filter(route => {
+          layoutMetas.value = appContext.router.router.options.routes.filter(route => {
             if (route.meta?.layout) {
-              const layoutMeta = route as unknown as AppLayoutRouteRecord
+              const layoutMeta = route as unknown as PsrAppRouteRecord
               return layoutMeta.meta.permission?.key && !!permissionByRouteName[layoutMeta.meta.permission.key]
             }
             return false
-          }) as unknown as AppLayoutRouteRecord[]
+          }) as unknown as PsrAppRouteRecord[]
         }
       })
     }, {immediate: true})

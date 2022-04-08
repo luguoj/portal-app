@@ -24,13 +24,13 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
-import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
+import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 
 export default defineComponent({
   name: "psr-layout-aside-menu-item",
   props: {
     menuItem: {
-      type: Object as PropType<AppNavigationMenuItem>,
+      type: Object as PropType<PsrAppNavigationMenuItem>,
       required: true
     }
   }

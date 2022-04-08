@@ -1,4 +1,4 @@
-import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
+import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
 
 export const ADMIN_CONSOLE_ROUTE_NAME = {
     GROUP: 'admin-console-group',
@@ -9,7 +9,7 @@ export const ADMIN_CONSOLE_ROUTE_NAME = {
     USER: 'admin-console-user'
 }
 
-export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
+export const ROUTE_ADMIN_PERMISSION: PsrAppRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.PERMISSION,
     path: 'admin-console/permission',
     component: () => import("../views/permission/AdminConsolePermission.vue"),
@@ -22,7 +22,7 @@ export const ROUTE_ADMIN_PERMISSION: PSRRouteRecordRaw = {
     }
 }
 
-export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
+export const ROUTE_ADMIN_USER: PsrAppRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.USER,
     path: 'admin-console/user',
     component: () => import("../views/user/AdminConsoleUser.vue"),
@@ -35,7 +35,7 @@ export const ROUTE_ADMIN_USER: PSRRouteRecordRaw = {
     }
 }
 
-export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
+export const ROUTE_ADMIN_GROUP: PsrAppRouteRecordRaw = {
     name: ADMIN_CONSOLE_ROUTE_NAME.GROUP,
     path: 'admin-console/group',
     component: () => import("../views/group/AdminConsoleGroup.vue"),
@@ -81,4 +81,4 @@ export const ROUTE_ADMIN_GROUP: PSRRouteRecordRaw = {
     }]
 }
 
-export const routes: Array<PSRRouteRecordRaw> = [ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_GROUP, ROUTE_ADMIN_USER]
+export const routes: Array<PsrAppRouteRecordRaw> = [ROUTE_ADMIN_PERMISSION, ROUTE_ADMIN_GROUP, ROUTE_ADMIN_USER]

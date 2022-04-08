@@ -1,6 +1,6 @@
-import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
+import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
 
-export const ROUTE_SAMPLE: PSRRouteRecordRaw = {
+export const ROUTE_SAMPLE: PsrAppRouteRecordRaw = {
     name: 'sample',
     path: 'sample',
     component: () => import('@/modules/sample-page/views/SamplePage.vue'),
@@ -13,7 +13,7 @@ export const ROUTE_SAMPLE: PSRRouteRecordRaw = {
     }
 }
 
-export const ROUTE_SAMPLE_2: PSRRouteRecordRaw = {
+export const ROUTE_SAMPLE_2: PsrAppRouteRecordRaw = {
     name: 'sample-2',
     path: 'sample-2',
     component: () => import('@/modules/sample-page/views/SamplePage.vue'),
@@ -25,7 +25,7 @@ export const ROUTE_SAMPLE_2: PSRRouteRecordRaw = {
     },
 }
 
-export const ROUTE_SAMPLE_PARENT: PSRRouteRecordRaw = {
+export const ROUTE_SAMPLE_PARENT: PsrAppRouteRecordRaw = {
     name: 'sample-parent',
     path: 'sample-parent',
     component: () => import('@/modules/sample-page/views/SampleParentPage.vue'),
@@ -59,4 +59,4 @@ export const ROUTE_SAMPLE_PARENT: PSRRouteRecordRaw = {
     }]
 }
 
-export const routes: Array<PSRRouteRecordRaw> = [ROUTE_SAMPLE, ROUTE_SAMPLE_2, ROUTE_SAMPLE_PARENT]
+export const routes: Array<PsrAppRouteRecordRaw> = [ROUTE_SAMPLE, ROUTE_SAMPLE_2, ROUTE_SAMPLE_PARENT]

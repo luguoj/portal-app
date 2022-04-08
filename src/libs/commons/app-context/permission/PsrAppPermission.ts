@@ -1,19 +1,19 @@
 import {ref, Ref, watchEffect} from "vue";
+import {PsrAppPermissionService} from "./types/PsrAppPermissionService";
+import {PsrAppPermissionRaw} from "./types/PsrAppPermissionRaw";
 
-export type PermissionsByKey = Record<string | symbol, string[]>
-export type PermissionPromise = Promise<PermissionsByKey>
-export const DenyAll: PermissionsByKey = {}
-export const PermitAll: PermissionsByKey = {'permit-all': []}
+export const DenyAll: PsrAppPermissionRaw = {}
+export const PermitAll: PsrAppPermissionRaw = {'permit-all': []}
 
-export class AppPermission {
-    readonly permission: Ref<PermissionPromise> = ref(Promise.resolve(DenyAll))
-    private readonly _permissionService: (username: string) => PermissionPromise
+export class PsrAppPermission {
+    readonly permission: Ref<Promise<PsrAppPermissionRaw>> = ref(Promise.resolve(DenyAll))
+    private readonly _permissionService: PsrAppPermissionService
 
-    constructor(permissionService: (username: string) => PermissionPromise) {
+    constructor(permissionService: PsrAppPermissionService) {
         this._permissionService = permissionService
     }
 
-    update(username: string) {
+    changeUser(username: string) {
         this.permission.value = this._permissionService(username)
     }
 

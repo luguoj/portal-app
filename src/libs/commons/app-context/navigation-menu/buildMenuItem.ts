@@ -1,13 +1,13 @@
-import {AppNavigationMenuItemRaw} from "@/libs/commons/app-context/navigation-menu/AppNavigationMenuItemRaw";
-import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu/AppNavigationMenuItem";
-import {buildLayoutChildRoute} from "@/libs/commons/app-context/route";
+import {PsrAppNavigationMenuItemRaw} from "./types/PsrAppNavigationMenuItemRaw";
+import {PsrAppNavigationMenuItem} from "./types/PsrAppNavigationMenuItem";
+import {buildLayoutChildRoute} from "../route";
 
-export function buildAppNavigationMenuItem(menuItemRaw: AppNavigationMenuItemRaw, layoutName: string): AppNavigationMenuItem {
+export function buildMenuItem(menuItemRaw: PsrAppNavigationMenuItemRaw, layoutName: string): PsrAppNavigationMenuItem {
     if (menuItemRaw.children != undefined) {
-        const newChildren: AppNavigationMenuItem[] = []
+        const newChildren: PsrAppNavigationMenuItem[] = []
         for (let i = 0; i < menuItemRaw.children.length; i++) {
             const child = menuItemRaw.children[i];
-            newChildren.push(buildAppNavigationMenuItem(child, layoutName))
+            newChildren.push(buildMenuItem(child, layoutName))
         }
         const {id, title, iconCls} = menuItemRaw
         return {id: `${layoutName}/${id}`, title, iconCls, children: newChildren}

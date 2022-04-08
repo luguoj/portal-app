@@ -1,28 +1,29 @@
 import {App, reactive, ref, Ref, watch} from "vue";
-import {PSRRouteMetaTag} from "@/libs/commons/app-context/route";
-import {AppRouteCacheItem} from "./AppRouteCacheItem";
-import {AppPlugin} from "../../AppPlugin";
-import {AppContext, AppRoute} from "../../AppContext";
+import {PsrAppCurrentRoute, PsrAppRouteMetaTag} from "../../route";
+import {PsrAppRouteCacheItem} from "./types/PsrAppRouteCacheItem";
+import {PsrAppPlugin} from "../../types/PsrAppPlugin";
+import {PsrAppContext} from "../../PsrAppContext";
 
-export class AppRouteCache extends AppPlugin {
-    cachedRoutes: Ref<AppRouteCacheItem[]> = ref([] as AppRouteCacheItem[])
-    cachedRouteByName: Record<string | symbol, AppRouteCacheItem> = {}
+export class PsrAppRouteCache extends PsrAppPlugin {
+    cachedRoutes: Ref<PsrAppRouteCacheItem[]> = ref([] as PsrAppRouteCacheItem[])
+    cachedRouteByName: Record<string | symbol, PsrAppRouteCacheItem> = {}
     activeRouteName: Ref<string | symbol | null> = ref(null as string | symbol | null)
 
-    install(app: App, appContext: AppContext) {
+    install(app: App, appContext: PsrAppContext) {
         super.install(app, appContext);
-        watch(() => appContext.store.state.username, () => this.init(), {immediate: true})
-        watch(appContext.currentRoute, (route) => this.onRoute(route))
+        watch(() => appContext.store.store.state.username, () => this.init(), {immediate: true})
+        appContext.router.onRouteChange(current => this.onRoute(current))
     }
 
     init() {
-        const {router, currentRoute} = this.appContext!
+        const router = this.appContext!.router
+        const currentRoute = router.current
         this.cachedRoutes.value = []
         this.cachedRouteByName = {}
-        const affixRoutes = router.getRoutes().filter(route => {
+        const affixRoutes = router.router.getRoutes().filter(route => {
             if (currentRoute.value.layout != null) {
                 if (route.name!.toString().startsWith(currentRoute.value.layout.name) && route.meta.tag) {
-                    const tag = route.meta.tag as PSRRouteMetaTag
+                    const tag = route.meta.tag as PsrAppRouteMetaTag
                     return tag!.isAffix
                 }
             }
@@ -32,7 +33,7 @@ export class AppRouteCache extends AppPlugin {
             const cachedRoute = this.cachedRouteByName[name!] = reactive({
                 name: name!,
                 componentName: components['default'].name!,
-                tag: meta.tag as PSRRouteMetaTag,
+                tag: meta.tag as PsrAppRouteMetaTag,
                 path
             })
             this.cachedRoutes.value.push(cachedRoute)
@@ -40,11 +41,11 @@ export class AppRouteCache extends AppPlugin {
         this.onRoute(currentRoute.value)
     }
 
-    onRoute({module, route}: AppRoute) {
+    onRoute({module, route}: PsrAppCurrentRoute) {
         if (module) {
             const {name, components, meta} = module
             if (meta.tag) {
-                const tag = meta.tag as PSRRouteMetaTag
+                const tag = meta.tag as PsrAppRouteMetaTag
                 if (!this.cachedRouteByName[name!]) {
                     const cachedRoute = this.cachedRouteByName[name!] = reactive({
                         name: name!,
@@ -63,12 +64,12 @@ export class AppRouteCache extends AppPlugin {
         }
     }
 
-    delete(cachedRoute: AppRouteCacheItem) {
+    delete(cachedRoute: PsrAppRouteCacheItem) {
         const index = this.cachedRoutes.value.indexOf(cachedRoute)
         this.cachedRoutes.value.splice(index, 1)
         delete this.cachedRouteByName[cachedRoute.name]
         if (this.activeRouteName.value === cachedRoute.name) {
-            this.appContext!.router.push(this.cachedRoutes.value[index - 1].path)
+            this.appContext!.router.router.push(this.cachedRoutes.value[index - 1].path)
         }
     }
 

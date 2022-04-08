@@ -1,7 +1,7 @@
 import {inject} from "vue";
-import {AppPlugin} from "./AppPlugin";
+import {PsrAppPlugin} from "./types/PsrAppPlugin";
 
-export function usePlugin<T extends AppPlugin>(injectKey: string) {
+export function usePlugin<T extends PsrAppPlugin>(injectKey: string) {
     const plugin = inject(injectKey) as T
     if (plugin == null) {
         throw new Error(`plugin is missing: ${injectKey}`)

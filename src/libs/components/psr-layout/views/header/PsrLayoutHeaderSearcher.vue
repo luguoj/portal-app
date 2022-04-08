@@ -20,7 +20,7 @@ import {useRouter} from "vue-router";
 import {ref, defineComponent, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
-import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
+import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 import {useAppContext} from "@/libs/commons/app-context/";
 
 interface SelectOption {
@@ -30,7 +30,7 @@ interface SelectOption {
   path: string
 }
 
-function buildSelectOptions(selectOptions: SelectOption[], menuItems: AppNavigationMenuItem[], base?: SelectOption) {
+function buildSelectOptions(selectOptions: SelectOption[], menuItems: PsrAppNavigationMenuItem[], base?: SelectOption) {
   for (const menuItem of menuItems) {
     const title = (base ? `${base.title} / ` : '') + menuItem.title
     const titlePinyinByWord = pinyin(menuItem.title, {style: pinyin.STYLE_NORMAL})

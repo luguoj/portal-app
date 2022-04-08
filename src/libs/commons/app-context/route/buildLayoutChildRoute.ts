@@ -1,7 +1,8 @@
 // 构建布局子路由，路由名称增加布局名前缀
-import {PSRRouteRecord, PSRRouteRecordRaw} from "./RouteRecord";
+import {PsrAppRouteRecord} from "./types/PsrAppRouteRecord";
+import {PsrAppRouteRecordRaw} from "./types/PsrAppRouteRecordRaw";
 
-export function buildLayoutChildRoute(routeRecordRaw: PSRRouteRecordRaw, layoutName: string, basePath?: string): PSRRouteRecord {
+export function buildLayoutChildRoute(routeRecordRaw: PsrAppRouteRecordRaw, layoutName: string, basePath?: string): PsrAppRouteRecord {
     if (basePath == undefined) {
         basePath = `/${layoutName}`
     }
@@ -14,7 +15,7 @@ export function buildLayoutChildRoute(routeRecordRaw: PSRRouteRecordRaw, layoutN
             permissions: routeRecordRaw.meta.permission
         } : undefined
     }
-    let children: PSRRouteRecord[] | undefined
+    let children: PsrAppRouteRecord[] | undefined
     if (routeRecordRaw.children) {
         children = []
         for (let i = 0; i < routeRecordRaw.children.length; i++) {

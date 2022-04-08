@@ -59,7 +59,7 @@ export default defineComponent({
     const store = useStore()
     const refSearcher = ref()
     const showSearcher = ref(false)
-    const currentRoute = useAppContext().currentRoute
+    const currentRoute = useAppContext().router.current
 
     function hideSearcher() {
       showSearcher.value = false

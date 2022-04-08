@@ -1,15 +1,15 @@
 import {App} from "vue";
-import {AppContext} from "./AppContext";
+import {PsrAppContext} from "../PsrAppContext";
 
-export abstract class AppPlugin {
+export abstract class PsrAppPlugin {
     injectKey: string
-    appContext?: AppContext
+    appContext?: PsrAppContext
 
     constructor(injectKey: string) {
         this.injectKey = injectKey
     }
 
-    install(app: App, appContext: AppContext) {
+    install(app: App, appContext: PsrAppContext) {
         this.appContext = appContext
         app.provide(this.injectKey, this)
     }

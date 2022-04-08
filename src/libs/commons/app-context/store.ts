@@ -1,11 +1,7 @@
 import {createStore, ModuleTree, Plugin, StoreOptions} from "vuex";
+import {PsrAppStoreRootState} from "@/libs/commons/app-context/store/types/PsrAppStoreRootState";
 
-export interface StoreRootState {
-    username: string,
-    userLastRoutePath: string
-}
-
-export function buildStoreOptions(storeModules: ModuleTree<any>): StoreOptions<StoreRootState> {
+export function buildStoreOptions(storeModules: ModuleTree<any>): StoreOptions<PsrAppStoreRootState> {
     return {
         state() {
             return {

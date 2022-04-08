@@ -1,9 +1,9 @@
 import {store} from "@/libs/components/psr-layout/store";
-import {AppLayoutConfig} from "@/libs/commons/app-context/layout/AppLayoutConfig";
+import {PsrAppLayoutOptions} from "@/libs/commons/app-context/types/PsrAppLayoutOptions";
 import {routes} from "@/libs/components/psr-layout/route";
 import {menus} from "./menus"
 
-export const PsrLayout: AppLayoutConfig = {
+export const PsrLayout: PsrAppLayoutOptions = {
     modules: [],
     name: 'psr-layout',
     store,

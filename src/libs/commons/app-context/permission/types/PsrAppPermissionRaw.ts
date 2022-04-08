@@ -1,0 +1,1 @@
+export type PsrAppPermissionRaw = Record<string | symbol, string[]>

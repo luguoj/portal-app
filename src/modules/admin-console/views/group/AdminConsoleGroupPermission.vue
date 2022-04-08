@@ -90,10 +90,10 @@ import {useRouter} from "vue-router";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
 import {Queue} from "@/libs/commons/promise-queue";
 import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService";
-import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 import pinyin from "pinyin";
-import {computeModuleRouteName} from "@/libs/commons/app-context/computeModuleRoute";
+import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
+import {useAppContext} from "@/libs/commons/app-context";
 
 interface RoutePermissionStatus {
   access: boolean,
@@ -114,7 +114,7 @@ interface RoutePermissionNode {
 }
 
 function buildRoutePermissionNodes(
-    routes: PSRRouteRecordRaw[],
+    routes: PsrAppRouteRecordRaw[],
     routeRoutePermissionStatusMap: UnwrapNestedRefs<Record<string, RoutePermissionStatus>>
 ) {
   const nodes: RoutePermissionNode[] = []
@@ -171,7 +171,7 @@ export default defineComponent({
 
     function initTableData() {
       tableProps.loading = true
-      tableProps.data = buildRoutePermissionNodes(router.options.routes as PSRRouteRecordRaw[], routeRoutePermissionStatusByName)
+      tableProps.data = buildRoutePermissionNodes(router.options.routes as PsrAppRouteRecordRaw[], routeRoutePermissionStatusByName)
       portalService.crud.group.findAllById([props.groupId]).then(data => {
         if (data && data.length > 0) {
           groupEntity.value = data[0]
@@ -251,7 +251,7 @@ export default defineComponent({
     onMounted(() => {
       initTableData()
     })
-    const backRouteName = computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST)
+    const backRouteName = useAppContext().router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST)
     return {
       groupEntity,
       tableProps,

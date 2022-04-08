@@ -1,12 +1,12 @@
-import {AppRouteCache} from "./AppRouteCache";
+import {PsrAppRouteCache} from "./PsrAppRouteCache";
 import {usePlugin} from "../../usePlugin";
 
 const KEY = 'psr-app-context-route-cache'
 
 export function useAppRouteCache() {
-    return usePlugin<AppRouteCache>(KEY)
+    return usePlugin<PsrAppRouteCache>(KEY)
 }
 
 export function createAppRouteCache() {
-    return new AppRouteCache(KEY);
+    return new PsrAppRouteCache(KEY);
 }

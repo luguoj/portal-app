@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed} from "vue";
+import {computed, defineComponent} from "vue";
 import {useStore} from "vuex";
 import {useAppContext} from "@/libs/commons/app-context/";
 
@@ -20,7 +20,7 @@ export default defineComponent({
   name: "psr-layout-title",
   setup() {
     const store = useStore()
-    const currentRoute = useAppContext().currentRoute
+    const currentRoute = useAppContext().router.current
     const showTitle = computed(() => {
       if (currentRoute.value.layout) {
         return !store.state[currentRoute.value.layout.name].asideCollapsed
