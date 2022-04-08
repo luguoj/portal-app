@@ -1,4 +1,4 @@
-import {PSRRouteRecordRaw} from "psr-app-context/route";
+import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
 
 export const ROUTE_SIGN_IN: PSRRouteRecordRaw = {
     name: 'psr-dashboard',

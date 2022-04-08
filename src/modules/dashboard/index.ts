@@ -1,5 +1,5 @@
 import {routes} from "./route";
-import {AppModuleConfig} from "psr-app-context/";
+import {AppModuleConfig} from "@/libs/commons/app-context/";
 
 export const Dashboard: AppModuleConfig = {
     name: 'dashboard',

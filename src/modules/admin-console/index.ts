@@ -1,4 +1,4 @@
-import {AppModuleConfig} from "psr-app-context/";
+import {AppModuleConfig} from "@/libs/commons/app-context/";
 import {routes} from "./route";
 import {menus} from "@/modules/admin-console/menus";
 

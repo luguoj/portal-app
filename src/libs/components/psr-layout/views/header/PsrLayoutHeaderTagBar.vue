@@ -28,8 +28,8 @@ import PsrLayoutHeaderTag from "@/libs/components/psr-layout/views/header/PsrLay
 import PsrElHorizontalScrollBar
   from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
 import {defineComponent} from "vue";
-import {useAppRouteCache} from "psr-app-context/plugins/route-cache/AppRouteCacheProvider";
-import {AppRouteCacheItem} from "psr-app-context/plugins/route-cache";
+import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/AppRouteCacheProvider";
+import {AppRouteCacheItem} from "@/libs/commons/app-context/plugins/route-cache";
 
 
 export default defineComponent({

@@ -1,5 +1,5 @@
 import {RouteRecordRaw} from "vue-router";
-import {PSRRouteMeta, PSRRouteMetaRaw} from "psr-app-context/route/index";
+import {PSRRouteMeta, PSRRouteMetaRaw} from "@/libs/commons/app-context/route/index";
 
 export type PSRRouteRecord = PSRRouteRecordBase & RouteRecordRaw
 export type PSRRouteRecordRaw = PSRRouteRecordBaseRaw & RouteRecordRaw

@@ -1,6 +1,6 @@
-import {AppPermission, PermitAll} from "psr-app-context/permission";
+import {AppPermission, PermitAll} from "@/libs/commons/app-context/permission";
 import {Router} from "vue-router";
-import {PSRRouteMetaPermission} from "psr-app-context/route";
+import {PSRRouteMetaPermission} from "@/libs/commons/app-context/route";
 import {ElMessage} from "element-plus/es";
 
 export function blockRouteByPermission(permission: AppPermission, router: Router) {

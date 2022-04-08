@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
-import {AppNavigationMenuItem} from "psr-app-context/navigation-menu";
+import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 
 export default defineComponent({
   name: "psr-layout-aside-menu-item",

@@ -16,8 +16,8 @@
 import {computed, defineComponent, nextTick, onMounted, Ref, ref, watch} from "vue";
 import PsrLayoutAsideMenuItem from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenuItem.vue";
 import {useStore} from "vuex";
-import {useAppContext} from "psr-app-context/";
-import {AppNavigationMenuItem} from "psr-app-context/navigation-menu";
+import {useAppContext} from "@/libs/commons/app-context/";
+import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 import {State} from "../../store/State";
 
 export default defineComponent({

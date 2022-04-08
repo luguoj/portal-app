@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {computeModuleRouteName} from "psr-app-context/computeModuleRoute";
+import {computeModuleRouteName} from "@/libs/commons/app-context/computeModuleRoute";
 
 export default defineComponent({
   name: "SampleParentPage",

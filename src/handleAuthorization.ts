@@ -2,7 +2,7 @@ import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/libs/se
 import {watch} from "vue";
 import {ElMessage} from "element-plus";
 import {useTokenContext} from "@/libs/services/psr-oauth/context";
-import {AppContext, useAppContext} from "psr-app-context/";
+import {AppContext, useAppContext} from "@/libs/commons/app-context/";
 
 export const ROUTE_SIGN_IN_NAME = 'sign-in'
 

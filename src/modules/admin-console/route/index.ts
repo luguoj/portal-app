@@ -1,4 +1,4 @@
-import {PSRRouteRecordRaw} from "psr-app-context/route";
+import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
 
 export const ADMIN_CONSOLE_ROUTE_NAME = {
     GROUP: 'admin-console-group',

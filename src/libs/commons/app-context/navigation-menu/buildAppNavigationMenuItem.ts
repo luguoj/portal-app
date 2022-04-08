@@ -1,6 +1,6 @@
-import {AppNavigationMenuItemRaw} from "psr-app-context/navigation-menu/AppNavigationMenuItemRaw";
-import {AppNavigationMenuItem} from "psr-app-context/navigation-menu/AppNavigationMenuItem";
-import {buildLayoutChildRoute} from "psr-app-context/route";
+import {AppNavigationMenuItemRaw} from "@/libs/commons/app-context/navigation-menu/AppNavigationMenuItemRaw";
+import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu/AppNavigationMenuItem";
+import {buildLayoutChildRoute} from "@/libs/commons/app-context/route";
 
 export function buildAppNavigationMenuItem(menuItemRaw: AppNavigationMenuItemRaw, layoutName: string): AppNavigationMenuItem {
     if (menuItemRaw.children != undefined) {

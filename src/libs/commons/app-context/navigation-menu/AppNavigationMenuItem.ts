@@ -1,4 +1,4 @@
-import {PSRRouteRecord} from "psr-app-context/route";
+import {PSRRouteRecord} from "@/libs/commons/app-context/route";
 
 export type AppNavigationMenuItem = AppMenuItemSubMenu | AppMenuItemRouteItem
 

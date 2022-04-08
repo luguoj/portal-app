@@ -1,8 +1,8 @@
 import {AppModuleConfig} from "../module/AppModuleConfig";
 import {Module} from "vuex";
 import {Component} from "vue";
-import {PSRRouteRecordRaw} from "psr-app-context/route";
-import {AppNavigationMenuItemRaw} from "psr-app-context/navigation-menu";
+import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
+import {AppNavigationMenuItemRaw} from "@/libs/commons/app-context/navigation-menu";
 
 export interface AppLayoutConfig {
     name: string,

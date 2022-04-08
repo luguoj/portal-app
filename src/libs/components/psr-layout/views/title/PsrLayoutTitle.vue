@@ -14,7 +14,7 @@
 <script lang="ts">
 import {defineComponent, computed} from "vue";
 import {useStore} from "vuex";
-import {useAppContext} from "psr-app-context/";
+import {useAppContext} from "@/libs/commons/app-context/";
 
 export default defineComponent({
   name: "psr-layout-title",

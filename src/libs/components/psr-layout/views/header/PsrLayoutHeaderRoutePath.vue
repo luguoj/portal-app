@@ -41,10 +41,10 @@
 
 <script lang="ts">
 import {computed, defineComponent, ref, watch} from "vue";
-import {PSRRouteMeta, PSRRouteRecord} from "psr-app-context/route";
-import {AppNavigationMenuItem} from "psr-app-context/navigation-menu";
-import {PermitAll, useAppContext} from "psr-app-context/";
-import {AppLayoutRouteRecord} from "psr-app-context/layout/AppLayoutRouteRecord";
+import {PSRRouteMeta, PSRRouteRecord} from "@/libs/commons/app-context/route";
+import {AppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
+import {PermitAll, useAppContext} from "@/libs/commons/app-context/";
+import {AppLayoutRouteRecord} from "@/libs/commons/app-context/layout/AppLayoutRouteRecord";
 
 interface RoutePathItem {
   key: string | symbol,

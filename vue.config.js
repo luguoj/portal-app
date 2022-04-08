@@ -21,9 +21,5 @@ module.exports = defineConfig({
                 resolvers: [ElementPlusResolver()]
             })
         ]
-    },
-    chainWebpack: config => {
-        config.resolve.alias
-            .set("psr-app-context", resolvePath("src/libs/commons/app-context"))
     }
 })

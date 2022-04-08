@@ -7,17 +7,17 @@ import {AppPermission, PermissionPromise} from "./permission";
 import {buildStore, buildStoreOptions, StoreRootState} from "./store";
 import {buildRouter} from "./router";
 import {filterNavigationMenuByPermission} from "./filterNavigationMenuByPermission";
-import {AppLayoutConfig} from "psr-app-context/layout/AppLayoutConfig";
+import {AppLayoutConfig} from "@/libs/commons/app-context/layout/AppLayoutConfig";
 import {
     extractMenuConfig,
     extractRouterConfig,
     extractStoreConfig
-} from "psr-app-context/extractAppLayoutConfigs";
-import {AppLayoutRouteRecord} from "psr-app-context/layout/AppLayoutRouteRecord";
-import {blockRouteByPermission} from "psr-app-context/blockRouteByPermission";
-import {updatePermissionOnUsernameChange} from "psr-app-context/updatePermissionOnUsernameChange";
+} from "@/libs/commons/app-context/extractAppLayoutConfigs";
+import {AppLayoutRouteRecord} from "@/libs/commons/app-context/layout/AppLayoutRouteRecord";
+import {blockRouteByPermission} from "@/libs/commons/app-context/blockRouteByPermission";
+import {updatePermissionOnUsernameChange} from "@/libs/commons/app-context/updatePermissionOnUsernameChange";
 import {Component} from "@vue/runtime-core";
-import {PSRRouteRecord} from "psr-app-context/route";
+import {PSRRouteRecord} from "@/libs/commons/app-context/route";
 
 export interface AppPages {
     signIn: Component

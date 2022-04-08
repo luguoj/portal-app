@@ -3,8 +3,8 @@ import {ModuleTree} from "vuex";
 import {AppLayoutConfig} from "./layout/AppLayoutConfig";
 import {AppLayoutRouteRecord} from "./layout/AppLayoutRouteRecord"
 import {PSRRouteRecord, buildLayoutChildRoute} from "./route";
-import {buildAppNavigationMenuItem} from "psr-app-context/navigation-menu/buildAppNavigationMenuItem";
-import {AppPages} from "psr-app-context/AppContext";
+import {buildAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu/buildAppNavigationMenuItem";
+import {AppPages} from "@/libs/commons/app-context/AppContext";
 
 // 布局菜单映射
 export function extractMenuConfig(layouts: AppLayoutConfig[]) {

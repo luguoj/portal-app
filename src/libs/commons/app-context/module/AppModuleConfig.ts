@@ -1,5 +1,5 @@
 import {Module} from "vuex";
-import {PSRRouteRecordRaw} from "psr-app-context/route";
+import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
 import {AppNavigationMenuItemRaw} from "../navigation-menu/AppNavigationMenuItemRaw";
 
 

@@ -151,7 +151,7 @@ import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud
 import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
-import {computeModuleRouteName} from "psr-app-context/computeModuleRoute";
+import {computeModuleRouteName} from "@/libs/commons/app-context/computeModuleRoute";
 
 export default defineComponent({
   name: "admin-console-group-list",

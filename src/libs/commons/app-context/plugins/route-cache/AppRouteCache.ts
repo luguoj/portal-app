@@ -1,5 +1,5 @@
 import {App, reactive, ref, Ref, watch} from "vue";
-import {PSRRouteMetaTag} from "psr-app-context/route";
+import {PSRRouteMetaTag} from "@/libs/commons/app-context/route";
 import {AppRouteCacheItem} from "./AppRouteCacheItem";
 import {AppPlugin} from "../../AppPlugin";
 import {AppContext, AppRoute} from "../../AppContext";

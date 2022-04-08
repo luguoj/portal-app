@@ -44,7 +44,7 @@ import PsrLayoutHeaderSearcher from "@/libs/components/psr-layout/views/header/P
 import PsrLayoutHeaderTagBar from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderTagBar.vue";
 import {defineComponent, nextTick, ref, watch} from "vue"
 import {useStore} from "vuex";
-import {useAppContext} from "psr-app-context/";
+import {useAppContext} from "@/libs/commons/app-context/";
 
 export default defineComponent({
   name: "psr-layout-header",

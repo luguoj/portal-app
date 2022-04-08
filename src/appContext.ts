@@ -1,9 +1,9 @@
-import {createAppContext, DenyAll, PermitAll} from "psr-app-context/";
+import {createAppContext, DenyAll, PermitAll} from "@/libs/commons/app-context/";
 import {PsrLayout} from "@/libs/components/psr-layout";
 import {SamplePage} from "@/modules/sample-page";
 import {Admin} from "@/modules/admin-console";
 import {portalService} from "@/services/portal";
-import {createAppRouteCache} from "psr-app-context/plugins/route-cache/AppRouteCacheProvider";
+import {createAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/AppRouteCacheProvider";
 import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persist";
 import PsrErrorNotFound from "@/libs/components/psr/views/PsrErrorNotFound.vue";
 import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClientSignIn.vue";

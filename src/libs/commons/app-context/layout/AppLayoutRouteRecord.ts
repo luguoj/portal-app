@@ -1,4 +1,4 @@
-import {PSRRouteMetaPermission, PSRRouteMetaTag} from "psr-app-context/route";
+import {PSRRouteMetaPermission, PSRRouteMetaTag} from "@/libs/commons/app-context/route";
 
 export interface AppLayoutRouteRecord {
     path: string,

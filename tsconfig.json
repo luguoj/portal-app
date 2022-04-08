@@ -17,9 +17,6 @@
       "webpack-env"
     ],
     "paths": {
-      "psr-app-context*": [
-        "src/libs/commons/app-context*"
-      ],
       "@/*": [
         "src/*"
       ]

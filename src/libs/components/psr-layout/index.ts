@@ -1,5 +1,5 @@
 import {store} from "@/libs/components/psr-layout/store";
-import {AppLayoutConfig} from "psr-app-context/layout/AppLayoutConfig";
+import {AppLayoutConfig} from "@/libs/commons/app-context/layout/AppLayoutConfig";
 import {routes} from "@/libs/components/psr-layout/route";
 import {menus} from "./menus"
 
