@@ -15,7 +15,7 @@
 import {ElMessageBox} from "element-plus";
 import {useStore} from "vuex";
 import {computed, defineComponent} from "vue";
-import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
+import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
 import {useTokenContext} from "@/libs/services/psr-oauth/context";
 
 export default defineComponent({

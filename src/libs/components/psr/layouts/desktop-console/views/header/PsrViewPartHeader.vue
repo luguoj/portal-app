@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import PsrElHorizontalScrollBar from "@/libs/components/psr/element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
 import PsrViewPartHeaderUserPopover from "./PsrViewPartHeaderUserPopover.vue";
 import PsrViewPartHeaderRoutePath from "./PsrViewPartHeaderRoutePath.vue";
 import PsrViewPartHeaderSearcher from "./PsrViewPartHeaderSearcher.vue";

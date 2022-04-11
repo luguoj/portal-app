@@ -27,7 +27,7 @@
 import {ElForm, ElMessage, ElMessageBox} from "element-plus";
 import {defineComponent, computed, ref, toRaw, watch, PropType} from "vue";
 import {cloneDeep, isEqual} from "lodash";
-import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
+import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
 import {portalService} from "@/services/portal";
 import {GroupEntity} from "@/services/portal/CRUDService";
 

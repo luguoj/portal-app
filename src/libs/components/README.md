@@ -1,6 +1,6 @@
 # 公共组件库
 
-1. ElementPlus扩展组件 [psr-element-plus](psr-element-plus/README.md)
+## ElementPlus扩展组件 [element-plus](psr/element-plus/README.md)
 
 ## PSR组件
 ### 布局组件

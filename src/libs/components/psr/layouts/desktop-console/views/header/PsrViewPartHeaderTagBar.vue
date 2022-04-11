@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import PsrViewPartHeaderTag from "./PsrViewPartHeaderTag.vue";
-import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import PsrElHorizontalScrollBar from "@/libs/components/psr/element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
 import {defineComponent} from "vue";
 import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/PsrAppRouteCacheProvider";
 import {PsrAppRouteCacheItem} from "@/libs/commons/app-context/plugins/route-cache";

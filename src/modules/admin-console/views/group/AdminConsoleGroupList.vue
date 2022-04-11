@@ -142,7 +142,7 @@ import {defineComponent, reactive, ref, shallowReactive, watch} from "vue";
 import {portalService} from "@/services/portal";
 import AdminConsoleGroupEditDialog from "@/modules/admin-console/views/group/AdminConsoleGroupEditDialog.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/PsrElAsyncActionButton.vue";
+import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
 import PDataTable from "primevue/datatable";
 import PColumn from "primevue/column";
 import {FilterMatchMode} from "primevue/api";
