@@ -164,6 +164,7 @@ export function extractRouterOptions(
         path: '/',
         redirect: '',
         meta: {
+            nameRaw: 'root',
             tag: {
                 title: 'root'
             }
@@ -174,6 +175,7 @@ export function extractRouterOptions(
         path: '/:pathMatch(.*)*',
         props: true,
         meta: {
+            nameRaw: 'error-not-found',
             tag: {
                 title: '页面不存在',
                 iconCls: 'pi pi-times'
@@ -185,6 +187,7 @@ export function extractRouterOptions(
         name: 'sign-in',
         path: '/sign-in',
         meta: {
+            nameRaw: 'sign-in',
             tag: {
                 title: "登录",
                 iconCls: 'pi pi-sign-in'
@@ -201,6 +204,7 @@ export function extractRouterOptions(
             path: "/" + layout.name,
             name: layout.name,
             meta: {
+                nameRaw: layout.name,
                 tag: {
                     title: layout.title,
                     iconCls: layout.iconCls
