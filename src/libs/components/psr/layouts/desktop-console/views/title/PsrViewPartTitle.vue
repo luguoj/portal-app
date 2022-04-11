@@ -1,8 +1,6 @@
 <template>
   <div class="ct-root">
-    <div class="icon">
-      <el-image style="width: 40px;height: 40px" fit="fill" :src="titleIconUrl"></el-image>
-    </div>
+    <div class="icon"/>
     <transition name="text">
       <div v-show="showTitle" class="text">
         {{ title }}
@@ -39,16 +37,17 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .ct-root {
-  line-height: var(--el-header-height);
+  height: 50px;
+  line-height: 50px;
 
   .icon {
     float: left;
-
-    .el-image {
-      vertical-align: middle;
-    }
-
-    margin: 0 12px;
+    width: 64px;
+    height: 50px;
+    background-image: url("~@/assets/logo.png");
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .text {
