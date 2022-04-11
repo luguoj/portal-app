@@ -15,7 +15,7 @@
       <el-icon :class="menuItem.iconCls"/>
       <span>{{ menuItem.title }}</span>
     </template>
-    <psr-layout-aside-menu-item
+    <psr-view-part-aside-menu-item
         v-for="child in menuItem.children" :key="child.id"
         :menu-item="child"
     />
@@ -27,7 +27,7 @@ import {defineComponent, PropType} from "vue";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 
 export default defineComponent({
-  name: "psr-layout-aside-menu-item",
+  name: "psr-view-part-aside-menu-item",
   props: {
     menuItem: {
       type: Object as PropType<PsrAppNavigationMenuItem>,

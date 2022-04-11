@@ -14,10 +14,10 @@
 <script lang="ts">
 import {computed, defineComponent} from "vue";
 import {useStore} from "vuex";
-import {useAppContext} from "@/libs/commons/app-context/";
+import {useAppContext} from "@/libs/commons/app-context";
 
 export default defineComponent({
-  name: "psr-layout-title",
+  name: "psr-view-part-title",
   setup() {
     const store = useStore()
     const currentRoute = useAppContext().router.current

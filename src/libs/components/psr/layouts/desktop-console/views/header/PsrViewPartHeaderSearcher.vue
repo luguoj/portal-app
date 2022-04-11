@@ -21,7 +21,7 @@ import {ref, defineComponent, computed} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
-import {useAppContext} from "@/libs/commons/app-context/";
+import {useAppContext} from "@/libs/commons/app-context";
 
 interface SelectOption {
   title: string,
@@ -46,7 +46,7 @@ function buildSelectOptions(selectOptions: SelectOption[], menuItems: PsrAppNavi
 }
 
 export default defineComponent({
-  name: "psr-layout-header-searcher",
+  name: "psr-view-part-header-searcher",
   setup() {
     const refSelect = ref()
     const menuItems = useAppContext().navigationMenu.currentLayoutMenuItems

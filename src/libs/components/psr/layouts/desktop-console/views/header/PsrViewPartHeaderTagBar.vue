@@ -6,7 +6,7 @@
         custom
         v-slot="{navigate}"
     >
-      <psr-layout-header-tag
+      <psr-view-part-header-tag
           class="tag"
           :checked="activeRouteName===cachedRoute.name"
           @click="navigate"
@@ -18,25 +18,24 @@
             :class="cachedRoute.tag.iconCls"
         />
         {{ cachedRoute.tag.title }}
-      </psr-layout-header-tag>
+      </psr-view-part-header-tag>
     </router-link>
   </psr-el-horizontal-scroll-bar>
 </template>
 
 <script lang="ts">
-import PsrLayoutHeaderTag from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderTag.vue";
-import PsrElHorizontalScrollBar
-  from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import PsrViewPartHeaderTag from "./PsrViewPartHeaderTag.vue";
+import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
 import {defineComponent} from "vue";
 import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/PsrAppRouteCacheProvider";
 import {PsrAppRouteCacheItem} from "@/libs/commons/app-context/plugins/route-cache";
 
 
 export default defineComponent({
-  name: "psr-layout-header-tag-bar",
+  name: "psr-view-part-header-tag-bar",
   components: {
     PsrElHorizontalScrollBar,
-    PsrLayoutHeaderTag
+    PsrViewPartHeaderTag
   },
   setup() {
     const routeCache = useAppRouteCache()

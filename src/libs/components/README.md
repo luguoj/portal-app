@@ -1,4 +1,7 @@
-# 目录结构
+# 公共组件库
 
 1. ElementPlus扩展组件 [psr-element-plus](psr-element-plus/README.md)
-2. 应用布局组件 [psr-layout](psr-layout/README.md)
+
+## PSR组件
+### 布局组件
+1. 桌面控制台 [desktop-console](psr/layouts/desktop-console/README.md)

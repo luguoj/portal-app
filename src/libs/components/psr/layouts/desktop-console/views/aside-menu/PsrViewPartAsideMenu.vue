@@ -5,7 +5,7 @@
       :default-active="activeMenuItemId"
       router
   >
-    <psr-layout-aside-menu-item
+    <psr-view-part-aside-menu-item
         v-for="menuItem in menuItems" :key="menuItem.id"
         :menu-item="menuItem"
     />
@@ -14,16 +14,16 @@
 
 <script lang="ts">
 import {computed, defineComponent, nextTick, onMounted, Ref, ref, watch} from "vue";
-import PsrLayoutAsideMenuItem from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenuItem.vue";
+import PsrViewPartAsideMenuItem from "./PsrViewPartAsideMenuItem.vue";
 import {useStore} from "vuex";
-import {useAppContext} from "@/libs/commons/app-context/";
+import {useAppContext} from "@/libs/commons/app-context";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 import {State} from "../../store/State";
 
 export default defineComponent({
-  name: "psr-layout-aside-menu",
+  name: "psr-view-part-aside-menu",
   components: {
-    PsrLayoutAsideMenuItem
+    PsrViewPartAsideMenuItem
   },
   setup() {
     const activeMenuItemId = ref()

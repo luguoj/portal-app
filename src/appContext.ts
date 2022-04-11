@@ -1,5 +1,5 @@
 import {createAppContext, DenyAll, PermitAll} from "@/libs/commons/app-context/";
-import {PsrLayout} from "@/libs/components/psr-layout";
+import {PsrLayoutDesktopConsole} from "@/libs/components/psr/layouts/desktop-console";
 import {SamplePage} from "@/modules/sample-page";
 import {Admin} from "@/modules/admin-console";
 import {portalService} from "@/services/portal";
@@ -15,7 +15,7 @@ const appPortalId: string = process.env.VUE_APP_PORTAL_ID
 
 export const appContext = createAppContext({
     layouts: [{
-        ...PsrLayout,
+        ...PsrLayoutDesktopConsole,
         name: 'platform-console',
         title: '平台控制台',
         modules: [
@@ -24,7 +24,7 @@ export const appContext = createAppContext({
         ],
         permission: true
     }, {
-        ...PsrLayout,
+        ...PsrLayoutDesktopConsole,
         name: 'sample-console',
         title: '样例控制台',
         iconCls: 'pi pi-book',

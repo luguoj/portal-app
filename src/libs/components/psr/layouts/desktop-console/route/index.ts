@@ -1,10 +1,10 @@
-import PsrLayoutPageBlank from "@/libs/components/psr-layout/views/page/blank/PsrLayoutPageBlank.vue";
 import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
+import PsrPageBlank from "../views/page/PsrViewPartPageBlank.vue";
 
 export const ROUTE_HOME: PsrAppRouteRecordRaw = {
     name: 'home',
     path: '',
-    component: PsrLayoutPageBlank,
+    component: PsrPageBlank,
     meta: {
         tag: {
             isAffix: true,

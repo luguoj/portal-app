@@ -17,7 +17,7 @@ import {defineComponent, computed} from "vue";
 import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/PsrAppRouteCacheProvider";
 
 export default defineComponent({
-  name: "psr-layout-main",
+  name: "psr-view-part-main",
   setup() {
     const routeCache = useAppRouteCache()
     return {

@@ -3,38 +3,38 @@
     <el-aside width="auto">
       <el-container class="ct-aside">
         <el-header class="ct-title">
-          <psr-layout-title/>
+          <psr-view-part-title/>
         </el-header>
         <el-main class="ct-menu">
-          <psr-layout-aside-menu/>
+          <psr-view-part-aside-menu/>
         </el-main>
       </el-container>
     </el-aside>
     <el-container>
       <el-header class="ct-header-bar">
-        <psr-layout-header/>
+        <psr-view-part-header/>
       </el-header>
       <el-main class="ct-main">
-        <psr-layout-main/>
+        <psr-view-part-main/>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script lang="ts">
-import PsrLayoutHeader from "@/libs/components/psr-layout/views/header/PsrLayoutHeader.vue";
-import PsrLayoutMain from "@/libs/components/psr-layout/views/main/PsrLayoutMain.vue";
-import PsrLayoutTitle from "@/libs/components/psr-layout/views/title/PsrLayoutTitle.vue";
-import PsrLayoutAsideMenu from "@/libs/components/psr-layout/views/aside-menu/PsrLayoutAsideMenu.vue";
+import PsrViewPartHeader from "./header/PsrViewPartHeader.vue";
+import PsrViewPartMain from "./main/PsrViewPartMain.vue";
+import PsrViewPartTitle from "./title/PsrViewPartTitle.vue";
+import PsrViewPartAsideMenu from "./aside-menu/PsrViewPartAsideMenu.vue";
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "psr-layout",
+  name: "psr-layout-desktop-console",
   components: {
-    PsrLayoutTitle,
-    PsrLayoutAsideMenu,
-    PsrLayoutHeader,
-    PsrLayoutMain
+    PsrViewPartTitle,
+    PsrViewPartAsideMenu,
+    PsrViewPartHeader,
+    PsrViewPartMain
   }
 })
 </script>

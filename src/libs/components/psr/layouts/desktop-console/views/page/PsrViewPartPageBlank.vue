@@ -6,7 +6,7 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "psr-layout-page-blank"
+  name: "psr-view-part-page-blank"
 })
 </script>
 

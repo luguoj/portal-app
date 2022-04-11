@@ -6,14 +6,14 @@
       </template>
     </el-button>
     <psr-el-horizontal-scroll-bar v-show="!showSearcher" class="view-path">
-      <psr-layout-header-route-path/>
+      <psr-view-part-header-route-path/>
     </psr-el-horizontal-scroll-bar>
     <el-button type="text" @click.stop="handleShowSearcher" v-show="!showSearcher" class="button icon-only">
       <template #icon>
         <el-icon class="pi pi-search"/>
       </template>
     </el-button>
-    <psr-layout-header-searcher
+    <psr-view-part-header-searcher
         v-show="showSearcher"
         ref="refSearcher"
         class="searcher"
@@ -27,33 +27,32 @@
           </template>
         </el-button>
       </template>
-      <psr-layout-header-user-popover/>
+      <psr-view-part-header-user-popover/>
     </el-popover>
   </div>
   <div class="ct-tags">
-    <psr-layout-header-tag-bar/>
+    <psr-view-part-header-tag-bar/>
   </div>
 </template>
 
 <script lang="ts">
-import PsrLayoutHeaderUserPopover from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderUserPopover.vue";
-import PsrLayoutHeaderRoutePath from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderRoutePath.vue";
-import PsrElHorizontalScrollBar
-  from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
-import PsrLayoutHeaderSearcher from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderSearcher.vue";
-import PsrLayoutHeaderTagBar from "@/libs/components/psr-layout/views/header/PsrLayoutHeaderTagBar.vue";
+import PsrElHorizontalScrollBar from "@/libs/components/psr-element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import PsrViewPartHeaderUserPopover from "./PsrViewPartHeaderUserPopover.vue";
+import PsrViewPartHeaderRoutePath from "./PsrViewPartHeaderRoutePath.vue";
+import PsrViewPartHeaderSearcher from "./PsrViewPartHeaderSearcher.vue";
+import PsrViewPartHeaderTagBar from "./PsrViewPartHeaderTagBar.vue";
 import {defineComponent, nextTick, ref, watch} from "vue"
 import {useStore} from "vuex";
-import {useAppContext} from "@/libs/commons/app-context/";
+import {useAppContext} from "@/libs/commons/app-context";
 
 export default defineComponent({
-  name: "psr-layout-header",
+  name: "psr-view-part-header",
   components: {
     PsrElHorizontalScrollBar,
-    PsrLayoutHeaderSearcher,
-    PsrLayoutHeaderRoutePath,
-    PsrLayoutHeaderUserPopover,
-    PsrLayoutHeaderTagBar
+    PsrViewPartHeaderSearcher,
+    PsrViewPartHeaderRoutePath,
+    PsrViewPartHeaderUserPopover,
+    PsrViewPartHeaderTagBar
   },
   setup() {
     const store = useStore()

@@ -43,8 +43,8 @@
 import {computed, defineComponent, ref, watch} from "vue";
 import {PsrAppRouteRecord} from "@/libs/commons/app-context/route";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
-import {PermitAll, useAppContext} from "@/libs/commons/app-context/";
 import {PsrAppRouteMeta} from "@/libs/commons/app-context/route/types/PsrAppRouteMeta";
+import {PermitAll, useAppContext} from "@/libs/commons/app-context";
 
 interface RoutePathItem {
   key: string | symbol,
@@ -90,7 +90,7 @@ function buildRoutePathByNameUseMenuItem(routePathByName: Record<string, RoutePa
 }
 
 export default defineComponent({
-  name: "psr-layout-header-route-path",
+  name: "psr-view-part-header-route-path",
   setup() {
     const appContext = useAppContext()
     const currentRoute = appContext.router.current

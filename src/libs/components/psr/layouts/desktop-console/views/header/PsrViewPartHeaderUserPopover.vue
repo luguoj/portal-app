@@ -19,7 +19,7 @@ import PsrElAsyncActionButton from "@/libs/components/psr-element-plus/buttons/P
 import {useTokenContext} from "@/libs/services/psr-oauth/context";
 
 export default defineComponent({
-  name: "psr-layout-header-user-popover",
+  name: "psr-view-part-header-user-popover",
   components: {
     PsrElAsyncActionButton
   },
