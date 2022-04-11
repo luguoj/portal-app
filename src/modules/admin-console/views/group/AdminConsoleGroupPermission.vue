@@ -57,20 +57,26 @@
             />
           </template>
           <template #body="slotProps">
-            <el-checkbox
-                :label="`[${slotProps.node.data.name}]${slotProps.node.data.title}`"
-                v-model="routeRoutePermissionStatusMap[slotProps.node.key].access"
-            />
-            <el-divider direction="vertical"/>
-            <el-checkbox-group
-                :disabled="!routeRoutePermissionStatusMap[slotProps.node.key].access"
-                v-model="routeRoutePermissionStatusMap[slotProps.node.key].actions"
-            >
+            {{ `[${slotProps.node.data.name}]${slotProps.node.data.title}` }}
+            <template v-if="slotProps.node.data.permission!==undefined">
+              <el-divider direction="vertical"/>
               <el-checkbox
-                  v-for="action in slotProps.node.data.actions" :key="`${slotProps.node.key}:${action}`"
-                  :label="action"
+                  label="access"
+                  v-model="routeRoutePermissionStatusMap[slotProps.node.data.permission.key].access"
               />
-            </el-checkbox-group>
+              <template v-if="slotProps.node.data.permission.permissions!==undefined&&slotProps.node.data.permission.permissions.length>0">
+                <el-divider direction="vertical"/>
+                <el-checkbox-group
+                    :disabled="!routeRoutePermissionStatusMap[slotProps.node.data.permission.key].access"
+                    v-model="routeRoutePermissionStatusMap[slotProps.node.data.permission.key].actions"
+                >
+                  <el-checkbox
+                      v-for="permission in slotProps.node.data.permission.permissions" :key="`${slotProps.node.data.permission.key}:${permission}`"
+                      :label="permission"
+                  />
+                </el-checkbox-group>
+              </template>
+            </template>
           </template>
         </p-column>
         <p-column field="name" hidden/>
@@ -92,8 +98,8 @@ import {Queue} from "@/libs/commons/promise-queue";
 import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 import pinyin from "pinyin";
-import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
 import {useAppContext} from "@/libs/commons/app-context";
+import {PsrAppRouteMetaPermission, PsrAppRouteRecord} from "@/libs/commons/app-context/route";
 
 interface RoutePermissionStatus {
   access: boolean,
@@ -108,13 +114,13 @@ interface RoutePermissionNode {
     title?: string | undefined,
     titlePinyin?: string,
     iconCls?: string | null,
-    actions?: string[] | null
+    permission?: PsrAppRouteMetaPermission,
   },
   children?: RoutePermissionNode[]
 }
 
 function buildRoutePermissionNodes(
-    routes: PsrAppRouteRecordRaw[],
+    routes: PsrAppRouteRecord[],
     routeRoutePermissionStatusMap: UnwrapNestedRefs<Record<string, RoutePermissionStatus>>
 ) {
   const nodes: RoutePermissionNode[] = []
@@ -124,23 +130,23 @@ function buildRoutePermissionNodes(
     if (route.children && route.children.length > 0) {
       children.push(...buildRoutePermissionNodes(route.children, routeRoutePermissionStatusMap))
     }
-    if (route.meta?.permission || children.length > 0) {
+    if (route.meta.permission || children.length > 0) {
       const node: RoutePermissionNode = {
         key: route.name,
         data: {
-          name: route.name,
-          title: route.meta?.tag?.title,
-          iconCls: route.meta?.tag?.iconCls,
-          actions: route.meta?.permission || []
-        }
-      }
-      if (children) {
-        node.children = children
+          name: route.meta.nameRaw,
+          title: route.meta.tag.title,
+          iconCls: route.meta.tag.iconCls,
+          permission: route.meta.permission,
+        },
+        children
       }
       if (node.data.title) {
         node.data.titlePinyin = pinyin(node.data.title, {style: pinyin.STYLE_NORMAL}).join('')
       }
-      routeRoutePermissionStatusMap[route.name] = {access: false, actions: [], entity: null}
+      if (route.meta.permission) {
+        routeRoutePermissionStatusMap[route.meta.permission.key] = {access: false, actions: [], entity: null}
+      }
       nodes.push(node)
     }
   }
@@ -171,7 +177,7 @@ export default defineComponent({
 
     function initTableData() {
       tableProps.loading = true
-      tableProps.data = buildRoutePermissionNodes(router.options.routes as PsrAppRouteRecordRaw[], routeRoutePermissionStatusByName)
+      tableProps.data = buildRoutePermissionNodes(router.options.routes as PsrAppRouteRecord[], routeRoutePermissionStatusByName)
       portalService.crud.group.findAllById([props.groupId]).then(data => {
         if (data && data.length > 0) {
           groupEntity.value = data[0]
