@@ -36,6 +36,13 @@
         </template>
       </el-button>
     </el-tooltip>
+    <el-tooltip content="沉浸模式" effect="light">
+      <el-button type="text" @click="toggleImmersive" class="button icon-only">
+        <template #icon>
+          <el-icon class="pi pi-window-maximize"/>
+        </template>
+      </el-button>
+    </el-tooltip>
     <el-popover placement="bottom" trigger="hover">
       <template #reference>
         <el-button type="text" class="button icon-only">
@@ -58,10 +65,11 @@ import PsrViewPartHeaderUserPopover from "./PsrViewPartHeaderUserPopover.vue";
 import PsrViewPartHeaderRoutePath from "./PsrViewPartHeaderRoutePath.vue";
 import PsrViewPartHeaderSearcher from "./PsrViewPartHeaderSearcher.vue";
 import PsrViewPartHeaderTagBar from "./PsrViewPartHeaderTagBar.vue";
-import {computed, defineComponent, nextTick, ref, watch} from "vue"
+import {computed, defineComponent, inject, nextTick, ref, watch} from "vue"
 import {useStore} from "vuex";
 import {useAppContext} from "@/libs/commons/app-context";
-import {State} from "@/libs/components/psr/layouts/desktop-console/store/State";
+import {State} from "../../store/State";
+import {useFullscreen} from "@vueuse/core";
 
 export default defineComponent({
   name: "psr-view-part-header",
@@ -77,6 +85,7 @@ export default defineComponent({
     const refSearcher = ref()
     const showSearcher = ref(false)
     const currentRoute = useAppContext().router.current
+    const mainRef = inject<HTMLElement | null>("main-ref")
     const tagBarCollapsed = computed<boolean>(() => {
       if (currentRoute.value.layout) {
         const state = store.state[currentRoute.value.layout.name] as State
@@ -111,16 +120,23 @@ export default defineComponent({
       }
     }
 
+    function handleShowSearcher() {
+      showSearcher.value = true
+      nextTick(() => refSearcher.value.focus())
+    }
+
+    function toggleImmersive() {
+      useFullscreen(mainRef).toggle()
+    }
+
     watch(currentRoute, hideSearcher)
     return {
       tagBarCollapsed,
       refSearcher,
       toggleNavigationExpansion,
       toggleTagBarExpansion,
-      handleShowSearcher: () => {
-        showSearcher.value = true
-        nextTick(() => refSearcher.value.focus())
-      },
+      toggleImmersive,
+      handleShowSearcher,
       userPopoverVisible: ref(false),
       showSearcher
     }
@@ -152,7 +168,7 @@ export default defineComponent({
   .ct-middle {
     display: inline-block;
     vertical-align: middle;
-    width: calc(100% - var(--button-width) * 3);
+    width: calc(100% - var(--button-width) * 4);
 
     .view-path {
       display: inline-block;

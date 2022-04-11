@@ -15,7 +15,7 @@
         <psr-view-part-header/>
       </el-header>
       <el-main class="ct-main">
-        <div class="ct-main-inner">
+        <div class="ct-main-inner" ref="mainRef">
           <psr-view-part-main/>
         </div>
       </el-main>
@@ -28,7 +28,7 @@ import PsrViewPartHeader from "./header/PsrViewPartHeader.vue";
 import PsrViewPartMain from "./main/PsrViewPartMain.vue";
 import PsrViewPartTitle from "./title/PsrViewPartTitle.vue";
 import PsrViewPartAsideMenu from "./aside-menu/PsrViewPartAsideMenu.vue";
-import {defineComponent} from "vue";
+import {defineComponent, provide, ref} from "vue";
 
 export default defineComponent({
   name: "psr-layout-desktop-console",
@@ -37,6 +37,13 @@ export default defineComponent({
     PsrViewPartAsideMenu,
     PsrViewPartHeader,
     PsrViewPartMain
+  },
+  setup() {
+    const mainRef = ref<HTMLElement | null>()
+    provide("main-ref", mainRef)
+    return {
+      mainRef
+    }
   }
 })
 </script>
