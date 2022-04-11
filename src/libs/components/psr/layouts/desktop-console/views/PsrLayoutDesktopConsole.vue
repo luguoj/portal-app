@@ -50,6 +50,7 @@ export default defineComponent({
 .ct-header-bar {
   background-color: var(--el-color-white);
   padding: 0;
+  height: fit-content;
 }
 
 .ct-main {
@@ -71,6 +72,7 @@ export default defineComponent({
     background-color: var(--el-color-white);
     padding: 0;
     border-bottom: var(--psr-border);
+    height: fit-content;
   }
 
   .ct-menu {

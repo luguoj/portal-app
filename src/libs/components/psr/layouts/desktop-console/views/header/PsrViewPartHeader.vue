@@ -1,24 +1,41 @@
 <template>
   <div class="ct-path">
-    <el-button type="text" @click="toggleNavigationExpansion" class="button icon-only">
-      <template #icon>
-        <el-icon class="pi pi-bars"/>
-      </template>
-    </el-button>
-    <psr-el-horizontal-scroll-bar v-show="!showSearcher" class="view-path">
-      <psr-view-part-header-route-path/>
-    </psr-el-horizontal-scroll-bar>
-    <el-button type="text" @click.stop="handleShowSearcher" v-show="!showSearcher" class="button icon-only">
-      <template #icon>
-        <el-icon class="pi pi-search"/>
-      </template>
-    </el-button>
-    <psr-view-part-header-searcher
-        v-show="showSearcher"
-        ref="refSearcher"
-        class="searcher"
-        :class="{show:showSearcher}"
-    />
+    <el-tooltip content="折叠/展开菜单" effect="light">
+      <el-button type="text" @click="toggleNavigationExpansion" class="button icon-only">
+        <template #icon>
+          <el-icon class="pi pi-bars"/>
+        </template>
+      </el-button>
+    </el-tooltip>
+    <div class="ct-middle">
+      <transition name="searcher">
+        <psr-el-horizontal-scroll-bar v-show="!showSearcher" class="view-path">
+          <psr-view-part-header-route-path/>
+        </psr-el-horizontal-scroll-bar>
+      </transition>
+      <el-tooltip content="菜单搜索" effect="light">
+        <el-button type="text" @click.stop="handleShowSearcher" class="button icon-only">
+          <template #icon>
+            <el-icon class="pi pi-search"/>
+          </template>
+        </el-button>
+      </el-tooltip>
+      <transition name="searcher">
+        <psr-view-part-header-searcher
+            v-show="showSearcher"
+            ref="refSearcher"
+            class="searcher"
+            :class="{show:showSearcher}"
+        />
+      </transition>
+    </div>
+    <el-tooltip content="视图标签栏" effect="light">
+      <el-button type="text" @click="toggleTagBarExpansion" class="button icon-only">
+        <template #icon>
+          <el-icon class="pi pi-paperclip"/>
+        </template>
+      </el-button>
+    </el-tooltip>
     <el-popover placement="bottom" trigger="hover">
       <template #reference>
         <el-button type="text" class="button icon-only">
@@ -30,7 +47,7 @@
       <psr-view-part-header-user-popover/>
     </el-popover>
   </div>
-  <div class="ct-tags">
+  <div class="ct-tag-bar" v-show="tagBarCollapsed">
     <psr-view-part-header-tag-bar/>
   </div>
 </template>
@@ -41,9 +58,10 @@ import PsrViewPartHeaderUserPopover from "./PsrViewPartHeaderUserPopover.vue";
 import PsrViewPartHeaderRoutePath from "./PsrViewPartHeaderRoutePath.vue";
 import PsrViewPartHeaderSearcher from "./PsrViewPartHeaderSearcher.vue";
 import PsrViewPartHeaderTagBar from "./PsrViewPartHeaderTagBar.vue";
-import {defineComponent, nextTick, ref, watch} from "vue"
+import {computed, defineComponent, nextTick, ref, watch} from "vue"
 import {useStore} from "vuex";
 import {useAppContext} from "@/libs/commons/app-context";
+import {State} from "@/libs/components/psr/layouts/desktop-console/store/State";
 
 export default defineComponent({
   name: "psr-view-part-header",
@@ -59,6 +77,14 @@ export default defineComponent({
     const refSearcher = ref()
     const showSearcher = ref(false)
     const currentRoute = useAppContext().router.current
+    const tagBarCollapsed = computed<boolean>(() => {
+      if (currentRoute.value.layout) {
+        const state = store.state[currentRoute.value.layout.name] as State
+        return state.tagBarCollapsed
+      } else {
+        return false
+      }
+    })
 
     function hideSearcher() {
       showSearcher.value = false
@@ -79,10 +105,18 @@ export default defineComponent({
       }
     }
 
+    function toggleTagBarExpansion() {
+      if (currentRoute.value.layout) {
+        store.commit(`${currentRoute.value.layout.name}/toggleTagBar`)
+      }
+    }
+
     watch(currentRoute, hideSearcher)
     return {
+      tagBarCollapsed,
       refSearcher,
       toggleNavigationExpansion,
+      toggleTagBarExpansion,
       handleShowSearcher: () => {
         showSearcher.value = true
         nextTick(() => refSearcher.value.focus())
@@ -96,14 +130,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .ct-path {
-  height: 32px;
+  --button-width: 32px;
+
+  height: 50px;
+  line-height: 50px;
 
   .button {
     display: inline-block;
     vertical-align: middle;
+    margin-left: 0;
 
     &.icon-only {
-      width: 32px;
+      width: var(--button-width);
 
       i {
         font-size: var(--el-font-size-extra-large);
@@ -111,23 +149,43 @@ export default defineComponent({
     }
   }
 
-  .view-path {
+  .ct-middle {
     display: inline-block;
     vertical-align: middle;
-    width: calc(100% - 32px - 32px - 32px);
-    height: 20px;
-    margin-top: 6px;
-  }
+    width: calc(100% - var(--button-width) * 3);
 
-  .searcher {
-    display: inline-block;
-    vertical-align: middle;
-    width: calc(100% - 32px - 32px);
-  }
+    .view-path {
+      display: inline-block;
+      vertical-align: middle;
+      width: calc(100% - var(--button-width));
+      height: 16px;
+    }
 
+    .searcher {
+      display: inline-block;
+      vertical-align: middle;
+      width: calc(100% - var(--button-width));
+    }
+  }
 }
 
-.ct-tags {
+
+.ct-tag-bar {
   height: 28px;
+  border-top: var(--psr-border);
+}
+
+.searcher-enter-active {
+  animation: searcher-show-ani var(--el-transition-duration) linear;
+}
+
+.searcher-leave-active {
+  animation: searcher-show-ani reverse var(--el-transition-duration) linear;
+}
+
+@keyframes searcher-show-ani {
+  from {
+    width: 0;
+  }
 }
 </style>

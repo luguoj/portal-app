@@ -1,5 +1,5 @@
 <template>
-  <psr-el-horizontal-scroll-bar>
+  <psr-el-horizontal-scroll-bar class="ct-tags">
     <router-link
         v-for="cachedRoute in cachedRoutes" :key="cachedRoute.componentName"
         :to="cachedRoute.path"
@@ -54,7 +54,7 @@ export default defineComponent({
 .ct-tags {
   background-color: var(--el-color-white);
   height: auto;
-  padding: 0 0 4px 0;
+  padding: 2px 0;
 }
 
 .tag {

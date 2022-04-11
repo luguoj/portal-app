@@ -1,7 +1,7 @@
 <template>
   <el-menu
       class="menu"
-      :collapse="menuCollapse"
+      :collapse="asideCollapsed"
       :default-active="activeMenuItemId"
       router
   >
@@ -31,7 +31,7 @@ export default defineComponent({
     const appContext = useAppContext();
     const currentRoute = appContext.router.current
     const menuItems: Ref<PsrAppNavigationMenuItem[]> = appContext.navigationMenu.currentLayoutMenuItems
-    const menuCollapse = computed<boolean>(() => {
+    const asideCollapsed = computed<boolean>(() => {
       if (currentRoute.value.layout) {
         const state = store.state[currentRoute.value.layout.name] as State
         return state.asideCollapsed
@@ -56,10 +56,16 @@ export default defineComponent({
       })
     })
     return {
-      menuCollapse,
+      asideCollapsed,
       menuItems,
       activeMenuItemId
     }
   }
 })
 </script>
+
+<style lang="scss">
+.menu {
+  border-right: unset;
+}
+</style>

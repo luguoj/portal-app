@@ -5,12 +5,16 @@ export const store: Module<State, any> = {
     namespaced: true,
     state() {
         return {
-            asideCollapsed: false
+            asideCollapsed: false,
+            tagBarCollapsed: false
         }
     },
     mutations: {
         toggleAside(state) {
             state.asideCollapsed = !state.asideCollapsed
+        },
+        toggleTagBar(state) {
+            state.tagBarCollapsed = !state.tagBarCollapsed
         }
     }
 }

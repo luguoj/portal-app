@@ -55,6 +55,7 @@ export default defineComponent({
     font-size: var(--el-font-size-extra-large);
     font-weight: bolder;
     white-space: nowrap;
+    margin-right: 10px;
   }
 }
 
@@ -69,6 +70,7 @@ export default defineComponent({
 @keyframes text-show-ani {
   from {
     width: 0;
+    margin-right: 0;
   }
 }
 </style>
