@@ -55,14 +55,12 @@ interface RoutePathItem {
 
 function buildRoutePathByNameUseRoute(routePathByName: Record<string, RoutePathItem[]>, route: PsrAppRouteRecord, basePath: RoutePathItem[], layoutName: string) {
   const path = [...basePath]
-  if (route.meta?.tag) {
-    path.push({
-      key: route.name,
-      title: route.meta.tag.title,
-      iconCls: route.meta.tag.iconCls,
-      route
-    })
-  }
+  path.push({
+    key: route.name,
+    title: route.meta.tag.title,
+    iconCls: route.meta.tag.iconCls,
+    route
+  })
   routePathByName[route.name] = path
   if (route.children) {
     for (const child of route.children) {
@@ -130,7 +128,7 @@ export default defineComponent({
             for (let i = 1; i < route.matched.length; i++) {
               const routeMatched = route.matched[i];
               const meta = routeMatched.meta as PsrAppRouteMeta
-              if (meta?.tag) {
+              if (meta.tag) {
                 result.push({
                   key: routeMatched.name!,
                   title: meta.tag.title,
