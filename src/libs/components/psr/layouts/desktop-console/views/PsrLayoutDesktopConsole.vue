@@ -15,7 +15,9 @@
         <psr-view-part-header/>
       </el-header>
       <el-main class="ct-main">
-        <psr-view-part-main/>
+        <div class="ct-main-inner">
+          <psr-view-part-main/>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -47,13 +49,19 @@ export default defineComponent({
 
 .ct-header-bar {
   background-color: var(--el-color-white);
-  border-bottom: 1px solid var(--el-border-color);
   padding: 0;
 }
 
 .ct-main {
+  background-color: var(--el-border-color-extra-light);
+  padding: 6px;
+  box-shadow: 3px 3px 3px 0 rgb(0 0 0 / 12%) inset;
+}
+
+.ct-main-inner {
   background-color: var(--el-color-white);
-  padding: 0;
+  height: 100%;
+  box-shadow: 3px 3px 3px 0 rgb(0 0 0 / 12%);
 }
 
 .ct-aside {
@@ -68,7 +76,6 @@ export default defineComponent({
   .ct-menu {
     background-color: var(--el-color-white);
     padding: 0;
-    border-right: var(--psr-border);
   }
 }
 </style>
