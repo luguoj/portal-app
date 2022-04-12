@@ -18,19 +18,26 @@ export class PsrAppPermission {
     }
 
     // 创建操作许可标识
-    useActionPermissionFlag(routeName: string, actions: string[]) {
-        const flag = ref(false)
+    usePermissionFlag(routeName: string, actions?: string[]) {
+        const flag = ref<boolean>(false)
         // 判断操作是否满足许可
         watchEffect(() => {
             this.permission.value.then(permissionByRouteName => {
-                const routeActions = permissionByRouteName[routeName]
-                let _flag = true
-                for (let i = 0; i < actions.length && flag; i++) {
-                    const action = actions[i];
-                    _flag = _flag && routeActions.includes(action)
+                if (permissionByRouteName === PermitAll) {
+                    flag.value = true
+                } else {
+                    const routeActions = permissionByRouteName[routeName]
+                    let _flag = routeActions != undefined
+                    if (_flag && actions != undefined) {
+                        for (let i = 0; i < actions.length && flag; i++) {
+                            const action = actions[i];
+                            _flag = _flag && routeActions.includes(action)
+                        }
+                    }
+                    flag.value = _flag
                 }
-                flag.value = _flag
             })
         })
+        return flag
     }
 }
