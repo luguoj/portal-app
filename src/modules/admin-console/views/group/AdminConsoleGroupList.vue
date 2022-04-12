@@ -14,7 +14,7 @@
           </template>
           重置
         </el-button>
-        <el-button class="button" @click="handleAdd">
+        <el-button v-if="canAdd" class="button" @click="handleAdd">
           <template #icon>
             <el-icon class="pi pi-plus"/>
           </template>
@@ -109,16 +109,26 @@
           <template #body="slotProps">
             <el-space wrap>
               <router-link
+                  v-if="canRoutePermission"
                   :to="{name:rowActionRoutes.permission,params:{groupId:slotProps.data.id}}"
-                  v-slot="{navigate}"
               >
-                <el-button type="text" size="small" @click="navigate">许可</el-button>
+                <el-button type="text" size="small">许可</el-button>
               </router-link>
-              <router-link :to="{name:rowActionRoutes.user,params:{groupId:slotProps.data.id}}">
+              <router-link
+                  v-if="canRouteUser"
+                  :to="{name:rowActionRoutes.user,params:{groupId:slotProps.data.id}}"
+              >
                 <el-button type="text" size="small">用户</el-button>
               </router-link>
-              <el-button type="text" size="small" @click="handleEdit(slotProps.data)">编辑</el-button>
+              <el-button
+                  v-if="canEdit"
+                  type="text"
+                  size="small"
+                  @click="handleEdit(slotProps.data)"
+              >编辑
+              </el-button>
               <psr-el-async-action-button
+                  v-if="canDelete"
                   type="text" size="small"
                   :action="handleDelete"
                   :action-params="slotProps.data"
@@ -152,6 +162,7 @@ import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
 import {useAppContext} from "@/libs/commons/app-context";
+import {appContext} from "@/appContext";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -231,6 +242,11 @@ export default defineComponent({
       permission: router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION),
       user: router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER)
     }
+    const canRoutePermission = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION)
+    const canRouteUser = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER)
+    const canDelete = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST, ['delete'])
+    const canEdit = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST, ['edit'])
+    const canAdd = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST, ['add'])
     return {
       tableRef,
       tableProps,
@@ -269,7 +285,12 @@ export default defineComponent({
       onDataTableEvent,
       onDataChanged: handleFind,
       handleExport,
-      rowActionRoutes
+      rowActionRoutes,
+      canRoutePermission,
+      canRouteUser,
+      canDelete,
+      canEdit,
+      canAdd
     }
   }
 })
