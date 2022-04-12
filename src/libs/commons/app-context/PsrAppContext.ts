@@ -55,7 +55,7 @@ export class PsrAppContext {
         filterNavigationMenuByPermission(this.navigationMenu, this.permission)
         // 布局切换触发模块更新
         this.router.onLayoutChange(current => {
-            this.navigationMenu.updateLayout(current.layout!)
+            this.navigationMenu.currentLayoutName.value = current.layout?.name || ''
             for (const pluginsKey in this.plugins) {
                 this.plugins[pluginsKey].onLayoutChange()
             }
