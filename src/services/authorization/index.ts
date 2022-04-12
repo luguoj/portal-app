@@ -1,11 +1,8 @@
 import {useGatewayClient} from "@/services/useGatewayClient";
-import {EntityCRUDService} from "@/libs/services/psr-entity-crud";
+import {CRUDService} from "@/services/authorization/CRUDService";
 
-const client = useGatewayClient('/authorization/api')
-const DOMAIN_TYPES = {
-    USER: 'org.psr.platform.authorization.entity.UserEntity',
-}
-export const authorizationEntityCRUDService = {
-    user: new EntityCRUDService(client, DOMAIN_TYPES.USER)
+const PortalApiClient = useGatewayClient('/authorization/api')
+export const authorizationService = {
+    crud: new CRUDService(PortalApiClient)
 }
 

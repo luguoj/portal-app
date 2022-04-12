@@ -17,11 +17,16 @@ export interface GroupPermissionEntity extends Entity {
     actions?: string
 }
 
+export interface UserGroupEntity extends Entity {
+    userId?: string,
+    groupId?: string
+}
+
 export class CRUDService {
     private readonly _client: AxiosInstance;
     readonly group: EntityCRUDService<GroupEntity>;
     readonly groupPermission: EntityCRUDService<GroupPermissionEntity>;
-    readonly userGroup: EntityCRUDService<Entity>;
+    readonly userGroup: EntityCRUDService<UserGroupEntity>;
 
     constructor(client: AxiosInstance) {
         this._client = client
