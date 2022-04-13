@@ -2,14 +2,14 @@ import {PsrAppPlugin} from "./types/PsrAppPlugin";
 import {App, watch} from "vue";
 import {ModuleTree, Store} from "vuex";
 import {Router} from "vue-router";
-import {buildMenuItem, PsrAppNavigationMenu, PsrAppNavigationMenuItem} from "./navigation-menu";
+import {buildMenuItem, PsrAppNavigationLayoutItem, PsrAppNavigationMenu, PsrAppNavigationMenuItem} from "./navigation-menu";
 import {PermitAll, PsrAppPermission} from "./permission";
 import {buildLayoutChildRoute, PsrAppRouteMetaPermission, PsrAppRouter, PsrAppRouteRecord} from "./route";
 import {PsrAppContextOptions} from "./types/PsrAppContextOptions";
 import {ElMessage} from "element-plus/es";
 import {PsrAppLayoutOptions} from "./types/PsrAppLayoutOptions";
 import {PsrAppPageOptions} from "./types/PsrAppPageOptions";
-import {PsrAppStoreRootState} from "@/libs/commons/app-context/store/types/PsrAppStoreRootState";
+import {PsrAppStoreRootState} from "./store/types/PsrAppStoreRootState";
 import {PsrAppStore} from "./store/PsrAppStore";
 
 export class PsrAppContext {
@@ -71,9 +71,12 @@ function filterNavigationMenuByPermission(
     watch(() => permission.permission.value, permissionValue => {
         permissionValue.then(permissionByRouteName => {
             if (permissionByRouteName === PermitAll) {
-                navigationMenu.doFilter(() => true)
+                navigationMenu.doFilter(() => true, () => true)
             } else {
-                navigationMenu.doFilter(item => !!item.route?.meta?.permission && !!permissionByRouteName[item.route.meta.permission.key])
+                navigationMenu.doFilter(
+                    item => !!permissionByRouteName[item.name],
+                    item => !!item.route?.meta?.permission && !!permissionByRouteName[item.route.meta.permission.key]
+                )
             }
         })
     }, {immediate: true})
@@ -109,14 +112,22 @@ function blockRouteByPermission(permission: PsrAppPermission, router: Router) {
 
 // 布局菜单映射
 export function extractMenuOptions(layouts: PsrAppLayoutOptions[]) {
-    const menus: Record<string, PsrAppNavigationMenuItem[]> = {}
+    const layoutItemsRaw: PsrAppNavigationLayoutItem[] = []
+    const menuItemsRaw: Record<string, PsrAppNavigationMenuItem[]> = {}
     for (let i = 0; i < layouts.length; i++) {
         const layout = layouts[i];
-        menus[layout.name] = []
+        const layoutItemRaw: PsrAppNavigationLayoutItem = {
+            name: layout.name,
+            path: "/" + layout.name,
+            title: layout.title,
+            iconCls: layout.iconCls
+        }
+        layoutItemsRaw.push(layoutItemRaw)
+        menuItemsRaw[layout.name] = []
         // 创建布局子菜单
         if (layout.menus) {
             for (const menu of layout.menus) {
-                menus[layout.name].push(buildMenuItem(menu, layout.name))
+                menuItemsRaw[layout.name].push(buildMenuItem(menu, layout.name))
             }
         }
         // 处理模块配置
@@ -124,13 +135,13 @@ export function extractMenuOptions(layouts: PsrAppLayoutOptions[]) {
             for (const module of layout.modules) {
                 if (module.menus) {
                     for (const menu of module.menus) {
-                        menus[layout.name].push(buildMenuItem(menu, layout.name))
+                        menuItemsRaw[layout.name].push(buildMenuItem(menu, layout.name))
                     }
                 }
             }
         }
     }
-    return menus
+    return {layoutItemsRaw, menuItemsRaw}
 }
 
 // vuex模块

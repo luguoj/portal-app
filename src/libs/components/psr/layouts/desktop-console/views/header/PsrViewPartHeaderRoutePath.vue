@@ -12,14 +12,14 @@
         <template #dropdown>
           <el-dropdown-menu>
             <router-link
-                v-for="layoutMeta in layoutMetas" :key="layoutMeta.name"
-                :to="layoutMeta.path"
+                v-for="layoutItem in layoutItems" :key="layoutItem.name"
+                :to="layoutItem.path"
                 custom
                 v-slot="{navigate}"
             >
-              <el-dropdown-item :disabled="layoutMeta.name===layoutRoutePath.key" @click="navigate">
-                <el-icon :class="layoutMeta.meta.tag.iconCls"/>
-                {{ layoutMeta.meta.tag.title }}
+              <el-dropdown-item :disabled="layoutItem.name===layoutRoutePath.key" @click="navigate">
+                <el-icon :class="layoutItem.iconCls"/>
+                {{ layoutItem.title }}
               </el-dropdown-item>
             </router-link>
           </el-dropdown-menu>
@@ -40,11 +40,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref, watch} from "vue";
+import {computed, defineComponent} from "vue";
 import {PsrAppRouteRecord} from "@/libs/commons/app-context/route";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 import {PsrAppRouteMeta} from "@/libs/commons/app-context/route/types/PsrAppRouteMeta";
-import {PermitAll, useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/app-context";
 
 interface RoutePathItem {
   key: string | symbol,
@@ -93,6 +93,7 @@ export default defineComponent({
     const appContext = useAppContext()
     const currentRoute = appContext.router.current
     const menuItems = appContext.navigationMenu.menuItems
+    const layoutItems = appContext.navigationMenu.layoutItems
     const layoutRoutePath = computed(() => {
       if (currentRoute.value.layout) {
         const {name, path, meta: {tag: {title, iconCls}}} = currentRoute.value.layout
@@ -141,26 +142,8 @@ export default defineComponent({
       }
       return result
     })
-
-    const layoutMetas = ref<PsrAppRouteRecord[]>([])
-    // 根据许可过滤布局元数据
-    watch(() => appContext.permission.permission.value, permissionValue => {
-      permissionValue.then(permissionByRouteName => {
-        if (permissionByRouteName === PermitAll) {
-          layoutMetas.value = appContext.router.router.options.routes.filter(route => route.meta?.layout) as unknown as PsrAppRouteRecord[]
-        } else {
-          layoutMetas.value = appContext.router.router.options.routes.filter(route => {
-            if (route.meta?.layout) {
-              const layoutMeta = route as unknown as PsrAppRouteRecord
-              return layoutMeta.meta.permission?.key && !!permissionByRouteName[layoutMeta.meta.permission.key]
-            }
-            return false
-          }) as unknown as PsrAppRouteRecord[]
-        }
-      })
-    }, {immediate: true})
     return {
-      layoutMetas,
+      layoutItems,
       layoutRoutePath,
       routePath
     }
