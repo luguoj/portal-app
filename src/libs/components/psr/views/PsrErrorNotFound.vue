@@ -6,7 +6,7 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "psr-layout-page-error-not-found",
+  name: "psr-error-not-found",
   props: {
     pathMatch: String
   }
