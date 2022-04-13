@@ -26,7 +26,7 @@ export class PsrAppRouter {
         })
         this.router.afterEach((to, from, failure) => {
             if (!isNavigationFailure(failure)) {
-                // 成功导航，切换布局信息
+                console.log('导航成功->更新当前路由信息')
                 const route = to
                 let layoutChange = false
                 let moduleChange = false
@@ -35,16 +35,18 @@ export class PsrAppRouter {
                     module: null,
                     route
                 }
-                if (route.matched.length > 0 && route.name !== 'root') {
+                if (route.matched.length > 0 && route.fullPath !== '/') {
+                    console.log('路由到非根路由->更新当前路由布局信息')
                     newRoute.layout = route.matched[0] as unknown as PsrAppRouteRecord
                     if (route.matched[0].name !== this.current.value.layout?.name) {
-                        console.log('切换应用布局')
+                        console.log('切换布局->触发布局变更事件')
                         layoutChange = true
                     }
                     if (route.matched.length > 1) {
+                        console.log('路由到模块路由->更新当前路由模块信息')
                         newRoute.module = route.matched[1] as unknown as PsrAppRouteRecord
                         if (this.current.value.module?.name !== route.matched[1].name) {
-                            console.log('切换应用模块')
+                            console.log('切换模块->触发模块变更事件')
                             moduleChange = true
                         }
                     }

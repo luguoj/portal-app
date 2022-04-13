@@ -55,6 +55,7 @@ export class PsrAppContext {
         filterNavigationMenuByPermission(this.navigationMenu, this.permission)
         // 布局切换触发模块更新
         this.router.onLayoutChange(current => {
+            console.log('布局切换触发模块更新')
             this.navigationMenu.currentLayoutName.value = current.layout?.name || ''
             for (const pluginsKey in this.plugins) {
                 this.plugins[pluginsKey].onLayoutChange()
@@ -70,6 +71,7 @@ function filterNavigationMenuByPermission(
 ) {
     watch(() => permission.permission.value, permissionValue => {
         permissionValue.then(permissionByRouteName => {
+            console.log('许可更新->过滤导航菜单')
             if (permissionByRouteName === PermitAll) {
                 navigationMenu.doFilter(() => true, () => true)
             } else {
@@ -85,6 +87,7 @@ function filterNavigationMenuByPermission(
 function updatePermissionOnUsernameChange(permission: PsrAppPermission, store: Store<PsrAppStoreRootState>) {
     // 用户切换时重新获取许可
     watch(() => store.state.username, username => {
+        console.log('用户切换->更新许可')
         permission.changeUser(username)
     }, {immediate: true})
 }
