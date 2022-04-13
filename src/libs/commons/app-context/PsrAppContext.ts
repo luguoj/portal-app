@@ -11,6 +11,7 @@ import {PsrAppLayoutOptions} from "./types/PsrAppLayoutOptions";
 import {PsrAppPageOptions} from "./types/PsrAppPageOptions";
 import {PsrAppStoreRootState} from "./store/types/PsrAppStoreRootState";
 import {PsrAppStore} from "./store/PsrAppStore";
+import PsrInitializing from "@/libs/components/psr/views/PsrInitializing.vue";
 
 export class PsrAppContext {
     private readonly _injectKey: string
@@ -176,7 +177,7 @@ export function extractRouterOptions(
     const rootRoute: PsrAppRouteRecord = {
         name: 'root',
         path: '/',
-        redirect: '',
+        component: PsrInitializing,
         meta: {
             nameRaw: 'root',
             tag: {
@@ -233,10 +234,6 @@ export function extractRouterOptions(
             }]
         }
         routes.push(layoutRoute)
-        // 如果跟路由没有跳转，或默认布局，则设置根路由跳转到此路由
-        if (layout.default || rootRoute.redirect === '') {
-            rootRoute.redirect = layoutRoute.path
-        }
         // 创建布局子路由
         if (layout.routes) {
             for (let j = 0; j < layout.routes.length; j++) {
