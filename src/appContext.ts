@@ -16,20 +16,20 @@ const appPortalId: string = process.env.VUE_APP_PORTAL_ID
 export const appContext = createAppContext({
     layouts: [{
         ...PsrLayoutDesktopConsole,
-        name: 'platform-console',
-        title: '平台控制台',
+        name: 'layout-desktop-sample',
+        title: '样例门户',
+        iconCls: 'pi pi-book',
         modules: [
-            Admin,
             SamplePage
         ],
         permission: true
     }, {
         ...PsrLayoutDesktopConsole,
-        name: 'sample-console',
-        title: '样例控制台',
-        iconCls: 'pi pi-book',
+        name: 'layout-desktop-admin',
+        title: '管理员桌面',
+        iconCls: 'pi pi-cog',
         modules: [
-            SamplePage
+            Admin
         ],
         permission: true
     }],
