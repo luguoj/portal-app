@@ -61,8 +61,27 @@ export class PsrAppContext {
                 this.plugins[pluginsKey].onLayoutChange()
             }
         })
+        // 访问根路由时跳转到默认布局
+        redirectToDefaultLayoutOnRoot(this.navigationMenu, this.router)
     }
+}
 
+function redirectToDefaultLayoutOnRoot(navigationMenu: PsrAppNavigationMenu, router: PsrAppRouter) {
+    router.router.beforeEach(to => {
+        if (to.path === '/') {
+            if (navigationMenu.layoutItems.value.length > 0) {
+                console.log('路由到根路径->布局项目已加载，跳转到默认布局')
+                return {path: navigationMenu.layoutItems.value[0].path}
+            }
+            console.log('路由到根路径->布局项目未加载')
+        }
+    })
+    watch(navigationMenu.layoutItems, layoutItems => {
+        if (layoutItems.length > 0 && router.router.currentRoute.value.path === '/') {
+            console.log('导航菜单更新->从根路径跳转到默认布局')
+            router.router.replace({path: layoutItems[0].path})
+        }
+    })
 }
 
 function filterNavigationMenuByPermission(
