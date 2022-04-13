@@ -87,7 +87,6 @@
 </template>
 
 <script lang="ts">
-import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {defineComponent, onMounted, reactive, Ref, ref} from "vue";
 import {useAppContext} from "@/libs/commons/app-context";
 import {GroupEntity, UserGroupEntity} from "@/services/portal/CRUDService";
@@ -101,6 +100,7 @@ import {authorizationService} from "@/services/authorization";
 import {FilterMatchMode} from "primevue/api";
 import PTriStateCheckbox from "primevue/tristatecheckbox";
 import PCheckbox from "primevue/checkbox";
+import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
 
 interface UserItem {
   userId: string,
@@ -171,7 +171,7 @@ export default defineComponent({
       })
     }
 
-    const backRouteName = useAppContext().router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST)
+    const backRouteName = useAppContext().router.computeModuleRouteName(ROUTE_PORTAL_GROUP_LIST.name)
 
     const saveQueue = new Queue()
 

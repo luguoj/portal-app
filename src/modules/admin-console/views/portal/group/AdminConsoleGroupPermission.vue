@@ -87,7 +87,6 @@
 </template>
 
 <script lang="ts">
-import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import PTreeTable from "primevue/treetable";
 import {defineComponent, onMounted, reactive, ref, shallowReactive} from "vue";
 import {portalService} from "@/services/portal";
@@ -100,6 +99,7 @@ import {UnwrapNestedRefs} from "@vue/reactivity";
 import pinyin from "pinyin";
 import {useAppContext} from "@/libs/commons/app-context";
 import {PsrAppRouteMetaPermission, PsrAppRouteRecord} from "@/libs/commons/app-context/route";
+import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
 
 interface RoutePermissionStatus {
   access: boolean,
@@ -257,7 +257,7 @@ export default defineComponent({
     onMounted(() => {
       initTableData()
     })
-    const backRouteName = useAppContext().router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST)
+    const backRouteName = useAppContext().router.computeModuleRouteName(ROUTE_PORTAL_GROUP_LIST.name)
     return {
       groupEntity,
       tableProps,

@@ -150,7 +150,7 @@
 <script lang="ts">
 import {defineComponent, reactive, ref, shallowReactive, watch} from "vue";
 import {portalService} from "@/services/portal";
-import AdminConsoleGroupEditDialog from "@/modules/admin-console/views/group/AdminConsoleGroupEditDialog.vue";
+import AdminConsoleGroupEditDialog from "@/modules/admin-console/views/portal/group/AdminConsoleGroupEditDialog.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
 import PDataTable from "primevue/datatable";
@@ -158,11 +158,11 @@ import PColumn from "primevue/column";
 import {FilterMatchMode} from "primevue/api";
 import PTriStateCheckbox from "primevue/tristatecheckbox";
 import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud/buildFromPrimeVueDataTableFilters";
-import {ADMIN_CONSOLE_ROUTE_NAME} from "@/modules/admin-console/route";
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
 import {useAppContext} from "@/libs/commons/app-context";
 import {appContext} from "@/appContext";
+import {ROUTE_PORTAL_GROUP_LIST, ROUTE_PORTAL_GROUP_PERMISSION, ROUTE_PORTAL_GROUP_USER} from "@/modules/admin-console/route";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -238,15 +238,16 @@ export default defineComponent({
     function handleExport() {
       tableRef.value.exportCSV();
     }
+
     const rowActionRoutes = {
-      permission: router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION),
-      user: router.computeModuleRouteName(ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER)
+      permission: router.computeModuleRouteName(ROUTE_PORTAL_GROUP_PERMISSION.name),
+      user: router.computeModuleRouteName(ROUTE_PORTAL_GROUP_USER.name)
     }
-    const canRoutePermission = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_PERMISSION)
-    const canRouteUser = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_USER)
-    const canDelete = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST, ['delete'])
-    const canEdit = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST, ['edit'])
-    const canAdd = appContext.permission.usePermissionFlag(ADMIN_CONSOLE_ROUTE_NAME.GROUP_LIST, ['add'])
+    const canRoutePermission = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_PERMISSION.name)
+    const canRouteUser = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_USER.name)
+    const canDelete = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['delete'])
+    const canEdit = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['edit'])
+    const canAdd = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['add'])
     return {
       tableRef,
       tableProps,
