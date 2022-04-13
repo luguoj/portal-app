@@ -1,7 +1,6 @@
 import {PsrAppPlugin} from "./types/PsrAppPlugin";
 import {App, watch} from "vue";
 import {ModuleTree, Store} from "vuex";
-import {Router} from "vue-router";
 import {buildMenuItem, PsrAppNavigationLayoutItem, PsrAppNavigationMenu, PsrAppNavigationMenuItem} from "./navigation-menu";
 import {PermitAll, PsrAppPermission} from "./permission";
 import {buildLayoutChildRoute, PsrAppRouteMetaPermission, PsrAppRouter, PsrAppRouteRecord} from "./route";
@@ -51,7 +50,7 @@ export class PsrAppContext {
         // 用户切换时更新许可
         updatePermissionOnUsernameChange(this.permission, this.store.store)
         // 根据许可阻断路由
-        blockRouteByPermission(this.permission, this.router.router)
+        blockRouteByPermission(this.permission, this.router)
         // 根据许可过滤导航菜单
         filterNavigationMenuByPermission(this.navigationMenu, this.permission)
         // 布局切换触发模块更新
@@ -93,23 +92,63 @@ function updatePermissionOnUsernameChange(permission: PsrAppPermission, store: S
     }, {immediate: true})
 }
 
-function blockRouteByPermission(permission: PsrAppPermission, router: Router) {
+function blockRouteByPermission(permission: PsrAppPermission, router: PsrAppRouter) {
     // 通过许可控制路由跳转
-    router.beforeEach(to => {
-        if (to.meta.permission) {
-            const {key} = to.meta.permission as PsrAppRouteMetaPermission
-            return permission.permission.value.then(permissionByKey => {
-                if (permissionByKey !== PermitAll
-                    && !permissionByKey[key]) {
-                    ElMessage({
-                        showClose: true,
-                        message: '无权访问此页面.',
-                        type: 'error',
-                    })
-                    return false
-                }
-                return true
-            })
+    router.router.beforeEach((to, from) => {
+        if (to.matched.length > 0) {
+            let layoutKey: string = ''
+            let viewKey: string = ''
+            const layoutRoute = to.matched[0] as unknown as PsrAppRouteRecord
+            if (layoutRoute.name !== 'root' && layoutRoute.meta.permission) {
+                layoutKey = layoutRoute.meta.permission.key
+            }
+            if (to.meta.permission) {
+                viewKey = (to.meta.permission as PsrAppRouteMetaPermission).key
+            }
+            if (layoutKey || viewKey) {
+                return permission.permission.value.then(permissionByKey => {
+                    if (permissionByKey !== PermitAll) {
+                        if (layoutKey) {
+                            console.log('路由跳转->布局许可校验')
+                            // 没有布局访问权限，则跳转到没有授权页面
+                            if (!permissionByKey[layoutKey]) {
+                                ElMessage({
+                                    showClose: true,
+                                    message: '无权访问此页面.',
+                                    type: 'error',
+                                })
+                                if (from.matched.length == 0 || from.matched[0].meta.layout !== true) {
+                                    console.log('布局许可校验失败->初始访问/从非布局页面跳转，跳转到跟路由')
+                                    return {path: '/'}
+                                } else {
+                                    console.log('布局许可校验失败->非初始访问/从布局页面跳转，阻断')
+                                    return false
+                                }
+                            }
+                        }
+                        if (viewKey) {
+                            console.log('路由跳转->视图许可校验')
+                            if (!permissionByKey[viewKey]) {
+                                ElMessage({
+                                    showClose: true,
+                                    message: '无权访问此页面.',
+                                    type: 'error',
+                                })
+                                if (from.matched.length == 0 || from.matched[0].meta.layout !== true) {
+                                    console.log('视图许可校验失败->初始访问/从非布局页面跳转，跳转到布局根路由')
+                                    return {path: '/' + layoutKey}
+                                } else {
+                                    console.log('视图许可校验失败->非初始访问/从布局页面跳转，阻断')
+                                    return false
+                                }
+                            }
+                        }
+                    }
+                    return true
+                }).catch(() => {
+
+                })
+            }
         }
     })
 }
