@@ -11,7 +11,6 @@ export interface PsrAppLayoutOptions {
     store?: Module<any, any>,
     component: Component,
     modules?: PsrAppModuleOptions[]
-    default?: boolean,
     permission?: boolean
     routes?: PsrAppRouteRecordRaw[]
     menus?: PsrAppNavigationMenuItemRaw[]
