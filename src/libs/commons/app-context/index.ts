@@ -6,3 +6,5 @@ export * from "./PsrAppContext"
 export * from "./PsrAppContextProvider"
 export * from "./types/PsrAppPlugin"
 export * from "./permission"
+export {processRootRoute} from "@/libs/commons/app-context/processRootRoute";
+export {processSignInRoute} from "@/libs/commons/app-context/processSignInRoute";
