@@ -161,7 +161,6 @@ import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
 import {useAppContext} from "@/libs/commons/app-context";
-import {appContext} from "@/appContext";
 import {ROUTE_PORTAL_GROUP_LIST, ROUTE_PORTAL_GROUP_PERMISSION, ROUTE_PORTAL_GROUP_USER} from "@/modules/admin-console/route";
 
 export default defineComponent({
@@ -174,7 +173,8 @@ export default defineComponent({
     AdminConsoleGroupEditDialog
   },
   setup() {
-    const router = useAppContext().router
+    const appContext = useAppContext()
+    const router = appContext.router
     const tableRef = ref()
     const tableProps = shallowReactive({
       pageable: reactive({

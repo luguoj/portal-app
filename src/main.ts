@@ -5,10 +5,9 @@ import './registerServiceWorker'
 import './styles/global.css'
 import {usePrimeVue} from "./component-libs/PrimeVue"
 import {useElementPlus} from "./component-libs/ElementPlus"
-import {tokenContext} from "@/token-context";
 import {appContext} from "@/appContext";
 
-const app = createApp(App).use(appContext).use(tokenContext)
+const app = createApp(App).use(appContext)
 useElementPlus(app)
 usePrimeVue(app)
 app.mount('#app')
