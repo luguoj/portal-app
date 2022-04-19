@@ -25,8 +25,12 @@ function beforeRequest(config: AxiosRequestConfig, context: PSROAuthContext<Toke
 
 function onError(client: AxiosInstance, err: any, context: PSROAuthContext<TokenService>) {
     if (err && err.response) {
-        if (err.response.status === 401) {
-            return context.refreshToken().then(() => client(err.config))
+        switch (err.response.status) {
+            case 401:
+                return context.refreshToken().then(() => client(err.config))
+            case 403:
+                console.error('无权访问此资源', err)
+                break
         }
     }
     return Promise.reject(err)
