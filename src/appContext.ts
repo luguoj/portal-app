@@ -9,10 +9,7 @@ import PsrErrorNotFound from "@/libs/components/psr/views/PsrErrorNotFound.vue";
 import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClientSignIn.vue";
 import {tokenContext} from "@/token-context";
 
-if (process.env.VUE_APP_PORTAL_ID === undefined) {
-    throw new Error("缺少环境变量: process.env.VUE_APP_PORTAL_ID")
-}
-const appPortalId: string = process.env.VUE_APP_PORTAL_ID
+
 
 export const appContext = createAppContext({
     layouts: [{
@@ -40,7 +37,7 @@ export const appContext = createAppContext({
         } else if (username === 'platform_admin') {
             return Promise.resolve('permit-all')
         } else {
-            return portalService.user.findPermissionByPortalId(appPortalId)
+            return portalService.user.findPermissionByPortalId()
         }
     },
     token: tokenContext,
