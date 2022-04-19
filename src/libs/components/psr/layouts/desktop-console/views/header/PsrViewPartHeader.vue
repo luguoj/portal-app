@@ -32,7 +32,9 @@
     <el-tooltip content="视图标签栏" effect="light">
       <el-button type="text" @click="toggleTagBarExpansion" class="button icon-only">
         <template #icon>
-          <el-icon class="pi pi-paperclip"/>
+          <el-badge :value="cachedRoutes.length" :hidden="!tagBarCollapsed" type="primary">
+            <el-icon class="pi pi-paperclip"/>
+          </el-badge>
         </template>
       </el-button>
     </el-tooltip>
@@ -54,7 +56,7 @@
       <psr-view-part-header-user-popover/>
     </el-popover>
   </div>
-  <div class="ct-tag-bar" v-show="tagBarCollapsed">
+  <div class="ct-tag-bar" v-show="!tagBarCollapsed">
     <psr-view-part-header-tag-bar/>
   </div>
 </template>
@@ -70,6 +72,7 @@ import {useStore} from "vuex";
 import {useAppContext} from "@/libs/commons/app-context";
 import {State} from "../../store/State";
 import {useFullscreen} from "@vueuse/core";
+import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache";
 
 export default defineComponent({
   name: "psr-view-part-header",
@@ -131,6 +134,7 @@ export default defineComponent({
 
     watch(currentRoute, hideSearcher)
     return {
+      cachedRoutes: useAppRouteCache().cachedRoutes,
       tagBarCollapsed,
       refSearcher,
       toggleNavigationExpansion,
