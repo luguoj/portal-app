@@ -31,7 +31,7 @@ export class PSROAuthContext<TS extends TokenService> {
         this._tokenInfo = reactive({
             authentication: {
                 username: '',
-                state: ''
+                state: NOT_AUTHENTICATED
             },
             access_token: '',
             token_type: null,
