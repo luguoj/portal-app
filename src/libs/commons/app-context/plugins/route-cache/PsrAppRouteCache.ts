@@ -1,5 +1,5 @@
 import {App, reactive, ref, Ref, watch} from "vue";
-import {PsrAppCurrentRoute, PsrAppRouteMetaTag} from "../../route";
+import {PsrAppRouteMetaTag, PsrAppRouteStatus} from "../../route";
 import {PsrAppRouteCacheItem} from "./types/PsrAppRouteCacheItem";
 import {PsrAppPlugin} from "../../types/PsrAppPlugin";
 import {PsrAppContext} from "../../PsrAppContext";
@@ -11,17 +11,18 @@ export class PsrAppRouteCache extends PsrAppPlugin {
 
     install(app: App, appContext: PsrAppContext) {
         super.install(app, appContext);
-        watch(() => appContext.store.store.state.username, () => this.init(), {immediate: true})
-        appContext.router.onRouteChange(current => this.onRoute(current))
+        watch(() => this.appContext().store.store.state.username, () => this.init(), {immediate: true})
+        this.appContext().router.onRouteChange(event => this.onRoute(event.newRoute))
+        this.appContext().router.onLayoutChange(() => this.init())
     }
 
     init() {
-        const router = this.appContext!.router
+        const router = this.appContext().router
         const currentRoute = router.current
         this.cachedRoutes.value = []
         this.cachedRouteByName = {}
         const affixRoutes = router.router.getRoutes().filter(route => {
-            if (currentRoute.value.layout != null) {
+            if (currentRoute.value !== null && currentRoute.value.layout != null) {
                 if (route.name!.toString().startsWith(currentRoute.value.layout.name) && route.meta.tag) {
                     const tag = route.meta.tag as PsrAppRouteMetaTag
                     return tag!.isAffix
@@ -38,10 +39,10 @@ export class PsrAppRouteCache extends PsrAppPlugin {
             })
             this.cachedRoutes.value.push(cachedRoute)
         }
-        this.onRoute(currentRoute.value)
+        this.onRoute(currentRoute.value || {module: null, route: null})
     }
 
-    onRoute({module, route}: PsrAppCurrentRoute) {
+    onRoute({module, route}: PsrAppRouteStatus | { module: null, route: null }) {
         if (module) {
             const {name, components, meta} = module
             if (meta.tag) {
@@ -69,11 +70,7 @@ export class PsrAppRouteCache extends PsrAppPlugin {
         this.cachedRoutes.value.splice(index, 1)
         delete this.cachedRouteByName[cachedRoute.name]
         if (this.activeRouteName.value === cachedRoute.name) {
-            this.appContext!.router.router.push(this.cachedRoutes.value[index - 1].path)
+            this.appContext().router.router.push(this.cachedRoutes.value[index - 1].path)
         }
-    }
-
-    onLayoutChange() {
-        this.init()
     }
 }
