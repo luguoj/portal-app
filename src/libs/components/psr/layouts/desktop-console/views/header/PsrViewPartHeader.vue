@@ -87,7 +87,7 @@ export default defineComponent({
     const currentRoute = useAppContext().router.current
     const mainRef = inject<HTMLElement | null>("main-ref")
     const tagBarCollapsed = computed<boolean>(() => {
-      if (currentRoute.value.layout) {
+      if (currentRoute.value?.layout) {
         const state = store.state[currentRoute.value.layout.name] as State
         return state.tagBarCollapsed
       } else {
@@ -109,13 +109,13 @@ export default defineComponent({
     })
 
     function toggleNavigationExpansion() {
-      if (currentRoute.value.layout) {
+      if (currentRoute.value?.layout) {
         store.commit(`${currentRoute.value.layout.name}/toggleAside`)
       }
     }
 
     function toggleTagBarExpansion() {
-      if (currentRoute.value.layout) {
+      if (currentRoute.value?.layout) {
         store.commit(`${currentRoute.value.layout.name}/toggleTagBar`)
       }
     }

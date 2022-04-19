@@ -20,7 +20,7 @@ export default defineComponent({
     const store = useStore()
     const currentRoute = useAppContext().router.current
     const showTitle = computed(() => {
-      if (currentRoute.value.layout) {
+      if (currentRoute.value?.layout) {
         return !store.state[currentRoute.value.layout.name].asideCollapsed
       } else {
         return true

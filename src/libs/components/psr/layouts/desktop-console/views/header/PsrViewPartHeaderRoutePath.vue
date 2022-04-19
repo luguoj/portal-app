@@ -95,7 +95,7 @@ export default defineComponent({
     const menuItems = appContext.navigationMenu.menuItems
     const layoutItems = appContext.navigationMenu.layoutItems
     const layoutRoutePath = computed(() => {
-      if (currentRoute.value.layout) {
+      if (currentRoute.value?.layout) {
         const {name, path, meta: {tag: {title, iconCls}}} = currentRoute.value.layout
         return {
           key: name,
@@ -118,7 +118,7 @@ export default defineComponent({
     })
     const routePath = computed(() => {
       const result: RoutePathItem[] = []
-      if (layoutRoutePath.value) {
+      if (currentRoute.value && layoutRoutePath.value !== null) {
         const route = currentRoute.value.route!
         if (route.fullPath !== layoutRoutePath.value.path) {
           if (menuItemRoutePathByName.value && menuItemRoutePathByName.value[route.name!]) {

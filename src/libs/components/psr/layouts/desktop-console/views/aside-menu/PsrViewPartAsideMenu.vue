@@ -32,7 +32,7 @@ export default defineComponent({
     const currentRoute = appContext.router.current
     const menuItems: Ref<PsrAppNavigationMenuItem[]> = appContext.navigationMenu.currentLayoutMenuItems
     const asideCollapsed = computed<boolean>(() => {
-      if (currentRoute.value.layout) {
+      if (currentRoute.value?.layout) {
         const state = store.state[currentRoute.value.layout.name] as State
         return state.asideCollapsed
       } else {
@@ -41,7 +41,7 @@ export default defineComponent({
     })
 
     function updateActiveMenuItem() {
-      if (currentRoute.value.module) {
+      if (currentRoute.value?.module) {
         activeMenuItemId.value = currentRoute.value.module.name
       } else {
         activeMenuItemId.value = ''
