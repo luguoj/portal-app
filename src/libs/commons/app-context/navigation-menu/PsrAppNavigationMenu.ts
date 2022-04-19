@@ -14,15 +14,20 @@ export class PsrAppNavigationMenu {
     constructor(options: { layoutItemsRaw: PsrAppNavigationLayoutItem[], menuItemsRaw: Record<string, PsrAppNavigationMenuItem[]> }) {
         this.layoutItemsRaw = options.layoutItemsRaw
         this.menuItemsRaw = options.menuItemsRaw
+        this.doFilter(() => false, () => false)
     }
 
     doFilter(
         filterLayoutItemFn: (node: PsrAppNavigationLayoutItem) => boolean,
         filterMenuItemFn: (node: PsrAppNavigationMenuItem) => boolean
     ) {
-        this.layoutItems.value = this.layoutItemsRaw.filter(filterLayoutItemFn)
+        this.layoutItems.value = this.layoutItemsRaw.filter(item => {
+            return !item.permission || filterLayoutItemFn(item)
+        })
         for (const layoutName in this.menuItemsRaw) {
-            this.menuItems[layoutName] = filterFromBottom(this.menuItemsRaw[layoutName], filterMenuItemFn)
+            this.menuItems[layoutName] = filterFromBottom(this.menuItemsRaw[layoutName], item => {
+                return !item.permission || filterMenuItemFn(item)
+            })
         }
     }
 }

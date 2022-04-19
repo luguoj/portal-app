@@ -5,7 +5,8 @@ export type PsrAppNavigationMenuItem = PsrAppNavigationMenuSubMenu | PsrAppNavig
 interface PsrAppNavigationMenuItemBase {
     id: string
     title: string
-    iconCls: string
+    iconCls: string,
+    permission: boolean
 }
 
 interface PsrAppNavigationMenuSubMenu extends PsrAppNavigationMenuItemBase {
