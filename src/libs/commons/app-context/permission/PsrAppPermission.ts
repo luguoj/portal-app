@@ -1,20 +1,45 @@
-import {ref, Ref, watchEffect} from "vue";
+import {Ref, ref, watchEffect} from "vue";
 import {PsrAppPermissionService} from "./types/PsrAppPermissionService";
 import {PsrAppPermissionRaw} from "./types/PsrAppPermissionRaw";
 
-export const DenyAll: PsrAppPermissionRaw = {}
-export const PermitAll: PsrAppPermissionRaw = {'permit-all': []}
-
 export class PsrAppPermission {
-    readonly permission: Ref<Promise<PsrAppPermissionRaw>> = ref(Promise.resolve(DenyAll))
+    initialized = ref(true)
+    permission: Ref<PsrAppPermissionRaw> = ref({})
+    username: string = ''
     private readonly _permissionService: PsrAppPermissionService
 
     constructor(permissionService: PsrAppPermissionService) {
         this._permissionService = permissionService
     }
 
-    changeUser(username: string) {
-        this.permission.value = this._permissionService(username)
+    changeUser(newUsername: string) {
+        const oldUsername = this.username
+        this.username = newUsername
+        if (newUsername != '') {
+            if (oldUsername !== newUsername) {
+                this.initialized.value = false
+                return this._permissionService(newUsername)
+                    .then(newPermission => {
+                        if (this.username === newUsername) {
+                            this.permission.value = newPermission
+                            this.initialized.value = true
+                            return newPermission
+                        } else {
+                            throw new Error("用户切换许可更新请求废弃")
+                        }
+                    })
+                    .catch(() => {
+                        throw new Error("获取许可失败")
+                    })
+            }
+        } else if (newUsername === '') {
+            if (oldUsername !== newUsername || this.initialized.value == false) {
+                this.permission.value = {}
+                this.initialized.value = true
+                return Promise.resolve(this.permission.value)
+            }
+        }
+        return null
     }
 
     // 创建操作许可标识
@@ -22,21 +47,19 @@ export class PsrAppPermission {
         const flag = ref<boolean>(false)
         // 判断操作是否满足许可
         watchEffect(() => {
-            this.permission.value.then(permissionByRouteName => {
-                if (permissionByRouteName === PermitAll) {
-                    flag.value = true
-                } else {
-                    const routeActions = permissionByRouteName[routeName]
-                    let _flag = routeActions != undefined
-                    if (_flag && actions != undefined) {
-                        for (let i = 0; i < actions.length && flag; i++) {
-                            const action = actions[i];
-                            _flag = _flag && routeActions.includes(action)
-                        }
+            if (this.permission.value === 'permit-all') {
+                flag.value = true
+            } else {
+                const routeActions = this.permission.value[routeName]
+                let _flag = routeActions != undefined
+                if (_flag && actions != undefined) {
+                    for (let i = 0; i < actions.length && flag; i++) {
+                        const action = actions[i];
+                        _flag = _flag && routeActions.includes(action)
                     }
-                    flag.value = _flag
                 }
-            })
+                flag.value = _flag
+            }
         })
         return flag
     }
