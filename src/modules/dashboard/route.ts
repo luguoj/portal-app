@@ -1,6 +1,6 @@
-import {PSRRouteRecordRaw} from "@/libs/commons/app-context/route";
+import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
 
-export const ROUTE_SIGN_IN: PSRRouteRecordRaw = {
+export const ROUTE_SIGN_IN: PsrAppRouteRecordRaw = {
     name: 'psr-dashboard',
     path: 'dashboard',
     component: () => import("./views/Dashboard.vue"),
