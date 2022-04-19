@@ -46,7 +46,7 @@ export function checkRoutePermission(event: PsrAppRouteChangeEvent, context: Psr
 }
 
 function checkPermissionByKey(permissionByKey: PsrAppPermissionRaw, from: RouteLocationNormalizedLoaded, layoutKey?: string, routeKey?: string) {
-    let flag: boolean = true
+    let flag = true
     if (permissionByKey !== 'permit-all') {
         if (layoutKey) {
             console.log('布局许可校验:%s', layoutKey)

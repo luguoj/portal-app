@@ -5,7 +5,7 @@ import {PsrAppPermissionRaw} from "./types/PsrAppPermissionRaw";
 export class PsrAppPermission {
     initialized = ref(true)
     permission: Ref<PsrAppPermissionRaw> = ref({})
-    username: string = ''
+    username = ''
     private readonly _permissionService: PsrAppPermissionService
 
     constructor(permissionService: PsrAppPermissionService) {
