@@ -32,7 +32,7 @@
     <el-tooltip content="视图标签栏" effect="light">
       <el-button type="text" @click="toggleTagBarExpansion" class="button icon-only">
         <template #icon>
-          <el-badge :value="cachedRoutes.length" :hidden="!tagBarCollapsed" type="primary">
+          <el-badge :value="cachedRouteCount" :hidden="!tagBarCollapsed||cachedRouteCount===0" type="primary">
             <el-icon class="pi pi-paperclip"/>
           </el-badge>
         </template>
@@ -132,9 +132,12 @@ export default defineComponent({
       useFullscreen(mainRef).toggle()
     }
 
+    const routeCache = useAppRouteCache()
     watch(currentRoute, hideSearcher)
     return {
-      cachedRoutes: useAppRouteCache().cachedRoutes,
+      cachedRouteCount: computed(() => {
+        return routeCache.cachedRoutes.value.filter(item => item.tag.title).length
+      }),
       tagBarCollapsed,
       refSearcher,
       toggleNavigationExpansion,
