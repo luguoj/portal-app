@@ -1,7 +1,6 @@
 import {PsrAppLayoutOptions} from "@/libs/commons/app-context/types/PsrAppLayoutOptions";
 import {store} from "./store";
 import {routes} from "./route";
-import {menus} from "./menus"
 
 export const PsrLayoutDesktopConsole: PsrAppLayoutOptions = {
     modules: [],
@@ -10,6 +9,5 @@ export const PsrLayoutDesktopConsole: PsrAppLayoutOptions = {
     component: () => import("./views/PsrLayoutDesktopConsole.vue"),
     routes,
     iconCls: "pi pi-home",
-    title: "桌面控制台",
-    menus
+    title: "桌面控制台"
 }

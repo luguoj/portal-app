@@ -1,11 +1,11 @@
 import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
-import PsrPageBlank from "./views/page/PsrViewPartPageBlank.vue";
+import PsrBlank from "@/libs/components/psr/views/PsrBlank.vue";
 
-export const ROUTE_HOME: PsrAppRouteRecordRaw = {
-    name: 'home',
+export const ROUTE_BLANK: PsrAppRouteRecordRaw = {
+    name: 'blank',
     path: '',
-    component: PsrPageBlank,
-    meta: {tag: {isAffix: true, title: '首页', iconCls: 'pi pi-home'}}
+    component: PsrBlank,
+    meta: {tag: {isAffix: true, title: '', iconCls: ''}}
 }
 
-export const routes: Array<PsrAppRouteRecordRaw> = [ROUTE_HOME]
+export const routes: Array<PsrAppRouteRecordRaw> = [ROUTE_BLANK]
