@@ -16,5 +16,10 @@ module.exports = defineConfig({
                 resolvers: [ElementPlusResolver()]
             })
         ]
+    },
+    pwa: {
+        themeColor: "#130f40",
+        msTileColor: "#130f40",
+        name: process.env.VUE_APP_TITLE,
     }
 })
