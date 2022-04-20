@@ -1,15 +1,13 @@
-import {createAppContext} from "@/libs/commons/app-context/";
 import {PsrLayoutDesktopConsole} from "@/libs/components/psr/layouts/desktop-console";
 import {SamplePage} from "@/modules/sample-page";
 import {Admin} from "@/modules/admin-console";
 import {portalService} from "@/services/portal";
-import {createAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/PsrAppRouteCacheProvider";
 import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persist";
 import PsrErrorNotFound from "@/libs/components/psr/views/PsrErrorNotFound.vue";
 import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClientSignIn.vue";
-import {tokenContext} from "@/token-context";
-
-
+import {createAppContext} from "@/libs/commons/app-context";
+import {tokenContext} from "./token";
+import {routeCache} from "./routeCache";
 
 export const appContext = createAppContext({
     layouts: [{
@@ -45,4 +43,4 @@ export const appContext = createAppContext({
         signIn: PsrOAuthSSOClientSignIn,
         errorNotFound: PsrErrorNotFound
     }
-}).useToken(tokenContext).use(createAppRouteCache())
+}).useToken(tokenContext).use(routeCache)

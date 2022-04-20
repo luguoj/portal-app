@@ -5,7 +5,7 @@ import './registerServiceWorker'
 import './styles/global.css'
 import {usePrimeVue} from "./component-libs/PrimeVue"
 import {useElementPlus} from "./component-libs/ElementPlus"
-import {appContext} from "@/appContext";
+import {appContext} from "@/context";
 
 const app = createApp(App).use(appContext)
 useElementPlus(app)
