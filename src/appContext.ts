@@ -40,10 +40,9 @@ export const appContext = createAppContext({
             return portalService.user.findPermissionByPortalId()
         }
     },
-    token: tokenContext,
     storePlugins: [createStatePersistPlugin()],
     pages: {
         signIn: PsrOAuthSSOClientSignIn,
         errorNotFound: PsrErrorNotFound
     }
-}).use(createAppRouteCache())
+}).useToken(tokenContext).use(createAppRouteCache())

@@ -20,7 +20,7 @@ export class PsrAppContext {
     readonly router: PsrAppRouter
     readonly navigationMenu: PsrAppNavigationMenu
     readonly permission: PsrAppPermission
-    readonly token?: PSROAuthContext<TokenService>
+    token?: PSROAuthContext<TokenService>
     readonly plugins: Record<string, PsrAppPlugin> = {}
 
     // 被登录路由挂起的路由路径
@@ -39,8 +39,11 @@ export class PsrAppContext {
         this.navigationMenu = new PsrAppNavigationMenu(extractMenuOptions(options.layouts))
         // 初始化permission
         this.permission = new PsrAppPermission(options.permission)
-        // 初始化token上下文
-        this.token = options.token
+    }
+
+    useToken(token: PSROAuthContext<TokenService>) {
+        this.token = token
+        return this
     }
 
     use(plugin: PsrAppPlugin) {
