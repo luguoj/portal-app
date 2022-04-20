@@ -21,28 +21,29 @@ export class PsrAppRouteCache extends PsrAppPlugin {
         const currentRoute = router.current
         this.cachedRoutes.value = []
         this.cachedRouteByName = {}
-        const affixRoutes = router.router.getRoutes().filter(route => {
-            if (currentRoute.value !== null && currentRoute.value.layout != null) {
-                if (route.name!.toString().startsWith(currentRoute.value.layout.name) && route.meta.tag) {
+        if (currentRoute.value != null && currentRoute.value.layout != null) {
+            const {layout} = currentRoute.value
+            const affixRoutes = router.router.getRoutes().filter(route => {
+                if (route.name!.toString().startsWith(layout.name) && route.meta.tag) {
                     const tag = route.meta.tag as PsrAppRouteMetaTag
                     return tag!.isAffix
                 }
-            }
-            return false
-        })
-        for (const {name, path, components, meta} of affixRoutes) {
-            const cachedRoute = this.cachedRouteByName[name!] = reactive({
-                name: name!,
-                componentName: components['default'].name!,
-                tag: meta.tag as PsrAppRouteMetaTag,
-                path
+                return false
             })
-            this.cachedRoutes.value.push(cachedRoute)
+            for (const {name, path, components, meta} of affixRoutes) {
+                const cachedRoute = this.cachedRouteByName[name!] = reactive({
+                    name: name!,
+                    componentName: components['default'].name!,
+                    tag: meta.tag as PsrAppRouteMetaTag,
+                    path
+                })
+                this.cachedRoutes.value.push(cachedRoute)
+            }
+            this.onRoute(currentRoute.value)
         }
-        this.onRoute(currentRoute.value || {module: null, route: null})
     }
 
-    onRoute({module, route}: PsrAppRouteStatus | { module: null, route: null }) {
+    onRoute({module, route}: PsrAppRouteStatus) {
         if (module) {
             const {name, components, meta} = module
             if (meta.tag) {
@@ -66,11 +67,13 @@ export class PsrAppRouteCache extends PsrAppPlugin {
     }
 
     delete(cachedRoute: PsrAppRouteCacheItem) {
-        const index = this.cachedRoutes.value.indexOf(cachedRoute)
-        this.cachedRoutes.value.splice(index, 1)
-        delete this.cachedRouteByName[cachedRoute.name]
-        if (this.activeRouteName.value === cachedRoute.name) {
-            this.appContext().router.router.push(this.cachedRoutes.value[index - 1].path)
+        if (this.cachedRoutes.value.length > 1) {
+            const index = this.cachedRoutes.value.indexOf(cachedRoute)
+            this.cachedRoutes.value.splice(index, 1)
+            delete this.cachedRouteByName[cachedRoute.name]
+            if (this.activeRouteName.value === cachedRoute.name) {
+                this.appContext().router.router.push(this.cachedRoutes.value[index - 1].path)
+            }
         }
     }
 }
