@@ -22,17 +22,13 @@ function buildStoreOptions(storeModules: ModuleTree<any>): StoreOptions<PsrAppSt
     return {
         state() {
             return {
-                username: '',
-                userLastRoutePath: '/'
+                username: ''
             }
         },
         getters: {},
         mutations: {
             updateUsername(state, username) {
                 state.username = username
-            },
-            updateUserLastRoutePath(state, value) {
-                state.userLastRoutePath = value
             }
         },
         actions: {},

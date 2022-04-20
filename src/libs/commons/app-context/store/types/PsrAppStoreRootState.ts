@@ -1,4 +1,3 @@
 export interface PsrAppStoreRootState {
-    username: string,
-    userLastRoutePath: string
+    username: string
 }
