@@ -66,6 +66,8 @@ export class PsrAppRouter {
                     moduleChange = true
                 }
                 this.current.value = newRoute
+                const layoutTitle = newRoute.layout?.meta.tag.title || '初始化中...'
+                document.title = `${process.env.VUE_APP_TITLE} - ${layoutTitle}`
                 console.log('PsrAppRouter.afterEach 更新当前路由信息:%O', newRoute)
                 try {
                     if (layoutChange) {
