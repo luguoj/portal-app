@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import {useSignInFrame} from "@/libs/services/psr-oauth/context";
+import {useSignInFrame} from "@/libs/commons/app-context/plugins/token";
 import {defineComponent} from "vue";
 
 export default defineComponent({

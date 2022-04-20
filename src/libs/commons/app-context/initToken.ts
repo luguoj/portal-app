@@ -1,4 +1,4 @@
-import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/libs/services/psr-oauth/context";
+import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/libs/commons/app-context/plugins/token";
 import {watch} from "vue";
 import {ElMessage} from "element-plus/es";
 import {initPermission} from "./initPermission";

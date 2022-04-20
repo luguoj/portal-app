@@ -1,7 +1,7 @@
 // 使用登录框架
 import {onBeforeMount, onBeforeUnmount, onMounted, ref, watchEffect} from "vue";
-import {CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "./TokenContext";
-import {useTokenContext} from "./TokenContext"
+import {CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "./PsrAppToken";
+import {useTokenContext} from "./PsrAppTokenProvider";
 
 export function useSignInFrame() {
     const context = useTokenContext()

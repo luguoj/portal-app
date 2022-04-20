@@ -1,7 +1,7 @@
 // 未认证
-import {App, inject, reactive, UnwrapNestedRefs} from "vue";
-
-export const TOKEN_CONTEXT_KEY = 'tokenContext'
+import {reactive, UnwrapNestedRefs} from "vue";
+import {PsrAppTokenService} from "./types/PsrAppTokenService";
+import {PsrAppPlugin} from "@/libs/commons/app-context";
 
 export const NOT_AUTHENTICATED = 'not_authenticated'
 // 认证过期
@@ -18,7 +18,7 @@ interface TokenInfo {
     authentication: { state: string; username: string }
 }
 
-export class PSROAuthContext<TS extends TokenService> {
+export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
     // 令牌服务
     protected readonly _tokenService: TS;
     // 令牌信息
@@ -26,7 +26,8 @@ export class PSROAuthContext<TS extends TokenService> {
     // 刷新令牌作业
     protected _flushing: Promise<UnwrapNestedRefs<TokenInfo>> | null;
 
-    constructor(tokenService: TS) {
+    constructor(injectKey: string, tokenService: TS) {
+        super(injectKey)
         this._tokenService = tokenService
         this._tokenInfo = reactive({
             authentication: {
@@ -104,16 +105,5 @@ export class PSROAuthContext<TS extends TokenService> {
             }
         })
     }
-
-    install(app: App) {
-        app.provide(TOKEN_CONTEXT_KEY, this)
-    }
 }
 
-export function createTokenContext<TS extends TokenService>(options: { tokenService: TS }) {
-    return new PSROAuthContext(options.tokenService)
-}
-
-export function useTokenContext<TS extends TokenService>() {
-    return inject(TOKEN_CONTEXT_KEY) as PSROAuthContext<TS>
-}

@@ -1,6 +1,7 @@
 import axios, {AxiosInstance} from "axios";
+import {PsrAppTokenService, PsrAppTokenServiceData} from "@/libs/commons/app-context/plugins/token";
 
-export class PSROAuthSSOClientTokenService implements TokenService {
+export class PsrOAuthSSOClientTokenService implements PsrAppTokenService {
     private readonly _baseURL: string;
     // 授权客户端
     private readonly _authClient: AxiosInstance;
@@ -19,7 +20,7 @@ export class PSROAuthSSOClientTokenService implements TokenService {
 
     // 调用获取令牌信息接口
     getToken() {
-        return new Promise<TokenData>((resolve, reject) => {
+        return new Promise<PsrAppTokenServiceData>((resolve, reject) => {
             this._authClient.get('/api/token')
                 .then(response => {
                         resolve(response.data)

@@ -1,2 +1,1 @@
-export * from './axios-inteceptors'
-export * from './token-services/sso-client'
+export * from './token-services/PsrOAuthSSOClientTokenService'

@@ -1,7 +1,8 @@
 import {AxiosInstance, AxiosRequestConfig} from "axios";
-import {PSROAuthContext} from "@/libs/services/psr-oauth/context";
+import {PsrAppToken} from "./PsrAppToken";
+import {PsrAppTokenService} from "./types/PsrAppTokenService";
 
-function putAuthorizationHeader(config: AxiosRequestConfig, context: PSROAuthContext<TokenService>) {
+function putAuthorizationHeader(config: AxiosRequestConfig, context: PsrAppToken<PsrAppTokenService>) {
     if (context.checkToken()) {
         if (config.headers === undefined) {
             config.headers = {}
@@ -12,7 +13,7 @@ function putAuthorizationHeader(config: AxiosRequestConfig, context: PSROAuthCon
     return false
 }
 
-function beforeRequest(config: AxiosRequestConfig, context: PSROAuthContext<TokenService>) {
+function beforeRequest(config: AxiosRequestConfig, context: PsrAppToken<PsrAppTokenService>) {
     if (putAuthorizationHeader(config, context)) {
         return config
     } else {
@@ -23,7 +24,7 @@ function beforeRequest(config: AxiosRequestConfig, context: PSROAuthContext<Toke
     }
 }
 
-function onError(client: AxiosInstance, err: any, context: PSROAuthContext<TokenService>) {
+function onError(client: AxiosInstance, err: any, context: PsrAppToken<PsrAppTokenService>) {
     if (err && err.response) {
         switch (err.response.status) {
             case 401:
@@ -36,7 +37,7 @@ function onError(client: AxiosInstance, err: any, context: PSROAuthContext<Token
     return Promise.reject(err)
 }
 
-export function applyPSROAuthInterceptor(client: AxiosInstance, context: PSROAuthContext<TokenService>) {
+export function applyTokenInterceptor(client: AxiosInstance, context: PsrAppToken<PsrAppTokenService>) {
     client.interceptors.request.use((config: AxiosRequestConfig) => beforeRequest(config, context))
     client.interceptors.response.use(undefined, err => onError(client, err, context))
     return client

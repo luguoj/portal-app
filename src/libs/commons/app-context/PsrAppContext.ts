@@ -5,7 +5,7 @@ import {PsrAppPermission} from "./permission";
 import {PsrAppRouter} from "./route";
 import {PsrAppContextOptions} from "./types/PsrAppContextOptions";
 import {PsrAppStore} from "./store/PsrAppStore";
-import {PSROAuthContext} from "@/libs/services/psr-oauth/context";
+import {PsrAppToken, PsrAppTokenService} from "@/libs/commons/app-context/plugins/token";
 import {extractStoreOptions} from "./extractStoreOptions";
 import {extractRouterOptions} from "./extractRouterOptions";
 import {extractMenuOptions} from "./extractMenuOptions";
@@ -20,7 +20,7 @@ export class PsrAppContext {
     readonly router: PsrAppRouter
     readonly navigationMenu: PsrAppNavigationMenu
     readonly permission: PsrAppPermission
-    token?: PSROAuthContext<TokenService>
+    token?: PsrAppToken<PsrAppTokenService>
     readonly plugins: Record<string, PsrAppPlugin> = {}
 
     // 被登录路由挂起的路由路径
@@ -41,7 +41,7 @@ export class PsrAppContext {
         this.permission = new PsrAppPermission(options.permission)
     }
 
-    useToken(token: PSROAuthContext<TokenService>) {
+    useToken(token: PsrAppToken<PsrAppTokenService>) {
         this.token = token
         return this
     }

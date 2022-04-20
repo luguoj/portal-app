@@ -1,14 +1,14 @@
-interface TokenData {
+export interface PsrAppTokenServiceData {
     username: string;
     access_token: string;
     token_type: { value: string };
     expires_at?: number | null;
 }
 
-interface TokenService {
+export interface PsrAppTokenService {
     baseURL(): string;
 
-    getToken(): Promise<TokenData>;
+    getToken(): Promise<PsrAppTokenServiceData>;
 
     signOut(): Promise<any>;
 }
