@@ -53,7 +53,7 @@ function onAuthenticationStateChange(state: string, context: PsrAppContext) {
         console.log('身份未认证=>重置store=>跳转登录', username)
         store.resetStore()
         context.routePathHangupBySignIn = '/'
-        initPermission('', context)
+        onUsernameChanged('', context)
         router.router.isReady().finally(() => {
             router.router.push({name: 'sign-in'})
         })
@@ -70,20 +70,30 @@ function onAuthenticationStateChange(state: string, context: PsrAppContext) {
             })
             store.resetStore()
             context.routePathHangupBySignIn = '/'
-            initPermission(username, context)
+            onUsernameChanged(username, context)
         } else if (token.tokenInfo().access_token) {
             msg.push(`用户身份认证${username}`)
             ElMessage({
                 message: `用户身份已认证:${username}`,
                 type: 'success',
             })
-            initPermission(username, context)
+            onUsernameChanged(username, context)
         } else {
             msg.push(`用户${username}刷新令牌`)
             token.refreshToken().then(() => {
-                initPermission(username, context)
+                onUsernameChanged(username, context)
             })
         }
         console.log(msg.join('=>'))
     }
+}
+
+function onUsernameChanged(username: string, context: PsrAppContext) {
+    initPermission(username, context).then(()=>{
+        console.log(context.routePathHangupBySignIn)
+        if (context.routePathHangupBySignIn) {
+            console.log('许可更新->跳转拦截的路由', context.routePathHangupBySignIn)
+            context.router.router.replace({path: context.routePathHangupBySignIn})
+        }
+    })
 }
