@@ -20,7 +20,7 @@
                 {{ layoutItem.title }}
               </span>
             </router-link>
-            <el-tooltip content="设为默认" effect="light">
+            <el-tooltip content="设为默认" effect="light" placement="right">
               <el-icon
                   class="icon-default-layout"
                   :class="layoutItem.path===defaultLayout?'pi pi-star-fill':'pi pi-star'"
