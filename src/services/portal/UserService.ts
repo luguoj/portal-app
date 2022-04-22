@@ -21,4 +21,19 @@ export class UserService {
                 return []
             })
     }
+
+    findProfileByPortalId(portalId?: string): Promise<any> {
+        return this._client.get('/user/profile', {params: {portalId: portalId || appPortalId}})
+            .then((resp) => {
+                if (resp && resp.data) {
+                    return resp.data
+                }
+                return ''
+            })
+    }
+
+    updateProfileByPortalId(content: any, portalId?: string): Promise<boolean> {
+        return this._client.put('/user/profile', content, {params: {portalId: portalId || appPortalId}})
+            .then(() => true)
+    }
 }
