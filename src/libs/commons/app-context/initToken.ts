@@ -41,7 +41,7 @@ export function initToken(context: PsrAppContext) {
 
 function onAuthenticationStateChange(state: string, context: PsrAppContext) {
     const token = context.token!
-    const {store, router} = context
+    const {router} = context
     const username = token.tokenInfo().authentication.username
     const localUsername = loadLocalUsername()
     if (state === CERTIFICATION_EXPIRED) {
@@ -69,8 +69,6 @@ function onAuthenticationStateChange(state: string, context: PsrAppContext) {
         })
     } else if (state === AUTHENTICATED) {
         const msg: string[] = []
-        msg.push('更新store.username')
-        store.store.commit('updateUsername', username)
         if (localUsername && username !== localUsername) {
             msg.push(`用户身份切换(${localUsername}=>${username})`, '重置store')
             ElMessage({
@@ -98,7 +96,7 @@ function onUsernameChanged(username: string, context: PsrAppContext) {
     updateLocalUsername(username)
     initPermission(username, context).then(() => {
         if (username) {
-            context.store.loadUserProfile().finally(() => {
+            context.store.loadUserProfile(username).finally(() => {
                 console.log(context.routePathHangupBySignIn)
                 if (context.routePathHangupBySignIn) {
                     console.log('认证完成->跳转拦截的路由', context.routePathHangupBySignIn)

@@ -3,6 +3,7 @@ import {PsrAppStoreRootState} from "./types/PsrAppStoreRootState";
 import deepmerge from "deepmerge";
 import {PsrAppUserProfileService} from "./types/PsrAppUserProfileService";
 import {ref} from "vue";
+import {ElMessageBox} from "element-plus";
 
 export class PsrAppStore {
     private readonly _storeOptions: StoreOptions<PsrAppStoreRootState>
@@ -35,18 +36,33 @@ export class PsrAppStore {
         this.userProfileSynchronized.value = null
     }
 
-    loadUserProfile() {
+    loadUserProfile(username: string): Promise<any> {
         console.log('加载用户档案')
         this.userProfileSynchronized.value = null
         return this._userProfileService.find().then(content => {
             if (content) {
-                if (content && content.username === this.store.state.username) {
+                if (content.username === username) {
                     this.resetStore(content)
+                    this.userProfileSynchronized.value = true
                 } else {
-                    throw new Error(`用户档案解析失败:${content}`)
+                    return ElMessageBox.confirm(
+                        '初始化用户档案?',
+                        '同步用户档案异常',
+                        {
+                            confirmButtonText: '初始化',
+                            cancelButtonText: '重新尝试同步',
+                            type: 'warning',
+                        }
+                    ).then(() => {
+                        this.resetStore({username: username})
+                        this.userProfileSynchronized.value = true
+                        return Promise.resolve()
+                    }).catch(() => {
+                        return this.loadUserProfile(username)
+                    })
                 }
             }
-            this.userProfileSynchronized.value = true
+            return Promise.resolve()
         }).catch((err) => {
             this.userProfileSynchronized.value = false
             return Promise.reject(err)
