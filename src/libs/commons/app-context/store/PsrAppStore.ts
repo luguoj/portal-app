@@ -25,6 +25,9 @@ export class PsrAppStore {
                 this.updateUserProfile()
             }
         }, 5000)
+        window.onbeforeunload = () => {
+            this.updateUserProfile()
+        }
     }
 
     resetStore(data?: any) {
