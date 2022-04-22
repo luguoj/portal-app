@@ -16,7 +16,6 @@ export class PsrAppStore {
         this.store = createStore({
             ...this._storeOptions,
             plugins: [
-                // createStatePersistPlugin(),
                 ...storePlugins || []
             ]
         })
