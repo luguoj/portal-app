@@ -23,8 +23,8 @@
             <el-tooltip content="设为默认" effect="light" placement="right">
               <el-icon
                   class="icon-default-layout"
-                  :class="layoutItem.path===defaultLayout?'pi pi-star-fill':'pi pi-star'"
-                  @click="updateDefaultLayout(layoutItem.path)"
+                  :class="layoutItem.name===defaultLayout?'pi pi-star-fill':'pi pi-star'"
+                  @click="updateDefaultLayout(layoutItem.name)"
               />
             </el-tooltip>
           </el-space>

@@ -8,7 +8,13 @@ export function processRootRoute(event: PsrAppRouteChangeEvent, context: PsrAppC
         const layoutItems = context.navigationMenu.layoutItems.value
         const userProfileSynchronized = context.store.userProfileSynchronized.value
         if (layoutItems.length > 0 && (userProfileSynchronized !== null || context.token == null)) {
-            const defaultLayoutPath = context.store.store.state.defaultLayout || layoutItems[0].path
+            let defaultLayoutPath = layoutItems[0].path
+            if (context.store.store.state.defaultLayout) {
+                let defaultLayoutItem = layoutItems.filter(item => item.name === context.store.store.state.defaultLayout)
+                if (defaultLayoutItem.length > 0) {
+                    defaultLayoutPath = defaultLayoutItem[0].path
+                }
+            }
             msg.push(defaultLayoutPath)
             console.log(msg.join('=>'))
             throw new PsrAppRouteError(msg.join('=>'), {path: defaultLayoutPath})
@@ -27,7 +33,13 @@ export function processRootRoute(event: PsrAppRouteChangeEvent, context: PsrAppC
                                 const userProfileSynchronized = context.store.userProfileSynchronized.value
                                 if (layoutItems.length > 0 && userProfileSynchronized !== null) {
                                     unWatch()
-                                    const defaultLayoutPath = context.store.store.state.defaultLayout || layoutItems[0].path
+                                    let defaultLayoutPath = layoutItems[0].path
+                                    if (context.store.store.state.defaultLayout) {
+                                        let defaultLayoutItem = layoutItems.filter(item => item.name === context.store.store.state.defaultLayout)
+                                        if (defaultLayoutItem.length > 0) {
+                                            defaultLayoutPath = defaultLayoutItem[0].path
+                                        }
+                                    }
                                     console.log('监听到布局项目已加载=>跳转到默认布局=>%s', defaultLayoutPath)
                                     resolve({path: defaultLayoutPath})
                                 }
