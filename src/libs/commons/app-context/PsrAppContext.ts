@@ -32,7 +32,7 @@ export class PsrAppContext {
     ) {
         this._injectKey = injectKey
         // 初始化store
-        this.store = new PsrAppStore(extractStoreOptions(options.layouts), options.storePlugins)
+        this.store = new PsrAppStore(extractStoreOptions(options.layouts), options.userProfileService, options.storePlugins)
         // 初始化router
         this.router = new PsrAppRouter(extractRouterOptions(options.layouts, options.pages))
         // 初始化navigation-menu
