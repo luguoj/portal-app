@@ -8,10 +8,10 @@ import {ElMessageBox} from "element-plus";
 export class PsrAppStore {
     private readonly _storeOptions: StoreOptions<PsrAppStoreRootState>
     readonly store: Store<PsrAppStoreRootState>
-    private readonly _userProfileService: PsrAppUserProfileService
+    private readonly _userProfileService?: PsrAppUserProfileService
     readonly userProfileSynchronized = ref<boolean | null>(null)
 
-    constructor(storeModules: ModuleTree<any>, userProfileService: PsrAppUserProfileService, storePlugins?: Plugin<any>[]) {
+    constructor(storeModules: ModuleTree<any>, userProfileService?: PsrAppUserProfileService, storePlugins?: Plugin<any>[]) {
         this._storeOptions = buildStoreOptions(storeModules)
         this._userProfileService = userProfileService
         this.store = createStore({
@@ -39,45 +39,56 @@ export class PsrAppStore {
     loadUserProfile(username: string): Promise<any> {
         console.log('加载用户档案')
         this.userProfileSynchronized.value = null
-        return this._userProfileService.find().then(content => {
-            if (content) {
-                if (content.username === username) {
-                    this.resetStore(content)
-                    this.userProfileSynchronized.value = true
-                } else {
-                    return ElMessageBox.confirm(
-                        '初始化用户档案?',
-                        '同步用户档案异常',
-                        {
-                            confirmButtonText: '初始化',
-                            cancelButtonText: '重新尝试同步',
-                            type: 'warning',
-                        }
-                    ).then(() => {
-                        this.resetStore({username: username})
+        if (this._userProfileService) {
+            return this._userProfileService.find().then(content => {
+                if (content) {
+                    if (content.username === username) {
+                        this.resetStore(content)
                         this.userProfileSynchronized.value = true
-                        return Promise.resolve()
-                    }).catch(() => {
-                        return this.loadUserProfile(username)
-                    })
+                    } else {
+                        return ElMessageBox.confirm(
+                            '初始化用户档案?',
+                            '同步用户档案异常',
+                            {
+                                confirmButtonText: '初始化',
+                                cancelButtonText: '重新尝试同步',
+                                type: 'warning',
+                            }
+                        ).then(() => {
+                            this.resetStore({username: username})
+                            this.userProfileSynchronized.value = true
+                            return Promise.resolve()
+                        }).catch(() => {
+                            return this.loadUserProfile(username)
+                        })
+                    }
                 }
-            }
+                return Promise.resolve()
+            }).catch((err) => {
+                this.userProfileSynchronized.value = false
+                return Promise.reject(err)
+            })
+        } else {
+            this.resetStore({username: username})
+            this.userProfileSynchronized.value = true
             return Promise.resolve()
-        }).catch((err) => {
-            this.userProfileSynchronized.value = false
-            return Promise.reject(err)
-        })
+        }
     }
 
     updateUserProfile() {
         this.userProfileSynchronized.value = null
-        return this._userProfileService.update(this.store.state).then(success => {
-            if (success) {
-                this.userProfileSynchronized.value = true
-            }
-        }).catch(() => {
-            this.userProfileSynchronized.value = false
-        })
+        if (this._userProfileService) {
+            return this._userProfileService.update(this.store.state).then(success => {
+                if (success) {
+                    this.userProfileSynchronized.value = true
+                }
+            }).catch(() => {
+                this.userProfileSynchronized.value = false
+            })
+        } else {
+            this.userProfileSynchronized.value = true
+            return Promise.resolve()
+        }
     }
 }
 
