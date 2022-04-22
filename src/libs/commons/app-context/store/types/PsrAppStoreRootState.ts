@@ -1,3 +1,4 @@
 export interface PsrAppStoreRootState {
-    username: string
+    username: string,
+    defaultLayout: string
 }

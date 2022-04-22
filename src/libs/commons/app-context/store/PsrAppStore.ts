@@ -70,13 +70,17 @@ function buildStoreOptions(storeModules: ModuleTree<any>): StoreOptions<PsrAppSt
     return {
         state() {
             return {
-                username: ''
+                username: '',
+                defaultLayout: ''
             }
         },
         getters: {},
         mutations: {
             updateUsername(state, username) {
                 state.username = username
+            },
+            updateDefaultLayout(state, layout) {
+                state.defaultLayout = layout
             }
         },
         actions: {},
