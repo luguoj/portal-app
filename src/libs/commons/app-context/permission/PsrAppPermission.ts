@@ -32,14 +32,13 @@ export class PsrAppPermission {
                         throw new Error("获取许可失败")
                     })
             }
-        } else if (newUsername === '') {
+        } else {
             if (oldUsername !== newUsername || this.initialized.value == false) {
                 this.permission.value = {}
                 this.initialized.value = true
-                return Promise.resolve(this.permission.value)
             }
         }
-        return null
+        return Promise.resolve(this.permission.value)
     }
 
     // 创建操作许可标识
