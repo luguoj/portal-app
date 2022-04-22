@@ -2,7 +2,6 @@ import {PsrLayoutDesktopConsole} from "@/libs/components/psr/layouts/desktop-con
 import {SamplePage} from "@/modules/sample-page";
 import {Admin} from "@/modules/admin-console";
 import {portalService} from "@/services/portal";
-import {createStatePersistPlugin} from "@/libs/commons/store/plugins/state-persist";
 import PsrErrorNotFound from "@/libs/components/psr/views/PsrErrorNotFound.vue";
 import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClientSignIn.vue";
 import {createAppContext} from "@/libs/commons/app-context";
@@ -38,7 +37,14 @@ export const appContext = createAppContext({
             return portalService.user.findPermissionByPortalId()
         }
     },
-    storePlugins: [createStatePersistPlugin()],
+    userProfileService: {
+        find: () => {
+            return portalService.user.findProfileByPortalId()
+        },
+        update: (content: string) => {
+            return portalService.user.updateProfileByPortalId(content)
+        }
+    },
     pages: {
         signIn: PsrOAuthSSOClientSignIn,
         errorNotFound: PsrErrorNotFound
