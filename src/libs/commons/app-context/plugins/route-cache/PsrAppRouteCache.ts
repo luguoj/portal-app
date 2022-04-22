@@ -72,8 +72,8 @@ export class PsrAppRouteCache extends PsrAppPlugin {
             this.cachedRoutes.value.splice(index, 1)
             delete this.cachedRouteByName[cachedRoute.name]
             if (this.activeRouteName.value === cachedRoute.name) {
-                if (this.cachedRoutes.value.length == 1) {
-                    this.appContext().router.router.push(this.cachedRoutes.value[0].path)
+                if (this.cachedRoutes.value.length == index) {
+                    this.appContext().router.router.push(this.cachedRoutes.value[index - 1].path)
                 } else {
                     this.appContext().router.router.push(this.cachedRoutes.value[index].path)
                 }
