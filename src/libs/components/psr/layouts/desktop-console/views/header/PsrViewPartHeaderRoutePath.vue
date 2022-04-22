@@ -1,31 +1,36 @@
 <template>
   <el-breadcrumb separator="/" class="breadcrumb path">
-    <el-breadcrumb-item
-        :to="layoutRoutePath.path?{ path: layoutRoutePath.path }:null"
-        class="path-item"
-    >
-      <el-dropdown>
-        <div class="el-dropdown-link">
+    <el-popover placement="bottom" trigger="hover" :width="'fit-content'">
+      <template #reference>
+        <el-breadcrumb-item
+            :to="layoutRoutePath.path?{ path: layoutRoutePath.path }:null"
+            class="path-item"
+        >
           <el-icon v-if="layoutRoutePath.iconCls" :class="layoutRoutePath.iconCls"/>
           {{ layoutRoutePath.title }}
-        </div>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <router-link
-                v-for="layoutItem in layoutItems" :key="layoutItem.name"
-                :to="layoutItem.path"
-                custom
-                v-slot="{navigate}"
-            >
-              <el-dropdown-item :disabled="layoutItem.name===layoutRoutePath.key" @click="navigate">
+        </el-breadcrumb-item>
+      </template>
+      <el-space direction="vertical" alignment="left">
+        <template v-for="layoutItem in layoutItems" :key="layoutItem.name">
+          <el-space>
+            <el-icon :class="layoutItem.name===layoutRoutePath.key?'pi pi-map-marker':''"/>
+            <router-link :to="layoutItem.path" class="router-link-layout" active-class="active">
+              <span>
                 <el-icon :class="layoutItem.iconCls"/>
                 {{ layoutItem.title }}
-              </el-dropdown-item>
+              </span>
             </router-link>
-          </el-dropdown-menu>
+            <el-tooltip content="设为默认" effect="light">
+              <el-icon
+                  class="icon-default-layout"
+                  :class="layoutItem.path===defaultLayout?'pi pi-star-fill':'pi pi-star'"
+                  @click="updateDefaultLayout(layoutItem.path)"
+              />
+            </el-tooltip>
+          </el-space>
         </template>
-      </el-dropdown>
-    </el-breadcrumb-item>
+      </el-space>
+    </el-popover>
     <transition-group name="breadcrumb">
       <el-breadcrumb-item
           v-for="routePathItem in routePath" :key="routePathItem.key"
@@ -45,6 +50,7 @@ import {PsrAppRouteRecord} from "@/libs/commons/app-context/route";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 import {PsrAppRouteMeta} from "@/libs/commons/app-context/route/types/PsrAppRouteMeta";
 import {useAppContext} from "@/libs/commons/app-context";
+import {useStore} from "vuex";
 
 interface RoutePathItem {
   key: string | symbol,
@@ -142,7 +148,16 @@ export default defineComponent({
       }
       return result
     })
+
+    const store = useStore()
+
+    function updateDefaultLayout(defaultLayout: string) {
+      store.commit('updateDefaultLayout', defaultLayout)
+    }
+
     return {
+      defaultLayout: computed(() => store.state.defaultLayout),
+      updateDefaultLayout,
       layoutItems,
       layoutRoutePath,
       routePath
@@ -151,7 +166,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .path {
   width: fit-content;
   white-space: nowrap;
@@ -160,6 +175,30 @@ export default defineComponent({
 .path-item {
   display: inline-block;
   float: none;
+}
+
+.router-link-layout {
+  &.active {
+    color: var(--el-color-primary-light-3);
+
+    &:hover {
+      cursor: default;
+      color: var(--el-color-primary-light-3);
+    }
+  }
+
+  &:hover {
+    color: var(--el-color-primary);
+  }
+}
+
+.icon-default-layout {
+  color: var(--el-color-warning-light-5);
+
+  &:hover {
+    cursor: pointer;
+    color: var(--el-color-warning);
+  }
 }
 
 .breadcrumb-enter-from,
