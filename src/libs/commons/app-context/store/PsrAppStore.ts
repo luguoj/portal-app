@@ -39,7 +39,6 @@ export class PsrAppStore {
         console.log('加载用户档案')
         this.userProfileSynchronized.value = null
         return this._userProfileService.find().then(content => {
-            debugger
             if (content) {
                 if (content && content.username === this.store.state.username) {
                     this.resetStore(content)
