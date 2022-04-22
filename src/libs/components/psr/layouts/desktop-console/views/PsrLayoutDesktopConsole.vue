@@ -28,7 +28,9 @@ import PsrViewPartHeader from "./header/PsrViewPartHeader.vue";
 import PsrViewPartMain from "./main/PsrViewPartMain.vue";
 import PsrViewPartTitle from "./title/PsrViewPartTitle.vue";
 import PsrViewPartAsideMenu from "./aside-menu/PsrViewPartAsideMenu.vue";
-import {defineComponent, provide, ref} from "vue";
+import {defineComponent, provide, ref, watchEffect} from "vue";
+import {useAppContext} from "@/libs/commons/app-context";
+import {State} from "../store/State";
 
 export default defineComponent({
   name: "psr-layout-desktop-console",
@@ -41,6 +43,25 @@ export default defineComponent({
   setup() {
     const mainRef = ref<HTMLElement | null>()
     provide("main-ref", mainRef)
+
+    const appContext = useAppContext()
+    const router = appContext.router
+    const currentRoute = router.current
+    const store = appContext.store.store
+    watchEffect(() => {
+      if (
+          currentRoute.value?.layout
+          && (
+              currentRoute.value?.route.path === currentRoute.value.layout.path
+              || currentRoute.value?.route.path === currentRoute.value.layout.path + '/'
+          )
+      ) {
+        const state = store.state[currentRoute.value.layout.name] as State
+        if (state.defaultNavigationRoute) {
+          router.router.push({path: '/' + state.defaultNavigationRoute})
+        }
+      }
+    })
     return {
       mainRef
     }

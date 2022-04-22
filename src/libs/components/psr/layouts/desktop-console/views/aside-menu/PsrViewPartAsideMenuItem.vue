@@ -1,11 +1,23 @@
 <template>
   <el-menu-item
+      class="menu-item"
       v-if="menuItem.route"
       :index="menuItem.id"
       :route="{path:menuItem.route.path}"
   >
     <el-icon :class="menuItem.iconCls"/>
-    <template #title>{{ menuItem.title }}</template>
+    <template #title>
+      <div class="menu-item-title">
+        {{ menuItem.title }}
+      </div>
+      <el-tooltip content="设为默认" effect="light" placement="right">
+        <el-icon
+            class="icon-default-navigation-route"
+            :class="menuItem.route.name===defaultNavigationRoute?'pi pi-star-fill':'pi pi-star'"
+            @click.stop="updateDefaultNavigationRoute(menuItem.route.name)"
+        />
+      </el-tooltip>
+    </template>
   </el-menu-item>
   <el-sub-menu
       v-else
@@ -23,8 +35,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
+import {computed, defineComponent, PropType} from "vue";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
+import {useStore} from "vuex";
+import {useAppContext} from "@/libs/commons/app-context";
+import {State} from "@/libs/components/psr/layouts/desktop-console/store/State";
 
 export default defineComponent({
   name: "psr-view-part-aside-menu-item",
@@ -33,10 +48,55 @@ export default defineComponent({
       type: Object as PropType<PsrAppNavigationMenuItem>,
       required: true
     }
+  },
+  setup() {
+    const store = useStore()
+    const appContext = useAppContext();
+    const currentRoute = appContext.router.current
+    const defaultNavigationRoute = computed(() => {
+      if (currentRoute.value?.layout) {
+        const state = store.state[currentRoute.value.layout.name] as State
+        return state.defaultNavigationRoute
+      } else {
+        return ''
+      }
+    })
+
+    function updateDefaultNavigationRoute(navigationRoute: string) {
+      if (currentRoute.value?.layout) {
+        if (defaultNavigationRoute.value == navigationRoute) {
+          store.commit(`${currentRoute.value.layout.name}/updateDefaultNavigationRoute`, '')
+        } else {
+          store.commit(`${currentRoute.value.layout.name}/updateDefaultNavigationRoute`, navigationRoute)
+        }
+      }
+    }
+
+    return {
+      defaultNavigationRoute,
+      updateDefaultNavigationRoute
+    }
   }
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.menu-item {
+  padding-right: 0;
 
+}
+
+.menu-item-title {
+  flex: 1
+}
+
+.icon-default-navigation-route {
+  margin: 0 1rem;
+  color: var(--el-color-warning-light-5) !important;
+
+  &:hover {
+    cursor: pointer;
+    color: var(--el-color-warning) !important;
+  }
+}
 </style>

@@ -6,7 +6,8 @@ export const store: Module<State, any> = {
     state() {
         return {
             asideCollapsed: false,
-            tagBarCollapsed: false
+            tagBarCollapsed: false,
+            defaultNavigationRoute: ''
         }
     },
     mutations: {
@@ -15,6 +16,9 @@ export const store: Module<State, any> = {
         },
         toggleTagBar(state) {
             state.tagBarCollapsed = !state.tagBarCollapsed
+        },
+        updateDefaultNavigationRoute(state, navigationRoute: string) {
+            state.defaultNavigationRoute = navigationRoute
         }
     }
 }
