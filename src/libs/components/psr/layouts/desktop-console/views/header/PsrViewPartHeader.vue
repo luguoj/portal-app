@@ -68,11 +68,11 @@ import PsrViewPartHeaderRoutePath from "./PsrViewPartHeaderRoutePath.vue";
 import PsrViewPartHeaderSearcher from "./PsrViewPartHeaderSearcher.vue";
 import PsrViewPartHeaderTagBar from "./PsrViewPartHeaderTagBar.vue";
 import {computed, defineComponent, inject, nextTick, ref, watch} from "vue"
-import {useStore} from "vuex";
 import {useAppContext} from "@/libs/commons/app-context";
 import {State} from "../../store/State";
 import {useFullscreen} from "@vueuse/core";
 import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache";
+import {useLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-view-part-header",
@@ -84,18 +84,13 @@ export default defineComponent({
     PsrViewPartHeaderTagBar
   },
   setup() {
-    const store = useStore()
+    const layoutStore = useLayoutStoreProxy<State>()
     const refSearcher = ref()
     const showSearcher = ref(false)
     const currentRoute = useAppContext().router.current
     const mainRef = inject<HTMLElement | null>("main-ref")
     const tagBarCollapsed = computed<boolean>(() => {
-      if (currentRoute.value?.layout) {
-        const state = store.state[currentRoute.value.layout.name] as State
-        return state.tagBarCollapsed
-      } else {
-        return false
-      }
+      return !!layoutStore?.value?.state.tagBarCollapsed
     })
 
     function hideSearcher() {
@@ -112,15 +107,11 @@ export default defineComponent({
     })
 
     function toggleNavigationExpansion() {
-      if (currentRoute.value?.layout) {
-        store.commit(`${currentRoute.value.layout.name}/toggleAside`)
-      }
+      layoutStore?.value?.commit('toggleAside')
     }
 
     function toggleTagBarExpansion() {
-      if (currentRoute.value?.layout) {
-        store.commit(`${currentRoute.value.layout.name}/toggleTagBar`)
-      }
+      layoutStore?.value?.commit('toggleTagBar')
     }
 
     function handleShowSearcher() {

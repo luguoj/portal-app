@@ -15,10 +15,10 @@
 <script lang="ts">
 import {computed, defineComponent, nextTick, onMounted, Ref, ref, watch} from "vue";
 import PsrViewPartAsideMenuItem from "./PsrViewPartAsideMenuItem.vue";
-import {useStore} from "vuex";
 import {useAppContext} from "@/libs/commons/app-context";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
 import {State} from "../../store/State";
+import {useLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-view-part-aside-menu",
@@ -26,18 +26,13 @@ export default defineComponent({
     PsrViewPartAsideMenuItem
   },
   setup() {
+    const layoutStore = useLayoutStoreProxy<State>()
     const activeMenuItemId = ref()
-    const store = useStore()
     const appContext = useAppContext();
     const currentRoute = appContext.router.current
     const menuItems: Ref<PsrAppNavigationMenuItem[]> = appContext.navigationMenu.currentLayoutMenuItems
     const asideCollapsed = computed<boolean>(() => {
-      if (currentRoute.value?.layout) {
-        const state = store.state[currentRoute.value.layout.name] as State
-        return state.asideCollapsed
-      } else {
-        return false
-      }
+      return !!layoutStore?.value?.state.asideCollapsed
     })
 
     function updateActiveMenuItem() {

@@ -31,6 +31,7 @@ import PsrViewPartAsideMenu from "./aside-menu/PsrViewPartAsideMenu.vue";
 import {defineComponent, provide, ref, watchEffect} from "vue";
 import {useAppContext} from "@/libs/commons/app-context";
 import {State} from "../store/State";
+import {createLayoutStoreProxy, updateLayoutStoreModuleName} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-layout-desktop-console",
@@ -40,6 +41,12 @@ export default defineComponent({
     PsrViewPartHeader,
     PsrViewPartMain
   },
+  beforeRouteEnter(to, from, next) {
+    console.log('desktop.beforeRouteEnter', new Date(), to)
+    next((vm) => {
+      updateLayoutStoreModuleName(to, vm)
+    })
+  },
   setup() {
     const mainRef = ref<HTMLElement | null>()
     provide("main-ref", mainRef)
@@ -47,23 +54,22 @@ export default defineComponent({
     const appContext = useAppContext()
     const router = appContext.router
     const currentRoute = router.current
-    const store = appContext.store.store
+    const {layoutStoreModuleName, layoutStore} = createLayoutStoreProxy<State>()
     watchEffect(() => {
+      const defaultNavigationRoute = layoutStore.value?.state.defaultNavigationRoute
       if (
-          currentRoute.value?.layout
+          defaultNavigationRoute
           && (
-              currentRoute.value?.route.path === currentRoute.value.layout.path
-              || currentRoute.value?.route.path === currentRoute.value.layout.path + '/'
+              currentRoute.value?.route.path === currentRoute.value?.layout?.path
+              || currentRoute.value?.route.path === currentRoute.value?.layout?.path + '/'
           )
       ) {
-        const state = store.state[currentRoute.value.layout.name] as State
-        if (state.defaultNavigationRoute) {
-          router.router.push({path: '/' + state.defaultNavigationRoute})
-        }
+        router.router.push({path: '/' + defaultNavigationRoute})
       }
     })
     return {
-      mainRef
+      mainRef,
+      layoutStoreModuleName
     }
   }
 })

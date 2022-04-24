@@ -37,9 +37,8 @@
 <script lang="ts">
 import {computed, defineComponent, PropType} from "vue";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
-import {useStore} from "vuex";
-import {useAppContext} from "@/libs/commons/app-context";
 import {State} from "@/libs/components/psr/layouts/desktop-console/store/State";
+import {useLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-view-part-aside-menu-item",
@@ -50,25 +49,16 @@ export default defineComponent({
     }
   },
   setup() {
-    const store = useStore()
-    const appContext = useAppContext();
-    const currentRoute = appContext.router.current
+    const layoutStore = useLayoutStoreProxy<State>()
     const defaultNavigationRoute = computed(() => {
-      if (currentRoute.value?.layout) {
-        const state = store.state[currentRoute.value.layout.name] as State
-        return state.defaultNavigationRoute
-      } else {
-        return ''
-      }
+      return layoutStore?.value?.state.defaultNavigationRoute || ''
     })
 
     function updateDefaultNavigationRoute(navigationRoute: string) {
-      if (currentRoute.value?.layout) {
-        if (defaultNavigationRoute.value == navigationRoute) {
-          store.commit(`${currentRoute.value.layout.name}/updateDefaultNavigationRoute`, '')
-        } else {
-          store.commit(`${currentRoute.value.layout.name}/updateDefaultNavigationRoute`, navigationRoute)
-        }
+      if (defaultNavigationRoute.value == navigationRoute) {
+        layoutStore?.value?.commit('updateDefaultNavigationRoute', '')
+      } else {
+        layoutStore?.value?.commit('updateDefaultNavigationRoute', navigationRoute)
       }
     }
 
