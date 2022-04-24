@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory, isNavigationFailure, RouteLocationNormalized, RouteLocationNormalizedLoaded, Router} from "vue-router";
+import {createRouter, createWebHashHistory, isNavigationFailure, RouteLocationMatched, RouteLocationNormalized, RouteLocationNormalizedLoaded, Router} from "vue-router";
 import {PsrAppRouteRecord} from "./types/PsrAppRouteRecord";
 import {ref, Ref} from "vue";
 import {PsrAppRouteChangeEvent, PsrAppRouteStatus} from "@/libs/commons/app-context/route/types/PsrAppRouteStatus";
@@ -95,23 +95,23 @@ export class PsrAppRouter {
     }
 }
 
-export function extractLayoutRoute(route: RouteLocationNormalized): PsrAppRouteRecord | null {
+export function extractLayoutRoute(route: RouteLocationNormalized): PsrAppRouteRecord & RouteLocationMatched | null {
     if (route.matched.length > 0 && route.fullPath !== '/') {
-        return route.matched[0] as unknown as PsrAppRouteRecord
+        return route.matched[0] as unknown as PsrAppRouteRecord & RouteLocationMatched
     }
     return null
 }
 
-export function extractModuleRoute(route: RouteLocationNormalized): PsrAppRouteRecord | null {
+export function extractModuleRoute(route: RouteLocationNormalized): PsrAppRouteRecord & RouteLocationMatched | null {
     if (route.matched.length > 1 && route.fullPath !== '/') {
-        return route.matched[1] as unknown as PsrAppRouteRecord
+        return route.matched[1] as unknown as PsrAppRouteRecord & RouteLocationMatched
     }
     return null
 }
 
 export function extractRoute(route: RouteLocationNormalized): {
-    layout: PsrAppRouteRecord | null
-    module: PsrAppRouteRecord | null
+    layout: PsrAppRouteRecord & RouteLocationMatched | null
+    module: PsrAppRouteRecord & RouteLocationMatched | null
     route: RouteLocationNormalizedLoaded
 } {
     return {

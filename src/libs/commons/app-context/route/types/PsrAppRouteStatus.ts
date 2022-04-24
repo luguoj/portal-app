@@ -1,9 +1,9 @@
 import {PsrAppRouteRecord} from "./PsrAppRouteRecord";
-import {RouteLocationNormalizedLoaded} from "vue-router";
+import {RouteLocationMatched, RouteLocationNormalizedLoaded} from "vue-router";
 
 export interface PsrAppRouteStatus {
-    layout: PsrAppRouteRecord | null
-    module: PsrAppRouteRecord | null
+    layout: PsrAppRouteRecord & RouteLocationMatched | null
+    module: PsrAppRouteRecord & RouteLocationMatched | null
     route: RouteLocationNormalizedLoaded
 }
 
