@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import {useRouter} from "vue-router";
-import {ref, defineComponent, computed} from "vue";
+import {computed, defineComponent, ref} from "vue";
 import Fuse from "fuse.js";
 import pinyin from "pinyin";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
@@ -57,11 +57,6 @@ export default defineComponent({
         buildSelectOptions(selectOptions, menuItems.value)
       }
       return new Fuse<SelectOption>(selectOptions, {
-        shouldSort: true,
-        threshold: 0.1,
-        location: 0,
-        distance: 100,
-        minMatchCharLength: 1,
         keys: [{
           name: 'title',
           weight: 0.4
@@ -78,6 +73,7 @@ export default defineComponent({
     function querySearch(query: string) {
       if (query !== '') {
         searchResult.value = fuse.value.search(query)
+        debugger
       } else {
         searchResult.value = []
       }
