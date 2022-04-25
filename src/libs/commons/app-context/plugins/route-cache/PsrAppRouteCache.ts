@@ -3,6 +3,7 @@ import {PsrAppRouteMetaTag, PsrAppRouteStatus} from "../../route";
 import {PsrAppRouteCacheItem} from "./types/PsrAppRouteCacheItem";
 import {PsrAppPlugin} from "../../types/PsrAppPlugin";
 import {PsrAppContext} from "../../PsrAppContext";
+import {isNavigationFailure} from "vue-router";
 
 export class PsrAppRouteCache extends PsrAppPlugin {
     cachedRoutes: Ref<PsrAppRouteCacheItem[]> = ref([] as PsrAppRouteCacheItem[])
@@ -69,15 +70,24 @@ export class PsrAppRouteCache extends PsrAppPlugin {
     delete(cachedRoute: PsrAppRouteCacheItem) {
         if (this.cachedRoutes.value.length > 1) {
             const index = this.cachedRoutes.value.indexOf(cachedRoute)
-            this.cachedRoutes.value.splice(index, 1)
-            delete this.cachedRouteByName[cachedRoute.name]
-            if (this.activeRouteName.value === cachedRoute.name) {
-                if (this.cachedRoutes.value.length == index) {
-                    this.appContext().router.router.push(this.cachedRoutes.value[index - 1].path)
+            new Promise((resolve, reject) => {
+                if (this.activeRouteName.value === cachedRoute.name) {
+                    if (this.cachedRoutes.value.length === index + 1) {
+                        this.appContext().router.router.push(this.cachedRoutes.value[index - 1].path).then(resolve).catch(reject)
+                    } else {
+                        this.appContext().router.router.push(this.cachedRoutes.value[index + 1].path).then(resolve).catch(reject)
+                    }
                 } else {
-                    this.appContext().router.router.push(this.cachedRoutes.value[index].path)
+                    resolve(undefined)
                 }
-            }
+            }).then((failure) => {
+                if (!isNavigationFailure(failure)) {
+                    if (this.activeRouteName.value !== cachedRoute.name) {
+                        this.cachedRoutes.value.splice(index, 1)
+                        delete this.cachedRouteByName[cachedRoute.name]
+                    }
+                }
+            })
         }
     }
 }
