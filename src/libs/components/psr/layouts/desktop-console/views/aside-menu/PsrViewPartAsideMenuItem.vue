@@ -13,7 +13,7 @@
       <el-tooltip content="设为默认" effect="light" placement="right">
         <el-icon
             class="icon-default-navigation-route"
-            :class="menuItem.route.name===defaultNavigationRoute?'pi pi-star-fill':'pi pi-star'"
+            :class="menuItem.route.name===defaultNavigationRoute?'pi pi-bookmark-fill':'pi pi-bookmark'"
             @click.stop="updateDefaultNavigationRoute(menuItem.route.name)"
         />
       </el-tooltip>

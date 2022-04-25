@@ -23,7 +23,7 @@
             <el-tooltip content="设为默认" effect="light" placement="right">
               <el-icon
                   class="icon-default-layout"
-                  :class="layoutItem.name===defaultLayout?'pi pi-star-fill':'pi pi-star'"
+                  :class="layoutItem.name===defaultLayout?'pi pi-bookmark-fill':'pi pi-bookmark'"
                   @click="updateDefaultLayout(layoutItem.name)"
               />
             </el-tooltip>
