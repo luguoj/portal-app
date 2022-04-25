@@ -31,7 +31,7 @@ import PsrViewPartAsideMenu from "./aside-menu/PsrViewPartAsideMenu.vue";
 import {defineComponent, provide, ref, watchEffect} from "vue";
 import {useAppContext} from "@/libs/commons/app-context";
 import {State} from "../store/State";
-import {createLayoutStoreProxy, updateLayoutStoreModuleName} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
+import {createLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-layout-desktop-console",
@@ -42,34 +42,24 @@ export default defineComponent({
     PsrViewPartMain
   },
   beforeRouteEnter(to, from, next) {
-    console.log('desktop.beforeRouteEnter', new Date(), to)
     next((vm) => {
-      updateLayoutStoreModuleName(to, vm)
+      (vm as any).layoutPath = to.matched[0].path
     })
   },
   setup() {
     const mainRef = ref<HTMLElement | null>()
     provide("main-ref", mainRef)
-
-    const appContext = useAppContext()
-    const router = appContext.router
-    const currentRoute = router.current
-    const {layoutStoreModuleName, layoutStore} = createLayoutStoreProxy<State>()
+    const layoutPath = ref<string | undefined>()
+    const layoutStore = createLayoutStoreProxy<State>()
+    const {router} = useAppContext()
     watchEffect(() => {
-      const defaultNavigationRoute = layoutStore.value?.state.defaultNavigationRoute
-      if (
-          defaultNavigationRoute
-          && (
-              currentRoute.value?.route.path === currentRoute.value?.layout?.path
-              || currentRoute.value?.route.path === currentRoute.value?.layout?.path + '/'
-          )
-      ) {
-        router.router.push({path: '/' + defaultNavigationRoute})
+      if (router.current.value?.route.fullPath === layoutPath.value && layoutStore.value?.state.defaultNavigationRoute) {
+        router.router.replace({path: '/' + layoutStore.value.state.defaultNavigationRoute})
       }
     })
     return {
       mainRef,
-      layoutStoreModuleName
+      layoutPath
     }
   }
 })
