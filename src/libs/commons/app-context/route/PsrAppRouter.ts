@@ -30,6 +30,9 @@ export class PsrAppRouter {
         })
         this.router.beforeEach((to, from) => {
             console.log('PsrAppRouter.beforeEach(to:%O,from:%O)', to, from)
+            if (to.fullPath !== '/' && to.fullPath.endsWith('/')) {
+                return to.fullPath.substring(0, to.fullPath.length - 1)
+            }
             NProgress.start()
             try {
                 const newRoute = extractRoute(to)
