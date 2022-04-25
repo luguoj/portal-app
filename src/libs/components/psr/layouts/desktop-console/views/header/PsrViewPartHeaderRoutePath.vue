@@ -98,7 +98,7 @@ export default defineComponent({
   setup() {
     const appContext = useAppContext()
     const currentRoute = appContext.router.current
-    const menuItems = appContext.navigationMenu.menuItems
+    const menuItems = appContext.navigationMenu.currentLayoutMenuItems
     const layoutItems = appContext.navigationMenu.layoutItems
     const layoutRoutePath = computed(() => {
       if (currentRoute.value?.layout) {
