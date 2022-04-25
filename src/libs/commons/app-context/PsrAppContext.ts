@@ -65,6 +65,9 @@ export class PsrAppContext {
         })
         this.router.onLayoutChange(event => {
             this.navigationMenu.currentLayoutName.value = event.newRoute.layout?.name || ''
+            if (event.newRoute.route.name !== 'sign-in') {
+                this.routePathHangupBySignIn = event.newRoute.route.fullPath
+            }
         })
         app.provide(this._injectKey, this)
         app.use(this.store.store)

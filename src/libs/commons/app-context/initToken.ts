@@ -62,8 +62,8 @@ function onAuthenticationStateChange(state: string, context: PsrAppContext) {
             ElMessage(`用户: ${username} 已登出.`)
         }
         console.log('身份未认证=>重置store=>跳转登录', username)
-        onUsernameChanged('', context)
         context.routePathHangupBySignIn = '/'
+        onUsernameChanged('', context)
         router.router.isReady().finally(() => {
             router.router.push({name: 'sign-in'})
         })
@@ -75,8 +75,8 @@ function onAuthenticationStateChange(state: string, context: PsrAppContext) {
                 message: `用户身份切换: ${localUsername} -> ${username}`,
                 type: 'warning',
             })
-            onUsernameChanged(username, context)
             context.routePathHangupBySignIn = '/'
+            onUsernameChanged(username, context)
         } else if (token.tokenInfo().access_token) {
             msg.push(`用户身份认证${username}`)
             ElMessage({
