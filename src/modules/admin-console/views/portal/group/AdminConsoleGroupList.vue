@@ -257,7 +257,7 @@ export default defineComponent({
       handleAdd: () => {
         editDialogProps.visible = true
       },
-      handleEdit: (row: GroupEntity[]) => {
+      handleEdit: (row: GroupEntity) => {
         editDialogProps.data = row
         editDialogProps.visible = true
       },
