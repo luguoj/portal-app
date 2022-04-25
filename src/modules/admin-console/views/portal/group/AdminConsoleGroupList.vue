@@ -274,11 +274,11 @@ export default defineComponent({
                 type: 'success',
               })
               handleFind()
-            })
-          }).catch(() => {
-            ElMessage({
-              message: '删除失败.',
-              type: 'error',
+            }).catch(() => {
+              ElMessage({
+                message: '删除失败.',
+                type: 'error',
+              })
             })
           })
         }
