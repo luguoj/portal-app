@@ -44,27 +44,25 @@ export class PsrAppStore {
         this.userProfileSynchronized.value = null
         if (this._userProfileService) {
             return this._userProfileService.find().then(content => {
-                if (content) {
-                    if (content.username === username) {
-                        this.resetStore(content)
+                if (content && content.username === username) {
+                    this.resetStore(content)
+                    this.userProfileSynchronized.value = true
+                } else {
+                    return ElMessageBox.confirm(
+                        '初始化用户档案?',
+                        '同步用户档案异常',
+                        {
+                            confirmButtonText: '初始化',
+                            cancelButtonText: '重新尝试同步',
+                            type: 'warning',
+                        }
+                    ).then(() => {
+                        this.resetStore({username: username})
                         this.userProfileSynchronized.value = true
-                    } else {
-                        return ElMessageBox.confirm(
-                            '初始化用户档案?',
-                            '同步用户档案异常',
-                            {
-                                confirmButtonText: '初始化',
-                                cancelButtonText: '重新尝试同步',
-                                type: 'warning',
-                            }
-                        ).then(() => {
-                            this.resetStore({username: username})
-                            this.userProfileSynchronized.value = true
-                            return Promise.resolve()
-                        }).catch(() => {
-                            return this.loadUserProfile(username)
-                        })
-                    }
+                        return Promise.resolve()
+                    }).catch(() => {
+                        return this.loadUserProfile(username)
+                    })
                 }
                 return Promise.resolve()
             }).catch((err) => {
