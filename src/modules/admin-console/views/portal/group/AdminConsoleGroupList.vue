@@ -1,26 +1,26 @@
 <template>
   <el-container class="ct-root" v-loading="tableProps.loading">
-    <el-header class="psr-el-toolbar">
-      <el-space wrap>
-        <el-button class="button" @click="handleFind">
-          <template #icon>
-            <el-icon class="pi pi-search"/>
-          </template>
-          查找
-        </el-button>
-        <el-button class="button" @click="handleClearFilters">
-          <template #icon>
-            <el-icon class="pi pi-filter-slash"/>
-          </template>
-          重置
-        </el-button>
-        <el-button v-if="canAdd" class="button" @click="handleAdd">
-          <template #icon>
-            <el-icon class="pi pi-plus"/>
-          </template>
-          添加
-        </el-button>
-      </el-space>
+    <el-header class="fit">
+      <psr-el-toolbar>
+          <el-button class="button" @click="handleFind">
+            <template #icon>
+              <el-icon class="pi pi-search"/>
+            </template>
+            查找
+          </el-button>
+          <el-button class="button" @click="handleClearFilters">
+            <template #icon>
+              <el-icon class="pi pi-filter-slash"/>
+            </template>
+            重置
+          </el-button>
+          <el-button v-if="canAdd" class="button" @click="handleAdd">
+            <template #icon>
+              <el-icon class="pi pi-plus"/>
+            </template>
+            添加
+          </el-button>
+      </psr-el-toolbar>
     </el-header>
     <el-main class="ct-main">
       <p-data-table
@@ -162,6 +162,7 @@ import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
 import {useAppContext} from "@/libs/commons/app-context";
 import {ROUTE_PORTAL_GROUP_LIST, ROUTE_PORTAL_GROUP_PERMISSION, ROUTE_PORTAL_GROUP_USER} from "@/modules/admin-console/route";
+import PsrElToolbar from "@/libs/components/psr/element-plus/PsrElToolbar.vue";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -170,7 +171,8 @@ export default defineComponent({
     PColumn,
     PTriStateCheckbox,
     PsrElAsyncActionButton,
-    AdminConsoleGroupEditDialog
+    AdminConsoleGroupEditDialog,
+    PsrElToolbar
   },
   setup() {
     const appContext = useAppContext()

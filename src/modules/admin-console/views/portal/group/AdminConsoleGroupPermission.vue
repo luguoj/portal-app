@@ -1,7 +1,7 @@
 <template>
   <el-container class="ct-root" v-loading="tableProps.loading">
-    <el-header class="psr-el-toolbar">
-      <el-space wrap>
+    <el-header class="fit">
+      <psr-el-toolbar>
         <router-link
             :to="{name:backRouteName}"
             custom
@@ -35,7 +35,7 @@
           </template>
           保存
         </el-button>
-      </el-space>
+      </psr-el-toolbar>
     </el-header>
     <el-main class="ct-main">
       <p-tree-table
@@ -100,6 +100,7 @@ import pinyin from "pinyin";
 import {useAppContext} from "@/libs/commons/app-context";
 import {PsrAppRouteMetaPermission, PsrAppRouteRecord} from "@/libs/commons/app-context/route";
 import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
+import PsrElToolbar from "@/libs/components/psr/element-plus/PsrElToolbar.vue";
 
 interface RoutePermissionStatus {
   access: boolean,
@@ -157,7 +158,8 @@ export default defineComponent({
   name: "admin-console-group-permission",
   components: {
     PTreeTable,
-    PColumn
+    PColumn,
+    PsrElToolbar
   },
   props: {
     groupId: {

@@ -1,26 +1,26 @@
 <template>
   <el-container class="ct-root" v-loading="tableProps.loading">
-    <el-header class="psr-el-toolbar">
-      <el-space wrap>
-        <el-button class="button" @click="handleFind">
+    <el-header class="fit">
+      <psr-el-toolbar>
+        <el-button @click="handleFind">
           <template #icon>
             <el-icon class="pi pi-search"/>
           </template>
           查找
         </el-button>
-        <el-button class="button" @click="handleClearFilters">
+        <el-button @click="handleClearFilters">
           <template #icon>
             <el-icon class="pi pi-filter-slash"/>
           </template>
           重置
         </el-button>
-        <el-button v-if="canAdd" class="button" @click="handleAdd">
+        <el-button v-if="canAdd" @click="handleAdd">
           <template #icon>
             <el-icon class="pi pi-plus"/>
           </template>
           添加
         </el-button>
-      </el-space>
+      </psr-el-toolbar>
     </el-header>
     <el-main class="ct-main">
       <p-data-table
@@ -127,8 +127,9 @@ import {GroupEntity} from "@/services/portal/CRUDService";
 import {useAppContext} from "@/libs/commons/app-context";
 import {ROUTE_AUTHORIZATION_USER_LIST} from "../../../../route";
 import {authorizationService} from "@/services/authorization";
-import ViewPartActionColumn from "@/modules/admin-console/views/authorization/user/list/ViewPartActionColumn.vue";
+import ViewPartActionColumn from "./ViewPartActionColumn.vue";
 import {UserEntity} from "@/services/authorization/CRUDService";
+import PsrElToolbar from "@/libs/components/psr/element-plus/PsrElToolbar.vue";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -139,6 +140,7 @@ export default defineComponent({
     PsrElAsyncActionButton,
     ViewPartEditDialog,
     ViewPartActionColumn,
+    PsrElToolbar
   },
   setup() {
     const appContext = useAppContext()
