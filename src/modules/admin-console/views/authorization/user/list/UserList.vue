@@ -4,7 +4,7 @@
       <view-part-header
           @find="handleFind"
           @clear-filters="handleClearFilters"
-          @add="editDialog.show"
+          @add="editDialog.show()"
       />
     </el-header>
     <el-main class="ct-main">
@@ -112,7 +112,7 @@ import {ROUTE_AUTHORIZATION_USER_LIST} from "../../../../route";
 import {authorizationService} from "@/services/authorization";
 import ViewPartActionColumn from "./ViewPartActionColumn.vue";
 import ViewPartHeader from "./ViewPartHeader.vue";
-import {ViewPartEditDialogContext} from "./ViewPartEditDialogContext";
+import {createPsrElCreateUpdateFormDialogContext} from "@/libs/components/psr/element-plus/dialog/PsrElCreateUpdateFormDialogContext";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -182,7 +182,7 @@ export default defineComponent({
     }
 
     const canAdd = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_LIST.name, ['add'])
-    const editDialog = new ViewPartEditDialogContext()
+    const editDialog = createPsrElCreateUpdateFormDialogContext()
     return {
       tableRef,
       tableProps,
