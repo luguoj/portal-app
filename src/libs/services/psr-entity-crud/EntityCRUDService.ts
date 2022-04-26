@@ -1,11 +1,5 @@
-import {AxiosInstance, AxiosResponse} from "axios";
-
-function handleResp(resp: AxiosResponse) {
-    if (resp && resp.data) {
-        return resp.data
-    }
-    return null
-}
+import {AxiosInstance} from "axios";
+import {handleErrorMessage, handleRespData} from "@/libs/commons/utils/Axios";
 
 export interface Pageable {
     offset?: number,
@@ -50,7 +44,7 @@ export class EntityCRUDService<E extends Entity> {
     }
 
     findAllById(ids: string[]): Promise<E[]> {
-        return this._client.get(`${this._contextPath}/${ids.join(',')}`).then(handleResp)
+        return this._client.get(`${this._contextPath}/${ids.join(',')}`).then(handleRespData).catch(handleErrorMessage)
     }
 
     findAll(filterOptions?: any, pageable?: Pageable): Promise<Page<E>> {
@@ -59,15 +53,15 @@ export class EntityCRUDService<E extends Entity> {
                 ...pageable,
                 filter_options: filterOptions ? JSON.stringify(filterOptions) : null
             }
-        }).then(handleResp)
+        }).then(handleRespData).catch(handleErrorMessage)
     }
 
     create(entity: E): Promise<E> {
-        return this._client.post(`${this._contextPath}`, entity).then(handleResp)
+        return this._client.post(`${this._contextPath}`, entity).then(handleRespData).catch(handleErrorMessage)
     }
 
     update(entity: E): Promise<E> {
-        return this._client.put(`${this._contextPath}/${entity.id}`, entity).then(handleResp)
+        return this._client.put(`${this._contextPath}/${entity.id}`, entity).then(handleRespData).catch(handleErrorMessage)
     }
 
     patch(fields: string[], entity: E): Promise<E> {
@@ -79,10 +73,10 @@ export class EntityCRUDService<E extends Entity> {
         }
         return this._client.patch(`${this._contextPath}/${entity.id}/${fields.join(',')}`,
             data
-        ).then(handleResp)
+        ).then(handleRespData).catch(handleErrorMessage)
     }
 
     delete(ids: string[]) {
-        return this._client.delete(`${this._contextPath}/${ids.join(',')}`).then(handleResp)
+        return this._client.delete(`${this._contextPath}/${ids.join(',')}`).then(handleRespData).catch(handleErrorMessage)
     }
 }
