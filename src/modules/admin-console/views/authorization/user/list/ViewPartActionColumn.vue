@@ -4,14 +4,14 @@
         v-if="canEdit"
         type="text"
         size="small"
-        @click="handleEdit(slotProps.data)"
+        @click="$emit('edit',data)"
     >编辑
     </el-button>
     <psr-el-async-action-button
         v-if="canDelete"
         type="text" size="small"
         :action="handleDelete"
-        :action-params="slotProps.data"
+        :action-params="data"
     >删除
     </psr-el-async-action-button>
     <el-dropdown trigger="click">
@@ -26,13 +26,13 @@
         <el-dropdown-menu>
           <router-link
               v-if="canRouteAuthority"
-              :to="{name:rowActionRoutes.authority,params:{userId:slotProps.data.id}}"
+              :to="{name:rowActionRoutes.authority,params:{userId:data.id}}"
           >
             <el-dropdown-item>权限</el-dropdown-item>
           </router-link>
           <router-link
               v-if="canRouteGroup"
-              :to="{name:rowActionRoutes.group,params:{userId:slotProps.data.id}}"
+              :to="{name:rowActionRoutes.group,params:{userId:data.id}}"
           >
             <el-dropdown-item>分组</el-dropdown-item>
           </router-link>
@@ -40,7 +40,7 @@
               divided
               v-if="canResetPassword"
               :action="handleResetPassword"
-              :action-params="slotProps.data"
+              :action-params="data"
           >
             <template #icon>
               <el-icon class="pi pi-key"/>
@@ -71,7 +71,7 @@ export default defineComponent({
     PsrElAsyncActionButton,
     PsrElAsyncDropdownItem
   },
-  props: ['slotProps'],
+  props: ['data'],
   emits: ['edit', 'dataChanged'],
   setup(props, context) {
     const appContext = useAppContext()
@@ -87,9 +87,6 @@ export default defineComponent({
     const canResetPassword = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_LIST.name, ['resetPassword'])
 
     return {
-      handleEdit: (row: UserEntity) => {
-        context.emit('edit', row)
-      },
       handleResetPassword: (row: UserEntity) => {
         return ElMessageBox.confirm(
             `是否重置密码${row.id}`,

@@ -81,8 +81,8 @@
         >
           <template #body="slotProps">
             <view-part-action-column
-                :slot-props="slotProps"
-                @edit="editDialog.show"
+                :data="slotProps.data"
+                @edit="editDialog.show($event)"
                 @data-changed="onDataChanged"
             />
           </template>
