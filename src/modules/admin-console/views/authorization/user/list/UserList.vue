@@ -4,7 +4,7 @@
       <view-part-header
           @find="handleFind"
           @clear-filters="handleClearFilters"
-          @add="handleAdd"
+          @add="editDialog.show"
       />
     </el-header>
     <el-main class="ct-main">
@@ -82,18 +82,17 @@
           <template #body="slotProps">
             <view-part-action-column
                 :slot-props="slotProps"
-                @edit="handleEdit"
+                @edit="editDialog.show"
                 @data-changed="onDataChanged"
             />
           </template>
         </p-column>
-
       </p-data-table>
     </el-main>
   </el-container>
   <view-part-edit-dialog
-      v-model:visible="editDialogProps.visible"
-      v-model:data="editDialogProps.data"
+      v-model:visible="editDialog.visible"
+      v-model:data="editDialog.data"
       @data-changed="onDataChanged"
   />
 </template>
@@ -112,8 +111,8 @@ import {useAppContext} from "@/libs/commons/app-context";
 import {ROUTE_AUTHORIZATION_USER_LIST} from "../../../../route";
 import {authorizationService} from "@/services/authorization";
 import ViewPartActionColumn from "./ViewPartActionColumn.vue";
-import {UserEntity} from "@/services/authorization/CRUDService";
 import ViewPartHeader from "./ViewPartHeader.vue";
+import {ViewPartEditDialogContext} from "./ViewPartEditDialogContext";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -140,11 +139,6 @@ export default defineComponent({
         'id': {value: null, matchMode: FilterMatchMode.CONTAINS},
         'enabled': {value: null, matchMode: FilterMatchMode.EQUALS}
       })
-    })
-    const editDialogProps = reactive({
-      data: {},
-      creating: true,
-      visible: false
     })
 
     function loadTableData() {
@@ -188,24 +182,17 @@ export default defineComponent({
     }
 
     const canAdd = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_LIST.name, ['add'])
-
+    const editDialog = new ViewPartEditDialogContext()
     return {
       tableRef,
       tableProps,
-      editDialogProps,
       handleFind,
       handleClearFilters,
-      handleAdd: () => {
-        editDialogProps.visible = true
-      },
-      handleEdit: (row: UserEntity) => {
-        editDialogProps.data = row
-        editDialogProps.visible = true
-      },
       onDataTableEvent,
       onDataChanged: handleFind,
       handleExport,
-      canAdd
+      canAdd,
+      editDialog
     }
   }
 })
