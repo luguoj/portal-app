@@ -97,7 +97,7 @@ export default defineComponent({
         ).then(() => {
           return authorizationService.user.resetPassword(row.id).then((newPassword) => {
             useClipboard({source: ref(newPassword)}).copy()
-            ElMessageBox.prompt('密码已经重置为:', '重置成功', {
+            ElMessageBox.prompt('新密码(已经复制到剪贴板):', '重置成功', {
               inputValue: newPassword,
               type: 'info',
               showCancelButton: false
