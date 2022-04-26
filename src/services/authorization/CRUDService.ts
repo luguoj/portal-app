@@ -7,9 +7,10 @@ const DOMAIN_TYPES = {
 
 
 export interface UserEntity extends Entity {
-    groupId?: string,
-    route?: string,
-    actions?: string
+    enabled?: boolean,
+    accountExpiryTime?: string
+    accountLockExpiryTime?: string
+    passwordExpiryTime?: string
 }
 
 export class CRUDService {
