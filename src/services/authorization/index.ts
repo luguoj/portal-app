@@ -1,8 +1,10 @@
 import {useGatewayClient} from "@/services/useGatewayClient";
 import {CRUDService} from "@/services/authorization/CRUDService";
+import {UserService} from "@/services/authorization/UserService";
 
-const PortalApiClient = useGatewayClient('/authorization/api')
+const AuthorizationApiClient = useGatewayClient('/authorization/api')
 export const authorizationService = {
-    crud: new CRUDService(PortalApiClient)
+    crud: new CRUDService(AuthorizationApiClient),
+    user: new UserService(AuthorizationApiClient)
 }
 
