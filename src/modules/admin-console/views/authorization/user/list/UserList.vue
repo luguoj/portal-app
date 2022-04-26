@@ -1,26 +1,11 @@
 <template>
   <el-container class="ct-root" v-loading="tableProps.loading">
     <el-header class="fit">
-      <psr-el-toolbar>
-        <el-button @click="handleFind">
-          <template #icon>
-            <el-icon class="pi pi-search"/>
-          </template>
-          查找
-        </el-button>
-        <el-button @click="handleClearFilters">
-          <template #icon>
-            <el-icon class="pi pi-filter-slash"/>
-          </template>
-          重置
-        </el-button>
-        <el-button v-if="canAdd" @click="handleAdd">
-          <template #icon>
-            <el-icon class="pi pi-plus"/>
-          </template>
-          添加
-        </el-button>
-      </psr-el-toolbar>
+      <view-part-header
+          @find="handleFind"
+          @clear-filters="handleClearFilters"
+          @add="handleAdd"
+      />
     </el-header>
     <el-main class="ct-main">
       <p-data-table
@@ -116,7 +101,6 @@
 <script lang="ts">
 import ViewPartEditDialog from "./ViewPartEditDialog.vue"
 import {defineComponent, reactive, ref, shallowReactive, watch} from "vue";
-import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
 import PDataTable from "primevue/datatable";
 import PColumn from "primevue/column";
 import {FilterMatchMode} from "primevue/api";
@@ -129,18 +113,17 @@ import {ROUTE_AUTHORIZATION_USER_LIST} from "../../../../route";
 import {authorizationService} from "@/services/authorization";
 import ViewPartActionColumn from "./ViewPartActionColumn.vue";
 import {UserEntity} from "@/services/authorization/CRUDService";
-import PsrElToolbar from "@/libs/components/psr/element-plus/PsrElToolbar.vue";
+import ViewPartHeader from "./ViewPartHeader.vue";
 
 export default defineComponent({
   name: "admin-console-group-list",
   components: {
+    ViewPartHeader,
     PDataTable,
     PColumn,
     PTriStateCheckbox,
-    PsrElAsyncActionButton,
     ViewPartEditDialog,
     ViewPartActionColumn,
-    PsrElToolbar
   },
   setup() {
     const appContext = useAppContext()
