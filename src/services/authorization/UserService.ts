@@ -1,4 +1,5 @@
 import {AxiosInstance} from "axios";
+import {handleErrorMessage, handleRespData} from "@/libs/commons/utils/Axios";
 
 export class UserService {
     private readonly _client: AxiosInstance;
@@ -9,16 +10,11 @@ export class UserService {
 
     resetPassword(id?: string): Promise<string> {
         return this._client.post(`/user/${id}/reset_password`)
-            .then((resp) => {
-                if (resp && resp.data) {
-                    return resp.data
-                }
-                return ''
-            })
+            .then(handleRespData).catch(handleErrorMessage)
     }
 
     delete(id?: string): Promise<boolean> {
         return this._client.delete(`/user/${id}`)
-            .then(() => true)
+            .then(() => true).catch(handleErrorMessage)
     }
 }
