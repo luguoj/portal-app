@@ -1,5 +1,8 @@
 <template>
-  <el-dialog :title="creating?'创建':'编辑'" :before-close="beforeClose" :model-value="visible">
+  <el-dialog
+      :title="creating?'创建':'编辑'"
+      :before-close="beforeClose"
+      :model-value="model.visible">
     <el-form v-model="formData">
       <slot :formData="formData" :creating="creating"/>
     </el-form>
@@ -20,9 +23,7 @@ import {computed, defineComponent, PropType, ref, toRaw, watch} from "vue";
 import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
 import {cloneDeep, isEqual} from "lodash";
 import {ElMessage, ElMessageBox} from "element-plus";
-
-export type CreateHandler<E> = (data: E) => Promise<E>
-export type UpdateHandler<E> = (data: E) => Promise<E>
+import {PsrElCreateUpdateFormDialogModel} from "./PsrElCreateUpdateFormDialogModel";
 
 export default defineComponent({
   name: "PsrElCreateUpdateFormDialog",
@@ -30,53 +31,28 @@ export default defineComponent({
     PsrElAsyncActionButton
   },
   props: {
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    idProperty: {
-      type: String,
-      required: true,
-      default: 'id'
-    },
-    data: {
-      type: Object,
-      required: true
-    },
-    defaultData: {
-      type: Function,
-      required: true
-    },
-    handleCreate: {
-      type: Function as PropType<CreateHandler<any>>,
-      required: true
-    },
-    handleUpdate: {
-      type: Function as PropType<UpdateHandler<any>>,
+    model: {
+      type: Object as PropType<PsrElCreateUpdateFormDialogModel<any>>,
       required: true
     }
   },
-  emits: ['update:visible', 'update:data', 'dataChanged'],
+  emits: ['dataChanged'],
   setup(props, context) {
     const originalData = ref<any>({})
     const formData = ref<any>({})
-    const creating = computed(() => !originalData.value[props.idProperty])
+    const creating = computed(() => !originalData.value[props.model.idProperty])
     const formDirty = computed(() => {
       return !isEqual(formData.value, originalData.value)
     })
 
-    watch(() => props.data, data => {
-      if (data) {
-        originalData.value = cloneDeep(toRaw(props.data))
-        formData.value = cloneDeep(toRaw(props.data))
-      } else {
-        context.emit('update:data', props.defaultData())
-      }
+    watch(() => props.model.data, data => {
+      originalData.value = cloneDeep(toRaw(data))
+      formData.value = cloneDeep(toRaw(data))
     }, {immediate: true})
 
     function hide() {
-      context.emit('update:visible', false)
-      context.emit('update:data', {})
+      props.model.visible = false
+      props.model.data = props.model.defaultData()
     }
 
     function handleChanged(data: any) {
@@ -84,15 +60,15 @@ export default defineComponent({
         message: '保存成功.',
         type: 'success',
       })
+      props.model.data = data
       context.emit('dataChanged')
-      context.emit('update:data', data)
     }
 
     function handleSubmit() {
       if (creating.value) {
-        return props.handleCreate(formData.value).then(handleChanged)
+        return props.model.createHandler(formData.value).then(handleChanged)
       } else {
-        return props.handleUpdate(formData.value).then(handleChanged)
+        return props.model.updateHandler(formData.value).then(handleChanged)
       }
     }
 
