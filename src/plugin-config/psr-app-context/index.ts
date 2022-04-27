@@ -7,6 +7,7 @@ import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClie
 import {createAppContext} from "@/libs/commons/psr/app-context";
 import {tokenContext} from "./token";
 import {routeCache} from "./routeCache";
+import {App} from "@vue/runtime-core";
 
 export const appContext = createAppContext({
     layouts: [{
@@ -50,3 +51,7 @@ export const appContext = createAppContext({
         errorNotFound: PsrErrorNotFound
     }
 }).useToken(tokenContext).use(routeCache)
+
+export function applyPsrAppContext(app: App) {
+    app.use(appContext)
+}
