@@ -1,7 +1,7 @@
 <template>
   <p-data-table
       ref="tableRef"
-      class="table p-datatable-sm"
+      class="p-datatable-sm"
       responsiveLayout="scroll"
       :scrollable="true"
       scrollHeight="flex"
