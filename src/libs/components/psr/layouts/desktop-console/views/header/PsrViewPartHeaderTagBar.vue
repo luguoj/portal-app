@@ -1,5 +1,5 @@
 <template>
-  <psr-el-horizontal-scroll-bar class="ct-tags">
+  <psr-horizontal-scroll-bar class="ct-tags">
     <router-link
         v-for="cachedRoute in cachedRoutes" :key="cachedRoute.componentName"
         :to="cachedRoute.path"
@@ -20,12 +20,12 @@
         {{ cachedRoute.tag.title }}
       </psr-view-part-header-tag>
     </router-link>
-  </psr-el-horizontal-scroll-bar>
+  </psr-horizontal-scroll-bar>
 </template>
 
 <script lang="ts">
 import PsrViewPartHeaderTag from "./PsrViewPartHeaderTag.vue";
-import PsrElHorizontalScrollBar from "@/libs/components/psr/element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import PsrHorizontalScrollBar from "@/libs/components/psr/widgets/scrollbar/PsrHorizontalScrollbar.vue";
 import {computed, defineComponent} from "vue";
 import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/PsrAppRouteCacheProvider";
 import {PsrAppRouteCacheItem} from "@/libs/commons/app-context/plugins/route-cache";
@@ -34,7 +34,7 @@ import {PsrAppRouteCacheItem} from "@/libs/commons/app-context/plugins/route-cac
 export default defineComponent({
   name: "psr-view-part-header-tag-bar",
   components: {
-    PsrElHorizontalScrollBar,
+    PsrHorizontalScrollBar,
     PsrViewPartHeaderTag
   },
   setup() {

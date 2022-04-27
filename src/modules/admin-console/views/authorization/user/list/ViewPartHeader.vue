@@ -1,5 +1,5 @@
 <template>
-  <psr-el-toolbar>
+  <psr-toolbar>
     <el-button class="button" @click="$emit('find')">
       <template #icon>
         <el-icon class="pi pi-search"/>
@@ -18,19 +18,19 @@
       </template>
       添加
     </el-button>
-  </psr-el-toolbar>
+  </psr-toolbar>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
 import {ROUTE_AUTHORIZATION_USER_LIST} from "@/modules/admin-console/route";
 import {useAppContext} from "@/libs/commons/app-context";
-import PsrElToolbar from "@/libs/components/psr/element-plus/PsrElToolbar.vue";
+import PsrToolbar from "@/libs/components/psr/widgets/toolbar/PsrToolbar.vue";
 
 export default defineComponent({
   name: "ViewPartHeader",
   components: {
-    PsrElToolbar
+    PsrToolbar
   },
   emits: ['add', 'find', 'clearFilters'],
   setup() {

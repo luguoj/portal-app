@@ -25,8 +25,8 @@
 import ViewPartEditDialog from "./ViewPartEditDialog.vue"
 import {defineComponent} from "vue";
 import ViewPartHeader from "./ViewPartHeader.vue";
-import {createPsrElCreateUpdateFormDialogModel} from "@/libs/components/psr/element-plus/dialog/PsrElCreateUpdateFormDialogModel";
-import {createPsrPFilterPagingDataTableModel} from "@/libs/components/psr/prime-vue/data-table/PsrPFilterPagingDataTableModel";
+import {createPsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/PsrCreateUpdateFormDialogModel";
+import {createPsrFilterPagingDataTableModel} from "@/libs/components/psr/widgets/data-table/PsrFilterPagingDataTableModel";
 import {authorizationService} from "@/services/authorization";
 import {FilterMatchMode} from "primevue/api";
 import {UserEntity} from "@/services/authorization/CRUDService";
@@ -40,7 +40,7 @@ export default defineComponent({
     ViewPartEditDialog
   },
   setup() {
-    const dataTable = createPsrPFilterPagingDataTableModel({
+    const dataTable = createPsrFilterPagingDataTableModel({
       loadDataHandler: (filter, pageable) => {
         return authorizationService.crud.user.findAll(filter, pageable)
       },
@@ -51,7 +51,7 @@ export default defineComponent({
         }
       }
     })
-    const editDialog = createPsrElCreateUpdateFormDialogModel<UserEntity>({
+    const editDialog = createPsrCreateUpdateFormDialogModel<UserEntity>({
       defaultData: () => {
         return {
           id: '',

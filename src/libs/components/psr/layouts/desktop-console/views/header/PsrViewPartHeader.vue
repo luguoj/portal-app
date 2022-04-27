@@ -9,9 +9,9 @@
     </el-tooltip>
     <div class="ct-middle">
       <transition name="searcher">
-        <psr-el-horizontal-scroll-bar v-show="!showSearcher" class="view-path">
+        <psr-horizontal-scroll-bar v-show="!showSearcher" class="view-path">
           <psr-view-part-header-route-path/>
-        </psr-el-horizontal-scroll-bar>
+        </psr-horizontal-scroll-bar>
       </transition>
       <el-tooltip content="菜单搜索" effect="light">
         <el-button type="text" @click.stop="handleShowSearcher" class="button icon-only">
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import PsrElHorizontalScrollBar from "@/libs/components/psr/element-plus/horizontal-scroll-bar/PsrElHorizontalScrollBar.vue";
+import PsrHorizontalScrollBar from "@/libs/components/psr/widgets/scrollbar/PsrHorizontalScrollbar.vue";
 import PsrViewPartHeaderUserPopover from "./PsrViewPartHeaderUserPopover.vue";
 import PsrViewPartHeaderRoutePath from "./PsrViewPartHeaderRoutePath.vue";
 import PsrViewPartHeaderSearcher from "./PsrViewPartHeaderSearcher.vue";
@@ -77,7 +77,7 @@ import {useLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyPr
 export default defineComponent({
   name: "psr-view-part-header",
   components: {
-    PsrElHorizontalScrollBar,
+    PsrHorizontalScrollBar,
     PsrViewPartHeaderSearcher,
     PsrViewPartHeaderRoutePath,
     PsrViewPartHeaderUserPopover,

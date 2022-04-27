@@ -20,7 +20,7 @@ class ScrollbarViewModel {
 }
 
 export default defineComponent({
-  name: "PsrElHorizontalScrollBar",
+  name: "PsrHorizontalScrollbar",
   setup() {
     return {
       vmScrollbar: new ScrollbarViewModel()

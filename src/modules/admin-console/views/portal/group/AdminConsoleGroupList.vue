@@ -1,7 +1,7 @@
 <template>
   <el-container class="ct-root" v-loading="tableProps.loading">
     <el-header class="fit">
-      <psr-el-toolbar>
+      <psr-toolbar>
           <el-button class="button" @click="handleFind">
             <template #icon>
               <el-icon class="pi pi-search"/>
@@ -20,7 +20,7 @@
             </template>
             添加
           </el-button>
-      </psr-el-toolbar>
+      </psr-toolbar>
     </el-header>
     <el-main class="ct-main">
       <p-data-table
@@ -127,13 +127,13 @@
                   @click="handleEdit(slotProps.data)"
               >编辑
               </el-button>
-              <psr-el-async-action-button
+              <psr-async-action-button
                   v-if="canDelete"
                   type="text" size="small"
                   :action="handleDelete"
                   :action-params="slotProps.data"
               >删除
-              </psr-el-async-action-button>
+              </psr-async-action-button>
             </el-space>
           </template>
         </p-column>
@@ -152,7 +152,7 @@ import {defineComponent, reactive, ref, shallowReactive, watch} from "vue";
 import {portalService} from "@/services/portal";
 import AdminConsoleGroupEditDialog from "@/modules/admin-console/views/portal/group/AdminConsoleGroupEditDialog.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
+import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/PsrAsyncActionButton.vue";
 import PDataTable from "primevue/datatable";
 import PColumn from "primevue/column";
 import {FilterMatchMode} from "primevue/api";
@@ -162,7 +162,7 @@ import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
 import {useAppContext} from "@/libs/commons/app-context";
 import {ROUTE_PORTAL_GROUP_LIST, ROUTE_PORTAL_GROUP_PERMISSION, ROUTE_PORTAL_GROUP_USER} from "@/modules/admin-console/route";
-import PsrElToolbar from "@/libs/components/psr/element-plus/PsrElToolbar.vue";
+import PsrToolbar from "@/libs/components/psr/widgets/toolbar/PsrToolbar.vue";
 
 export default defineComponent({
   name: "admin-console-group-list",
@@ -170,9 +170,9 @@ export default defineComponent({
     PDataTable,
     PColumn,
     PTriStateCheckbox,
-    PsrElAsyncActionButton,
+    PsrAsyncActionButton,
     AdminConsoleGroupEditDialog,
-    PsrElToolbar
+    PsrToolbar
   },
   setup() {
     const appContext = useAppContext()

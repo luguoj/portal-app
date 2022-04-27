@@ -48,16 +48,16 @@
 <script lang="ts">
 import {defineComponent, PropType, ref} from "vue";
 import PDataTable from "primevue/datatable";
-import {PsrPFilterPagingDataTableModel} from "./PsrPFilterPagingDataTableModel";
+import {PsrFilterPagingDataTableModel} from "./PsrFilterPagingDataTableModel";
 
 export default defineComponent({
-  name: "PsrPFilterPagingDataTable",
+  name: "PsrFilterPagingDataTable",
   components: {
     PDataTable
   },
   props: {
     model: {
-      type: Object as PropType<PsrPFilterPagingDataTableModel<any>>,
+      type: Object as PropType<PsrFilterPagingDataTableModel<any>>,
       required: true
     }
   },

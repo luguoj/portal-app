@@ -1,17 +1,24 @@
 <template>
-  <el-button @click="onClick" :loading="loading" :disabled="disabled">
-    <slot/>
-    <template #icon v-if="$slots.icon">
+  <el-dropdown-item @click="onClick" :disabled="disabled">
+    <el-icon v-if="loading" class="is-loading">
+      <icon-loading/>
+    </el-icon>
+    <template v-else>
       <slot name="icon"/>
     </template>
-  </el-button>
+    <slot/>
+  </el-dropdown-item>
 </template>
 
 <script lang="ts">
 import {computed, defineComponent, ref} from "vue";
+import {Loading as IconLoading} from "@element-plus/icons-vue";
 
 export default defineComponent({
-  name: "PsrElAsyncActionButton",
+  name: "PsrAsyncDropdownItem",
+  components: {
+    IconLoading
+  },
   props: ['action', 'actionParams'],
   setup(props, context) {
     const synchronizing = ref(false)

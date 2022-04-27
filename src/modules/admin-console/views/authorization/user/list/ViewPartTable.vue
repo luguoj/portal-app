@@ -1,5 +1,5 @@
 <template>
-  <psr-p-filter-paging-data-table :model="model">
+  <psr-filter-paging-data-table :model="model">
     <p-column field="enabled" header="状态" :showFilterMenu="false"
               style="width:5rem;min-width:5rem;max-width:5rem;">
       <template #body="slotProps">
@@ -37,13 +37,13 @@
               @click="$emit('edit',data)"
           >编辑
           </el-button>
-          <psr-el-async-action-button
+          <psr-async-action-button
               v-if="canDelete"
               type="text" size="small"
               :action="handleDelete"
               :action-params="data"
           >删除
-          </psr-el-async-action-button>
+          </psr-async-action-button>
           <el-dropdown trigger="click">
             <el-button
                 type="text"
@@ -66,7 +66,7 @@
                 >
                   <el-dropdown-item>分组</el-dropdown-item>
                 </router-link>
-                <psr-el-async-dropdown-item
+                <psr-async-dropdown-item
                     divided
                     v-if="canResetPassword"
                     :action="handleResetPassword"
@@ -76,22 +76,22 @@
                     <el-icon class="pi pi-key"/>
                   </template>
                   重置密码
-                </psr-el-async-dropdown-item>
+                </psr-async-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </el-space>
       </template>
     </p-column>
-  </psr-p-filter-paging-data-table>
+  </psr-filter-paging-data-table>
 </template>
 
 <script lang="ts">
 import {defineComponent, PropType, ref} from "vue";
-import PsrPFilterPagingDataTable from "@/libs/components/psr/prime-vue/data-table/PsrPFilterPagingDataTable.vue";
+import PsrFilterPagingDataTable from "@/libs/components/psr/widgets/data-table/PsrFilterPagingDataTable.vue";
 import PColumn from "primevue/column";
 import PTriStateCheckbox from "primevue/tristatecheckbox";
-import {PsrElCreateUpdateFormDialogModel} from "@/libs/components/psr/element-plus/dialog/PsrElCreateUpdateFormDialogModel";
+import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/PsrCreateUpdateFormDialogModel";
 import {UserEntity} from "@/services/authorization/CRUDService";
 import {useAppContext} from "@/libs/commons/app-context";
 import {ROUTE_AUTHORIZATION_USER_AUTHORITY, ROUTE_AUTHORIZATION_USER_GROUP, ROUTE_AUTHORIZATION_USER_LIST} from "@/modules/admin-console/route";
@@ -99,28 +99,28 @@ import {ElMessage, ElMessageBox} from "element-plus/es";
 import {authorizationService} from "@/services/authorization";
 import {useClipboard} from "@vueuse/core";
 import {GroupEntity} from "@/services/portal/CRUDService";
-import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
-import PsrElAsyncDropdownItem from "@/libs/components/psr/element-plus/dropdown-item/PsrElAsyncDropdownItem.vue";
+import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/PsrAsyncActionButton.vue";
+import PsrAsyncDropdownItem from "@/libs/components/psr/widgets/dropdown-item/PsrAsyncDropdownItem.vue";
 
 export default defineComponent({
   name: "ViewPartTable",
   components: {
-    PsrPFilterPagingDataTable,
+    PsrFilterPagingDataTable,
     PColumn,
     PTriStateCheckbox,
-    PsrElAsyncActionButton,
-    PsrElAsyncDropdownItem
+    PsrAsyncActionButton,
+    PsrAsyncDropdownItem
   },
   emits: ['edit', 'dataChanged'],
   props: {
     model: {
-      type: Object as PropType<PsrElCreateUpdateFormDialogModel<UserEntity>>
+      type: Object as PropType<PsrCreateUpdateFormDialogModel<UserEntity>>
     }
   },
   setup(props, context) {
     const appContext = useAppContext()
     const router = appContext.router
-    
+
     const authorityRoute = router.computeModuleRouteName(ROUTE_AUTHORIZATION_USER_AUTHORITY.name)
     const groupRoute = router.computeModuleRouteName(ROUTE_AUTHORIZATION_USER_GROUP.name)
     const canRouteAuthority = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_AUTHORITY.name)

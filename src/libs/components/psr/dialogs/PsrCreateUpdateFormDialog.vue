@@ -8,11 +8,11 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <psr-el-async-action-button
+        <psr-async-action-button
             type="primary"
             :disabled="!formDirty"
             :action="handleSubmit"
-        >保存</psr-el-async-action-button>
+        >保存</psr-async-action-button>
       </span>
     </template>
   </el-dialog>
@@ -20,19 +20,19 @@
 
 <script lang="ts">
 import {computed, defineComponent, PropType, ref, toRaw, watch} from "vue";
-import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
+import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/PsrAsyncActionButton.vue";
 import {cloneDeep, isEqual} from "lodash";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {PsrElCreateUpdateFormDialogModel} from "./PsrElCreateUpdateFormDialogModel";
+import {PsrCreateUpdateFormDialogModel} from "./PsrCreateUpdateFormDialogModel";
 
 export default defineComponent({
-  name: "PsrElCreateUpdateFormDialog",
+  name: "PsrCreateUpdateFormDialog",
   components: {
-    PsrElAsyncActionButton
+    PsrAsyncActionButton
   },
   props: {
     model: {
-      type: Object as PropType<PsrElCreateUpdateFormDialogModel<any>>,
+      type: Object as PropType<PsrCreateUpdateFormDialogModel<any>>,
       required: true
     }
   },

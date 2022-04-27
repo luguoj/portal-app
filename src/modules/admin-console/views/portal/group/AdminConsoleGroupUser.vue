@@ -1,7 +1,7 @@
 <template>
   <el-container class="ct-root" v-loading="loadingFlag">
     <el-header class="fit">
-      <psr-el-toolbar>
+      <psr-toolbar>
         <router-link
             :to="{name:backRouteName}"
             custom
@@ -35,7 +35,7 @@
           </template>
           保存
         </el-button>
-      </psr-el-toolbar>
+      </psr-toolbar>
     </el-header>
     <el-main class="ct-main">
       <p-data-table
@@ -101,7 +101,7 @@ import {FilterMatchMode} from "primevue/api";
 import PTriStateCheckbox from "primevue/tristatecheckbox";
 import PCheckbox from "primevue/checkbox";
 import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
-import PsrElToolbar from "@/libs/components/psr/element-plus/PsrElToolbar.vue";
+import PsrToolbar from "@/libs/components/psr/widgets/toolbar/PsrToolbar.vue";
 
 interface UserItem {
   userId: string,
@@ -117,7 +117,7 @@ export default defineComponent({
     PColumn,
     PTriStateCheckbox,
     PCheckbox,
-    PsrElToolbar
+    PsrToolbar
   },
   props: {
     groupId: {

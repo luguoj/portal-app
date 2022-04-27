@@ -1,5 +1,5 @@
 <template>
-  <psr-el-create-update-form-dialog
+  <psr-create-update-form-dialog
       :model="model"
       @data-changed="$emit('dataChanged')"
   >
@@ -11,20 +11,22 @@
         <el-switch v-model="formData.enabled"/>
       </el-form-item>
     </template>
-  </psr-el-create-update-form-dialog>
+  </psr-create-update-form-dialog>
 </template>
 
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
 import {UserEntity} from "@/services/authorization/CRUDService";
-import PsrElCreateUpdateFormDialog from "@/libs/components/psr/element-plus/dialog/PsrElCreateUpdateFormDialog.vue";
-import {PsrElCreateUpdateFormDialogModel} from "@/libs/components/psr/element-plus/dialog/PsrElCreateUpdateFormDialogModel";
+import PsrCreateUpdateFormDialog from "@/libs/components/psr/dialogs/PsrCreateUpdateFormDialog.vue";
+import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/PsrCreateUpdateFormDialogModel";
 
 export default defineComponent({
   name: "ViewPartEditDialog",
-  components: {PsrElCreateUpdateFormDialog},
+  components: {
+    PsrCreateUpdateFormDialog
+  },
   props: {
-    model: Object as PropType<PsrElCreateUpdateFormDialogModel<UserEntity>>
+    model: Object as PropType<PsrCreateUpdateFormDialogModel<UserEntity>>
   },
   emits: ['dataChanged']
 })

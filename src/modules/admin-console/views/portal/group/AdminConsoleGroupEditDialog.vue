@@ -13,11 +13,11 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <psr-el-async-action-button
+        <psr-async-action-button
             type="primary"
             :disabled="!formDirty"
             :action="handleSubmit"
-        >保存</psr-el-async-action-button>
+        >保存</psr-async-action-button>
       </span>
     </template>
   </el-dialog>
@@ -27,7 +27,7 @@
 import {ElForm, ElMessage, ElMessageBox} from "element-plus";
 import {defineComponent, computed, ref, toRaw, watch, PropType} from "vue";
 import {cloneDeep, isEqual} from "lodash";
-import PsrElAsyncActionButton from "@/libs/components/psr/element-plus/buttons/PsrElAsyncActionButton.vue";
+import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/PsrAsyncActionButton.vue";
 import {portalService} from "@/services/portal";
 import {GroupEntity} from "@/services/portal/CRUDService";
 
@@ -48,7 +48,9 @@ function defaultData(): GroupEntity {
 
 export default defineComponent({
   name: "admin-console-group-edit-dialog",
-  components: {PsrElAsyncActionButton},
+  components: {
+    PsrAsyncActionButton
+  },
   props: {
     visible: {
       type: Boolean,
