@@ -73,7 +73,6 @@ export default defineComponent({
     function querySearch(query: string) {
       if (query !== '') {
         searchResult.value = fuse.value.search(query)
-        debugger
       } else {
         searchResult.value = []
       }
