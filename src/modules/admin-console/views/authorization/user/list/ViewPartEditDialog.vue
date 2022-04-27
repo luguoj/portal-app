@@ -1,8 +1,7 @@
 <template>
   <psr-el-create-update-form-dialog
-      :default-data="defaultData"
-      :handle-create="handleCreate"
-      :handle-update="handleUpdate"
+      :model="model"
+      @data-changed="$emit('dataChanged')"
   >
     <template #default="{formData,creating}">
       <el-form-item label="用户名">
@@ -16,42 +15,18 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, PropType} from "vue";
 import {UserEntity} from "@/services/authorization/CRUDService";
-import {authorizationService} from "@/services/authorization";
 import PsrElCreateUpdateFormDialog from "@/libs/components/psr/element-plus/dialog/PsrElCreateUpdateFormDialog.vue";
-
-function defaultData(): UserEntity {
-  return {
-    id: '',
-    version: 0,
-    enabled: false
-  }
-}
+import {PsrElCreateUpdateFormDialogModel} from "@/libs/components/psr/element-plus/dialog/PsrElCreateUpdateFormDialogModel";
 
 export default defineComponent({
   name: "ViewPartEditDialog",
   components: {PsrElCreateUpdateFormDialog},
-  setup() {
-    function handleCreate(data: UserEntity) {
-      return authorizationService.crud.user.create({
-        ...data
-      })
-    }
-
-    function handleUpdate(data: UserEntity) {
-      return authorizationService.crud.user.patch(
-          ['enabled'],
-          data
-      )
-    }
-
-    return {
-      defaultData,
-      handleCreate,
-      handleUpdate
-    }
-  }
+  props: {
+    model: Object as PropType<PsrElCreateUpdateFormDialogModel<UserEntity>>
+  },
+  emits: ['dataChanged']
 })
 </script>
 
