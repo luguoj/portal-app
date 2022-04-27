@@ -93,12 +93,12 @@ import {portalService} from "@/services/portal";
 import PColumn from "primevue/column";
 import {useRouter} from "vue-router";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
-import {Queue} from "@/libs/commons/promise-queue";
+import {Queue} from "@/libs/commons/psr/promise-queue";
 import {GroupEntity, GroupPermissionEntity} from "@/services/portal/CRUDService";
 import {UnwrapNestedRefs} from "@vue/reactivity";
 import pinyin from "pinyin";
-import {useAppContext} from "@/libs/commons/app-context";
-import {PsrAppRouteMetaPermission, PsrAppRouteRecord} from "@/libs/commons/app-context/route";
+import {useAppContext} from "@/libs/commons/psr/app-context";
+import {PsrAppRouteMetaPermission, PsrAppRouteRecord} from "@/libs/commons/psr/app-context/route";
 import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
 import PsrToolbar from "@/libs/components/psr/widgets/toolbar/PsrToolbar.vue";
 

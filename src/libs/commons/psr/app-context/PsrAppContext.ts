@@ -5,7 +5,7 @@ import {PsrAppPermission} from "./permission";
 import {PsrAppRouter} from "./route";
 import {PsrAppContextOptions} from "./types/PsrAppContextOptions";
 import {PsrAppStore} from "./store/PsrAppStore";
-import {PsrAppToken, PsrAppTokenService} from "@/libs/commons/app-context/plugins/token";
+import {PsrAppToken, PsrAppTokenService} from "@/libs/commons/psr/app-context/plugins/token";
 import {extractStoreOptions} from "./extractStoreOptions";
 import {extractRouterOptions} from "./extractRouterOptions";
 import {extractMenuOptions} from "./extractMenuOptions";

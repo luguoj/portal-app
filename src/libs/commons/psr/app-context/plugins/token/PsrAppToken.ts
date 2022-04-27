@@ -1,7 +1,7 @@
 // 未认证
 import {reactive, UnwrapNestedRefs} from "vue";
 import {PsrAppTokenService} from "./types/PsrAppTokenService";
-import {PsrAppPlugin} from "@/libs/commons/app-context";
+import {PsrAppPlugin} from "@/libs/commons/psr/app-context";
 
 export const NOT_AUTHENTICATED = 'not_authenticated'
 // 认证过期

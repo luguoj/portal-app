@@ -1,7 +1,7 @@
 import axios from "axios";
 import {stringify} from "qs";
 import {tokenContext} from "@/context/token";
-import {applyTokenInterceptor} from "@/libs/commons/app-context/plugins/token";
+import {applyTokenInterceptor} from "@/libs/commons/psr/app-context/plugins/token";
 
 export function useGatewayClient(contextPath: string) {
     const client = axios.create({

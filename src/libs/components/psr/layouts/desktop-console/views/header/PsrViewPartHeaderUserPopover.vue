@@ -16,7 +16,7 @@ import {ElMessageBox} from "element-plus";
 import {useStore} from "vuex";
 import {computed, defineComponent} from "vue";
 import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/PsrAsyncActionButton.vue";
-import {useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 
 export default defineComponent({
   name: "psr-view-part-header-user-popover",

@@ -68,11 +68,11 @@ import PsrViewPartHeaderRoutePath from "./PsrViewPartHeaderRoutePath.vue";
 import PsrViewPartHeaderSearcher from "./PsrViewPartHeaderSearcher.vue";
 import PsrViewPartHeaderTagBar from "./PsrViewPartHeaderTagBar.vue";
 import {computed, defineComponent, inject, nextTick, ref, watch} from "vue"
-import {useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 import {State} from "../../store/State";
 import {useFullscreen} from "@vueuse/core";
-import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache";
-import {useLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
+import {useAppRouteCache} from "@/libs/commons/psr/app-context/plugins/route-cache";
+import {useLayoutStoreProxy} from "@/libs/commons/psr/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-view-part-header",

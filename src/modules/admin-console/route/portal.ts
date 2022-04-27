@@ -1,4 +1,4 @@
-import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route";
+import {PsrAppRouteRecordRaw} from "@/libs/commons/psr/app-context/route";
 
 const MODULE_PORTAL_NAME = 'admin-console/portal'
 export const ROUTE_PORTAL_PERMISSION: PsrAppRouteRecordRaw = {

@@ -1,5 +1,5 @@
 import axios, {AxiosInstance} from "axios";
-import {PsrAppTokenService, PsrAppTokenServiceData} from "@/libs/commons/app-context/plugins/token";
+import {PsrAppTokenService, PsrAppTokenServiceData} from "@/libs/commons/psr/app-context/plugins/token";
 
 export class PsrOAuthSSOClientTokenService implements PsrAppTokenService {
     private readonly _baseURL: string;

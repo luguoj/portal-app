@@ -93,7 +93,7 @@ import PColumn from "primevue/column";
 import PTriStateCheckbox from "primevue/tristatecheckbox";
 import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/PsrCreateUpdateFormDialogModel";
 import {UserEntity} from "@/services/authorization/CRUDService";
-import {useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 import {ROUTE_AUTHORIZATION_USER_AUTHORITY, ROUTE_AUTHORIZATION_USER_GROUP, ROUTE_AUTHORIZATION_USER_LIST} from "@/modules/admin-console/route";
 import {ElMessage, ElMessageBox} from "element-plus/es";
 import {authorizationService} from "@/services/authorization";

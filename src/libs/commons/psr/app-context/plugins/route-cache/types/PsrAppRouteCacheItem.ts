@@ -1,4 +1,4 @@
-import {PsrAppRouteMetaTag} from "@/libs/commons/app-context/route";
+import {PsrAppRouteMetaTag} from "@/libs/commons/psr/app-context/route";
 
 export interface PsrAppRouteCacheItem {
     name: string | symbol,

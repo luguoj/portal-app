@@ -1,9 +1,9 @@
 import {createRouter, createWebHashHistory, isNavigationFailure, RouteLocationMatched, RouteLocationNormalized, RouteLocationNormalizedLoaded, Router} from "vue-router";
 import {PsrAppRouteRecord} from "./types/PsrAppRouteRecord";
 import {ref, Ref} from "vue";
-import {PsrAppRouteChangeEvent, PsrAppRouteStatus} from "@/libs/commons/app-context/route/types/PsrAppRouteStatus";
+import {PsrAppRouteChangeEvent, PsrAppRouteStatus} from "@/libs/commons/psr/app-context/route/types/PsrAppRouteStatus";
 import {createEventHook} from "@vueuse/core"
-import {PsrAppRouteError} from "@/libs/commons/app-context/route/types/PsrAppRouteError";
+import {PsrAppRouteError} from "@/libs/commons/psr/app-context/route/types/PsrAppRouteError";
 
 declare const NProgress: any
 

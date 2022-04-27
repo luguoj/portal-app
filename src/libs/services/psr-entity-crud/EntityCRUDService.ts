@@ -1,5 +1,5 @@
 import {AxiosInstance} from "axios";
-import {handleErrorMessage, handleRespData} from "@/libs/commons/utils/Axios";
+import {handleErrorMessage, handleRespData} from "@/libs/commons/psr/utils/Axios";
 
 export interface Pageable {
     offset?: number,

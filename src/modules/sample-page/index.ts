@@ -1,4 +1,4 @@
-import {PsrAppModuleOptions} from "@/libs/commons/app-context/";
+import {PsrAppModuleOptions} from "@/libs/commons/psr/app-context/";
 import {routes} from "./route";
 import {menus} from "./menus";
 

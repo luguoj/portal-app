@@ -1,5 +1,5 @@
 import {PsrAppRouteChangeEvent, PsrAppRouteError} from "./route";
-import {AUTHENTICATED} from "@/libs/commons/app-context/plugins/token";
+import {AUTHENTICATED} from "@/libs/commons/psr/app-context/plugins/token";
 import {PsrAppContext} from "./PsrAppContext";
 
 export function processSignInRoute(event: PsrAppRouteChangeEvent, context: PsrAppContext) {

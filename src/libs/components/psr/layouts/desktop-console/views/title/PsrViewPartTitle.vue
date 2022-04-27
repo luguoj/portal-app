@@ -12,7 +12,7 @@
 <script lang="ts">
 import {computed, defineComponent} from "vue";
 import {State} from "../../store/State";
-import {useLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
+import {useLayoutStoreProxy} from "@/libs/commons/psr/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-view-part-title",

@@ -1,4 +1,4 @@
-import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route/types/PsrAppRouteRecordRaw";
+import {PsrAppRouteRecordRaw} from "@/libs/commons/psr/app-context/route/types/PsrAppRouteRecordRaw";
 import PsrBlank from "@/libs/components/psr/views/PsrBlank.vue";
 
 export const ROUTE_BLANK: PsrAppRouteRecordRaw = {

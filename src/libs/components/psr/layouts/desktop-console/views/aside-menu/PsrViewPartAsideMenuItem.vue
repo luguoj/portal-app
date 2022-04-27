@@ -36,9 +36,9 @@
 
 <script lang="ts">
 import {computed, defineComponent, PropType} from "vue";
-import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
+import {PsrAppNavigationMenuItem} from "@/libs/commons/psr/app-context/navigation-menu";
 import {State} from "@/libs/components/psr/layouts/desktop-console/store/State";
-import {useLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
+import {useLayoutStoreProxy} from "@/libs/commons/psr/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-view-part-aside-menu-item",

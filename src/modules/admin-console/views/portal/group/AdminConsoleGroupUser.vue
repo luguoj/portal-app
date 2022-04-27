@@ -88,11 +88,11 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, reactive, Ref, ref} from "vue";
-import {useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 import {GroupEntity, UserGroupEntity} from "@/services/portal/CRUDService";
 import {portalService} from "@/services/portal";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
-import {Queue} from "@/libs/commons/promise-queue";
+import {Queue} from "@/libs/commons/psr/promise-queue";
 import {UserEntity} from "@/services/authorization/CRUDService";
 import PDataTable from "primevue/datatable";
 import PColumn from "primevue/column";

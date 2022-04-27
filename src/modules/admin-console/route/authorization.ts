@@ -1,4 +1,4 @@
-import {PsrAppRouteRecordRaw} from "@/libs/commons/app-context/route";
+import {PsrAppRouteRecordRaw} from "@/libs/commons/psr/app-context/route";
 
 const MODULE_AUTHORIZATION_NAME = 'admin-console/authorization'
 

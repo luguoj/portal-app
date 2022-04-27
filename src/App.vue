@@ -8,7 +8,6 @@
 import {ElConfigProvider} from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import {defineComponent, onMounted} from "vue";
-import {useAppContext} from "@/libs/commons/app-context";
 
 declare const NProgress: any
 

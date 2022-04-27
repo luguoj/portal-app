@@ -24,7 +24,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {ROUTE_AUTHORIZATION_USER_LIST} from "@/modules/admin-console/route";
-import {useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 import PsrToolbar from "@/libs/components/psr/widgets/toolbar/PsrToolbar.vue";
 
 export default defineComponent({

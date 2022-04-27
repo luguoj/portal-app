@@ -160,7 +160,7 @@ import PTriStateCheckbox from "primevue/tristatecheckbox";
 import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud/buildFromPrimeVueDataTableFilters";
 import {Page, Pageable} from "@/libs/services/psr-entity-crud";
 import {GroupEntity} from "@/services/portal/CRUDService";
-import {useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 import {ROUTE_PORTAL_GROUP_LIST, ROUTE_PORTAL_GROUP_PERMISSION, ROUTE_PORTAL_GROUP_USER} from "@/modules/admin-console/route";
 import PsrToolbar from "@/libs/components/psr/widgets/toolbar/PsrToolbar.vue";
 

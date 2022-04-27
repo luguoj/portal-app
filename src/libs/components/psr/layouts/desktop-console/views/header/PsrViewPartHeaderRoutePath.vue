@@ -46,10 +46,10 @@
 
 <script lang="ts">
 import {computed, defineComponent} from "vue";
-import {PsrAppRouteRecord} from "@/libs/commons/app-context/route";
-import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
-import {PsrAppRouteMeta} from "@/libs/commons/app-context/route/types/PsrAppRouteMeta";
-import {useAppContext} from "@/libs/commons/app-context";
+import {PsrAppRouteRecord} from "@/libs/commons/psr/app-context/route";
+import {PsrAppNavigationMenuItem} from "@/libs/commons/psr/app-context/navigation-menu";
+import {PsrAppRouteMeta} from "@/libs/commons/psr/app-context/route/types/PsrAppRouteMeta";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 import {useStore} from "vuex";
 
 interface RoutePathItem {

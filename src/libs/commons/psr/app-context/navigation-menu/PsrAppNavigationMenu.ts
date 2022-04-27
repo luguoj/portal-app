@@ -1,6 +1,6 @@
 import {PsrAppNavigationMenuItem} from "./types/PsrAppNavigationMenuItem";
 import {computed, ref, shallowReactive} from "vue";
-import {filterFromBottom} from "@/libs/commons/utils/array-tree";
+import {filterFromBottom} from "@/libs/commons/psr/utils/array-tree";
 import {PsrAppNavigationLayoutItem} from "./types/PsrAppNavigationLayoutItem";
 
 export class PsrAppNavigationMenu {

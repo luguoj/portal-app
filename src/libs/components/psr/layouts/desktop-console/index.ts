@@ -1,4 +1,4 @@
-import {PsrAppLayoutOptions} from "@/libs/commons/app-context/types/PsrAppLayoutOptions";
+import {PsrAppLayoutOptions} from "@/libs/commons/psr/app-context/types/PsrAppLayoutOptions";
 import {store} from "./store";
 import {routes} from "./route";
 

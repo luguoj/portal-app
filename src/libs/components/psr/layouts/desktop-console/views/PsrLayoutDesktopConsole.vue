@@ -29,9 +29,9 @@ import PsrViewPartMain from "./main/PsrViewPartMain.vue";
 import PsrViewPartTitle from "./title/PsrViewPartTitle.vue";
 import PsrViewPartAsideMenu from "./aside-menu/PsrViewPartAsideMenu.vue";
 import {defineComponent, provide, ref, watchEffect} from "vue";
-import {useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 import {State} from "../store/State";
-import {createLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
+import {createLayoutStoreProxy} from "@/libs/commons/psr/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-layout-desktop-console",

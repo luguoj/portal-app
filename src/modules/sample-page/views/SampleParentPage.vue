@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {useAppContext} from "@/libs/commons/app-context";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 
 export default defineComponent({
   name: "SampleParentPage",

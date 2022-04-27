@@ -4,7 +4,7 @@ import {Admin} from "@/modules/admin-console";
 import {portalService} from "@/services/portal";
 import PsrErrorNotFound from "@/libs/components/psr/views/PsrErrorNotFound.vue";
 import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClientSignIn.vue";
-import {createAppContext} from "@/libs/commons/app-context";
+import {createAppContext} from "@/libs/commons/psr/app-context";
 import {tokenContext} from "./token";
 import {routeCache} from "./routeCache";
 

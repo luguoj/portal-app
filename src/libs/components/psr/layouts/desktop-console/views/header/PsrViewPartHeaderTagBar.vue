@@ -27,8 +27,8 @@
 import PsrViewPartHeaderTag from "./PsrViewPartHeaderTag.vue";
 import PsrHorizontalScrollBar from "@/libs/components/psr/widgets/scrollbar/PsrHorizontalScrollbar.vue";
 import {computed, defineComponent} from "vue";
-import {useAppRouteCache} from "@/libs/commons/app-context/plugins/route-cache/PsrAppRouteCacheProvider";
-import {PsrAppRouteCacheItem} from "@/libs/commons/app-context/plugins/route-cache";
+import {useAppRouteCache} from "@/libs/commons/psr/app-context/plugins/route-cache/PsrAppRouteCacheProvider";
+import {PsrAppRouteCacheItem} from "@/libs/commons/psr/app-context/plugins/route-cache";
 
 
 export default defineComponent({

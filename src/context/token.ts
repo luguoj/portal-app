@@ -1,4 +1,4 @@
-import {createTokenContext} from "@/libs/commons/app-context/plugins/token";
+import {createTokenContext} from "@/libs/commons/psr/app-context/plugins/token";
 import {PsrOAuthSSOClientTokenService} from "@/libs/services/psr-oauth";
 
 if (process.env.VUE_APP_PSR_AUTH_CLIENT_URL === undefined) {

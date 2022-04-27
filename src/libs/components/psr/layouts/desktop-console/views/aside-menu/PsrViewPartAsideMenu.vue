@@ -15,10 +15,10 @@
 <script lang="ts">
 import {computed, defineComponent, nextTick, onMounted, Ref, ref, watch} from "vue";
 import PsrViewPartAsideMenuItem from "./PsrViewPartAsideMenuItem.vue";
-import {useAppContext} from "@/libs/commons/app-context";
-import {PsrAppNavigationMenuItem} from "@/libs/commons/app-context/navigation-menu";
+import {useAppContext} from "@/libs/commons/psr/app-context";
+import {PsrAppNavigationMenuItem} from "@/libs/commons/psr/app-context/navigation-menu";
 import {State} from "../../store/State";
-import {useLayoutStoreProxy} from "@/libs/commons/app-context/LayoutStoreProxyProvider";
+import {useLayoutStoreProxy} from "@/libs/commons/psr/app-context/LayoutStoreProxyProvider";
 
 export default defineComponent({
   name: "psr-view-part-aside-menu",
