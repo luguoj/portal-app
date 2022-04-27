@@ -1,4 +1,4 @@
-import {PsrLayoutDesktopConsole} from "@/libs/components/psr/layouts/desktop-console";
+import {PsrLayoutDesktopConsoleOptions} from "@/libs/layouts/psr/desktop-console/options";
 import {SamplePage} from "@/modules/sample-page";
 import {Admin} from "@/modules/admin-console";
 import {portalService} from "@/services/portal";
@@ -11,7 +11,7 @@ import {App} from "@vue/runtime-core";
 
 export const appContext = createAppContext({
     layouts: [{
-        ...PsrLayoutDesktopConsole,
+        ...PsrLayoutDesktopConsoleOptions,
         name: 'layout-desktop-sample',
         title: '样例门户',
         iconCls: 'pi pi-book',
@@ -20,7 +20,7 @@ export const appContext = createAppContext({
         ],
         permission: true
     }, {
-        ...PsrLayoutDesktopConsole,
+        ...PsrLayoutDesktopConsoleOptions,
         name: 'layout-desktop-admin',
         title: '管理员桌面',
         iconCls: 'pi pi-cog',
