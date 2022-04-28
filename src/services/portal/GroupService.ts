@@ -1,20 +1,21 @@
 import {AxiosInstance} from "axios";
 import {handleErrorMessage, handleRespData} from "@/libs/commons/psr/utils/Axios";
+import {GroupEntity} from "@/services/portal/types";
 
-export class UserService {
+export class GroupService {
     private readonly _client: AxiosInstance;
 
     constructor(client: AxiosInstance) {
         this._client = client
     }
 
-    resetPassword(id: string): Promise<string> {
-        return this._client.post(`/user/${id}/reset_password`)
-            .then(handleRespData).catch(handleErrorMessage)
+    delete(id: string): Promise<boolean> {
+        return this._client.delete(`/group/${id}`)
+            .then(() => true).catch(handleErrorMessage)
     }
 
-    delete(id: string): Promise<boolean> {
-        return this._client.delete(`/user/${id}`)
-            .then(() => true).catch(handleErrorMessage)
+    clone(id: string): Promise<GroupEntity> {
+        return this._client.post('/group/clone', undefined, {params: {id: id}})
+            .then(handleRespData).catch(handleErrorMessage)
     }
 }

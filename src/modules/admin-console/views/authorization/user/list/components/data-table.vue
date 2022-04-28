@@ -92,15 +92,15 @@ import PsrFilterPagingDataTable from "@/libs/components/psr/widgets/data-table/f
 import PColumn from "primevue/column";
 import PTriStateCheckbox from "primevue/tristatecheckbox";
 import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/create-update-form/PsrCreateUpdateFormDialogModel";
-import {UserEntity} from "@/services/authorization/CRUDService";
 import {useAppContext} from "@/libs/commons/psr/app-context";
 import {ROUTE_AUTHORIZATION_USER_AUTHORITY, ROUTE_AUTHORIZATION_USER_GROUP, ROUTE_AUTHORIZATION_USER_LIST} from "@/modules/admin-console/route";
 import {ElMessage, ElMessageBox} from "element-plus/es";
 import {authorizationService} from "@/services/authorization";
 import {useClipboard} from "@vueuse/core";
-import {GroupEntity} from "@/services/portal/CRUDService";
 import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-action/index.vue";
 import PsrAsyncActionDropdownItem from "@/libs/components/psr/widgets/dropdown-item/async-action/index.vue";
+import {GroupEntity} from "@/services/portal/types";
+import {UserEntity} from "@/services/authorization/types";
 
 export default defineComponent({
   name: "data-table",
@@ -135,7 +135,7 @@ export default defineComponent({
             `是否重置密码${row.id}`,
             '确认重置密码'
         ).then(() => {
-          return authorizationService.user.resetPassword(row.id).then((newPassword) => {
+          return authorizationService.user.resetPassword(row.id!).then((newPassword) => {
             useClipboard({source: ref(newPassword)}).copy()
             ElMessageBox.prompt('新密码(已经复制到剪贴板):', '重置成功', {
               inputValue: newPassword,
@@ -148,10 +148,10 @@ export default defineComponent({
       },
       handleDelete: (row: GroupEntity) => {
         return ElMessageBox.confirm(
-            `是否删除${row.id}`,
+            `是否删除: ${row.id}`,
             '确认删除'
         ).then(() => {
-          return authorizationService.user.delete(row.id).then(() => {
+          return authorizationService.user.delete(row.id!).then(() => {
             ElMessage({
               message: '删除成功.',
               type: 'success',

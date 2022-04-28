@@ -16,9 +16,9 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
-import {UserEntity} from "@/services/authorization/CRUDService";
 import PsrCreateUpdateFormDialog from "@/libs/components/psr/dialogs/create-update-form/index.vue";
 import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/create-update-form/PsrCreateUpdateFormDialogModel";
+import {UserEntity} from "@/services/authorization/types";
 
 export default defineComponent({
   name: "edit-dialog",

@@ -1,17 +1,11 @@
-import {Entity, EntityCRUDService} from "@/libs/services/psr-entity-crud";
+import {EntityCRUDService} from "@/libs/services/psr-entity-crud";
 import {AxiosInstance} from "axios";
+import {UserEntity} from "@/services/authorization/types";
 
 const DOMAIN_TYPES = {
     USER: 'org.psr.platform.authorization.entity.UserEntity',
 }
 
-
-export interface UserEntity extends Entity {
-    enabled?: boolean,
-    accountExpiryTime?: string
-    accountLockExpiryTime?: string
-    passwordExpiryTime?: string
-}
 
 export class CRUDService {
     private readonly _client: AxiosInstance;

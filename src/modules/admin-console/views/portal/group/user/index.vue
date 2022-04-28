@@ -89,11 +89,9 @@
 <script lang="ts">
 import {defineComponent, onMounted, reactive, Ref, ref} from "vue";
 import {useAppContext} from "@/libs/commons/psr/app-context";
-import {GroupEntity, UserGroupEntity} from "@/services/portal/CRUDService";
 import {portalService} from "@/services/portal";
 import {FilterOptionsBuilder} from "@/libs/services/psr-entity-crud";
 import {Queue} from "@/libs/commons/psr/promise-queue";
-import {UserEntity} from "@/services/authorization/CRUDService";
 import PDataTable from "primevue/datatable";
 import PColumn from "primevue/column";
 import {authorizationService} from "@/services/authorization";
@@ -102,6 +100,8 @@ import PTriStateCheckbox from "primevue/tristatecheckbox";
 import PCheckbox from "primevue/checkbox";
 import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
 import PsrToolbar from "@/libs/components/psr/widgets/toolbar/base/index.vue";
+import {GroupEntity, UserGroupEntity} from "@/services/portal/types";
+import {UserEntity} from "@/services/authorization/types";
 
 interface UserItem {
   userId: string,

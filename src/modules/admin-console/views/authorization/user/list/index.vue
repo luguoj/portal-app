@@ -28,9 +28,9 @@ import EditDialog from "./components/edit-dialog.vue"
 import {defineComponent} from "vue";
 import {authorizationService} from "@/services/authorization";
 import {FilterMatchMode} from "primevue/api";
-import {UserEntity} from "@/services/authorization/CRUDService";
 import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/create-update-form/PsrCreateUpdateFormDialogModel";
 import {PsrFilterPagingDataTableModel} from "@/libs/components/psr/widgets/data-table/filter-paging/PsrFilterPagingDataTableModel";
+import {UserEntity} from "@/services/authorization/types";
 
 export default defineComponent({
   name: "admin-console-authorization-user-list",

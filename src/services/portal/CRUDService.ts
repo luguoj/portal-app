@@ -1,25 +1,11 @@
-import {DictionaryEntryEntity, Entity, EntityCRUDService} from "@/libs/services/psr-entity-crud";
+import {EntityCRUDService} from "@/libs/services/psr-entity-crud";
 import {AxiosInstance} from "axios";
+import {GroupEntity, GroupPermissionEntity, UserGroupEntity} from "@/services/portal/types";
 
 const DOMAIN_TYPES = {
     GROUP: 'org.psr.platform.portal.entity.GroupEntity',
     GROUP_PERMISSION: 'org.psr.platform.portal.entity.GroupPermissionEntity',
     USER_GROUP: 'org.psr.platform.portal.entity.UserGroupEntity'
-}
-
-export interface GroupEntity extends DictionaryEntryEntity {
-    portalId?: string
-}
-
-export interface GroupPermissionEntity extends Entity {
-    groupId?: string,
-    route?: string,
-    actions?: string
-}
-
-export interface UserGroupEntity extends Entity {
-    userId?: string,
-    groupId?: string
 }
 
 export class CRUDService {
