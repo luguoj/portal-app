@@ -1,5 +1,9 @@
 <template>
-<h1>user</h1>
+  <router-view v-slot="{Component}">
+    <keep-alive :include="['admin-console-portal-user-list']">
+      <component :is="Component"/>
+    </keep-alive>
+  </router-view>
 </template>
 
 <script lang="ts">
