@@ -221,7 +221,6 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      console.log('onmounted')
       initTableData()
     })
     return {
