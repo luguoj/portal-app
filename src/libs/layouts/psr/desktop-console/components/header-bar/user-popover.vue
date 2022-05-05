@@ -23,7 +23,7 @@ export default defineComponent({
   components: {
     PsrAsyncActionButton
   },
-  setup(props, context) {
+  setup() {
     const store = useStore()
     const tokenContext = useAppContext().token!
     return {
@@ -36,9 +36,7 @@ export default defineComponent({
               type: 'warning',
             }
         ).then(() => {
-          tokenContext.signOut().finally(() =>
-              context.emit('update:visible', false)
-          )
+          tokenContext.signOut()
         })
       }
     }
