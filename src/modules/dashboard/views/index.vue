@@ -50,11 +50,11 @@ export default defineComponent({
     })
     const templateConfigRaw: TemplateConfigRaw = {
       lg: [
-        {x: 0, y: 0, w: 1, h: 2, widget: {name: ''}},
-        {x: 1, y: 0, w: 1, h: 4, widget: {name: ''}},
-        {x: 2, y: 0, w: 1, h: 5, widget: {name: ''}},
-        {x: 3, y: 0, w: 1, h: 3, widget: {name: ''}},
-        {x: 4, y: 0, w: 1, h: 3, widget: {name: ''}}
+        {x: 0, y: 0, w: 1, h: 2, widgetName: 'sample/charts/radar'},
+        {x: 1, y: 0, w: 1, h: 4, widgetName: 'sample/charts/radar'},
+        {x: 2, y: 0, w: 1, h: 5, widgetName: 'sample/charts/radar'},
+        {x: 3, y: 0, w: 1, h: 3, widgetName: 'sample/charts/radar'},
+        {x: 4, y: 0, w: 1, h: 3, widgetName: 'sample/charts/radar'}
       ]
     }
     const templateConfig = ref<TemplateConfig>(BlankTemplateConfig)
