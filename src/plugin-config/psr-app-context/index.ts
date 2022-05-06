@@ -9,6 +9,7 @@ import {tokenContext} from "./token";
 import {routeCache} from "./routeCache";
 import {App} from "@vue/runtime-core";
 import {Dashboard} from "@/modules/dashboard";
+import dashboardWidgetManage from "@/plugin-config/psr-app-context/dashboardWidgetManager";
 
 export const appContext = createAppContext({
     layouts: [{
@@ -52,7 +53,7 @@ export const appContext = createAppContext({
         signIn: PsrOAuthSSOClientSignIn,
         errorNotFound: PsrErrorNotFound
     }
-}).useToken(tokenContext).use(routeCache)
+}).useToken(tokenContext).use(routeCache).use(dashboardWidgetManage)
 
 export function applyPsrAppContext(app: App) {
     app.use(appContext)
