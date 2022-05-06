@@ -30,8 +30,9 @@ import {computed, defineComponent, ref} from "vue";
 import HeaderBar from "./components/header-bar.vue";
 import WidgetList from "@/modules/dashboard/views/components/widget-list.vue";
 import ViewPort from "@/modules/dashboard/views/components/view-port.vue";
-import {Widget, WidgetCatalog} from "../types/Widget";
+import {PsrDashboardWidget} from "../types/PsrDashboardWidget";
 import {BlankTemplateConfig, BreakpointKey, breakpointKeys, breakpointWidth, TemplateConfig, TemplateConfigRaw} from "@/modules/dashboard/types/TemplateConfig";
+import {useDashboardWidgetManager} from "@/modules/dashboard/plugins/PsrDashboardWidgetManagerProvider";
 
 
 export default defineComponent({
@@ -42,6 +43,7 @@ export default defineComponent({
     HeaderBar,
   },
   setup() {
+    const widgetManager = useDashboardWidgetManager()
     const configBreakpoint = ref<BreakpointKey>('lg')
     const configViewPortWidth = computed(() => {
       return breakpointWidth[configBreakpoint.value] + 180
@@ -63,6 +65,7 @@ export default defineComponent({
           const templateConfigRawElement = _templateConfigRaw[i];
           templateConfig.value[breakpointKey].push({
             ...templateConfigRawElement,
+            widget: widgetManager.widgetByName[templateConfigRawElement.widgetName],
             i: i + 1 + ''
           })
         }
@@ -70,39 +73,7 @@ export default defineComponent({
     }
 
 
-    const widgets = ref<WidgetCatalog[]>([{
-      name: 'catalog1',
-      title: 'catalog1',
-      widgets: [{
-        name: 'c1-i1'
-      }, {
-        name: 'c1-i2'
-      }, {
-        name: 'c1-i3'
-      }]
-    }, {
-      name: 'catalog2',
-      title: 'catalog2',
-      widgets: [{
-        name: 'c2-i1'
-      }, {
-        name: 'c2-i2'
-      }, {
-        name: 'c2-i3'
-      }]
-    }, {
-      name: 'catalog3',
-      title: 'catalog3',
-      widgets: [{
-        name: 'c3-i1'
-      }, {
-        name: 'c3-i2'
-      }, {
-        name: 'c3-i3'
-      }]
-    }])
-
-    function addWidget(widget: Widget) {
+    function addWidget(widget: PsrDashboardWidget) {
       let y = 0
       let i = 1
       for (const templateConfigItem of templateConfig.value[configBreakpoint.value]) {
@@ -130,7 +101,7 @@ export default defineComponent({
       addWidget,
       editing: ref(false),
       templateConfig,
-      widgets
+      widgets: widgetManager.widgetCatalogs
     }
   }
 })
