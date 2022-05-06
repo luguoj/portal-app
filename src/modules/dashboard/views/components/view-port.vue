@@ -24,11 +24,7 @@
                  drag-ignore-from=".no-drag"
       >
         <div class="no-drag" style="height:100%;width:100%;">
-          <el-skeleton style="height:100%;width:100%;">
-            <template #template>
-              <el-skeleton-item variant="image" style="height:100%;width:100%;"/>
-            </template>
-          </el-skeleton>
+          <component :is="item.widget.component"></component>
         </div>
         <div class="vue-draggable-handle" style="position:absolute;left:0;top:0;width:100%;background:grey;color:white;" v-show="editing">
           {{ item.i }}.{{ item.widget.name }}
