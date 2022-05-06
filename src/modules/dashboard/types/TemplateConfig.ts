@@ -1,4 +1,4 @@
-import {Widget} from "./Widget";
+import {PsrDashboardWidget} from "./PsrDashboardWidget";
 
 export type BreakpointKey = 'lg' | 'md' | 'sm' | 'xs' | 'xxs'
 export const breakpointKeys: BreakpointKey[] = ['lg', 'md', 'sm', 'xs', 'xxs']
@@ -40,7 +40,7 @@ export interface TemplateConfigItemRaw {
     y: number,
     w: number,
     h: number,
-    widget: Widget
+    widgetName: string
 }
 
 export interface TemplateConfig {
@@ -65,5 +65,5 @@ export interface TemplateConfigItem {
     y: number,
     w: number,
     h: number,
-    widget: Widget
+    widget: PsrDashboardWidget
 }

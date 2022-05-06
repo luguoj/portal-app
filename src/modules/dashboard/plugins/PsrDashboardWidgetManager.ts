@@ -1,11 +1,11 @@
 import {PsrAppPlugin} from "@/libs/commons/psr/app-context";
-import {Widget, WidgetCatalog} from "@/modules/dashboard/types/Widget";
+import {PsrDashboardWidget, PsrDashboardWidgetCatalog} from "@/modules/dashboard/types/PsrDashboardWidget";
 
 export class PsrDashboardWidgetManager extends PsrAppPlugin {
-    widgetCatalogs: WidgetCatalog[]
-    widgetByName: Record<string, Widget> = {}
+    widgetCatalogs: PsrDashboardWidgetCatalog[]
+    widgetByName: Record<string, PsrDashboardWidget> = {}
 
-    constructor(injectKey: string, widgetCatalogs: WidgetCatalog[]) {
+    constructor(injectKey: string, widgetCatalogs: PsrDashboardWidgetCatalog[]) {
         super(injectKey)
         this.widgetCatalogs = widgetCatalogs
         for (const widgetCatalog of widgetCatalogs) {
