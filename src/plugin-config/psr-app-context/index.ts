@@ -8,6 +8,7 @@ import {createAppContext} from "@/libs/commons/psr/app-context";
 import {tokenContext} from "./token";
 import {routeCache} from "./routeCache";
 import {App} from "@vue/runtime-core";
+import {Dashboard} from "@/modules/dashboard";
 
 export const appContext = createAppContext({
     layouts: [{
@@ -16,6 +17,7 @@ export const appContext = createAppContext({
         title: '样例门户',
         iconCls: 'pi pi-book',
         modules: [
+            Dashboard,
             SamplePage
         ],
         permission: true
