@@ -19,13 +19,13 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
-import {WidgetCatalog} from "../../types/Widget";
+import {PsrDashboardWidgetCatalog} from "../../types/PsrDashboardWidget";
 
 export default defineComponent({
   name: "widget-list",
   props: {
     widgets: {
-      type: Object as PropType<WidgetCatalog[]>,
+      type: Object as PropType<PsrDashboardWidgetCatalog[]>,
       default: []
     }
   },
