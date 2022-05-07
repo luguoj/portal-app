@@ -2,6 +2,7 @@ import {Component} from "vue";
 
 export interface PsrDashboardWidget {
     name: string,
+    title: string,
     component: Component
 }
 
