@@ -5,7 +5,7 @@ export const ROUTE_DASHBOARD_LIST: PsrAppRouteRecordRaw = {
     name: MODULE_NAME + '/list',
     path: '',
     component: () => import("./views/list/index.vue"),
-    meta: {tag: {title: '清单'}, permission: ['add', 'design']}
+    meta: {tag: {title: '清单'}, permission: ['add', 'design', 'delete', 'edit']}
 }
 
 export const ROUTE_DASHBOARD_DISPLAY: PsrAppRouteRecordRaw = {
@@ -20,7 +20,7 @@ export const ROUTE_DASHBOARD_DESIGN: PsrAppRouteRecordRaw = {
     path: ':templateId/design',
     component: () => import("./views/design/index.vue"),
     props: true,
-    meta: {tag: {title: '设计'}}
+    meta: {tag: {title: '设计'}, permission: []}
 }
 
 

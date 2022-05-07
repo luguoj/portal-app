@@ -1,6 +1,6 @@
 <template>
   <psr-filter-tree-table :model="model">
-    <p-column field="enabled" header="状态" filterMatchMode="equals"
+    <p-column :hidden="!canEdit&&!canDelete" field="enabled" header="状态" filterMatchMode="equals"
               style="width:5rem;min-width:5rem;max-width:5rem;">
       <template #body="{node:{key,data}}">
         <el-icon v-if="data.dashboardTemplate" class="pi" :class="data.enabled?'pi-check':'pi-ban'" style="width:100%;"/>
@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
+import {defineComponent, PropType, watchEffect} from "vue";
 import PColumn from "primevue/column";
 import PTriStateCheckbox from "primevue/tristatecheckbox";
 import {useAppContext} from "@/libs/commons/psr/app-context";
@@ -89,8 +89,7 @@ import {ElMessage, ElMessageBox} from "element-plus/es";
 import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-action/index.vue";
 import PsrAsyncActionDropdownItem from "@/libs/components/psr/widgets/dropdown-item/async-action/index.vue";
 import {DashboardTemplateEntity, GroupEntity} from "@/services/portal/types";
-import {ROUTE_DASHBOARD_DESIGN, ROUTE_DASHBOARD_DISPLAY} from "@/modules/dashboard/route";
-import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
+import {ROUTE_DASHBOARD_DESIGN, ROUTE_DASHBOARD_DISPLAY, ROUTE_DASHBOARD_LIST} from "@/modules/dashboard/route";
 import {portalService} from "@/services/portal";
 import {PsrFilterTreeTableModel} from "@/libs/components/psr/widgets/tree-table/filter/PsrFilterTreeTableModel";
 import PsrFilterTreeTable from "@/libs/components/psr/widgets/tree-table/filter/index.vue";
@@ -109,7 +108,8 @@ export default defineComponent({
   emits: ['edit', 'dataChanged'],
   props: {
     model: {
-      type: Object as PropType<PsrFilterTreeTableModel<DashboardTemplateEntity>>
+      type: Object as PropType<PsrFilterTreeTableModel<DashboardTemplateEntity>>,
+      required: true
     }
   },
   setup(props, context) {
@@ -118,8 +118,15 @@ export default defineComponent({
     const displayRoute = router.computeModuleRouteName(ROUTE_DASHBOARD_DISPLAY.name)
     const designRoute = router.computeModuleRouteName(ROUTE_DASHBOARD_DESIGN.name)
     const canRouteDesign = appContext.permission.usePermissionFlag(ROUTE_DASHBOARD_DESIGN.name)
-    const canDelete = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['delete'])
-    const canEdit = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['edit'])
+    const canDelete = appContext.permission.usePermissionFlag(ROUTE_DASHBOARD_LIST.name, ['delete'])
+    const canEdit = appContext.permission.usePermissionFlag(ROUTE_DASHBOARD_LIST.name, ['edit'])
+    watchEffect(() => {
+      if (!canDelete.value && !canEdit.value) {
+        props.model.filters.enabled = true
+      } else {
+        props.model.filters.enabled = null
+      }
+    })
     return {
       handleDelete: (row: GroupEntity) => {
         return ElMessageBox.confirm(
