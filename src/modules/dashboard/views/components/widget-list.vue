@@ -8,6 +8,7 @@
         <div class="widget-item" style="height:100%;width:100%;" @click="$emit('addWidget',widget)">
           <el-skeleton style="height:100%;width:100%;">
             <template #template>
+              <div style="position: absolute">{{ widget.title }}</div>
               <el-skeleton-item variant="image" style="height:100%;width:100%;"/>
             </template>
           </el-skeleton>
@@ -18,18 +19,18 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
-import {PsrDashboardWidgetCatalog} from "../../types/PsrDashboardWidget";
+import {defineComponent} from "vue";
+import {useDashboardWidgetManager} from "../../plugins/widget-manager";
 
 export default defineComponent({
   name: "widget-list",
-  props: {
-    widgets: {
-      type: Object as PropType<PsrDashboardWidgetCatalog[]>,
-      default: []
+  emits: ['addWidget'],
+  setup() {
+    const widgetManager = useDashboardWidgetManager()
+    return {
+      widgets: widgetManager.widgetCatalogs
     }
-  },
-  emits: ['addWidget']
+  }
 })
 </script>
 
