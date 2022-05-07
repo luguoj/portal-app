@@ -14,3 +14,8 @@ export interface UserGroupEntity extends Entity {
     userId?: string,
     groupId?: string
 }
+
+export interface DashboardTemplateEntity extends DictionaryEntryEntity {
+    portalId?: string
+    content: string
+}
