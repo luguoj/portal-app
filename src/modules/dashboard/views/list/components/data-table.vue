@@ -17,7 +17,9 @@
         :expander="true"
     >
       <template #body="{node:{key,data}}">
-        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ data.path }}</div>
+        <router-link :to="{name:displayRoute,params:{templateId:data.id}}">
+          {{ data.path }}
+        </router-link>
       </template>
       <template #filter>
         <el-input v-model="model.filters.path"/>
@@ -87,7 +89,7 @@ import {ElMessage, ElMessageBox} from "element-plus/es";
 import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-action/index.vue";
 import PsrAsyncActionDropdownItem from "@/libs/components/psr/widgets/dropdown-item/async-action/index.vue";
 import {DashboardTemplateEntity, GroupEntity} from "@/services/portal/types";
-import {ROUTE_DASHBOARD_DESIGN} from "@/modules/dashboard/route";
+import {ROUTE_DASHBOARD_DESIGN, ROUTE_DASHBOARD_DISPLAY} from "@/modules/dashboard/route";
 import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
 import {portalService} from "@/services/portal";
 import {PsrFilterTreeTableModel} from "@/libs/components/psr/widgets/tree-table/filter/PsrFilterTreeTableModel";
@@ -113,14 +115,12 @@ export default defineComponent({
   setup(props, context) {
     const appContext = useAppContext()
     const router = appContext.router
-
+    const displayRoute = router.computeModuleRouteName(ROUTE_DASHBOARD_DISPLAY.name)
     const designRoute = router.computeModuleRouteName(ROUTE_DASHBOARD_DESIGN.name)
     const canRouteDesign = appContext.permission.usePermissionFlag(ROUTE_DASHBOARD_DESIGN.name)
     const canDelete = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['delete'])
     const canEdit = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['edit'])
-
     return {
-
       handleDelete: (row: GroupEntity) => {
         return ElMessageBox.confirm(
             `是否删除: ${row.code}`,
@@ -140,6 +140,7 @@ export default defineComponent({
           })
         }).catch(() => true)
       },
+      displayRoute,
       designRoute,
       canEdit,
       canDelete,
