@@ -24,8 +24,8 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {ROUTE_PORTAL_GROUP_LIST} from "@/modules/admin-console/route";
-import {useAppContext} from "@/libs/commons/psr/app-context";
 import PsrToolbar from "@/libs/components/psr/widgets/toolbar/base/index.vue";
+import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
 
 export default defineComponent({
   name: "header-bar",
@@ -34,8 +34,7 @@ export default defineComponent({
   },
   emits: ['add', 'find', 'clearFilters'],
   setup() {
-    const appContext = useAppContext()
-    const canAdd = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['add'])
+    const canAdd = usePermissionFlag('route', ROUTE_PORTAL_GROUP_LIST.name, ['add'])
     return {
       canAdd
     }

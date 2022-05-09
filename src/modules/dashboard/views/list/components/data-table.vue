@@ -94,6 +94,7 @@ import {portalService} from "@/services/portal";
 import {PsrFilterTreeTableModel} from "@/libs/components/psr/widgets/tree-table/filter/PsrFilterTreeTableModel";
 import PsrFilterTreeTable from "@/libs/components/psr/widgets/tree-table/filter/index.vue";
 import PTreeTable from "primevue/treetable";
+import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
 
 export default defineComponent({
   name: "data-table",
@@ -117,9 +118,9 @@ export default defineComponent({
     const router = appContext.router
     const displayRoute = router.computeModuleRouteName(ROUTE_DASHBOARD_DISPLAY.name)
     const designRoute = router.computeModuleRouteName(ROUTE_DASHBOARD_DESIGN.name)
-    const canRouteDesign = appContext.permission.usePermissionFlag(ROUTE_DASHBOARD_DESIGN.name)
-    const canDelete = appContext.permission.usePermissionFlag(ROUTE_DASHBOARD_LIST.name, ['delete'])
-    const canEdit = appContext.permission.usePermissionFlag(ROUTE_DASHBOARD_LIST.name, ['edit'])
+    const canRouteDesign = usePermissionFlag('route', ROUTE_DASHBOARD_DESIGN.name)
+    const canDelete = usePermissionFlag('route', ROUTE_DASHBOARD_LIST.name, ['delete'])
+    const canEdit = usePermissionFlag('route', ROUTE_DASHBOARD_LIST.name, ['edit'])
     watchEffect(() => {
       if (!canDelete.value && !canEdit.value) {
         props.model.filters.enabled = true

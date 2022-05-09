@@ -101,6 +101,7 @@ import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-act
 import PsrAsyncActionDropdownItem from "@/libs/components/psr/widgets/dropdown-item/async-action/index.vue";
 import {GroupEntity} from "@/services/portal/types";
 import {portalService} from "@/services/portal";
+import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
 
 export default defineComponent({
   name: "data-table",
@@ -123,10 +124,10 @@ export default defineComponent({
 
     const permissionRoute = router.computeModuleRouteName(ROUTE_PORTAL_GROUP_PERMISSION.name)
     const userRoute = router.computeModuleRouteName(ROUTE_PORTAL_GROUP_USER.name)
-    const canRoutePermission = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_PERMISSION.name)
-    const canRouteUser = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_USER.name)
-    const canDelete = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['delete'])
-    const canEdit = appContext.permission.usePermissionFlag(ROUTE_PORTAL_GROUP_LIST.name, ['edit'])
+    const canRoutePermission = usePermissionFlag('route', ROUTE_PORTAL_GROUP_PERMISSION.name)
+    const canRouteUser = usePermissionFlag('route', ROUTE_PORTAL_GROUP_USER.name)
+    const canDelete = usePermissionFlag('route', ROUTE_PORTAL_GROUP_LIST.name, ['delete'])
+    const canEdit = usePermissionFlag('route', ROUTE_PORTAL_GROUP_LIST.name, ['edit'])
 
     return {
 

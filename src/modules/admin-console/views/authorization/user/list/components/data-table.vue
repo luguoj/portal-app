@@ -101,6 +101,7 @@ import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-act
 import PsrAsyncActionDropdownItem from "@/libs/components/psr/widgets/dropdown-item/async-action/index.vue";
 import {GroupEntity} from "@/services/portal/types";
 import {UserEntity} from "@/services/authorization/types";
+import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
 
 export default defineComponent({
   name: "data-table",
@@ -123,11 +124,11 @@ export default defineComponent({
 
     const authorityRoute = router.computeModuleRouteName(ROUTE_AUTHORIZATION_USER_AUTHORITY.name)
     const groupRoute = router.computeModuleRouteName(ROUTE_AUTHORIZATION_USER_GROUP.name)
-    const canRouteAuthority = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_AUTHORITY.name)
-    const canRouteGroup = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_GROUP.name)
-    const canEdit = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_LIST.name, ['edit'])
-    const canDelete = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_LIST.name, ['delete'])
-    const canResetPassword = appContext.permission.usePermissionFlag(ROUTE_AUTHORIZATION_USER_LIST.name, ['resetPassword'])
+    const canRouteAuthority = usePermissionFlag('route', ROUTE_AUTHORIZATION_USER_AUTHORITY.name)
+    const canRouteGroup = usePermissionFlag('route', ROUTE_AUTHORIZATION_USER_GROUP.name)
+    const canEdit = usePermissionFlag('route', ROUTE_AUTHORIZATION_USER_LIST.name, ['edit'])
+    const canDelete = usePermissionFlag('route', ROUTE_AUTHORIZATION_USER_LIST.name, ['delete'])
+    const canResetPassword = usePermissionFlag('route', ROUTE_AUTHORIZATION_USER_LIST.name, ['resetPassword'])
 
     return {
       handleResetPassword: (row: UserEntity) => {
