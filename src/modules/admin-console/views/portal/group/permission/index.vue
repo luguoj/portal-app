@@ -88,7 +88,9 @@ export default defineComponent({
             ).then(data => {
               const groupPermissionByRoute: { [key: string]: GroupPermissionEntity } = {}
               for (const datum of data.content) {
-                groupPermissionByRoute[datum.route!] = datum
+                if (datum.usage === 'route') {
+                  groupPermissionByRoute[datum.key!] = datum
+                }
               }
               return buildRoutePermissionData(router.options.routes as PsrAppRouteRecord[], groupPermissionByRoute)
             })
@@ -162,7 +164,8 @@ export default defineComponent({
         saveQueue.enqueue<GroupPermissionEntity>((resolve, reject) => {
           portalService.crud.groupPermission.create({
             groupId: groupEntity.value.id,
-            route: toCreateElement.permissionKey,
+            usage: 'route',
+            key: toCreateElement.permissionKey,
             actions: toCreateElement.actions?.join(',')
           }).then(resolve).catch(reject)
         }).then(data => {
