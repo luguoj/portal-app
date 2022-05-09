@@ -1,11 +1,11 @@
 import {Page, Pageable, ValueRange} from "@/libs/services/psr-entity-crud";
-import {DataTableFilterMeta, DataTableFilterMetaData, DataTableOperatorFilterMetaData} from "primevue/datatable";
+import {DataTableFilterMeta} from "primevue/datatable";
 import {buildFromPrimeVueDataTableFilters} from "@/libs/services/psr-entity-crud/buildFromPrimeVueDataTableFilters";
 import {reactive, watch} from "vue";
 
 export class PsrFilterPagingDataTableModel<E> {
     loadDataHandler: (filter: Record<string, ValueRange[]>, pageable: Pageable) => Promise<Page<E>>
-    defaultFilters: () => Record<keyof E, DataTableFilterMetaData | DataTableOperatorFilterMetaData>
+    defaultFilters: () => DataTableFilterMeta
 
     pageable: Pageable = {
         offset: 0,
@@ -37,7 +37,7 @@ export class PsrFilterPagingDataTableModel<E> {
 
     constructor(
         loadDataHandler: (filter: Record<string, ValueRange[]>, pageable: Pageable) => Promise<Page<E>>,
-        defaultFilters: () => Record<keyof E, DataTableFilterMetaData | DataTableOperatorFilterMetaData>
+        defaultFilters: () => DataTableFilterMeta
     ) {
         this.loadDataHandler = loadDataHandler
         this.defaultFilters = defaultFilters
@@ -48,7 +48,7 @@ export class PsrFilterPagingDataTableModel<E> {
     static create<E>(
         options: {
             loadDataHandler: (filter: Record<string, ValueRange[]>, pageable: Pageable) => Promise<Page<E>>,
-            defaultFilters: () => Record<keyof E, DataTableFilterMetaData | DataTableOperatorFilterMetaData>
+            defaultFilters: () => DataTableFilterMeta
         }
     ) {
         return reactive(new PsrFilterPagingDataTableModel(
