@@ -1,1 +1,2 @@
-export type PsrAppPermissionRaw = 'permit-all' | Record<'route' | 'widget', Record<string | symbol, string[]>>
+export type PsrAppPermissionUsage = 'route' | 'widget'
+export type PsrAppPermissionRaw = 'permit-all' | Record<PsrAppPermissionUsage, Record<string | symbol, string[]>>
