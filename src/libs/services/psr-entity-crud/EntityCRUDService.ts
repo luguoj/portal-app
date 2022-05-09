@@ -14,7 +14,7 @@ export interface Page<E extends Entity> {
     totalPages:number,
 }
 
-export interface Entity extends Record<string, any> {
+export interface Entity{
     id?: string;
     version?: number;
 }
