@@ -50,11 +50,11 @@ function checkPermissionByKey(permissionByKey: PsrAppPermissionRaw, from: RouteL
     if (permissionByKey !== 'permit-all') {
         if (layoutKey) {
             console.log('布局许可校验:%s', layoutKey)
-            flag = flag && !!permissionByKey[layoutKey]
+            flag = flag && !!permissionByKey.route[layoutKey]
         }
         if (routeKey) {
             console.log('路由许可校验:%s', routeKey)
-            flag = flag && !!permissionByKey[routeKey]
+            flag = flag && !!permissionByKey.route[routeKey]
         }
         if (!flag) {
             ElMessage({
