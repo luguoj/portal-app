@@ -1,4 +1,4 @@
-import {PsrAppRouteChangeEvent, PsrAppRouteError, PsrAppRouteMetaPermission} from "./route";
+import {PsrAppRouteChangeEvent, PsrAppRouteError} from "./route";
 import {ElMessage} from "element-plus/es";
 import {watch} from "vue";
 import {PsrAppPermissionRaw} from "./permission";
@@ -13,7 +13,7 @@ export function checkRoutePermission(event: PsrAppRouteChangeEvent, context: Psr
     if (layout !== null && route !== null) {
         if (layout.name !== 'root' && layout.meta.permission) {
             const layoutKey = layout.meta.permission.key
-            const routeKey = (route.meta.permission as PsrAppRouteMetaPermission)?.key
+            const routeKey = route.meta.permission ? route.name : ''
             if (layoutKey || routeKey) {
                 if (username === '') {
                     throw new PsrAppRouteError("路由许可校验失败,禁止匿名用户访问=>跳转登录", '/sign-in')
@@ -45,7 +45,7 @@ export function checkRoutePermission(event: PsrAppRouteChangeEvent, context: Psr
     }
 }
 
-function checkPermissionByKey(permissionByKey: PsrAppPermissionRaw, from: RouteLocationNormalizedLoaded, layoutKey?: string, routeKey?: string) {
+function checkPermissionByKey(permissionByKey: PsrAppPermissionRaw, from: RouteLocationNormalizedLoaded, layoutKey?: string, routeKey?: string | symbol | null) {
     let flag = true
     if (permissionByKey !== 'permit-all') {
         if (layoutKey) {
