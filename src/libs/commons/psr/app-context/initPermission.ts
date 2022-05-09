@@ -8,8 +8,10 @@ export function initPermission(username: string, context: PsrAppContext) {
                 context.navigationMenu.doFilter(() => true, () => true)
             } else {
                 context.navigationMenu.doFilter(
-                    item => !!permissionByKey[item.name],
-                    item => !!item.route?.meta?.permission && !!permissionByKey[item.route.meta.permission.key]
+                    item => !!permissionByKey.route[item.name],
+                    item => {
+                        return !!item.route?.meta?.permission && !!permissionByKey.route[item.route.name]
+                    }
                 )
             }
         }
