@@ -1,4 +1,4 @@
-import {Ref, ref, watchEffect} from "vue";
+import {Ref, ref} from "vue";
 import {PsrAppPermissionService} from "./types/PsrAppPermissionService";
 import {PsrAppPermissionRaw} from "./types/PsrAppPermissionRaw";
 
@@ -43,27 +43,5 @@ export class PsrAppPermission {
             }
         }
         return Promise.resolve(this.permission.value)
-    }
-
-    // 创建操作许可标识
-    usePermissionFlag(routeName: string, actions?: string[]) {
-        const flag = ref<boolean>(false)
-        // 判断操作是否满足许可
-        watchEffect(() => {
-            if (this.permission.value === 'permit-all') {
-                flag.value = true
-            } else {
-                const routeActions = this.permission.value[routeName]
-                let _flag = routeActions != undefined
-                if (_flag && actions != undefined) {
-                    for (let i = 0; i < actions.length && flag; i++) {
-                        const action = actions[i];
-                        _flag = _flag && routeActions.includes(action)
-                    }
-                }
-                flag.value = _flag
-            }
-        })
-        return flag
     }
 }
