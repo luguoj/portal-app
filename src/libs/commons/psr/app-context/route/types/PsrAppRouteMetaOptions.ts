@@ -3,9 +3,3 @@ export interface PsrAppRouteMetaTag {
     iconCls?: string
     isAffix?: boolean
 }
-
-export interface PsrAppRouteMetaPermission {
-    key: string,
-    permissions?: string[]
-}
-

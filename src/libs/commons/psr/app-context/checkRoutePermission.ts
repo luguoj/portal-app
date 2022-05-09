@@ -11,9 +11,9 @@ export function checkRoutePermission(event: PsrAppRouteChangeEvent, context: Psr
     const username = context.permission.username
     const permissionByKey = context.permission.permission.value
     if (layout !== null && route !== null) {
-        if (layout.name !== 'root' && layout.meta.permission) {
-            const layoutKey = layout.meta.permission.key
-            const routeKey = route.meta.permission ? route.name : ''
+        if (layout.name !== 'root') {
+            const layoutKey = layout.meta.permissions ? layout.name : ''
+            const routeKey = route.meta.permissions ? route.name : ''
             if (layoutKey || routeKey) {
                 if (username === '') {
                     throw new PsrAppRouteError("路由许可校验失败,禁止匿名用户访问=>跳转登录", '/sign-in')

@@ -22,11 +22,11 @@ export class PsrAppNavigationMenu {
         filterMenuItemFn: (node: PsrAppNavigationMenuItem) => boolean
     ) {
         this.layoutItems.value = this.layoutItemsRaw.filter(item => {
-            return !item.permission || filterLayoutItemFn(item)
+            return !item.permissions || filterLayoutItemFn(item)
         })
         for (const layoutName in this.menuItemsRaw) {
             const filteredMenu = filterFromRoot(this.menuItemsRaw[layoutName], item => {
-                return !item.permission || filterMenuItemFn(item)
+                return !item.permissions || filterMenuItemFn(item)
             })
             this.menuItems[layoutName] = filterFromBottom(
                 filteredMenu,

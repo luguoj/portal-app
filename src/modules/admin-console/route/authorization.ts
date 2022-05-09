@@ -6,26 +6,26 @@ export const ROUTE_AUTHORIZATION_USER_LIST: PsrAppRouteRecordRaw = {
     name: MODULE_AUTHORIZATION_NAME + '/user/list',
     path: '',
     component: () => import("../views/authorization/user/list/index.vue"),
-    meta: {tag: {title: '用户清单',}, permission: ['add', 'edit', 'delete', 'resetPassword']}
+    meta: {tag: {title: '用户清单',}, permissions: ['add', 'edit', 'delete', 'resetPassword']}
 }
 export const ROUTE_AUTHORIZATION_USER_AUTHORITY: PsrAppRouteRecordRaw = {
     name: MODULE_AUTHORIZATION_NAME + '/user/authority',
     path: ':userId/authority',
     component: () => import("../views/authorization/user/authority/index.vue"),
     props: true,
-    meta: {tag: {title: '用户权限'}, permission: []}
+    meta: {tag: {title: '用户权限'}, permissions: []}
 }
 export const ROUTE_AUTHORIZATION_USER_GROUP: PsrAppRouteRecordRaw = {
     name: MODULE_AUTHORIZATION_NAME + '/user/group',
     path: ':userId/group',
     component: () => import("../views/authorization/user/group/index.vue"),
     props: true,
-    meta: {tag: {title: '用户分组',}, permission: []}
+    meta: {tag: {title: '用户分组',}, permissions: []}
 }
 export const ROUTE_AUTHORIZATION_USER: PsrAppRouteRecordRaw = {
     name: MODULE_AUTHORIZATION_NAME + '/user',
     path: MODULE_AUTHORIZATION_NAME + '/user',
     component: () => import('../views/authorization/user/index.vue'),
-    meta: {tag: {title: '用户', iconCls: 'pi pi-user'}, permission: []},
+    meta: {tag: {title: '用户', iconCls: 'pi pi-user'}, permissions: []},
     children: [ROUTE_AUTHORIZATION_USER_LIST, ROUTE_AUTHORIZATION_USER_AUTHORITY, ROUTE_AUTHORIZATION_USER_GROUP]
 }

@@ -5,7 +5,7 @@ export const ROUTE_DASHBOARD_LIST: PsrAppRouteRecordRaw = {
     name: MODULE_NAME + '/list',
     path: '',
     component: () => import("./views/list/index.vue"),
-    meta: {tag: {title: '清单'}, permission: ['add', 'delete', 'edit']}
+    meta: {tag: {title: '清单'}, permissions: ['add', 'delete', 'edit']}
 }
 
 export const ROUTE_DASHBOARD_DISPLAY: PsrAppRouteRecordRaw = {
@@ -13,22 +13,20 @@ export const ROUTE_DASHBOARD_DISPLAY: PsrAppRouteRecordRaw = {
     path: ':templateId/display',
     component: () => import("./views/display/index.vue"),
     props: true,
-    meta: {tag: {title: '显示'}, permission: []}
+    meta: {tag: {title: '显示'}, permissions: []}
 }
 export const ROUTE_DASHBOARD_DESIGN: PsrAppRouteRecordRaw = {
     name: MODULE_NAME + '/design',
     path: ':templateId/design',
     component: () => import("./views/design/index.vue"),
     props: true,
-    meta: {tag: {title: '设计'}, permission: []}
+    meta: {tag: {title: '设计'}, permissions: []}
 }
-
-
 export const ROUTE_DASHBOARD: PsrAppRouteRecordRaw = {
     name: MODULE_NAME,
     path: MODULE_NAME,
     component: () => import("./views/index.vue"),
-    meta: {tag: {isAffix: true, title: '概览', iconCls: 'pi pi-chart-bar'}},
+    meta: {tag: {isAffix: true, title: '概览', iconCls: 'pi pi-chart-bar'}, permissions: []},
     children: [ROUTE_DASHBOARD_LIST, ROUTE_DASHBOARD_DISPLAY, ROUTE_DASHBOARD_DESIGN]
 }
 

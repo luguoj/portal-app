@@ -10,7 +10,7 @@ export function initPermission(username: string, context: PsrAppContext) {
                 context.navigationMenu.doFilter(
                     item => !!permissionByKey.route[item.name],
                     item => {
-                        return !!item.route?.meta?.permission && !!permissionByKey.route[item.route.name]
+                        return !!item.route?.meta?.permissions && !!permissionByKey.route[item.route.name]
                     }
                 )
             }

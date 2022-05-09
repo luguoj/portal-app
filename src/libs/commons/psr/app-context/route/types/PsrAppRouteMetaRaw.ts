@@ -3,5 +3,5 @@ import {PsrAppRouteMetaTag} from "./PsrAppRouteMetaOptions";
 
 export interface PsrAppRouteMetaRaw extends RouteMeta {
     tag: PsrAppRouteMetaTag
-    permission?: string[]
+    permissions: string[] | false
 }

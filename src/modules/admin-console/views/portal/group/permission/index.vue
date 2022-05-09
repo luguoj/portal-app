@@ -39,17 +39,17 @@ function buildRoutePermissionData(
     if (route.children && route.children.length > 0) {
       children = buildRoutePermissionData(route.children, groupPermissionByRoute)
     }
-    if (route.meta.permission || children.length > 0) {
+    if (route.meta.permissions || children.length > 0) {
       const permissionKey = route.name
       const originAccess = !!groupPermissionByRoute[permissionKey]
       const originActions = groupPermissionByRoute[permissionKey]?.actions?.split(',') || []
       const node: NodeData = {
         id: route.name,
-        nameRaw:route.meta.nameRaw,
+        nameRaw: route.meta.nameRaw,
         title: route.meta.tag.title,
         iconCls: route.meta.tag.iconCls,
         permissionKey,
-        permissions: route.meta.permission?.permissions,
+        permissions: route.meta.permissions ? route.meta.permissions : undefined,
         access: originAccess,
         actions: originActions,
         originAccess,

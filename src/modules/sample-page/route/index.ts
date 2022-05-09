@@ -9,7 +9,7 @@ export const ROUTE_SAMPLE: PsrAppRouteRecordRaw = {
             title: '样例页面',
             iconCls: 'pi pi-book'
         },
-        permission: []
+        permissions: []
     }
 }
 
@@ -21,7 +21,8 @@ export const ROUTE_SAMPLE_2: PsrAppRouteRecordRaw = {
         tag: {
             title: '样例页面-2',
             iconCls: 'pi pi-book'
-        }
+        },
+        permissions: false
     },
 }
 
@@ -33,7 +34,8 @@ export const ROUTE_SAMPLE_PARENT: PsrAppRouteRecordRaw = {
         tag: {
             title: '样例父页面',
             iconCls: 'pi pi-book',
-        }
+        },
+        permissions: false
     },
     children: [{
         name: 'sample-parent/sample-child',
@@ -41,7 +43,8 @@ export const ROUTE_SAMPLE_PARENT: PsrAppRouteRecordRaw = {
         meta: {
             tag: {
                 title: '样例子页面1'
-            }
+            },
+            permissions: false
         },
         component: () => import('@/modules/sample-page/views/SampleChildPage.vue'),
         props: true,
@@ -51,7 +54,8 @@ export const ROUTE_SAMPLE_PARENT: PsrAppRouteRecordRaw = {
             meta: {
                 tag: {
                     title: '样例子页面2'
-                }
+                },
+                permissions: false
             },
             component: () => import('@/modules/sample-page/views/SampleChildPage.vue'),
             props: (route) => ({pageNo: route.params.pageNo2})

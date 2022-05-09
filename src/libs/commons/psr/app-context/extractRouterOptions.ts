@@ -16,7 +16,8 @@ export function extractRouterOptions(
             nameRaw: 'root',
             tag: {
                 title: 'root'
-            }
+            },
+            permissions: false
         }
     }
     const errorNotFoundRoute: PsrAppRouteRecord = {
@@ -28,7 +29,8 @@ export function extractRouterOptions(
             tag: {
                 title: '页面不存在',
                 iconCls: 'pi pi-times'
-            }
+            },
+            permissions: false
         },
         component: errorNotFound
     }
@@ -40,7 +42,8 @@ export function extractRouterOptions(
             tag: {
                 title: "登录",
                 iconCls: 'pi pi-sign-in'
-            }
+            },
+            permissions: false
         },
         component: signIn
     }
@@ -58,7 +61,7 @@ export function extractRouterOptions(
                     title: layout.title,
                     iconCls: layout.iconCls
                 },
-                permission: layout.permission ? {key: layout.name} : undefined,
+                permissions: layout.permissions,
                 layout: true
             },
             children: [{

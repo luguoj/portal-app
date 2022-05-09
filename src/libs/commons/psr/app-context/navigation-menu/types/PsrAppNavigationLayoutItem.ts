@@ -3,5 +3,5 @@ export interface PsrAppNavigationLayoutItem {
     title: string,
     iconCls: string,
     path: string,
-    permission: boolean
+    permissions: string[] | false
 }

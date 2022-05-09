@@ -10,7 +10,7 @@ export function buildMenuItem(menuItemRaw: PsrAppNavigationMenuItemRaw, layoutNa
             newChildren.push(buildMenuItem(child, layoutName))
         }
         const {id, title, iconCls} = menuItemRaw
-        return {id: `${layoutName}/${id}`, title, iconCls, children: newChildren, permission: false}
+        return {id: `${layoutName}/${id}`, title, iconCls, children: newChildren, permissions: false}
     } else {
         const route = buildLayoutChildRoute(menuItemRaw.route, layoutName)
         return {
@@ -19,7 +19,7 @@ export function buildMenuItem(menuItemRaw: PsrAppNavigationMenuItemRaw, layoutNa
             iconCls: route.meta.tag.iconCls || "pi pi-book",
             layoutName,
             route,
-            permission: route.meta.permission !== undefined
+            permissions: route.meta.permissions
         }
     }
 }

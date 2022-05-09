@@ -9,5 +9,6 @@ export const PsrLayoutDesktopConsoleOptions: PsrAppLayoutOptions = {
     component: () => import("./index.vue"),
     routes,
     iconCls: "pi pi-home",
-    title: "桌面控制台"
+    title: "桌面控制台",
+    permissions: false
 }

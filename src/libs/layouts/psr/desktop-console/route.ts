@@ -5,7 +5,7 @@ export const ROUTE_BLANK: PsrAppRouteRecordRaw = {
     name: 'blank',
     path: '',
     component: PsrBlank,
-    meta: {tag: {isAffix: true, title: '', iconCls: ''}}
+    meta: {tag: {isAffix: true, title: '', iconCls: ''}, permissions: false}
 }
 
 export const routes: Array<PsrAppRouteRecordRaw> = [ROUTE_BLANK]

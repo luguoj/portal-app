@@ -12,10 +12,7 @@ export function buildLayoutChildRoute(routeRecordRaw: PsrAppRouteRecordRaw, layo
     const meta: PsrAppRouteMeta = {
         ...routeRecordRaw.meta,
         nameRaw: routeRecordRaw.name,
-        permission: routeRecordRaw.meta?.permission ? {
-            key: routeRecordRaw.name,
-            permissions: routeRecordRaw.meta.permission
-        } : undefined
+        permissions: routeRecordRaw.meta.permissions
     }
     let children: PsrAppRouteRecord[] | undefined
     if (routeRecordRaw.children) {

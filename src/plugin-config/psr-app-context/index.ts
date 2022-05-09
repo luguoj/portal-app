@@ -21,16 +21,17 @@ export const appContext = createAppContext({
             Dashboard,
             SamplePage
         ],
-        permission: true
+        permissions: []
     }, {
         ...PsrLayoutDesktopConsoleOptions,
         name: 'layout-desktop-admin',
         title: '管理员桌面',
         iconCls: 'pi pi-cog',
         modules: [
+            Dashboard,
             Admin
         ],
-        permission: true
+        permissions: []
     }],
     permission: (username: string) => {
         if (username === 'platform_admin') {

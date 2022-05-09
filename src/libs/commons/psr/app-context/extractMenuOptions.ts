@@ -12,7 +12,7 @@ export function extractMenuOptions(layouts: PsrAppLayoutOptions[]) {
             path: "/" + layout.name,
             title: layout.title,
             iconCls: layout.iconCls,
-            permission: layout.permission === true
+            permissions: layout.permissions
         }
         layoutItemsRaw.push(layoutItemRaw)
         menuItemsRaw[layout.name] = []

@@ -6,7 +6,7 @@ interface PsrAppNavigationMenuItemBase {
     id: string
     title: string
     iconCls: string,
-    permission: boolean
+    permissions: string[] | false
 }
 
 interface PsrAppNavigationMenuSubMenu extends PsrAppNavigationMenuItemBase {
