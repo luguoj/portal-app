@@ -64,9 +64,9 @@ export class EntityCRUDService<E extends Entity> {
         return this._client.put(`${this._contextPath}/${entity.id}`, entity).then(handleRespData).catch(handleErrorMessage)
     }
 
-    patch(fields: string[], entity: E): Promise<E> {
+    patch(fields: (keyof E)[], entity: E): Promise<E> {
         const {id, version} = entity
-        const data: Entity = {id, version}
+        const data: E = {id, version} as E
         for (let i = 0; i < fields.length; i++) {
             const field = fields[i];
             data[field] = entity[field]
