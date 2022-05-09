@@ -45,6 +45,7 @@ function buildRoutePermissionData(
       const originActions = groupPermissionByRoute[permissionKey]?.actions?.split(',') || []
       const node: NodeData = {
         id: route.name,
+        nameRaw:route.meta.nameRaw,
         title: route.meta.tag.title,
         iconCls: route.meta.tag.iconCls,
         permissionKey: permissionKey,

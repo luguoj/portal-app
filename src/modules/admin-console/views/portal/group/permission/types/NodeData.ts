@@ -2,6 +2,7 @@ import {GroupPermissionEntity} from "@/services/portal/types";
 
 export interface NodeData {
     id: string,
+    nameRaw: string,
     title: string
     iconCls?: string
     permissionKey?: string,

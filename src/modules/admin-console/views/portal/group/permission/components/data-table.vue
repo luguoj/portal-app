@@ -10,7 +10,7 @@
         />
       </template>
       <template #body="{node:{key,data}}">
-        {{ `[${data.id}]${data.title}` }}
+        {{ `[${data.nameRaw}]${data.title}` }}
         <template v-if="data.permissionKey">
           <el-divider direction="vertical"/>
           <el-checkbox
@@ -32,7 +32,7 @@
         </template>
       </template>
     </p-column>
-    <p-column field="name" hidden/>
+    <p-column field="permissionKey" hidden/>
   </psr-filter-tree-table>
 </template>
 
