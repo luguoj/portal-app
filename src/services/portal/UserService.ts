@@ -12,7 +12,7 @@ export class UserService {
         this._client = client
     }
 
-    findPermissionByPortalId(portalId?: string): Promise<Record<string, string[]>> {
+    findPermissionByPortalId(portalId?: string): Promise<Record<string, Record<string, string[]>>> {
         return this._client.get('/user/permission', {params: {portalId: portalId || appPortalId}})
             .then((resp) => {
                 if (resp && resp.data) {

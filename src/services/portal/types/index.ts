@@ -6,7 +6,8 @@ export interface GroupEntity extends DictionaryEntryEntity {
 
 export interface GroupPermissionEntity extends Entity {
     groupId?: string,
-    route?: string,
+    usage?:string,
+    key?: string,
     actions?: string
 }
 
