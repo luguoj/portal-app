@@ -14,6 +14,7 @@
         <template v-if="data.permissionKey">
           <el-divider direction="vertical"/>
           <el-checkbox
+              v-if="data.permissions"
               label="access"
               v-model="data.access"
           />
