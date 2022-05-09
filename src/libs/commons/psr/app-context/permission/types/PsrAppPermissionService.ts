@@ -1,5 +1,5 @@
 import {PsrAppPermissionRaw} from "./PsrAppPermissionRaw";
 
 export interface PsrAppPermissionService {
-    (username: string): Promise<PsrAppPermissionRaw>
+    (username: string): Promise<PsrAppPermissionRaw | undefined>
 }

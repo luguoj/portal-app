@@ -33,9 +33,7 @@ export const appContext = createAppContext({
         permission: true
     }],
     permission: (username: string) => {
-        if (username === '') {
-            return Promise.resolve({})
-        } else if (username === 'platform_admin') {
+        if (username === 'platform_admin') {
             return Promise.resolve('permit-all')
         } else {
             return portalService.user.findPermissionByPortalId()
