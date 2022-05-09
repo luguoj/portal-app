@@ -40,7 +40,7 @@ function buildRoutePermissionData(
       children = buildRoutePermissionData(route.children, groupPermissionByRoute)
     }
     if (route.meta.permission || children.length > 0) {
-      const permissionKey = route.meta.permission?.key || route.meta.nameRaw
+      const permissionKey = route.name
       const originAccess = !!groupPermissionByRoute[permissionKey]
       const originActions = groupPermissionByRoute[permissionKey]?.actions?.split(',') || []
       const node: NodeData = {
@@ -48,13 +48,13 @@ function buildRoutePermissionData(
         nameRaw:route.meta.nameRaw,
         title: route.meta.tag.title,
         iconCls: route.meta.tag.iconCls,
-        permissionKey: permissionKey,
+        permissionKey,
         permissions: route.meta.permission?.permissions,
         access: originAccess,
         actions: originActions,
         originAccess,
         originActions,
-        groupPermission: groupPermissionByRoute[route.meta.nameRaw],
+        groupPermission: groupPermissionByRoute[permissionKey],
         children
       }
       records.push(node)
