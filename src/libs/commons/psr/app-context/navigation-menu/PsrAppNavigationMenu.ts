@@ -1,6 +1,6 @@
 import {PsrAppNavigationMenuItem} from "./types/PsrAppNavigationMenuItem";
 import {computed, ref, shallowReactive} from "vue";
-import {filterFromBottom} from "@/libs/commons/psr/utils/array-tree";
+import {filterFromBottom, filterFromRoot} from "@/libs/commons/psr/utils/array-tree";
 import {PsrAppNavigationLayoutItem} from "./types/PsrAppNavigationLayoutItem";
 
 export class PsrAppNavigationMenu {
@@ -25,9 +25,15 @@ export class PsrAppNavigationMenu {
             return !item.permission || filterLayoutItemFn(item)
         })
         for (const layoutName in this.menuItemsRaw) {
-            this.menuItems[layoutName] = filterFromBottom(this.menuItemsRaw[layoutName], item => {
+            const filteredMenu = filterFromRoot(this.menuItemsRaw[layoutName], item => {
                 return !item.permission || filterMenuItemFn(item)
             })
+            this.menuItems[layoutName] = filterFromBottom(
+                filteredMenu,
+                item => {
+                    return !!item.route || item.children?.length > 0
+                }
+            )
         }
     }
 }

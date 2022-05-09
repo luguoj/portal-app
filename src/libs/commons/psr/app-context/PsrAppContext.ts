@@ -60,6 +60,8 @@ export class PsrAppContext {
             processSignInRoute(event, this)
             // 如果访问根路由，则跳转到默认布局
             processRootRoute(event, this)
+        })
+        this.router.beforeRouteChange(event=>{
             // 校验布局和路由许可
             checkRoutePermission(event, this)
         })
