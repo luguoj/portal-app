@@ -42,7 +42,7 @@ export class PsrAppStore {
     loadUserProfile(username: string): Promise<any> {
         console.log('加载用户档案')
         this.userProfileSynchronized.value = null
-        if (this._userProfileService) {
+        if (this._userProfileService && username) {
             return this._userProfileService.find().then(content => {
                 if (content && content.username === username) {
                     this.resetStore(content)
@@ -70,7 +70,9 @@ export class PsrAppStore {
                 return Promise.reject(err)
             })
         } else {
-            this.resetStore({username: username})
+            const state = JSON.parse(localStorage.getItem('psr-app-context-state') || '{}')
+            state.username = username
+            this.resetStore(state)
             this.userProfileSynchronized.value = true
             return Promise.resolve()
         }
@@ -78,7 +80,7 @@ export class PsrAppStore {
 
     updateUserProfile() {
         this.userProfileSynchronized.value = null
-        if (this._userProfileService) {
+        if (this._userProfileService && this.store.state.username) {
             return this._userProfileService.update(this.store.state).then(success => {
                 if (success) {
                     this.userProfileSynchronized.value = true
@@ -87,6 +89,7 @@ export class PsrAppStore {
                 this.userProfileSynchronized.value = false
             })
         } else {
+            localStorage.setItem('psr-app-context-state', JSON.stringify(this.store.state))
             this.userProfileSynchronized.value = true
             return Promise.resolve()
         }
