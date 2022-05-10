@@ -1,4 +1,4 @@
-import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "@/libs/commons/psr/app-context/plugins/token";
+import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED, SYNCHRONIZING} from "@/libs/commons/psr/app-context/plugins/token";
 import {watch} from "vue";
 import {ElMessage} from "element-plus/es";
 import {initPermission} from "./initPermission";
@@ -31,15 +31,15 @@ export function initToken(context: PsrAppContext) {
         msg.push('监听认证状态')
         console.log(msg.join('=>'))
         // 监听认证状态
-        watch(() => token.tokenInfo().authentication.state, state => {
-            onAuthenticationStateChange(state, context)
+        watch(() => token.tokenInfo().authentication.state, (state, oldState) => {
+            onAuthenticationStateChange(context, state, oldState)
         }, {immediate: true})
     } else {
         console.log('不存在令牌上下文')
     }
 }
 
-function onAuthenticationStateChange(state: string, context: PsrAppContext) {
+function onAuthenticationStateChange(context: PsrAppContext, state: string, oldState?: string) {
     const token = context.token!
     const {router} = context
     const username = token.tokenInfo().authentication.username
@@ -60,13 +60,14 @@ function onAuthenticationStateChange(state: string, context: PsrAppContext) {
         if (localUsername) {
             console.log('用户:%s已登出', localUsername)
             ElMessage(`用户: ${localUsername} 已登出.`)
+            context.routePathHangupBySignIn = '/'
+            onUsernameChanged('', context)
+        } else if (oldState === SYNCHRONIZING) {
+            console.log('令牌刷新失败=>身份未认证=>重置store=>跳转登录', username)
+            onUsernameChanged('', context, true)
+        } else {
+            console.log('匿名用户初始访问')
         }
-        console.log('身份未认证=>重置store=>跳转登录', username)
-        context.routePathHangupBySignIn = '/'
-        onUsernameChanged('', context)
-        router.router.isReady().finally(() => {
-            router.router.push({name: 'sign-in'})
-        })
     } else if (state === AUTHENTICATED) {
         const msg: string[] = []
         if (localUsername && username !== localUsername) {
@@ -92,19 +93,17 @@ function onAuthenticationStateChange(state: string, context: PsrAppContext) {
     }
 }
 
-function onUsernameChanged(username: string, context: PsrAppContext) {
+function onUsernameChanged(username: string, context: PsrAppContext, signIn?: boolean) {
     updateLocalUsername(username)
     initPermission(username, context).then(() => {
-        if (username) {
-            context.store.loadUserProfile(username).finally(() => {
-                console.log(context.routePathHangupBySignIn)
-                if (context.routePathHangupBySignIn) {
-                    console.log('认证完成->跳转拦截的路由', context.routePathHangupBySignIn)
-                    context.router.router.replace({path: context.routePathHangupBySignIn})
-                }
-            })
-        } else {
-            context.store.resetStore()
-        }
+        context.store.loadUserProfile(username).finally(() => {
+            if (signIn) {
+                console.log('跳转登录')
+                context.router.router.replace({name: 'sign-in'})
+            } else if (context.routePathHangupBySignIn) {
+                console.log('用户变更->跳转拦截的路由', context.routePathHangupBySignIn)
+                context.router.router.replace({path: context.routePathHangupBySignIn})
+            }
+        })
     })
 }
