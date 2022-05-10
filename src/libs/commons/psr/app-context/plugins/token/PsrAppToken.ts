@@ -63,7 +63,7 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
     }
 
     // 刷新令牌信息
-    refreshToken() {
+    refreshToken(init?: boolean) {
         if (!this._flushing) {
             this._tokenInfo.expires_at = 1
             this._tokenInfo.authentication.state = SYNCHRONIZING
@@ -78,7 +78,7 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
                     }
                     resolve(this._tokenInfo)
                 }).catch((err) => {
-                    if (this._tokenInfo.authentication.username) {
+                    if (this._tokenInfo.authentication.username && !init) {
                         this._tokenInfo.access_token = ''
                         this._tokenInfo.expires_at = null
                         this._tokenInfo.token_type = null

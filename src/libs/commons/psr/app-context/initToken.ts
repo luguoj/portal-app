@@ -87,7 +87,7 @@ function onAuthenticationStateChange(context: PsrAppContext, state: string, oldS
             onUsernameChanged(username, context)
         } else {
             msg.push(`用户${username}刷新令牌`)
-            token.refreshToken()
+            token.refreshToken(true)
         }
         console.log(msg.join('=>'))
     }
