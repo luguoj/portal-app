@@ -24,7 +24,7 @@ export class PsrAppContext {
     readonly plugins: Record<string, PsrAppPlugin> = {}
 
     // 被登录路由挂起的路由路径
-    routePathHangupBySignIn: string | null = null
+    routePathHangupBySignIn: string = '/'
 
     constructor(
         injectKey: string,
@@ -61,17 +61,15 @@ export class PsrAppContext {
             // 如果访问根路由，则跳转到默认布局
             processRootRoute(event, this)
         })
-        this.router.beforeRouteChange(event=>{
+        this.router.beforeRouteChange(event=> {
+            if (event.newRoute.route.name !== 'sign-in') {
+                this.routePathHangupBySignIn = event.newRoute.route.fullPath
+            }
             // 校验布局和路由许可
             checkRoutePermission(event, this)
         })
         this.router.onLayoutChange(event => {
             this.navigationMenu.currentLayoutName.value = event.newRoute.layout?.name || ''
-        })
-        this.router.onRouteChange(event => {
-            if (event.newRoute.route.name !== 'sign-in') {
-                this.routePathHangupBySignIn = event.newRoute.route.fullPath
-            }
         })
         app.provide(this._injectKey, this)
         app.use(this.store.store)

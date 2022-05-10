@@ -16,8 +16,7 @@ export function checkRoutePermission(event: PsrAppRouteChangeEvent, context: Psr
             const routeKey = route.meta.permissions ? route.name : ''
             if (layoutKey || routeKey) {
                 if (username === '') {
-                    context.routePathHangupBySignIn = route.path
-                    throw new PsrAppRouteError(`路由许可校验失败,禁止匿名用户访问,挂起路由${route.path}=>跳转登录`, '/sign-in')
+                    throw new PsrAppRouteError(`路由许可校验失败,禁止匿名用户访问=>跳转登录`, '/sign-in')
                 }
                 if (!context.permission.initialized.value) {
                     ElMessage({
@@ -25,9 +24,8 @@ export function checkRoutePermission(event: PsrAppRouteChangeEvent, context: Psr
                         message: '获取授权中.',
                         type: 'info',
                     })
-                    context.routePathHangupBySignIn = route.path
                     throw new PsrAppRouteError(
-                        "许可初始化中,挂起路由:" + route.fullPath,
+                        "等待许可初始化",
                         new Promise(resolve => {
                             const unWatch = watch(context.permission.initialized, initialized => {
                                 if (initialized) {
