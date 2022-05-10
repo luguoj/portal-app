@@ -40,7 +40,6 @@ export class PsrAppRouteCache extends PsrAppPlugin {
                 })
                 this.cachedRoutes.value.push(cachedRoute)
             }
-            this.onRoute(currentRoute.value)
         }
     }
 
