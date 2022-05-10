@@ -57,9 +57,9 @@ function onAuthenticationStateChange(state: string, context: PsrAppContext) {
                 router.router.replace({name: 'sign-in'})
             })
     } else if (state === NOT_AUTHENTICATED) {
-        if (username) {
-            console.log('用户:%s已登出', username)
-            ElMessage(`用户: ${username} 已登出.`)
+        if (localUsername) {
+            console.log('用户:%s已登出', localUsername)
+            ElMessage(`用户: ${localUsername} 已登出.`)
         }
         console.log('身份未认证=>重置store=>跳转登录', username)
         context.routePathHangupBySignIn = '/'
