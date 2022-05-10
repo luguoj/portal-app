@@ -45,7 +45,7 @@
         </template>
       </el-button>
     </el-tooltip>
-    <el-popover placement="bottom" trigger="hover">
+    <el-popover v-if="username" placement="bottom" trigger="hover">
       <template #reference>
         <el-button type="text" class="button icon-only">
           <template #icon>
@@ -55,6 +55,15 @@
       </template>
       <user-popover/>
     </el-popover>
+    <router-link v-else :to="{name:'sign-in'}" custom v-slot="{navigate}">
+      <el-tooltip content="登入" effect="light">
+        <el-button type="text" class="button icon-only" @click="navigate">
+          <template #icon>
+            <el-icon class="pi pi-sign-in"/>
+          </template>
+        </el-button>
+      </el-tooltip>
+    </router-link>
   </div>
   <div class="ct-tag-bar" v-show="!tagBarCollapsed">
     <tag-bar/>
@@ -73,6 +82,7 @@ import {useFullscreen} from "@vueuse/core";
 import {useAppRouteCache} from "@/libs/commons/psr/app-context/plugins/route-cache";
 import {useLayoutStoreProxy} from "@/libs/commons/psr/app-context/LayoutStoreProxyProvider";
 import {PsrLayoutDesktopConsoleState} from "@/libs/layouts/psr/desktop-console/store";
+import {useStore} from "vuex";
 
 export default defineComponent({
   name: "header-bar",
@@ -84,6 +94,7 @@ export default defineComponent({
     TagBar
   },
   setup() {
+    const store = useStore()
     const layoutStore = useLayoutStoreProxy<PsrLayoutDesktopConsoleState>()
     const refSearcher = ref()
     const showSearcher = ref(false)
@@ -136,7 +147,8 @@ export default defineComponent({
       toggleImmersive,
       handleShowSearcher,
       userPopoverVisible: ref(false),
-      showSearcher
+      showSearcher,
+      username: computed(() => store.state.username),
     }
   }
 })
