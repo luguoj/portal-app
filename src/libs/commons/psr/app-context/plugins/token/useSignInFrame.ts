@@ -1,6 +1,7 @@
 // 使用登录框架
-import {onBeforeMount, onBeforeUnmount, onMounted, ref, watchEffect} from "vue";
+import {onBeforeMount, onBeforeUnmount, onMounted, ref} from "vue";
 import {useTokenContext} from "./PsrAppTokenProvider";
+import {PsrAppTokenPrincipal} from "@/libs/commons/psr/app-context/plugins/token/types/PsrAppTokenInfo";
 
 export function useSignInFrame() {
     const context = useTokenContext()
@@ -24,13 +25,18 @@ export function useSignInFrame() {
         window.removeEventListener('message', onMessage)
     })
 
+    function goSignIn(principal: PsrAppTokenPrincipal) {
+        if (principal.state === 'not_authenticated'
+            || principal.state === 'certification_expired') {
+            signInFrame.value.src = context.tokenService().baseURL()
+        }
+    }
+
     onMounted(() => {
+        goSignIn(context.getPrincipal())
         // 认证状态变为未认证或过期状态时，刷新登录页面重新认证
-        watchEffect(() => {
-            if (context.tokenInfo().authentication.state === 'not_authenticated'
-                || context.tokenInfo().authentication.state === 'certification_expired') {
-                signInFrame.value.src = context.tokenService().baseURL()
-            }
+        context.onPrincipalChange(event => {
+            goSignIn(event.newState)
         })
     })
     return signInFrame

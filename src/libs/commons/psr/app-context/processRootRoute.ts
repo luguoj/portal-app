@@ -7,7 +7,7 @@ export function processRootRoute(event: PsrAppRouteChangeEvent, context: PsrAppC
         const msg: string[] = ['路由到根路径', '跳转到默认布局']
         const layoutItems = context.navigationMenu.layoutItems.value
         const userProfileSynchronized = context.store.userProfileSynchronized.value
-        if (layoutItems.length > 0 && (userProfileSynchronized !== null || context.token == null || !context.token.tokenInfo().authentication.username)) {
+        if (layoutItems.length > 0 && (userProfileSynchronized !== null || context.token == null || !context.token.getPrincipal().username)) {
             let defaultLayoutPath = layoutItems[0].path
             if (context.store.store.state.defaultLayout) {
                 let defaultLayoutItem = layoutItems.filter(item => item.name === context.store.store.state.defaultLayout)

@@ -1,8 +1,7 @@
-import {watch} from "vue";
 import {ElMessage} from "element-plus/es";
 import {initPermission} from "./initPermission";
 import {PsrAppContext} from "./PsrAppContext";
-import {PsrAppTokenState} from "@/libs/commons/psr/app-context/plugins/token";
+import {PsrAppTokenPrincipalChangeEvent} from "@/libs/commons/psr/app-context/plugins/token";
 
 const LOCAL_USER_NAME_KEY = 'psr-app-context-username'
 
@@ -18,31 +17,33 @@ export function initToken(context: PsrAppContext) {
     const {token} = context
     const localUsername = loadLocalUsername()
     if (token !== undefined) {
+        // 监听认证状态
+        token.onPrincipalChange(event => {
+            onAuthenticationStateChange(event, context)
+        })
         // 存在令牌上下文，认证用户信息，加载许可
         const msg: string[] = ['存在令牌上下文']
         // 初始化设置tokenInfo用户名为前一次访问的用户
         if (localUsername) {
             msg.push(`用本地用户(${localUsername})初始化`)
-            token.tokenInfo().authentication = {
+            token.updatePrincipal({
                 username: localUsername,
                 state: 'authenticated'
-            }
+            })
         }
         msg.push('监听认证状态')
         console.log(msg.join('=>'))
-        // 监听认证状态
-        watch(() => token.tokenInfo().authentication.state, (state, oldState) => {
-            onAuthenticationStateChange(context, state, oldState)
-        }, {immediate: true})
     } else {
         console.log('不存在令牌上下文')
     }
 }
 
-function onAuthenticationStateChange(context: PsrAppContext, state: PsrAppTokenState, oldState?: PsrAppTokenState) {
+function onAuthenticationStateChange(event: PsrAppTokenPrincipalChangeEvent, context: PsrAppContext) {
     const token = context.token!
     const {router} = context
-    const username = token.tokenInfo().authentication.username
+    const state = event.newState.state
+    const oldState = event.oldState.state
+    const username = event.newState.username
     const localUsername = loadLocalUsername()
     if (state === 'certification_expired') {
         console.log('用户:%s身份认证过期=>跳转登录', username)
@@ -78,7 +79,7 @@ function onAuthenticationStateChange(context: PsrAppContext, state: PsrAppTokenS
             })
             context.routePathHangupBySignIn = '/'
             onUsernameChanged(username, context)
-        } else if (token.tokenInfo().access_token) {
+        } else if (token.getTokenInfo().access_token) {
             msg.push(`用户身份认证${username}`)
             ElMessage({
                 message: `用户身份已认证:${username}`,
