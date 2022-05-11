@@ -1,6 +1,6 @@
 import {PsrAppTokenState} from "@/libs/commons/psr/app-context/plugins/token";
 
-export interface PsrAppTokenStateChangeEvent {
+export interface PsrAppTokenPrincipalChangeEvent {
     oldState: {
         username: string,
         state: PsrAppTokenState

@@ -1,16 +1,17 @@
 // 未认证
-import {reactive, UnwrapNestedRefs, watch} from "vue";
+import {reactive, ref, Ref, UnwrapNestedRefs, watch} from "vue";
 import {PsrAppTokenService} from "./types/PsrAppTokenService";
 import {PsrAppPlugin} from "@/libs/commons/psr/app-context";
 import {createEventHook} from "@vueuse/core";
-import {PsrAppTokenInfo} from "@/libs/commons/psr/app-context/plugins/token/types/PsrAppTokenInfo";
-import {PsrAppTokenStateChangeEvent} from "@/libs/commons/psr/app-context/plugins/token/types/PsrAppTokenEvent";
+import {PsrAppTokenInfo, PsrAppTokenPrincipal} from "./types/PsrAppTokenInfo";
+import {PsrAppTokenPrincipalChangeEvent} from "./types/PsrAppTokenEvent";
 
 export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
-    private readonly _stateChangeEvent = createEventHook<PsrAppTokenStateChangeEvent>()
-    readonly onStateChange = this._stateChangeEvent.on
+    private readonly _principalChangeEvent = createEventHook<PsrAppTokenPrincipalChangeEvent>()
+    readonly onPrincipalChange = this._principalChangeEvent.on
     // 令牌服务
     protected readonly _tokenService: TS;
+    protected readonly _principal: Ref<PsrAppTokenPrincipal>
     // 令牌信息
     protected readonly _tokenInfo: UnwrapNestedRefs<PsrAppTokenInfo>;
     // 刷新令牌作业
@@ -19,23 +20,35 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
     constructor(injectKey: string, tokenService: TS) {
         super(injectKey)
         this._tokenService = tokenService
-        this._tokenInfo = reactive({
-            authentication: {
-                username: '',
-                state: 'not_authenticated'
-            },
+        this._principal = ref<PsrAppTokenPrincipal>({
+            username: '',
+            state: 'not_authenticated'
+        })
+        this._tokenInfo = reactive<PsrAppTokenInfo>({
             access_token: '',
             token_type: null,
             expires_at: null
         })
-        watch(() => this._tokenInfo.authentication, (newState, oldState) => {
-            this._stateChangeEvent.trigger({newState, oldState})
+        watch(this._principal, (newState, oldState) => {
+            this._principalChangeEvent.trigger({newState, oldState})
         })
         this._flushing = null
     }
 
-    tokenInfo() {
-        return this._tokenInfo
+    updatePrincipal(authentication: PsrAppTokenPrincipal) {
+        this._principal.value = authentication
+    }
+
+    getPrincipal(): PsrAppTokenPrincipal {
+        return {
+            ...this._principal.value
+        }
+    }
+
+    getTokenInfo() {
+        return {
+            ...this._tokenInfo
+        }
     }
 
     tokenService() {
@@ -57,27 +70,32 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
 
     // 刷新令牌信息
     refreshToken(init?: boolean) {
+        console.error('refresh token')
         if (!this._flushing) {
             this._tokenInfo.expires_at = 1
-            this._tokenInfo.authentication.state = 'synchronizing'
+            this.updatePrincipal({
+                username: this._principal.value.username,
+                state: 'synchronizing'
+            })
             this._flushing = new Promise((resolve, reject) => {
                 this._tokenService.getToken().then((data) => {
                     this._tokenInfo.token_type = data.token_type
                     this._tokenInfo.access_token = data.access_token
                     this._tokenInfo.expires_at = data.expires_at
-                    this._tokenInfo.authentication = {
+                    this.updatePrincipal({
                         username: data.username,
                         state: 'authenticated'
-                    }
+                    })
                     resolve(this._tokenInfo)
                 }).catch((err) => {
-                    if (this._tokenInfo.authentication.username && !init) {
+                    const currentUsername = this._principal.value.username
+                    if (currentUsername && !init) {
                         this._tokenInfo.access_token = ''
                         this._tokenInfo.expires_at = null
                         this._tokenInfo.token_type = null
-                        this._tokenInfo.authentication.state = 'certification_expired'
+                        this.updatePrincipal({state: 'certification_expired', username: currentUsername})
                     } else {
-                        this._tokenInfo.authentication.state = 'not_authenticated'
+                        this.updatePrincipal({state: 'not_authenticated', username: currentUsername})
                     }
                     reject(err)
                 }).finally(() => this._flushing = null)
@@ -92,10 +110,10 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
             this._tokenInfo.access_token = ''
             this._tokenInfo.expires_at = null
             this._tokenInfo.token_type = null
-            this._tokenInfo.authentication = {
+            this.updatePrincipal({
                 username: '',
                 state: 'not_authenticated'
-            }
+            })
         })
     }
 }
