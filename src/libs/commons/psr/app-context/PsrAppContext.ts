@@ -13,6 +13,7 @@ import {initToken} from "./initToken";
 import {checkRoutePermission} from "./checkRoutePermission";
 import {processRootRoute} from "./processRootRoute";
 import {processSignInRoute} from "./processSignInRoute";
+import {createWidgetManager, PsrAppWidgetManager} from "@/libs/commons/psr/app-context/widget-manager";
 
 export class PsrAppContext {
     private readonly _injectKey: string
@@ -20,6 +21,7 @@ export class PsrAppContext {
     readonly router: PsrAppRouter
     readonly navigationMenu: PsrAppNavigationMenu
     readonly permission: PsrAppPermission
+    readonly widget: PsrAppWidgetManager
     token?: PsrAppToken<PsrAppTokenService>
     readonly plugins: Record<string, PsrAppPlugin> = {}
 
@@ -39,6 +41,8 @@ export class PsrAppContext {
         this.navigationMenu = new PsrAppNavigationMenu(extractMenuOptions(options.layouts))
         // 初始化permission
         this.permission = new PsrAppPermission(options.permission)
+        // 初始化widgetManager
+        this.widget = createWidgetManager(options)
     }
 
     useToken(token: PsrAppToken<PsrAppTokenService>) {
@@ -74,6 +78,7 @@ export class PsrAppContext {
         app.provide(this._injectKey, this)
         app.use(this.store.store)
         app.use(this.router.router)
+        app.use(this.widget)
         if (this.token != undefined) {
             app.use(this.token)
         }
