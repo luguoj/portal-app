@@ -29,7 +29,6 @@ import {NodeData} from "@/modules/admin-console/views/portal/group/permission/ty
 import DataTable from "./components/data-table.vue";
 import {PsrAppWidgetCatalog} from "@/libs/commons/psr/app-context/widget-manager";
 import {useAppContext} from "@/libs/commons/psr/app-context";
-import {keysIn} from "lodash";
 
 function buildWidgetPermissionData(
     widgets: PsrAppWidgetCatalog[],
@@ -129,7 +128,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const expandedKeys = ref<string[]>(['route', 'widget'])
+    const expandedKeys = ref<{ [key: string]: boolean }>({route: true, widget: true})
     const router = useRouter()
     const widgetManager = useAppContext().widget
     const groupEntity = ref<GroupEntity>({})
@@ -188,7 +187,11 @@ export default defineComponent({
       }
     })
     watch(() => dataTable.recordByKey, recordByKey => {
-      expandedKeys.value = keysIn(recordByKey)
+      const _expandedKeys: { [key: string]: boolean } = {}
+      for (const key in recordByKey) {
+        _expandedKeys[key] = true
+      }
+      expandedKeys.value = _expandedKeys
     })
     const dirtyData = computed<{
       flag: boolean,
