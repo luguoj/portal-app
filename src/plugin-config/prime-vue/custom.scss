@@ -1,3 +1,11 @@
 .p-treetable.p-treetable-sm .p-treetable-header {
   padding: 0.5rem;
 }
+
+.p-treetable-scrollable .p-treetable-thead {
+  z-index: 2 !important;
+}
+
+.p-datatable-scrollable .p-datatable-thead {
+  z-index: 2 !important;
+}
