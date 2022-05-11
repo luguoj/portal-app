@@ -1,6 +1,5 @@
 // 使用登录框架
 import {onBeforeMount, onBeforeUnmount, onMounted, ref, watchEffect} from "vue";
-import {CERTIFICATION_EXPIRED, NOT_AUTHENTICATED} from "./PsrAppToken";
 import {useTokenContext} from "./PsrAppTokenProvider";
 
 export function useSignInFrame() {
@@ -28,8 +27,8 @@ export function useSignInFrame() {
     onMounted(() => {
         // 认证状态变为未认证或过期状态时，刷新登录页面重新认证
         watchEffect(() => {
-            if (context.tokenInfo().authentication.state === NOT_AUTHENTICATED
-                || context.tokenInfo().authentication.state === CERTIFICATION_EXPIRED) {
+            if (context.tokenInfo().authentication.state === 'not_authenticated'
+                || context.tokenInfo().authentication.state === 'certification_expired') {
                 signInFrame.value.src = context.tokenService().baseURL()
             }
         })

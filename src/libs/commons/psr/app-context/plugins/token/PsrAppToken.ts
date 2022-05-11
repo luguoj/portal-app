@@ -2,29 +2,15 @@
 import {reactive, UnwrapNestedRefs} from "vue";
 import {PsrAppTokenService} from "./types/PsrAppTokenService";
 import {PsrAppPlugin} from "@/libs/commons/psr/app-context";
-
-export const NOT_AUTHENTICATED = 'not_authenticated'
-// 认证过期
-export const CERTIFICATION_EXPIRED = 'certification_expired'
-// 未认证
-export const AUTHENTICATED = 'authenticated'
-// 同步中
-export const SYNCHRONIZING = 'synchronizing'
-
-interface TokenInfo {
-    access_token: string;
-    expires_at?: number | null;
-    token_type: { value: string } | null;
-    authentication: { state: string; username: string }
-}
+import {PsrAppTokenInfo} from "@/libs/commons/psr/app-context/plugins/token/types/PsrAppTokenInfo";
 
 export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
     // 令牌服务
     protected readonly _tokenService: TS;
     // 令牌信息
-    protected readonly _tokenInfo: UnwrapNestedRefs<TokenInfo>;
+    protected readonly _tokenInfo: UnwrapNestedRefs<PsrAppTokenInfo>;
     // 刷新令牌作业
-    protected _flushing: Promise<UnwrapNestedRefs<TokenInfo>> | null;
+    protected _flushing: Promise<UnwrapNestedRefs<PsrAppTokenInfo>> | null;
 
     constructor(injectKey: string, tokenService: TS) {
         super(injectKey)
@@ -32,7 +18,7 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
         this._tokenInfo = reactive({
             authentication: {
                 username: '',
-                state: NOT_AUTHENTICATED
+                state: 'not_authenticated'
             },
             access_token: '',
             token_type: null,
@@ -66,7 +52,7 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
     refreshToken(init?: boolean) {
         if (!this._flushing) {
             this._tokenInfo.expires_at = 1
-            this._tokenInfo.authentication.state = SYNCHRONIZING
+            this._tokenInfo.authentication.state = 'synchronizing'
             this._flushing = new Promise((resolve, reject) => {
                 this._tokenService.getToken().then((data) => {
                     this._tokenInfo.token_type = data.token_type
@@ -74,7 +60,7 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
                     this._tokenInfo.expires_at = data.expires_at
                     this._tokenInfo.authentication = {
                         username: data.username,
-                        state: AUTHENTICATED
+                        state: 'authenticated'
                     }
                     resolve(this._tokenInfo)
                 }).catch((err) => {
@@ -82,9 +68,9 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
                         this._tokenInfo.access_token = ''
                         this._tokenInfo.expires_at = null
                         this._tokenInfo.token_type = null
-                        this._tokenInfo.authentication.state = CERTIFICATION_EXPIRED
+                        this._tokenInfo.authentication.state = 'certification_expired'
                     } else {
-                        this._tokenInfo.authentication.state = NOT_AUTHENTICATED
+                        this._tokenInfo.authentication.state = 'not_authenticated'
                     }
                     reject(err)
                 }).finally(() => this._flushing = null)
@@ -101,7 +87,7 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
             this._tokenInfo.token_type = null
             this._tokenInfo.authentication = {
                 username: '',
-                state: NOT_AUTHENTICATED
+                state: 'not_authenticated'
             }
         })
     }

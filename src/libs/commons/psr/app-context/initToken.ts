@@ -1,8 +1,8 @@
-import {AUTHENTICATED, CERTIFICATION_EXPIRED, NOT_AUTHENTICATED, SYNCHRONIZING} from "@/libs/commons/psr/app-context/plugins/token";
 import {watch} from "vue";
 import {ElMessage} from "element-plus/es";
 import {initPermission} from "./initPermission";
 import {PsrAppContext} from "./PsrAppContext";
+import {PsrAppTokenState} from "@/libs/commons/psr/app-context/plugins/token";
 
 const LOCAL_USER_NAME_KEY = 'psr-app-context-username'
 
@@ -25,7 +25,7 @@ export function initToken(context: PsrAppContext) {
             msg.push(`用本地用户(${localUsername})初始化`)
             token.tokenInfo().authentication = {
                 username: localUsername,
-                state: AUTHENTICATED
+                state: 'authenticated'
             }
         }
         msg.push('监听认证状态')
@@ -39,12 +39,12 @@ export function initToken(context: PsrAppContext) {
     }
 }
 
-function onAuthenticationStateChange(context: PsrAppContext, state: string, oldState?: string) {
+function onAuthenticationStateChange(context: PsrAppContext, state: PsrAppTokenState, oldState?: PsrAppTokenState) {
     const token = context.token!
     const {router} = context
     const username = token.tokenInfo().authentication.username
     const localUsername = loadLocalUsername()
-    if (state === CERTIFICATION_EXPIRED) {
+    if (state === 'certification_expired') {
         console.log('用户:%s身份认证过期=>跳转登录', username)
         ElMessage({
             message: `用户: ${username} 身份认证过期, 请重新登录.`,
@@ -56,19 +56,19 @@ function onAuthenticationStateChange(context: PsrAppContext, state: string, oldS
             .finally(() => {
                 router.router.replace({name: 'sign-in'})
             })
-    } else if (state === NOT_AUTHENTICATED) {
+    } else if (state === 'not_authenticated') {
         if (localUsername) {
             console.log('用户:%s已登出', localUsername)
             ElMessage(`用户: ${localUsername} 已登出.`)
             context.routePathHangupBySignIn = '/'
             onUsernameChanged('', context)
-        } else if (oldState === SYNCHRONIZING) {
+        } else if (oldState === "synchronizing") {
             console.log('令牌刷新失败=>身份未认证=>重置store=>跳转登录', username)
             onUsernameChanged('', context, true)
         } else {
             console.log('匿名用户初始访问')
         }
-    } else if (state === AUTHENTICATED) {
+    } else if (state === "authenticated") {
         const msg: string[] = []
         if (localUsername && username !== localUsername) {
             msg.push(`用户身份切换(${localUsername}=>${username})`, '重置store')
