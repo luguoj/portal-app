@@ -9,7 +9,7 @@ import {tokenContext} from "./token";
 import {routeCache} from "./routeCache";
 import {App} from "@vue/runtime-core";
 import {Dashboard} from "@/modules/dashboard";
-import dashboardWidgetManage from "@/plugin-config/psr-app-context/dashboardWidgetManager";
+import {widgets} from "@/plugin-config/psr-app-context/widget";
 
 export const appContext = createAppContext({
     layouts: [{
@@ -21,7 +21,7 @@ export const appContext = createAppContext({
             Dashboard,
             SamplePage
         ],
-        permissions: []
+        permissions: false
     }, {
         ...PsrLayoutDesktopConsoleOptions,
         name: 'layout-desktop-admin',
@@ -51,8 +51,9 @@ export const appContext = createAppContext({
     pages: {
         signIn: PsrOAuthSSOClientSignIn,
         errorNotFound: PsrErrorNotFound
-    }
-}).useToken(tokenContext).use(routeCache).use(dashboardWidgetManage)
+    },
+    widgets
+}).useToken(tokenContext).use(routeCache)
 
 export function applyPsrAppContext(app: App) {
     app.use(appContext)
