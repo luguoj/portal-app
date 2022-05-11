@@ -20,15 +20,15 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {useDashboardWidgetManager} from "../../plugins/widget-manager";
+import {useWidgetManager} from "../../../../libs/commons/psr/app-context/widget-manager";
 
 export default defineComponent({
   name: "widget-list",
   emits: ['addWidget'],
   setup() {
-    const widgetManager = useDashboardWidgetManager()
+    const widgetManager = useWidgetManager()
     return {
-      widgets: widgetManager.widgetCatalogs
+      widgets: widgetManager.widgetCatalogRaws
     }
   }
 })
