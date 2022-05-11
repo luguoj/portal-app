@@ -15,24 +15,28 @@ export class PsrAppWidgetManager extends PsrAppPlugin {
     }
 
     doFilter(filterWidgetFn: (widget: PsrAppWidget) => boolean) {
-        const _widgetByName: Record<string, PsrAppWidget> = {}
-        const _widgetCatalogs: PsrAppWidgetCatalog[] = []
+        const filteredWidgetByName: Record<string, PsrAppWidget> = {}
+        const filteredWidgetCatalogs: PsrAppWidgetCatalog[] = []
         for (const widgetCatalogRaw of this.widgetCatalogRaws) {
             const widgetCatalog: PsrAppWidgetCatalog = {
                 ...widgetCatalogRaw,
                 widgets: []
             }
-            for (const widget of widgetCatalog.widgets) {
+            for (const widgetRaw of widgetCatalogRaw.widgets) {
+                const widget = {
+                    ...widgetRaw,
+                    name: widgetCatalogRaw.name + '/' + widgetRaw.name
+                }
                 if (filterWidgetFn(widget)) {
-                    _widgetByName[widgetCatalog.name + '/' + widget.name] = widget
+                    filteredWidgetByName[widget.name] = widget
                 }
                 widgetCatalog.widgets.push(widget)
             }
             if (widgetCatalog.widgets.length > 0) {
-                _widgetCatalogs.push(widgetCatalog)
+                filteredWidgetCatalogs.push(widgetCatalog)
             }
         }
-        this.widgetByName.value = _widgetByName
-        this.widgetCatalogs.value = _widgetCatalogs
+        this.widgetByName.value = filteredWidgetByName
+        this.widgetCatalogs.value = filteredWidgetCatalogs
     }
 }
