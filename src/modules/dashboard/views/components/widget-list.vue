@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {useWidgetManager} from "../../../../libs/commons/psr/app-context/widget-manager";
+import {useWidgetManager} from "@/libs/commons/psr/app-context/widget-manager";
 
 export default defineComponent({
   name: "widget-list",
@@ -28,7 +28,7 @@ export default defineComponent({
   setup() {
     const widgetManager = useWidgetManager()
     return {
-      widgets: widgetManager.widgetCatalogRaws
+      widgets: widgetManager.widgetCatalogs
     }
   }
 })
