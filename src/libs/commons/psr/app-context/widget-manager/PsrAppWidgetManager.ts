@@ -1,17 +1,29 @@
-import {PsrAppPlugin} from "@/libs/commons/psr/app-context";
-import {PsrAppWidget, PsrAppWidgetCatalog} from "@/libs/commons/psr/app-context/widget-manager/types/PsrAppWidget";
+import {PsrAppWidgetCatalogRaw} from "./types/PsrAppWidgetRaw";
 import {ref} from "vue";
+import {PsrAppWidget, PsrAppWidgetCatalog} from "./types/PsrAppWidget";
 
-export class PsrAppWidgetManager extends PsrAppPlugin {
+export class PsrAppWidgetManager {
     widgetCatalogRaws: PsrAppWidgetCatalog[]
     widgetByName = ref<Record<string, PsrAppWidget>>({})
     widgetCatalogs = ref<PsrAppWidgetCatalog[]>([])
 
-    constructor(injectKey: string, widgetCatalogs: PsrAppWidgetCatalog[]) {
-        super(injectKey)
-        this.widgetCatalogRaws = widgetCatalogs
+    constructor(widgetCatalogRaws: PsrAppWidgetCatalogRaw[]) {
+        this.widgetCatalogRaws = []
+        for (const widgetCatalogRaw of widgetCatalogRaws) {
+            const widgetCatalog: PsrAppWidgetCatalog = {
+                ...widgetCatalogRaw,
+                widgets: []
+            }
+            this.widgetCatalogRaws.push(widgetCatalog)
+            for (const widgetRaw of widgetCatalogRaw.widgets) {
+                widgetCatalog.widgets.push({
+                    ...widgetRaw,
+                    name: widgetCatalogRaw.name + '/' + widgetRaw.name,
+                    nameRaw: widgetRaw.name
+                })
+            }
+        }
         this.doFilter(() => false)
-
     }
 
     doFilter(filterWidgetFn: (widget: PsrAppWidget) => boolean) {
@@ -23,14 +35,10 @@ export class PsrAppWidgetManager extends PsrAppPlugin {
                 widgets: []
             }
             for (const widgetRaw of widgetCatalogRaw.widgets) {
-                const widget = {
-                    ...widgetRaw,
-                    name: widgetCatalogRaw.name + '/' + widgetRaw.name
+                if (filterWidgetFn(widgetRaw)) {
+                    filteredWidgetByName[widgetRaw.name] = widgetRaw
                 }
-                if (filterWidgetFn(widget)) {
-                    filteredWidgetByName[widget.name] = widget
-                }
-                widgetCatalog.widgets.push(widget)
+                widgetCatalog.widgets.push(widgetRaw)
             }
             if (widgetCatalog.widgets.length > 0) {
                 filteredWidgetCatalogs.push(widgetCatalog)

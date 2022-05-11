@@ -1,3 +1,3 @@
 export * from "./PsrAppWidgetManager"
-export * from "./PsrAppWidgetManagerProvider"
+export * from "./types/PsrAppWidgetRaw"
 export * from "./types/PsrAppWidget"

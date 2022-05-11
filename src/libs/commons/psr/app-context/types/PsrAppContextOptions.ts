@@ -3,7 +3,7 @@ import {Plugin as StorePlugin} from "vuex";
 import {PsrAppPageOptions} from "./PsrAppPageOptions";
 import {PsrAppPermissionService} from "../permission";
 import {PsrAppUserProfileService} from "../store";
-import {PsrAppWidgetCatalog} from "@/libs/commons/psr/app-context/widget-manager/types/PsrAppWidget";
+import {PsrAppWidgetCatalogRaw} from "@/libs/commons/psr/app-context/widget-manager/types/PsrAppWidgetRaw";
 
 export interface PsrAppContextOptions {
     layouts: PsrAppLayoutOptions[]
@@ -11,5 +11,5 @@ export interface PsrAppContextOptions {
     userProfileService?: PsrAppUserProfileService,
     storePlugins?: StorePlugin<any>[],
     pages: PsrAppPageOptions,
-    widgets: PsrAppWidgetCatalog[]
+    widgets: PsrAppWidgetCatalogRaw[]
 }

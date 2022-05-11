@@ -1,17 +1,16 @@
 import {Component} from "vue";
 
-export interface PsrAppWidget {
+export interface PsrAppWidgetRaw {
     name: string,
     title: string,
     iconCls?: string,
     component: Component,
-    permissions: string[] | false,
-    nameRaw: string
+    permissions: string[] | false
 }
 
-export interface PsrAppWidgetCatalog {
+export interface PsrAppWidgetCatalogRaw {
     name: string,
     title: string,
     iconCls?: string,
-    widgets: PsrAppWidget[]
+    widgets: PsrAppWidgetRaw[]
 }
