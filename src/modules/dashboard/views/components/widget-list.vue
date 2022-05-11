@@ -20,13 +20,13 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {useWidgetManager} from "@/libs/commons/psr/app-context/widget-manager";
+import {useAppContext} from "@/libs/commons/psr/app-context";
 
 export default defineComponent({
   name: "widget-list",
   emits: ['addWidget'],
   setup() {
-    const widgetManager = useWidgetManager()
+    const widgetManager = useAppContext().widget
     return {
       widgets: widgetManager.widgetCatalogs
     }
