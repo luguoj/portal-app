@@ -4,3 +4,4 @@ export * from './types/PsrAppTokenService';
 export * from "./PsrAppTokenProvider";
 export * from "./applyTokenInterceptor";
 export * from "./types/PsrAppTokenInfo";
+export * from "./types/PsrAppTokenEvent"

@@ -1,10 +1,14 @@
 // 未认证
-import {reactive, UnwrapNestedRefs} from "vue";
+import {reactive, UnwrapNestedRefs, watch} from "vue";
 import {PsrAppTokenService} from "./types/PsrAppTokenService";
 import {PsrAppPlugin} from "@/libs/commons/psr/app-context";
+import {createEventHook} from "@vueuse/core";
 import {PsrAppTokenInfo} from "@/libs/commons/psr/app-context/plugins/token/types/PsrAppTokenInfo";
+import {PsrAppTokenStateChangeEvent} from "@/libs/commons/psr/app-context/plugins/token/types/PsrAppTokenEvent";
 
 export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
+    private readonly _stateChangeEvent = createEventHook<PsrAppTokenStateChangeEvent>()
+    readonly onStateChange = this._stateChangeEvent.on
     // 令牌服务
     protected readonly _tokenService: TS;
     // 令牌信息
@@ -23,6 +27,9 @@ export class PsrAppToken<TS extends PsrAppTokenService> extends PsrAppPlugin {
             access_token: '',
             token_type: null,
             expires_at: null
+        })
+        watch(() => this._tokenInfo.authentication, (newState, oldState) => {
+            this._stateChangeEvent.trigger({newState, oldState})
         })
         this._flushing = null
     }
