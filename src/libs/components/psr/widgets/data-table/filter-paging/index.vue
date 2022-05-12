@@ -30,7 +30,7 @@
             v-for="limit in model.limitSelectOptions"
             :key="limit"
             :value="limit"
-            :lable="limit"
+            :label="limit"
         />
       </el-select>
     </template>
