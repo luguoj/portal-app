@@ -1,6 +1,6 @@
 <template>
   <router-view v-slot="{Component}">
-    <keep-alive :include="['psr-dashboard-list']">
+    <keep-alive :include="['admin-console-portal-dashboard-list']">
       <component :is="Component"/>
     </keep-alive>
   </router-view>
@@ -10,7 +10,7 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "psr-dashboard"
+  name: "admin-console-portal-dashboard"
 })
 </script>
 

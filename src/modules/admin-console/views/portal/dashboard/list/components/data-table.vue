@@ -21,9 +21,7 @@
         :expander="true"
     >
       <template #body="{node:{key,data}}">
-        <router-link :to="{name:displayRoute,params:{templateId:data.id}}">
           {{ data.path }}
-        </router-link>
       </template>
       <template #filter>
         <el-input v-model="model.filters.path"/>
@@ -107,14 +105,14 @@ import {ElMessage, ElMessageBox} from "element-plus/es";
 import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-action/index.vue";
 import PsrAsyncActionDropdownItem from "@/libs/components/psr/widgets/dropdown-item/async-action/index.vue";
 import {DashboardTemplateEntity, GroupEntity} from "@/services/portal/types";
-import {ROUTE_DASHBOARD_DESIGN, ROUTE_DASHBOARD_DISPLAY, ROUTE_DASHBOARD_LIST} from "@/modules/dashboard/route";
 import {portalService} from "@/services/portal";
 import {PsrFilterTreeTableModel} from "@/libs/components/psr/widgets/tree-table/filter/PsrFilterTreeTableModel";
 import PsrFilterTreeTable from "@/libs/components/psr/widgets/tree-table/filter/index.vue";
 import PTreeTable from "primevue/treetable";
 import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
-import DashboardTemplateTypeSelect from "@/modules/dashboard/views/list/components/dashboard-template-type-select.vue";
+import DashboardTemplateTypeSelect from "@/modules/admin-console/views/portal/dashboard/list/components/dashboard-template-type-select.vue";
 import DashboardTemplateTypes from "@/services/portal/dictionary/DashboardTemplateTypes";
+import {ROUTE_PORTAL_DASHBOARD_DESIGN, ROUTE_PORTAL_DASHBOARD_LIST} from "@/modules/admin-console/route";
 
 export default defineComponent({
   name: "data-table",
@@ -137,11 +135,10 @@ export default defineComponent({
   setup(props, context) {
     const appContext = useAppContext()
     const router = appContext.router
-    const displayRoute = router.computeModuleRouteName(ROUTE_DASHBOARD_DISPLAY.name)
-    const designRoute = router.computeModuleRouteName(ROUTE_DASHBOARD_DESIGN.name)
-    const canRouteDesign = usePermissionFlag('route', ROUTE_DASHBOARD_DESIGN.name)
-    const canDelete = usePermissionFlag('route', ROUTE_DASHBOARD_LIST.name, ['delete'])
-    const canEdit = usePermissionFlag('route', ROUTE_DASHBOARD_LIST.name, ['edit'])
+    const designRoute = router.computeModuleRouteName(ROUTE_PORTAL_DASHBOARD_DESIGN.name)
+    const canRouteDesign = usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_DESIGN.name)
+    const canDelete = usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_LIST.name, ['delete'])
+    const canEdit = usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_LIST.name, ['edit'])
     watchEffect(() => {
       if (!canDelete.value && !canEdit.value) {
         props.model.filters.enabled = true
@@ -169,7 +166,6 @@ export default defineComponent({
           })
         }).catch(() => true)
       },
-      displayRoute,
       designRoute,
       canEdit,
       canDelete,

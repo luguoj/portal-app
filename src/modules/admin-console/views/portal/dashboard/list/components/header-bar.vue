@@ -24,8 +24,8 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import PsrToolbar from "@/libs/components/psr/widgets/toolbar/base/index.vue";
-import {ROUTE_DASHBOARD_LIST} from "@/modules/dashboard/route";
 import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
+import {ROUTE_PORTAL_DASHBOARD_LIST} from "@/modules/admin-console/route";
 
 export default defineComponent({
   name: "header-bar",
@@ -34,7 +34,7 @@ export default defineComponent({
   },
   emits: ['add', 'find', 'clearFilters'],
   setup() {
-    const canAdd = usePermissionFlag('route', ROUTE_DASHBOARD_LIST.name, ['add'])
+    const canAdd = usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_LIST.name, ['add'])
     return {
       canAdd
     }

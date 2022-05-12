@@ -87,7 +87,7 @@ if (typeof process.env.VUE_APP_PORTAL_ID !== 'string') {
 }
 const portalId: string = process.env.VUE_APP_PORTAL_ID
 export default defineComponent({
-  name: "psr-dashboard-list",
+  name: "admin-console-portal-dashboard-list",
   components: {
     HeaderBar,
     EditDialog,

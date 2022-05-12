@@ -18,7 +18,7 @@ export const ROUTE_PORTAL_PERMISSION: PsrAppRouteRecordRaw = {
     name: MODULE_PORTAL_NAME + '/permission',
     path: MODULE_PORTAL_NAME + '/permission',
     component: () => import("../views/portal/permission/index.vue"),
-    meta: {tag: {title: '门户功能许可', iconCls: 'pi pi-key'}, permissions: []},
+    meta: {tag: {title: '功能许可', iconCls: 'pi pi-key'}, permissions: []},
     children: [ROUTE_PORTAL_PERMISSION_LIST, ROUTE_PORTAL_PERMISSION_GROUP]
 }
 export const ROUTE_PORTAL_USER_LIST: PsrAppRouteRecordRaw = {
@@ -38,7 +38,7 @@ export const ROUTE_PORTAL_USER: PsrAppRouteRecordRaw = {
     name: MODULE_PORTAL_NAME + '/user',
     path: MODULE_PORTAL_NAME + '/user',
     component: () => import("../views/portal/user/index.vue"),
-    meta: {tag: {title: '门户用户', iconCls: 'pi pi-users'}, permissions: []},
+    meta: {tag: {title: '用户', iconCls: 'pi pi-users'}, permissions: []},
     children: [ROUTE_PORTAL_USER_LIST, ROUTE_PORTAL_USER_GROUP]
 }
 export const ROUTE_PORTAL_GROUP_LIST: PsrAppRouteRecordRaw = {
@@ -65,6 +65,27 @@ export const ROUTE_PORTAL_GROUP: PsrAppRouteRecordRaw = {
     name: MODULE_PORTAL_NAME + '/group',
     path: MODULE_PORTAL_NAME + '/group',
     component: () => import("../views/portal/group/index.vue"),
-    meta: {tag: {title: '门户用户分组', iconCls: 'pi pi-tag'}, permissions: []},
+    meta: {tag: {title: '用户分组', iconCls: 'pi pi-tag'}, permissions: []},
     children: [ROUTE_PORTAL_GROUP_LIST, ROUTE_PORTAL_GROUP_PERMISSION, ROUTE_PORTAL_GROUP_USER]
+}
+
+export const ROUTE_PORTAL_DASHBOARD_LIST: PsrAppRouteRecordRaw = {
+    name: MODULE_PORTAL_NAME + '/dashboard/list',
+    path: '',
+    component: () => import("../views/portal/dashboard/list/index.vue"),
+    meta: {tag: {title: '清单'}, permissions: ['add', 'delete', 'edit']}
+}
+export const ROUTE_PORTAL_DASHBOARD_DESIGN: PsrAppRouteRecordRaw = {
+    name: MODULE_PORTAL_NAME + '/dashboard/design',
+    path: ':templateId/design',
+    component: () => import("../views/portal/dashboard/design/index.vue"),
+    props: true,
+    meta: {tag: {title: '设计'}, permissions: []}
+}
+export const ROUTE_PORTAL_DASHBOARD: PsrAppRouteRecordRaw = {
+    name: MODULE_PORTAL_NAME + '/dashboard',
+    path: MODULE_PORTAL_NAME + '/dashboard',
+    component: () => import("../views/portal/dashboard/index.vue"),
+    meta: {tag: {title: '仪表盘', iconCls: 'pi pi-chart-bar'}, permissions: []},
+    children: [ROUTE_PORTAL_DASHBOARD_LIST, ROUTE_PORTAL_DASHBOARD_DESIGN]
 }

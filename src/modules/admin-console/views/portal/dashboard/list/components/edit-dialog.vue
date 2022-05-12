@@ -25,7 +25,7 @@ import {defineComponent, PropType} from "vue";
 import {DashboardTemplateEntity} from "@/services/portal/types";
 import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/create-update-form/PsrCreateUpdateFormDialogModel";
 import PsrCreateUpdateFormDialog from "@/libs/components/psr/dialogs/create-update-form/index.vue";
-import DashboardTemplateTypeSelect from "@/modules/dashboard/views/list/components/dashboard-template-type-select.vue";
+import DashboardTemplateTypeSelect from "@/modules/admin-console/views/portal/dashboard/list/components/dashboard-template-type-select.vue";
 
 export default defineComponent({
   name: "edit-dialog",
