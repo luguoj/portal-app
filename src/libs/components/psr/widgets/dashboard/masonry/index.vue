@@ -22,15 +22,13 @@
                  drag-allow-from=".vue-draggable-handle"
                  drag-ignore-from=".no-drag"
       >
-        <div class="vue-draggable-handle" v-show="editing">
+        <div class="vue-draggable-handle-background" v-show="editing">
           {{ item.i }}.{{ item.title }}
         </div>
         <div class="no-drag" style="height:100%;width:100%;">
           <component :is="item.component"></component>
         </div>
-        <div class="vue-draggable-handle" v-show="editing">
-          {{ item.i }}.{{ item.title }}
-        </div>
+        <div class="vue-draggable-handle" v-show="editing"/>
       </grid-item>
     </grid-layout>
   </div>
@@ -123,8 +121,16 @@ export default defineComponent({
   top: 0;
   width: 100%;
   height: 100%;
-  background: black;
-  opacity: 0.05;
+}
+
+.vue-draggable-handle-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--el-border-color-extra-light);
+  opacity: 0.8;
   border: var(--psr-border)
 }
 </style>
