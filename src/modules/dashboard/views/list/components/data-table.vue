@@ -1,7 +1,11 @@
 <template>
   <psr-filter-tree-table :model="model">
-    <p-column :hidden="!canEdit&&!canDelete" field="enabled" header="状态" filterMatchMode="equals"
-              style="width:5rem;min-width:5rem;max-width:5rem;">
+    <p-column
+        :hidden="!canEdit&&!canDelete"
+        field="enabled" header="状态"
+        filterMatchMode="equals"
+        style="width:5rem;min-width:5rem;max-width:5rem;"
+    >
       <template #body="{node:{key,data}}">
         <el-icon v-if="data.dashboardTemplate" class="pi" :class="data.enabled?'pi-check':'pi-ban'" style="width:100%;"/>
       </template>
@@ -36,6 +40,20 @@
       </template>
       <template #filter>
         <el-input v-model="model.filters.description"/>
+      </template>
+    </p-column>
+    <p-column
+        field="type"
+        header="类型"
+        :style="{width:'360px'}"
+        :sortable="true"
+        filterMatchMode="equals"
+    >
+      <template #body="{node:{key,data}}">
+        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ DashboardTemplateTypes.get(data.type)?.title }}</div>
+      </template>
+      <template #filter>
+        <dashboard-template-type-select v-model="model.filters.type" clearable/>
       </template>
     </p-column>
     <p-column
@@ -95,10 +113,13 @@ import {PsrFilterTreeTableModel} from "@/libs/components/psr/widgets/tree-table/
 import PsrFilterTreeTable from "@/libs/components/psr/widgets/tree-table/filter/index.vue";
 import PTreeTable from "primevue/treetable";
 import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
+import DashboardTemplateTypeSelect from "@/modules/dashboard/views/list/components/dashboard-template-type-select.vue";
+import DashboardTemplateTypes from "@/services/portal/dictionary/DashboardTemplateTypes";
 
 export default defineComponent({
   name: "data-table",
   components: {
+    DashboardTemplateTypeSelect,
     PsrFilterTreeTable,
     PTreeTable,
     PColumn,
@@ -152,7 +173,8 @@ export default defineComponent({
       designRoute,
       canEdit,
       canDelete,
-      canRouteDesign
+      canRouteDesign,
+      DashboardTemplateTypes
     }
   }
 })

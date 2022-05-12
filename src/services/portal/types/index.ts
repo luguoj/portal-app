@@ -15,8 +15,9 @@ export interface UserGroupEntity extends Entity {
     userId?: string,
     groupId?: string
 }
-
+export type DashboardTemplateType = 'masonry' | 'big-screen'
 export interface DashboardTemplateEntity extends DictionaryEntryEntity {
     portalId?: string
-    content: string
+    type?: DashboardTemplateType
+    content?: string
 }

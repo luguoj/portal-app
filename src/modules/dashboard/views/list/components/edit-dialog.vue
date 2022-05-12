@@ -10,6 +10,9 @@
       <el-form-item label="描述">
         <el-input v-model="formData.description"/>
       </el-form-item>
+      <el-form-item label="类型" :disabled="!creating">
+        <dashboard-template-type-select v-model="formData.type"/>
+      </el-form-item>
       <el-form-item label="激活">
         <el-switch v-model="formData.enabled"/>
       </el-form-item>
@@ -22,10 +25,12 @@ import {defineComponent, PropType} from "vue";
 import {DashboardTemplateEntity} from "@/services/portal/types";
 import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/create-update-form/PsrCreateUpdateFormDialogModel";
 import PsrCreateUpdateFormDialog from "@/libs/components/psr/dialogs/create-update-form/index.vue";
+import DashboardTemplateTypeSelect from "@/modules/dashboard/views/list/components/dashboard-template-type-select.vue";
 
 export default defineComponent({
   name: "edit-dialog",
   components: {
+    DashboardTemplateTypeSelect,
     PsrCreateUpdateFormDialog
   },
   props: {

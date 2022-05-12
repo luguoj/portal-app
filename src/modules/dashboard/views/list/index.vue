@@ -26,7 +26,7 @@ import {defineComponent} from "vue";
 import HeaderBar from "./components/header-bar.vue";
 import EditDialog from "./components/edit-dialog.vue";
 import DataTable from "./components/data-table.vue";
-import {DashboardTemplateEntity} from "@/services/portal/types";
+import {DashboardTemplateEntity, DashboardTemplateType} from "@/services/portal/types";
 import {portalService} from "@/services/portal";
 import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/create-update-form/PsrCreateUpdateFormDialogModel";
 import {PsrFilterTreeTableModel} from "@/libs/components/psr/widgets/tree-table/filter/PsrFilterTreeTableModel";
@@ -38,6 +38,7 @@ interface NodeData {
   code?: string,
   description?: string,
   enabled?: boolean,
+  type?: DashboardTemplateType,
   dashboardTemplate?: DashboardTemplateEntity,
   children: NodeData[]
 }
@@ -72,6 +73,7 @@ function buildNodeData(entities: DashboardTemplateEntity[]): NodeData[] {
         newParentPathNode.id = dashboardTemplateEntity.id!
         newParentPathNode.description = dashboardTemplateEntity.description
         newParentPathNode.enabled = dashboardTemplateEntity.enabled
+        newParentPathNode.type = dashboardTemplateEntity.type
         newParentPathNode.dashboardTemplate = dashboardTemplateEntity
       }
       parentPathNode = newParentPathNode
@@ -104,7 +106,8 @@ export default defineComponent({
         return {
           'path': null,
           'description': null,
-          'enabled': null
+          'enabled': null,
+          'type': null
         }
       }
     })
@@ -116,6 +119,7 @@ export default defineComponent({
           code: '',
           description: '',
           enabled: false,
+          type: 'masonry',
           portalId,
           content: ''
         }
