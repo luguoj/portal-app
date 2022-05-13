@@ -23,7 +23,7 @@
               width:!testing? designViewPortWidth+'px':'unset'
             }"
                 ref="dashboardRef"
-                :editing="!testing"
+                :designing="!testing"
                 :responsive="testing"
                 :layout-options="templateContent"
             />
@@ -201,7 +201,6 @@ export default defineComponent({
   --x-axis-width: v-bind(xAxisWidth);
   background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.0) 4px, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.0) 5px);
   background-size: v-bind(xAxisWidth) 100%;
-  min-height: 100%;
   width: fit-content;
   margin: 15px;
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 50%);
