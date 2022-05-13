@@ -78,8 +78,8 @@
           >删除
           </psr-async-action-button>
           <router-link
-              v-if="canRouteDesign"
-              :to="{name:designRoute,params:{templateId:data.id}}"
+              v-if="canRouteDesign[data.type]"
+              :to="{name:designRoute[data.type],params:{dashboardTemplateId:data.id}}"
               custom
               v-slot="{navigate}"
           >
@@ -112,7 +112,7 @@ import PTreeTable from "primevue/treetable";
 import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
 import DashboardTemplateTypeSelect from "@/modules/admin-console/views/portal/dashboard/list/components/dashboard-template-type-select.vue";
 import DashboardTemplateTypes from "@/services/portal/dictionary/DashboardTemplateTypes";
-import {ROUTE_PORTAL_DASHBOARD_DESIGN, ROUTE_PORTAL_DASHBOARD_LIST} from "@/modules/admin-console/route";
+import {ROUTE_PORTAL_DASHBOARD_DESIGN_BIG_SCREEN, ROUTE_PORTAL_DASHBOARD_DESIGN_MASONRY, ROUTE_PORTAL_DASHBOARD_LIST} from "@/modules/admin-console/route";
 
 export default defineComponent({
   name: "data-table",
@@ -135,8 +135,14 @@ export default defineComponent({
   setup(props, context) {
     const appContext = useAppContext()
     const router = appContext.router
-    const designRoute = router.computeModuleRouteName(ROUTE_PORTAL_DASHBOARD_DESIGN.name)
-    const canRouteDesign = usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_DESIGN.name)
+    const designRoute = {
+      'masonry': router.computeModuleRouteName(ROUTE_PORTAL_DASHBOARD_DESIGN_MASONRY.name),
+      'big-screen': router.computeModuleRouteName(ROUTE_PORTAL_DASHBOARD_DESIGN_BIG_SCREEN.name)
+    }
+    const canRouteDesign = {
+      'masonry': usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_DESIGN_MASONRY.name),
+      'big-screen': usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_DESIGN_BIG_SCREEN.name)
+    }
     const canDelete = usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_LIST.name, ['delete'])
     const canEdit = usePermissionFlag('route', ROUTE_PORTAL_DASHBOARD_LIST.name, ['edit'])
     watchEffect(() => {
