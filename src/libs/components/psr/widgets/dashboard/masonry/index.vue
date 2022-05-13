@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div
+      ref="gridLayoutRef"
+  >
     <grid-layout
-        ref="gridLayoutRef"
+        v-if="!preparing&&activated"
         :layout.sync="layout"
         :colNum="colNum"
         :row-height="30"
@@ -35,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, PropType, ref, watchEffect} from "vue";
+import {defineComponent, nextTick, onActivated, onDeactivated, onMounted, PropType, ref, watchEffect} from "vue";
 import {BlankLayoutOptions, BREAKPOINT_KEYS, BreakpointKey, colNumByBreakpoint, ItemOptions, LayoutOptions, widthByBreakpoint} from "./types/LayoutOptions";
 
 const VueGridLayout = require('vue3-grid-layout/dist/vue-grid-layout.common.js')
@@ -61,6 +63,8 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const preparing = ref(false)
+    const activated = ref(false)
     const gridLayoutRef = ref()
     const width = ref(0)
     onMounted(() => {
@@ -71,34 +75,56 @@ export default defineComponent({
           width.value = 0
         }
       })
-      resizeObserver.observe(gridLayoutRef.value.$el)
+      resizeObserver.observe(gridLayoutRef.value)
     })
     const colNum = ref(1)
     const layout = ref<ItemOptions[]>([])
-    watchEffect(() => {
+
+    function redraw(layoutOptions: LayoutOptions, responsive: boolean, width: number) {
       let breakpoint: BreakpointKey | undefined
       let lastAvailableBreakpoint: BreakpointKey | undefined
       for (let i = 0; i < BREAKPOINT_KEYS.length; i++) {
-        const breakpointKey = BREAKPOINT_KEYS[i];
-        if (width.value >= widthByBreakpoint[breakpointKey] && (props.layoutOptions[breakpointKey].length > 0 || props.responsive == false)) {
+        const breakpointKey = BREAKPOINT_KEYS[i]
+        if (width >= widthByBreakpoint[breakpointKey] && (layoutOptions[breakpointKey].length > 0 || !responsive)) {
           breakpoint = breakpointKey
           break
         }
-        if (props.layoutOptions[breakpointKey].length > 0) {
+        if (layoutOptions[breakpointKey].length > 0) {
           lastAvailableBreakpoint = breakpointKey
         }
       }
       if (breakpoint === undefined) {
         breakpoint = lastAvailableBreakpoint
       }
-      console.log('width:%d,breakpoint:%s', width.value, breakpoint)
-      if (breakpoint) {
+      console.log('width:%d,breakpoint:%s', width, breakpoint)
+      if (breakpoint && (colNum.value !== colNumByBreakpoint[breakpoint] || layout.value !== layoutOptions[breakpoint])) {
+        console.log('draw masonry', width, breakpoint)
+        preparing.value = true
         colNum.value = colNumByBreakpoint[breakpoint]
-        layout.value = props.layoutOptions[breakpoint]
+        layout.value = layoutOptions[breakpoint]
+        nextTick(() => preparing.value = false)
       }
+    }
+
+    onActivated(() => {
+      activated.value = true
+    })
+
+    onDeactivated(() => {
+      activated.value = false
+    })
+
+    onMounted(() => {
+      watchEffect(() => {
+        if (activated.value === true && width.value > 0) {
+          redraw(props.layoutOptions, props.responsive, width.value)
+        }
+      })
     })
     return {
       gridLayoutRef,
+      activated,
+      preparing,
       colNum,
       layout,
       breakpointCol: colNumByBreakpoint
