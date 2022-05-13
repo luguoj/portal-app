@@ -1,17 +1,15 @@
 <template>
   <el-scrollbar
       ref="gridLayoutRef"
-      :style="{
-        height:editing?'fit-content':'100%'
-      }"
+      :height="designing?designerHeight+'px':'100%'"
   >
     <grid-layout
         v-if="!preparing&&activated"
         :layout.sync="layout"
         :colNum="colNum"
         :row-height="30"
-        :is-draggable="editing"
-        :is-resizable="editing"
+        :is-draggable="designing"
+        :is-resizable="designing"
         :is-mirrored="false"
         :vertical-compact="true"
         :margin="[10, 10]"
@@ -27,20 +25,20 @@
                  drag-allow-from=".vue-draggable-handle"
                  drag-ignore-from=".no-drag"
       >
-        <div class="vue-draggable-handle-background" v-show="editing">
+        <div class="vue-draggable-handle-background" v-show="designing">
           {{ item.i }}.{{ item.title }}
         </div>
         <div class="no-drag" style="height:100%;width:100%;">
           <component v-if="layoutCompleted" :is="item.component"></component>
         </div>
-        <div class="vue-draggable-handle" v-show="editing"/>
+        <div class="vue-draggable-handle" v-show="designing"/>
       </grid-item>
     </grid-layout>
   </el-scrollbar>
 </template>
 
 <script lang="ts">
-import {defineComponent, nextTick, onActivated, onDeactivated, onMounted, PropType, ref, watchEffect} from "vue";
+import {computed, defineComponent, nextTick, onActivated, onDeactivated, onMounted, PropType, ref, watchEffect} from "vue";
 import {BlankLayoutOptions, BREAKPOINT_KEYS, BreakpointKey, colNumByBreakpoint, ItemOptions, LayoutOptions, widthByBreakpoint} from "./types/LayoutOptions";
 
 const VueGridLayout = require('vue3-grid-layout/dist/vue-grid-layout.common.js')
@@ -52,7 +50,7 @@ export default defineComponent({
     GridItem: VueGridLayout.GridItem
   },
   props: {
-    editing: {
+    designing: {
       type: Boolean,
       default: false
     },
@@ -142,6 +140,15 @@ export default defineComponent({
         }
       })
     })
+
+    const designerHeight = computed<number>(() => {
+      let height: number = 10
+      for (const layoutItem of layout.value) {
+        const bottom = (layoutItem.h + layoutItem.y) * 40 + 10
+        height = height > bottom ? height : bottom
+      }
+      return height
+    })
     return {
       gridLayoutRef,
       activated,
@@ -149,7 +156,8 @@ export default defineComponent({
       layoutCompleted,
       colNum,
       layout,
-      breakpointCol: colNumByBreakpoint
+      breakpointCol: colNumByBreakpoint,
+      designerHeight
     }
   }
 })
