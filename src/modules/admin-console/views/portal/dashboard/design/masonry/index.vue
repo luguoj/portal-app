@@ -7,6 +7,8 @@
           @refresh="handleRefresh"
           @save="handleSave"
           @run-test="handleRunTest"
+          @export="handleExport"
+          @import="handleImport"
       >
         <header-bar-tools-masonry v-model:breakpoint="designBreakpoint"/>
       </design-header-bar>
@@ -48,6 +50,8 @@ import WidgetList from "@/modules/admin-console/views/portal/dashboard/component
 import {PsrAppWidget, PsrAppWidgetManager} from "@/libs/commons/psr/app-context/widget-manager";
 import {PsrMasonryDashboardTemplateItemRaw, PsrMasonryDashboardTemplateRaw} from "@/modules/admin-console/types/PsrMasonryDashboardTemplateRaw";
 import {useAppContext} from "@/libs/commons/psr/app-context";
+import FileSaver from "file-saver";
+import moment from "moment";
 
 function extractTemplate(content: string | undefined, widgetManager: PsrAppWidgetManager): LayoutOptions {
   const template = BlankLayoutOptions()
@@ -173,6 +177,16 @@ export default defineComponent({
       return (designViewPortWidth.value - 10) / colNumByBreakpoint[designBreakpoint.value] + 'px'
     })
 
+    function handleExport() {
+      const fileContent = new Blob([buildTemplateContent(templateContent.value)], {type: 'text/plain;charset=utf-8'})
+      const timestamp = moment().format('YYYYMMDD-HHmmss')
+      FileSaver.saveAs(fileContent, `${dashboardTemplateEntity.value.code}-${timestamp}.masonry.design`)
+    }
+
+    function handleImport() {
+
+    }
+
     onMounted(() => {
       handleRefresh()
     })
@@ -188,6 +202,8 @@ export default defineComponent({
       handleSave,
       handleRunTest,
       addWidget,
+      handleExport,
+      handleImport,
       designBreakpoint,
       designViewPortWidth,
       xAxisWidth
