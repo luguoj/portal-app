@@ -1,6 +1,9 @@
 <template>
-  <div
+  <el-scrollbar
       ref="gridLayoutRef"
+      :style="{
+        height:editing?'fit-content':'100%'
+      }"
   >
     <grid-layout
         v-if="!preparing&&activated"
@@ -33,7 +36,7 @@
         <div class="vue-draggable-handle" v-show="editing"/>
       </grid-item>
     </grid-layout>
-  </div>
+  </el-scrollbar>
 </template>
 
 <script lang="ts">
@@ -77,7 +80,7 @@ export default defineComponent({
           width.value = 0
         }
       })
-      resizeObserver.observe(gridLayoutRef.value)
+      resizeObserver.observe(gridLayoutRef.value.$el)
     })
     const colNum = ref(1)
     const layout = ref<ItemOptions[]>([])
