@@ -28,7 +28,7 @@
           {{ item.i }}.{{ item.title }}
         </div>
         <div class="no-drag" style="height:100%;width:100%;">
-          <component :is="item.component"></component>
+          <component v-if="layoutCompleted" :is="item.component"></component>
         </div>
         <div class="vue-draggable-handle" v-show="editing"/>
       </grid-item>
@@ -65,6 +65,8 @@ export default defineComponent({
   setup(props) {
     const preparing = ref(false)
     const activated = ref(false)
+    const layoutCompleted = ref(false)
+    let layoutTimer: NodeJS.Timeout | null = null
     const gridLayoutRef = ref()
     const width = ref(0)
     onMounted(() => {
@@ -100,11 +102,27 @@ export default defineComponent({
       if (breakpoint && (colNum.value !== colNumByBreakpoint[breakpoint] || layout.value !== layoutOptions[breakpoint])) {
         console.log('draw masonry', width, breakpoint)
         preparing.value = true
+        layoutCompleted.value = false
         colNum.value = colNumByBreakpoint[breakpoint]
         layout.value = layoutOptions[breakpoint]
-        nextTick(() => preparing.value = false)
+        nextTick(() => {
+          preparing.value = false
+        })
       }
     }
+
+    watchEffect(() => {
+      if (!activated.value || preparing.value) {
+        layoutCompleted.value = false
+      } else {
+        if (layoutTimer) {
+          clearTimeout(layoutTimer)
+        }
+        layoutTimer = setTimeout(() => {
+          layoutCompleted.value = true
+        })
+      }
+    })
 
     onActivated(() => {
       activated.value = true
@@ -125,6 +143,7 @@ export default defineComponent({
       gridLayoutRef,
       activated,
       preparing,
+      layoutCompleted,
       colNum,
       layout,
       breakpointCol: colNumByBreakpoint
