@@ -6,10 +6,10 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "admin-console-portal-dashboard-design"
+  name: "header-bar-tools-big-screen"
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
