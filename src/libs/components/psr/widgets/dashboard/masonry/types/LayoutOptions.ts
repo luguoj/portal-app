@@ -13,12 +13,14 @@ export interface LayoutOptions {
     xxs: ItemOptions[]
 }
 
-export const BlankLayoutOptions: LayoutOptions = {
-    lg: [],
-    md: [],
-    sm: [],
-    xs: [],
-    xxs: []
+export function BlankLayoutOptions(): LayoutOptions {
+    return {
+        lg: [],
+        md: [],
+        sm: [],
+        xs: [],
+        xxs: []
+    }
 }
 
 export interface ItemOptions {
