@@ -15,23 +15,36 @@
     <el-divider direction="vertical"/>
     <span>模板: {{ templateCode }}</span>
     <el-divider direction="vertical"/>
-    <el-button class="button" @click="$emit('refresh')">
+    <el-button @click="$emit('refresh')">
       <template #icon>
         <el-icon class="pi pi-refresh"/>
       </template>
       刷新
     </el-button>
-    <el-button class="button" @click="$emit('save')" :disabled="!dirty">
+    <el-button @click="$emit('save')" :disabled="!dirty">
       <template #icon>
         <el-icon class="pi pi-save"/>
       </template>
       保存
     </el-button>
-    <el-button class="button" @click="$emit('runTest')">
+    <el-button @click="$emit('runTest')">
       <template #icon>
         <el-icon class="pi pi-caret-right"/>
       </template>
       测试
+    </el-button>
+    <el-divider direction="vertical"/>
+    <el-button @click="$emit('export')">
+      <template #icon>
+        <el-icon class="pi pi-download"/>
+      </template>
+      导出
+    </el-button>
+    <el-button @click="$emit('import')">
+      <template #icon>
+        <el-icon class="pi pi-upload"/>
+      </template>
+      导入
     </el-button>
     <el-divider direction="vertical"/>
     <slot/>
@@ -51,7 +64,7 @@ export default defineComponent({
     templateCode: String,
     dirty: Boolean
   },
-  emits: ['refresh', 'save', 'runTest'],
+  emits: ['refresh', 'save', 'runTest', 'export', 'import'],
   setup() {
     const backRouteName = useAppContext().router.computeModuleRouteName(ROUTE_PORTAL_DASHBOARD_LIST.name)
     return {
