@@ -2,6 +2,7 @@
   <el-container style="height: 100%;" v-loading="loading||saving">
     <el-header class="fit">
       <design-header-bar
+          :template-type="dashboardTemplateEntity.type"
           :template-code="dashboardTemplateEntity.code"
           :dirty="dirtyData.flag"
           @refresh="handleRefresh"
@@ -183,8 +184,8 @@ export default defineComponent({
       FileSaver.saveAs(fileContent, `${dashboardTemplateEntity.value.code}-${timestamp}.masonry.design`)
     }
 
-    function handleImport() {
-
+    function handleImport(templateFileContent?: string) {
+      templateContent.value = extractTemplate(templateFileContent, widgetManager)
     }
 
     onMounted(() => {
