@@ -1,0 +1,16 @@
+$class-prefix: "psr-sample-page-widget";
+.psr-widget-catalog-icon {
+  &.#{$class-prefix}-chart {
+    background-image: url("../images/widget-thumbnails/charts/catalog-icon.svg");
+  }
+}
+
+.psr-widget-thumbnail {
+  &.#{$class-prefix}-chart-line {
+    background-image: url("../images/widget-thumbnails/charts/line.png");
+  }
+
+  &.#{$class-prefix}-chart-radar {
+    background-image: url("../images/widget-thumbnails/charts/radar.png");
+  }
+}
