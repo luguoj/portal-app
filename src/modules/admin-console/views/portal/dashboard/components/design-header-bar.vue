@@ -40,12 +40,15 @@
       </template>
       导出
     </el-button>
-    <el-button @click="$emit('import')">
+    <psr-read-file-button
+        :accept="`.${templateType}.design`"
+        @load="$emit('import',$event)"
+    >
       <template #icon>
         <el-icon class="pi pi-upload"/>
       </template>
       导入
-    </el-button>
+    </psr-read-file-button>
     <el-divider direction="vertical"/>
     <slot/>
   </psr-toolbar>
@@ -56,11 +59,13 @@ import PsrToolbar from "@/libs/components/psr/widgets/toolbar/base/index.vue";
 import {useAppContext} from "@/libs/commons/psr/app-context";
 import {ROUTE_PORTAL_DASHBOARD_LIST} from "@/modules/admin-console/route";
 import {defineComponent} from "vue";
+import PsrReadFileButton from "@/libs/components/psr/widgets/button/read-file/index.vue";
 
 export default defineComponent({
   name: "design-header-bar",
-  components: {PsrToolbar},
+  components: {PsrReadFileButton, PsrToolbar},
   props: {
+    templateType: String,
     templateCode: String,
     dirty: Boolean
   },
