@@ -3,7 +3,6 @@ import {Component} from "vue";
 export interface PsrAppWidget {
     name: string,
     title: string,
-    iconCls?: string,
     thumbnailCls?: string,
     component: Component,
     permissions: string[] | false,
