@@ -26,12 +26,14 @@
                  drag-ignore-from=".no-drag"
       >
         <div class="vue-draggable-handle-background" v-show="designing">
-          {{ item.i }}.{{ item.title }}
         </div>
         <div class="no-drag" style="height:100%;width:100%;">
           <component v-if="layoutCompleted" :is="item.component"></component>
         </div>
-        <div class="vue-draggable-handle" v-show="designing"/>
+        <div class="vue-draggable-handle" v-show="designing">
+          {{ item.i }}.{{ item.title }}
+        </div>
+        <el-icon class="remove pi pi-times" @click="handleRemove(item)" v-show="designing"/>
       </grid-item>
     </grid-layout>
   </el-scrollbar>
@@ -149,6 +151,11 @@ export default defineComponent({
       }
       return height
     })
+
+    function handleRemove(item: ItemOptions) {
+      layout.value.splice(layout.value.indexOf(item), 1)
+    }
+
     return {
       gridLayoutRef,
       activated,
@@ -157,7 +164,8 @@ export default defineComponent({
       colNum,
       layout,
       breakpointCol: colNumByBreakpoint,
-      designerHeight
+      designerHeight,
+      handleRemove
     }
   }
 })
@@ -177,6 +185,10 @@ export default defineComponent({
   top: 0;
   width: 100%;
   height: 100%;
+  padding: 5px;
+  &:hover {
+    color: var(--el-color-primary);
+  }
 }
 
 .vue-draggable-handle-background {
@@ -187,6 +199,17 @@ export default defineComponent({
   height: 100%;
   background: var(--el-border-color-extra-light);
   opacity: 0.8;
-  border: var(--psr-border)
+  border: var(--psr-border);
+}
+
+.remove {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+
+  &:hover {
+    cursor: pointer;
+    color: var(--el-color-primary);
+  }
 }
 </style>
