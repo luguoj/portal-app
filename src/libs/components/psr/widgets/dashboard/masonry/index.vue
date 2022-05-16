@@ -27,7 +27,7 @@
       >
         <div class="vue-draggable-handle-background" v-show="designing">
         </div>
-        <div class="no-drag" style="height:100%;width:100%;">
+        <div class="no-drag" :style="{height:'100%',width:'100%',opacity:designing?0.3:1}">
           <component v-if="layoutCompleted" :is="item.component"></component>
         </div>
         <div class="vue-draggable-handle" v-show="designing">
