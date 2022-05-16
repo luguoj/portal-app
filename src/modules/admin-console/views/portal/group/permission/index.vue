@@ -62,7 +62,7 @@ function buildWidgetPermissionData(
         id: 'widget-' + widget.name,
         nameRaw: widget.nameRaw,
         title: widget.title,
-        iconCls: widget.iconCls,
+        iconCls: widget.thumbnailCls,
         permissionUsage: 'widget',
         permissionKey,
         permissions: widget.permissions ? widget.permissions : undefined,
