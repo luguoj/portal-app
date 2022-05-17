@@ -44,7 +44,7 @@ export const ROUTE_SAMPLE_PARENT: PsrAppRouteRecordRaw = {
             tag: {
                 title: '样例子页面1'
             },
-            permissions: false
+            permissions: []
         },
         component: () => import('@/modules/sample-page/views/SampleChildPage.vue'),
         props: true,
