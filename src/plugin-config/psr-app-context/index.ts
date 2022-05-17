@@ -41,7 +41,7 @@ export const appContext = createAppContext({
         find: () => {
             return portalService.user.findProfileByPortalId()
         },
-        update: (content: string) => {
+        update: (content: any) => {
             return portalService.user.updateProfileByPortalId(content)
         }
     },
