@@ -4,6 +4,7 @@ import deepmerge from "deepmerge";
 import {PsrAppUserProfileService} from "./types/PsrAppUserProfileService";
 import {ref} from "vue";
 import {ElMessageBox} from "element-plus";
+import {cloneDeep, isEqual} from "lodash";
 
 export class PsrAppStore {
     private readonly _storeOptions: StoreOptions<PsrAppStoreRootState>
@@ -78,18 +79,26 @@ export class PsrAppStore {
         }
     }
 
+    private _lastUserProfileContent: any = null
     updateUserProfile() {
         this.userProfileSynchronized.value = null
-        if (this._userProfileService && this.store.state.username) {
-            return this._userProfileService.update(this.store.state).then(success => {
+        const newState = cloneDeep(this.store.state)
+        if (isEqual(this._lastUserProfileContent, newState)) {
+            this.userProfileSynchronized.value = true
+            return Promise.resolve()
+        }
+        if (this._userProfileService && newState.username) {
+            return this._userProfileService.update(newState).then(success => {
                 if (success) {
+                    this._lastUserProfileContent = newState
                     this.userProfileSynchronized.value = true
                 }
             }).catch(() => {
                 this.userProfileSynchronized.value = false
             })
         } else {
-            localStorage.setItem('psr-app-context-state', JSON.stringify(this.store.state))
+            localStorage.setItem('psr-app-context-state', JSON.stringify(newState))
+            this._lastUserProfileContent = newState
             this.userProfileSynchronized.value = true
             return Promise.resolve()
         }
