@@ -1,11 +1,4 @@
-import {
-    FilterOptions,
-    Sign,
-    Operation,
-    ValueRange,
-    ValueType,
-    NullableValueType, NullableCollectType, CollectType
-} from "@/libs/services/psr-entity-crud/FilterOptions"
+import {CollectType, FilterOptions, NullableCollectType, NullableValueType, Operation, Sign, ValueRange, ValueType} from "@/libs/services/psr-entity-crud/FilterOptions"
 
 export class FilterOptionsBuilder {
     private readonly filterOptions: FilterOptions;
@@ -26,11 +19,11 @@ export class FilterOptionsBuilder {
 }
 
 function checkValue(value: NullableValueType): value is ValueType {
-    return value !== null && value !== ''
+    return value !== undefined && value !== null && value !== ''
 }
 
 function checkCollect(collect: NullableCollectType): collect is CollectType {
-    return collect !== null && collect.length > 0
+    return collect !== undefined && collect !== null && collect.length > 0
 }
 
 class ValueRangesBuilder {
