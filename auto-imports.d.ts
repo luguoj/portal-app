@@ -12,6 +12,7 @@ declare global {
   const ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
   const ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
   const ElContainer: typeof import('element-plus/es')['ElContainer']
+  const ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
   const ElDialog: typeof import('element-plus/es')['ElDialog']
   const ElDivider: typeof import('element-plus/es')['ElDivider']
   const ElDropdown: typeof import('element-plus/es')['ElDropdown']
@@ -22,6 +23,7 @@ declare global {
   const ElHeader: typeof import('element-plus/es')['ElHeader']
   const ElIcon: typeof import('element-plus/es')['ElIcon']
   const ElInput: typeof import('element-plus/es')['ElInput']
+  const ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
   const ElLoadingDirective: typeof import('element-plus/es')['ElLoadingDirective']
   const ElMain: typeof import('element-plus/es')['ElMain']
   const ElMenu: typeof import('element-plus/es')['ElMenu']
@@ -37,6 +39,7 @@ declare global {
   const ElSwitch: typeof import('element-plus/es')['ElSwitch']
   const ElTag: typeof import('element-plus/es')['ElTag']
   const ElTooltip: typeof import('element-plus/es')['ElTooltip']
+  const ElTransfer: typeof import('element-plus/es')['ElTransfer']
   const ElUpload: typeof import('element-plus/es')['ElUpload']
 }
 export {}
