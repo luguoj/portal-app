@@ -37,22 +37,31 @@ export function buildFromPrimeVueDataTableFilters(filters: any) {
                 valueRangesBuilder.iIN(filter.value)
                 break
             case FilterMatchMode.LESS_THAN:
+                valueRangesBuilder.iLT(filter.value)
                 break
             case FilterMatchMode.LESS_THAN_OR_EQUAL_TO:
+                valueRangesBuilder.iLE(filter.value)
                 break
             case FilterMatchMode.GREATER_THAN:
+                valueRangesBuilder.iGT(filter.value)
                 break
             case FilterMatchMode.GREATER_THAN_OR_EQUAL_TO:
+                valueRangesBuilder.iGE(filter.value)
                 break
             case FilterMatchMode.BETWEEN:
+                valueRangesBuilder.iBT(filter.value[0], filter.value[1])
                 break
             case FilterMatchMode.DATE_IS:
+                valueRangesBuilder.iEqual(filter.value)
                 break
             case FilterMatchMode.DATE_IS_NOT:
+                valueRangesBuilder.iNEqual(filter.value)
                 break
             case FilterMatchMode.DATE_BEFORE:
+                valueRangesBuilder.iLT(filter.value)
                 break
             case FilterMatchMode.DATE_AFTER:
+                valueRangesBuilder.iGT(filter.value)
                 break
             default:
         }
