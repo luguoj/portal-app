@@ -20,6 +20,8 @@
       :totalRecords="model.data.totalElements"
       v-model:filters="model.filters"
       filterDisplay="row"
+      stripedRows
+      showGridlines
   >
     <template #empty>
       没有数据.
