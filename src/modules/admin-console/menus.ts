@@ -1,5 +1,6 @@
 import {ROUTE_AUTHORIZATION_USER, ROUTE_PORTAL_DASHBOARD, ROUTE_PORTAL_GROUP, ROUTE_PORTAL_PERMISSION, ROUTE_PORTAL_USER} from "./route";
 import {PsrAppNavigationMenuItemRaw} from "@/libs/commons/psr/app-context/navigation-menu";
+import {ROUTE_ENTITY} from "@/modules/admin-console/route/entity";
 
 export const menus: PsrAppNavigationMenuItemRaw[] = [{
     id: 'admin-console-authorization',
@@ -21,4 +22,6 @@ export const menus: PsrAppNavigationMenuItemRaw[] = [{
     }, {
         route: ROUTE_PORTAL_DASHBOARD
     }]
+}, {
+    route: ROUTE_ENTITY
 }]
