@@ -26,8 +26,9 @@ export function useSignInFrame() {
     })
 
     function goSignIn(principal: PsrAppTokenPrincipal) {
-        if (principal.state === 'not_authenticated'
-            || principal.state === 'certification_expired') {
+        if (signInFrame.value != null
+            && (principal.state === 'not_authenticated'
+                || principal.state === 'certification_expired')) {
             signInFrame.value.src = context.tokenService().baseURL()
         }
     }
