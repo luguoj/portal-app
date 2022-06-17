@@ -10,7 +10,7 @@ export function handleRespData(resp: AxiosResponse) {
 
 export function handleErrorMessage(error: AxiosError) {
     ElMessage({
-        message: `失败. ${error.response?.data.message}`,
+        message: `失败. ${error.message}`,
         type: 'error'
     })
     return Promise.reject(error)
