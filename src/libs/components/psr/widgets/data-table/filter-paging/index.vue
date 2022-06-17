@@ -37,7 +37,7 @@
       </el-select>
     </template>
     <template #paginatorend>
-      <el-button type="text" size="large" @click="handleExport">
+      <el-button link size="large" @click="handleExport">
         <template #icon>
           <el-icon class="pi pi-external-link"/>
         </template>

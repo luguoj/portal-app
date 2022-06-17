@@ -64,14 +64,14 @@
         <el-space v-if="data.dashboardTemplate" wrap>
           <el-button
               v-if="canEdit"
-              type="text"
+              link
               size="small"
               @click="$emit('edit',data.dashboardTemplate)"
           >编辑
           </el-button>
           <psr-async-action-button
               v-if="canDelete"
-              type="text"
+              link
               size="small"
               :action="handleDelete"
               :action-params="data"
@@ -84,7 +84,7 @@
               v-slot="{navigate}"
           >
             <el-button
-                type="text"
+                link
                 size="small"
                 @click="navigate"
             >设计

@@ -50,14 +50,15 @@
         <el-space wrap>
           <el-button
               v-if="canEdit"
-              type="text"
+              link
               size="small"
               @click="$emit('edit',data)"
           >编辑
           </el-button>
           <psr-async-action-button
               v-if="canDelete"
-              type="text" size="small"
+              link
+              size="small"
               :action="handleDelete"
               :action-params="data"
           >删除

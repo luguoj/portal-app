@@ -1,7 +1,7 @@
 <template>
   <div class="ct-path">
     <el-tooltip content="折叠/展开菜单" effect="light">
-      <el-button type="text" @click="toggleNavigationExpansion" class="button icon-only">
+      <el-button link @click="toggleNavigationExpansion" class="button icon-only">
         <template #icon>
           <el-icon class="pi pi-bars"/>
         </template>
@@ -14,7 +14,7 @@
         </psr-horizontal-scroll-bar>
       </transition>
       <el-tooltip content="菜单搜索" effect="light">
-        <el-button type="text" @click.stop="handleShowSearcher" class="button icon-only">
+        <el-button link @click.stop="handleShowSearcher" class="button icon-only">
           <template #icon>
             <el-icon class="pi pi-search"/>
           </template>
@@ -30,7 +30,7 @@
       </transition>
     </div>
     <el-tooltip content="视图标签栏" effect="light">
-      <el-button type="text" @click="toggleTagBarExpansion" class="button icon-only">
+      <el-button link @click="toggleTagBarExpansion" class="button icon-only">
         <template #icon>
           <el-badge :value="cachedRouteCount" :hidden="!tagBarCollapsed||cachedRouteCount===0" type="primary">
             <el-icon class="pi pi-paperclip"/>
@@ -39,7 +39,7 @@
       </el-button>
     </el-tooltip>
     <el-tooltip content="沉浸模式" effect="light">
-      <el-button type="text" @click="toggleImmersive" class="button icon-only">
+      <el-button link @click="toggleImmersive" class="button icon-only">
         <template #icon>
           <el-icon class="pi pi-window-maximize"/>
         </template>
@@ -57,7 +57,7 @@
     </el-popover>
     <router-link v-else :to="{name:'sign-in'}" custom v-slot="{navigate}">
       <el-tooltip content="登入" effect="light">
-        <el-button type="text" class="button icon-only" @click="navigate">
+        <el-button link class="button icon-only" @click="navigate">
           <template #icon>
             <el-icon class="pi pi-sign-in"/>
           </template>

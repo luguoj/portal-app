@@ -5,7 +5,7 @@
         custom
         v-slot="{navigate}"
     >
-      <el-button type="text" @click="navigate">
+      <el-button link @click="navigate">
         <template #icon>
           <el-icon class="pi pi-arrow-left"/>
         </template>
