@@ -1,6 +1,8 @@
 import {PsrAppRouteRecord} from "../../route";
+import {MenuUsage} from "@/libs/commons/psr/app-context/navigation-menu";
 
 export type PsrAppNavigationMenuItem = PsrAppNavigationMenuSubMenu | PsrAppNavigationMenuRoute
+export type PsrAppNavigationMenuItems = Record<MenuUsage, PsrAppNavigationMenuItem[]>
 
 interface PsrAppNavigationMenuItemBase {
     id: string

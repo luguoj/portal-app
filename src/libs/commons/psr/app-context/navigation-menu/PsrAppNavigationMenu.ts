@@ -1,17 +1,20 @@
-import {PsrAppNavigationMenuItem} from "./types/PsrAppNavigationMenuItem";
-import {computed, ref, shallowReactive} from "vue";
+import {PsrAppNavigationMenuItem, PsrAppNavigationMenuItems} from "./types/PsrAppNavigationMenuItem";
+import {computed, reactive, ref} from "vue";
 import {filterFromBottom, filterFromRoot} from "@/libs/commons/psr/utils/array-tree";
 import {PsrAppNavigationLayoutItem} from "./types/PsrAppNavigationLayoutItem";
 
 export class PsrAppNavigationMenu {
     readonly layoutItemsRaw: PsrAppNavigationLayoutItem[]
-    readonly menuItemsRaw: Record<string, PsrAppNavigationMenuItem[]>
+    readonly menuItemsRaw: Record<string, PsrAppNavigationMenuItems>
     readonly layoutItems = ref<PsrAppNavigationLayoutItem[]>([])
-    readonly menuItems = shallowReactive<Record<string | symbol, PsrAppNavigationMenuItem[]>>({})
+    readonly menuItems = reactive<Record<string | symbol, PsrAppNavigationMenuItems>>({})
     readonly currentLayoutName = ref<string>('')
-    readonly currentLayoutMenuItems = computed(() => this.menuItems[this.currentLayoutName.value])
+    readonly currentLayoutMenuItems = computed<PsrAppNavigationMenuItems>(() => this.menuItems[this.currentLayoutName.value])
 
-    constructor(options: { layoutItemsRaw: PsrAppNavigationLayoutItem[], menuItemsRaw: Record<string, PsrAppNavigationMenuItem[]> }) {
+    constructor(options: {
+        layoutItemsRaw: PsrAppNavigationLayoutItem[],
+        menuItemsRaw: Record<string, PsrAppNavigationMenuItems>
+    }) {
         this.layoutItemsRaw = options.layoutItemsRaw
         this.menuItemsRaw = options.menuItemsRaw
         this.doFilter(() => false, () => false)
@@ -25,15 +28,18 @@ export class PsrAppNavigationMenu {
             return !item.permissions || filterLayoutItemFn(item)
         })
         for (const layoutName in this.menuItemsRaw) {
-            const filteredMenu = filterFromRoot(this.menuItemsRaw[layoutName], item => {
-                return !item.permissions || filterMenuItemFn(item)
-            })
-            this.menuItems[layoutName] = filterFromBottom(
-                filteredMenu,
-                item => {
-                    return !!item.route || item.children?.length > 0
-                }
-            )
+            this.menuItems[layoutName] = {}
+            for (const menuUsage in this.menuItemsRaw[layoutName]) {
+                const filteredMenu = filterFromRoot(this.menuItemsRaw[layoutName][menuUsage], item => {
+                    return !item.permissions || filterMenuItemFn(item)
+                })
+                this.menuItems[layoutName][menuUsage] = filterFromBottom(
+                    filteredMenu,
+                    item => {
+                        return !!item.route || item.children?.length > 0
+                    }
+                )
+            }
         }
     }
 }

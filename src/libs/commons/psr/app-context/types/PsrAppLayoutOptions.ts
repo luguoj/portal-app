@@ -1,7 +1,7 @@
 import {PsrAppModuleOptions} from "./PsrAppModuleOptions";
 import {Module} from "vuex";
 import {Component} from "vue";
-import {PsrAppNavigationMenuItemRaw} from "../navigation-menu";
+import {PsrAppNavigationMenuItemsRaw} from "../navigation-menu";
 import {PsrAppRouteRecordRaw} from "../route";
 
 export interface PsrAppLayoutOptions {
@@ -13,5 +13,5 @@ export interface PsrAppLayoutOptions {
     modules?: PsrAppModuleOptions[]
     permissions: string[] | false
     routes?: PsrAppRouteRecordRaw[]
-    menus?: PsrAppNavigationMenuItemRaw[]
+    menus?: PsrAppNavigationMenuItemsRaw,
 }
