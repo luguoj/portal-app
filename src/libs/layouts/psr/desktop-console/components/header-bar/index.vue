@@ -45,16 +45,7 @@
         </template>
       </el-button>
     </el-tooltip>
-    <el-popover v-if="username" placement="bottom" trigger="hover">
-      <template #reference>
-        <el-button type="text" class="button icon-only">
-          <template #icon>
-            <el-icon class="pi pi-user"/>
-          </template>
-        </el-button>
-      </template>
-      <user-popover/>
-    </el-popover>
+    <avatar-dropdown v-if="username" class="avatar"/>
     <router-link v-else :to="{name:'sign-in'}" custom v-slot="{navigate}">
       <el-tooltip content="登入" effect="light">
         <el-button link class="button icon-only" @click="navigate">
@@ -72,7 +63,6 @@
 
 <script lang="ts">
 import PsrHorizontalScrollBar from "@/libs/components/psr/widgets/scrollbar/horizontal/index.vue";
-import UserPopover from "./user-popover.vue";
 import RoutePath from "./route-path.vue";
 import MenuSearcher from "./menu-searcher.vue";
 import TagBar from "./tag-bar.vue";
@@ -83,14 +73,15 @@ import {useAppRouteCache} from "@/libs/commons/psr/app-context/plugins/route-cac
 import {useLayoutStoreProxy} from "@/libs/commons/psr/app-context/LayoutStoreProxyProvider";
 import {PsrLayoutDesktopConsoleState} from "@/libs/layouts/psr/desktop-console/store";
 import {useStore} from "vuex";
+import AvatarDropdown from "@/libs/layouts/psr/desktop-console/components/header-bar/avatar-dropdown.vue";
 
 export default defineComponent({
   name: "header-bar",
   components: {
+    AvatarDropdown,
     PsrHorizontalScrollBar,
     MenuSearcher,
     RoutePath,
-    UserPopover,
     TagBar
   },
   setup() {
@@ -175,10 +166,15 @@ export default defineComponent({
     }
   }
 
+  .avatar {
+    vertical-align: middle;
+    margin: 0 10px;
+  }
+
   .ct-middle {
     display: inline-block;
     vertical-align: middle;
-    width: calc(100% - var(--button-width) * 4);
+    width: calc(100% - var(--button-width) * 3 - 60px);
 
     .view-path {
       display: inline-block;
