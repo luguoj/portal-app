@@ -116,8 +116,10 @@ export default defineComponent({
     const menuItemRoutePathByName = computed(() => {
       const result: Record<string | symbol, RoutePathItem[]> = {}
       if (menuItems.value) {
-        for (const menuItem of menuItems.value) {
-          buildRoutePathByNameUseMenuItem(result, menuItem, [])
+        for (const menuUsage in menuItems.value) {
+          for (const menuItem of menuItems.value[menuUsage]) {
+            buildRoutePathByNameUseMenuItem(result, menuItem, [])
+          }
         }
       }
       return result
