@@ -54,7 +54,9 @@ export default defineComponent({
     const fuse = computed(() => {
       const selectOptions: SelectOption[] = []
       if (menuItems.value) {
-        buildSelectOptions(selectOptions, menuItems.value)
+        for (const menuUsage in menuItems.value) {
+          buildSelectOptions(selectOptions, menuItems.value[menuUsage])
+        }
       }
       return new Fuse<SelectOption>(selectOptions, {
         keys: [{
