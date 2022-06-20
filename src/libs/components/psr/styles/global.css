@@ -16,3 +16,7 @@
     --psr-border: 1px solid var(--el-border-color);
     --psr-border-dashed: 2px dashed var(--el-border-color);
 }
+
+.psr-text-center {
+    text-align: center;
+}
