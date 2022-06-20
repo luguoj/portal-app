@@ -16,7 +16,9 @@
       </el-header>
       <el-main class="ct-main">
         <div class="ct-main-inner" ref="mainRef">
-          <work-space/>
+          <el-scrollbar style="height:100%;">
+            <work-space/>
+          </el-scrollbar>
         </div>
       </el-main>
     </el-container>
