@@ -8,7 +8,7 @@ import {createAppContext} from "@/libs/commons/psr/app-context";
 import {tokenContext} from "./token";
 import {routeCache} from "./routeCache";
 import {App} from "@vue/runtime-core";
-import {widgets} from "@/plugin-config/psr-app-context/widget";
+import {widgets} from "@/config/psr-app-context/widget";
 import {PersonalCenter} from "@/modules/personal-center";
 
 export const appContext = createAppContext({

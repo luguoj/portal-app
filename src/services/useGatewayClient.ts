@@ -1,6 +1,6 @@
 import axios from "axios";
 import {stringify} from "qs";
-import {tokenContext} from "@/plugin-config/psr-app-context/token";
+import {tokenContext} from "@/config/psr-app-context/token";
 import {applyTokenInterceptor} from "@/libs/commons/psr/app-context/plugins/token";
 
 export function useGatewayClient(contextPath: string) {
