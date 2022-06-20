@@ -9,6 +9,7 @@ import {tokenContext} from "./token";
 import {routeCache} from "./routeCache";
 import {App} from "@vue/runtime-core";
 import {widgets} from "@/plugin-config/psr-app-context/widget";
+import {PersonalCenter} from "@/modules/personal-center";
 
 export const appContext = createAppContext({
     layouts: [{
@@ -26,7 +27,8 @@ export const appContext = createAppContext({
         title: '管理员桌面',
         iconCls: 'pi pi-cog',
         modules: [
-            Admin
+            Admin,
+            PersonalCenter
         ],
         permissions: []
     }],
