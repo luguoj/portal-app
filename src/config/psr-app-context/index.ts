@@ -10,6 +10,7 @@ import {routeCache} from "./routeCache";
 import {App} from "@vue/runtime-core";
 import {widgets} from "@/config/psr-app-context/widget";
 import {PersonalCenter} from "@/modules/personal-center";
+import {personalService} from "./personal";
 
 export const appContext = createAppContext({
     layouts: [{
@@ -51,7 +52,8 @@ export const appContext = createAppContext({
         signIn: PsrOAuthSSOClientSignIn,
         errorNotFound: PsrErrorNotFound
     },
-    widgets
+    widgets,
+    personalService
 }).useToken(tokenContext).use(routeCache)
 
 export function applyPsrAppContext(app: App) {
