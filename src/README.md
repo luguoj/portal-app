@@ -1,5 +1,5 @@
 # 目录结构
-1. 插件配置 [plugin-config](plugin-config)
+1. 配置 [docsconfig](config)
 2. 模块 [modules](modules/README.md)
 3. 服务 [services](services/README.md)
 4. 库 [libs](libs/README.md)
