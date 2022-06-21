@@ -28,7 +28,6 @@
 
 <script lang="ts">
 import {computed, defineComponent, Ref} from "vue";
-import {useStore} from "vuex";
 import {useAppContext} from "@/libs/commons/psr/app-context";
 import {PsrAppNavigationMenuItem} from "@/libs/commons/psr/app-context/navigation-menu";
 import {ElMessageBox} from "element-plus/es";
@@ -37,12 +36,11 @@ import {PsrAppRouteRecord} from "@/libs/commons/psr/app-context/route";
 export default defineComponent({
   name: "avatar-dropdown",
   setup() {
-    const store = useStore()
     const tokenContext = useAppContext().token!
     const appContext = useAppContext();
     const menuItems: Ref<PsrAppNavigationMenuItem[]> = computed(() => appContext.navigationMenu.currentLayoutMenuItems.value?.userPopover || [])
     return {
-      username: computed(() => store.state.username),
+      username: computed(() => appContext.personal.personal.value.fullName),
       menuItems,
       handleRoute: (route: PsrAppRouteRecord) => {
         appContext.router.router.push({path: route.path});
