@@ -33,15 +33,18 @@
       <el-input v-model="form.resume" type="textarea"/>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="handleSave(formRef)">保存</el-button>
-      <el-button @click="handleReset(formRef)">重置</el-button>
+      <psr-async-action-button type="primary" :action="handleSave">保存</psr-async-action-button>
+      <psr-async-action-button :action="handleReset">重置</psr-async-action-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, ref} from "vue";
+import {defineComponent, onMounted, reactive, ref} from "vue";
 import {FormInstance, FormRules} from "element-plus";
+import {organizationService} from "@/services/organization";
+import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-action/index.vue";
+import {ElMessage} from "element-plus/es";
 
 interface FormModel {
   firstName: string,
@@ -52,7 +55,9 @@ interface FormModel {
 
 export default defineComponent({
   name: "personal-center-personnel",
-  components: {},
+  components: {
+    PsrAsyncActionButton
+  },
   setup() {
     const formRef = ref<FormInstance>()
     const rules = reactive<FormRules>({
@@ -60,24 +65,48 @@ export default defineComponent({
       lastName: [{required: true, message: '请输入姓氏', trigger: 'blur',},],
       resume: [{required: false, message: '请输入简介', trigger: 'blur',},]
     })
-    const handleSave = async (formEl: FormInstance | undefined) => {
-      if (!formEl) return
-      await formEl.validate((valid, fields) => {
-        if (valid) {
-          console.log('submit!')
-        } else {
-          console.log('error submit!', fields)
+    const load = () => {
+      return organizationService.user.findPersonnel().then(userPersonnel => {
+        form.value = {
+          firstName: userPersonnel?.firstName || "",
+          lastName: userPersonnel?.lastName || "",
+          resume: userPersonnel?.resume || ""
         }
       })
     }
-    const handleReset = (formEl: FormInstance | undefined) => {
-      if (!formEl) return
-      formEl.resetFields()
+    const handleSave = () => {
+      const formEl = formRef.value
+      if (!formEl) return Promise.reject()
+      return new Promise(resolve => {
+        formEl.validate((valid, fields) => {
+          if (valid) {
+            return organizationService.user.updatePersonnel(form.value).then(userPersonnel => {
+              form.value = {
+                firstName: userPersonnel?.firstName || "",
+                lastName: userPersonnel?.lastName || "",
+                resume: userPersonnel?.resume || ""
+              }
+              resolve(true)
+              ElMessage({
+                showClose: true,
+                message: '保存成功.',
+                type: 'success'
+              })
+            })
+          }
+        })
+      })
+    }
+    const handleReset = () => {
+      return load()
     }
     const form = ref<FormModel>({
       firstName: "",
       lastName: "",
       resume: ""
+    })
+    onMounted(() => {
+      load()
     })
     return {
       formRef,
