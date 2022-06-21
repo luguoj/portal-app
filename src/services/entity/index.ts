@@ -8,6 +8,8 @@ export const applications = [{
 }, {
     name: 'portal', title: '门户'
 }, {
+    name: 'organization', title: '组织'
+}, {
     name: 'data-integration', title: '数据集成'
 }]
 
