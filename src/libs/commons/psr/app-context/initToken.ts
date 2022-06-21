@@ -106,5 +106,6 @@ function onUsernameChanged(username: string, context: PsrAppContext, signIn?: bo
                 context.router.router.replace({path: context.routePathHangupBySignIn})
             }
         })
+        context.personal.changeUser(username)
     })
 }

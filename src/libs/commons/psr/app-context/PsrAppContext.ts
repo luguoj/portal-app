@@ -14,6 +14,7 @@ import {checkRoutePermission} from "./checkRoutePermission";
 import {processRootRoute} from "./processRootRoute";
 import {processSignInRoute} from "./processSignInRoute";
 import {PsrAppWidgetManager} from "@/libs/commons/psr/app-context/widget-manager";
+import {PsrAppPersonal} from "@/libs/commons/psr/app-context/personal";
 
 export class PsrAppContext {
     private readonly _injectKey: string
@@ -24,6 +25,7 @@ export class PsrAppContext {
     readonly widget: PsrAppWidgetManager
     token?: PsrAppToken<PsrAppTokenService>
     readonly plugins: Record<string, PsrAppPlugin> = {}
+    readonly personal: PsrAppPersonal
 
     // 被登录路由挂起的路由路径
     routePathHangupBySignIn: string = '/'
@@ -43,6 +45,8 @@ export class PsrAppContext {
         this.permission = new PsrAppPermission(options.permission)
         // 初始化widgetManager
         this.widget = new PsrAppWidgetManager(options.widgets)
+        // 初始化personal
+        this.personal = new PsrAppPersonal(options.personalService)
     }
 
     useToken(token: PsrAppToken<PsrAppTokenService>) {
@@ -65,7 +69,7 @@ export class PsrAppContext {
             // 如果访问根路由，则跳转到默认布局
             processRootRoute(event, this)
         })
-        this.router.beforeRouteChange(event=> {
+        this.router.beforeRouteChange(event => {
             if (event.newRoute.route.name !== 'sign-in') {
                 this.routePathHangupBySignIn = event.newRoute.route.fullPath
             }
