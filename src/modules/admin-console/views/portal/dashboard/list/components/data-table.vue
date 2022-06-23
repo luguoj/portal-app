@@ -104,7 +104,6 @@ import {useAppContext} from "@/libs/commons/psr/app-context";
 import {ElMessage, ElMessageBox} from "element-plus/es";
 import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-action/index.vue";
 import PsrAsyncActionDropdownItem from "@/libs/components/psr/widgets/dropdown-item/async-action/index.vue";
-import {DashboardTemplateEntity, GroupEntity} from "@/services/portal/types";
 import {portalService} from "@/services/portal";
 import {PsrFilterTreeTableModel} from "@/libs/components/psr/widgets/tree-table/filter/PsrFilterTreeTableModel";
 import PsrFilterTreeTable from "@/libs/components/psr/widgets/tree-table/filter/index.vue";
@@ -113,6 +112,7 @@ import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFla
 import DashboardTemplateTypeSelect from "@/modules/admin-console/views/portal/dashboard/list/components/dashboard-template-type-select.vue";
 import DashboardTemplateTypes from "@/services/portal/dictionary/DashboardTemplateTypes";
 import {ROUTE_PORTAL_DASHBOARD_DESIGN_BIG_SCREEN, ROUTE_PORTAL_DASHBOARD_DESIGN_MASONRY, ROUTE_PORTAL_DASHBOARD_LIST} from "@/modules/admin-console/route";
+import {NodeData} from "@/modules/admin-console/views/portal/dashboard/list/types";
 
 export default defineComponent({
   name: "data-table",
@@ -128,7 +128,7 @@ export default defineComponent({
   emits: ['edit', 'dataChanged'],
   props: {
     model: {
-      type: Object as PropType<PsrFilterTreeTableModel<DashboardTemplateEntity>>,
+      type: Object as PropType<PsrFilterTreeTableModel<NodeData>>,
       required: true
     }
   },
@@ -153,9 +153,9 @@ export default defineComponent({
       }
     })
     return {
-      handleDelete: (row: GroupEntity) => {
+      handleDelete: (row: NodeData) => {
         return ElMessageBox.confirm(
-            `是否删除: ${row.code}`,
+            `是否删除: ${row.dashboardTemplate?.code}`,
             '确认删除'
         ).then(() => {
           return portalService.dashboardTemplate.delete(row.id!).then(() => {

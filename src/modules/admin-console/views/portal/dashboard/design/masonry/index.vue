@@ -49,7 +49,7 @@ import PsrMasonryDashboard from "@/libs/components/psr/widgets/dashboard/masonry
 import {portalService} from "@/services/portal";
 import WidgetList from "@/modules/admin-console/views/portal/dashboard/components/widget-list.vue";
 import {PsrAppWidget, PsrAppWidgetManager} from "@/libs/commons/psr/app-context/widget-manager";
-import {PsrMasonryDashboardTemplateItemRaw, PsrMasonryDashboardTemplateRaw} from "@/modules/admin-console/types/PsrMasonryDashboardTemplateRaw";
+import {PsrMasonryDashboardTemplateItemRaw, PsrMasonryDashboardTemplateRaw} from "@/modules/admin-console/views/portal/dashboard/design/masonry/types/PsrMasonryDashboardTemplateRaw";
 import {useAppContext} from "@/libs/commons/psr/app-context";
 import FileSaver from "file-saver";
 import moment from "moment";
