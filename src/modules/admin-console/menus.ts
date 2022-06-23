@@ -1,4 +1,4 @@
-import {ROUTE_AUTHORIZATION_USER, ROUTE_ENTITY, ROUTE_PORTAL_DASHBOARD, ROUTE_PORTAL_GROUP, ROUTE_PORTAL_PERMISSION, ROUTE_PORTAL_USER} from "./route";
+import {ROUTE_AUTHORIZATION_USER, ROUTE_ENTITY, ROUTE_ORGANIZATION, ROUTE_PORTAL_DASHBOARD, ROUTE_PORTAL_GROUP, ROUTE_PORTAL_PERMISSION, ROUTE_PORTAL_USER} from "./route";
 import {PsrAppNavigationMenuItemsRaw} from "@/libs/commons/psr/app-context/navigation-menu";
 
 export const menus: PsrAppNavigationMenuItemsRaw = {
@@ -22,6 +22,8 @@ export const menus: PsrAppNavigationMenuItemsRaw = {
         }, {
             route: ROUTE_PORTAL_DASHBOARD
         }]
+    }, {
+        route: ROUTE_ORGANIZATION
     }, {
         route: ROUTE_ENTITY
     }]
