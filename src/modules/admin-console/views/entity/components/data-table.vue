@@ -80,7 +80,7 @@ import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-act
 import PsrAsyncActionDropdownItem from "@/libs/components/psr/widgets/dropdown-item/async-action/index.vue";
 import {GroupEntity} from "@/services/portal/types";
 import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
-import {ROUTE_ENTITY} from "@/modules/admin-console/route/entity";
+import {ROUTE_ENTITY} from "@/modules/admin-console/route";
 import {CommonEntity, DomainSchema, entityService} from "@/services/entity";
 import {checkFieldType, FieldType} from "@/modules/admin-console/views/entity/checkFieldType";
 

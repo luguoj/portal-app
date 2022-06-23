@@ -59,7 +59,7 @@
 import {defineComponent, PropType, ref, watch} from "vue";
 import PsrToolbar from "@/libs/components/psr/widgets/toolbar/base/index.vue";
 import {usePermissionFlag} from "@/libs/commons/psr/app-context/usePermissionFlag";
-import {ROUTE_ENTITY} from "@/modules/admin-console/route/entity";
+import {ROUTE_ENTITY} from "@/modules/admin-console/route";
 import {applications, DomainSchema, entityService} from "@/services/entity";
 
 export default defineComponent({
