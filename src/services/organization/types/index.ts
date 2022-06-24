@@ -28,12 +28,15 @@ export interface OrganizationCreationDTO {
     useId: string,
     code: string
     description: string
+    enabled?: boolean
+    hierarchyId?: string
     parentId?: string
 }
 
 export interface OrganizationPatchDTO {
     code?: string
     description?: string
-    parentId?: string
     enabled?: boolean
+    hierarchyId?: string
+    parentId?: string
 }
