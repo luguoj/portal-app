@@ -10,7 +10,7 @@ export class OrganizationService {
     }
 
     create(dto: OrganizationCreationDTO): Promise<OrganizationEntity> {
-        return this._client.put('/organization', dto).then(handleRespData).catch(handleErrorMessage)
+        return this._client.post('/organization', dto).then(handleRespData).catch(handleErrorMessage)
     }
 
     delete(id: string): Promise<boolean> {
