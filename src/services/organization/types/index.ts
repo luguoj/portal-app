@@ -9,6 +9,14 @@ export interface OrganizationEntity extends DictionaryEntryEntity {
     hierarchyId?: string
 }
 
+export interface OrganizationUseEntity extends Entity {
+    description?: string
+}
+
+export interface OrganizationHierarchyEntity extends DictionaryEntryEntity {
+    useId?: string
+}
+
 export interface UserPersonnelEntity extends Entity {
     firstName?: string
     lastName?: string
