@@ -27,4 +27,5 @@ export interface OrganizationPatchDTO {
     code?: string
     description?: string
     parentId?: string
+    enabled?: boolean
 }
