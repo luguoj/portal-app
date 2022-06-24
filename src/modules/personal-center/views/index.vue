@@ -1,45 +1,47 @@
 <template>
-  <el-container>
-    <el-aside style="padding:10px;">
-      <el-card body-style="padding:0;">
-        <template #header>
-          <div class="card-header">
-            <el-avatar/>
-            <div style="display:inline-block;margin-left:20px;">
-              <div style="font-size: var(--el-font-size-large);">Name</div>
-              <div style="font-size: var(--el-font-size-extra-small);">account</div>
+  <el-scrollbar style="height:100%;">
+    <el-container>
+      <el-aside style="padding:10px;">
+        <el-card body-style="padding:0;">
+          <template #header>
+            <div class="card-header">
+              <el-avatar/>
+              <div style="display:inline-block;margin-left:20px;">
+                <div style="font-size: var(--el-font-size-large);">Name</div>
+                <div style="font-size: var(--el-font-size-extra-small);">account</div>
+              </div>
             </div>
-          </div>
-        </template>
-        <el-menu
-            :default-active="activeIndex"
-            router
-            style="border-right: unset;"
-        >
-          <el-menu-item :index="personnelMenu.route" :route="{name:personnelMenu.route}">
-            {{ personnelMenu.title }}
-          </el-menu-item>
-          <el-menu-item-group title="账户信息">
-            <el-menu-item
-                v-for="menu in accountMenus" :key="menu"
-                :index="menu.route"
-                :route="{name:menu.route}"
-            >{{ menu.title }}
+          </template>
+          <el-menu
+              :default-active="activeIndex"
+              router
+              style="border-right: unset;"
+          >
+            <el-menu-item :index="personnelMenu.route" :route="{name:personnelMenu.route}">
+              {{ personnelMenu.title }}
             </el-menu-item>
-          </el-menu-item-group>
-        </el-menu>
-      </el-card>
-    </el-aside>
-    <el-main style="padding:10px;">
-      <el-card>
-        <router-view v-slot="{Component}">
-          <keep-alive>
-            <component :is="Component"/>
-          </keep-alive>
-        </router-view>
-      </el-card>
-    </el-main>
-  </el-container>
+            <el-menu-item-group title="账户信息">
+              <el-menu-item
+                  v-for="menu in accountMenus" :key="menu"
+                  :index="menu.route"
+                  :route="{name:menu.route}"
+              >{{ menu.title }}
+              </el-menu-item>
+            </el-menu-item-group>
+          </el-menu>
+        </el-card>
+      </el-aside>
+      <el-main style="padding:10px;">
+        <el-card>
+          <router-view v-slot="{Component}">
+            <keep-alive>
+              <component :is="Component"/>
+            </keep-alive>
+          </router-view>
+        </el-card>
+      </el-main>
+    </el-container>
+  </el-scrollbar>
 </template>
 
 <script lang="ts">
