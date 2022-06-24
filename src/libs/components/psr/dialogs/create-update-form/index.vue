@@ -3,7 +3,7 @@
       :title="creating?'创建':'编辑'"
       :before-close="beforeClose"
       :model-value="model.visible">
-    <el-form v-model="formData">
+    <el-form :model="formData">
       <slot :formData="formData" :creating="creating"/>
     </el-form>
     <template #footer>
