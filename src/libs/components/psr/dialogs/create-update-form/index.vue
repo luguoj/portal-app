@@ -21,7 +21,7 @@
 <script lang="ts">
 import {computed, defineComponent, PropType, ref, toRaw, watch} from "vue";
 import PsrAsyncActionButton from "@/libs/components/psr/widgets/button/async-action/index.vue";
-import {cloneDeep, isEqual} from "lodash";
+import {isEqual} from "lodash";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {PsrCreateUpdateFormDialogModel} from "./PsrCreateUpdateFormDialogModel";
 
@@ -46,8 +46,11 @@ export default defineComponent({
     })
 
     watch(() => props.model.data, data => {
-      originalData.value = cloneDeep(toRaw(data))
-      formData.value = cloneDeep(toRaw(data))
+      const dataRaw = toRaw(data)
+      for (const dataRawKey in dataRaw) {
+        originalData.value[dataRawKey] = dataRaw[dataRawKey]
+        formData.value[dataRawKey] = dataRaw[dataRawKey]
+      }
     }, {immediate: true})
 
     function hide() {
