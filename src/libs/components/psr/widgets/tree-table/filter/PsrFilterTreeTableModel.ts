@@ -42,23 +42,9 @@ export class PsrFilterTreeTableModel<E> {
     keyProperty: keyof E
 
     rootNodes: TreeNode<E>[] = []
+    records: E[] = []
     recordByKey: { [key: string]: E } = {}
     loading: boolean = false
-
-    load() {
-        this.loading = true
-        return this.loadDataHandler().then(data => {
-            const {rootNodes, recordByKey} = data
-                ? extractData(data, this.childrenProperty, this.keyProperty)
-                : {rootNodes: [], recordByKey: {}}
-            this.rootNodes = rootNodes
-            this.recordByKey = recordByKey
-        }).finally(() => this.loading = false)
-    }
-
-    clearFilters() {
-        this.filters = this.defaultFilters()
-    }
 
     constructor(
         loadDataHandler: () => Promise<E[] | undefined>,
@@ -87,5 +73,21 @@ export class PsrFilterTreeTableModel<E> {
             options.childrenProperty,
             options.keyProperty
         ))
+    }
+
+    load() {
+        this.loading = true
+        return this.loadDataHandler().then(data => {
+            const {rootNodes, recordByKey} = data
+                ? extractData(data, this.childrenProperty, this.keyProperty)
+                : {rootNodes: [], recordByKey: {}}
+            this.rootNodes = rootNodes
+            this.recordByKey = recordByKey
+            this.records = data || []
+        }).finally(() => this.loading = false)
+    }
+
+    clearFilters() {
+        this.filters = this.defaultFilters()
     }
 }
