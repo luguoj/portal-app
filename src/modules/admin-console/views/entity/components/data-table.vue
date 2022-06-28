@@ -9,7 +9,7 @@
         :data-type="columnDefinition.type"
     >
       <template #body="slotProps">
-        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ slotProps.data[slotProps.field] }}</div>
+        <div class="psr-text-nowrap">{{ slotProps.data[slotProps.field] }}</div>
       </template>
       <template #filter="{filterModel,filterCallback}">
         <p-tri-state-checkbox

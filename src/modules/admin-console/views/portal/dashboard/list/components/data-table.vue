@@ -34,7 +34,7 @@
         :sortable="true"
     >
       <template #body="{node:{key,data}}">
-        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ data.description }}</div>
+        <div class="psr-text-nowrap">{{ data.description }}</div>
       </template>
       <template #filter>
         <el-input v-model="model.filters.description"/>
@@ -48,7 +48,7 @@
         filterMatchMode="equals"
     >
       <template #body="{node:{key,data}}">
-        <div style="width:100%;text-overflow:ellipsis;overflow:hidden">{{ DashboardTemplateTypes.get(data.type)?.title }}</div>
+        <div class="psr-text-nowrap">{{ DashboardTemplateTypes.get(data.type)?.title }}</div>
       </template>
       <template #filter>
         <dashboard-template-type-select v-model="model.filters.type" clearable/>
