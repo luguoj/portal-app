@@ -9,8 +9,8 @@ export const ROUTE_ORGANIZATION_LIST: PsrAppRouteRecordRaw = {
     meta: {tag: {title: '清单',}, permissions: ['add', 'edit', 'delete']}
 }
 export const ROUTE_ORGANIZATION_MEMBER: PsrAppRouteRecordRaw = {
-    name: MODULE_ORGANIZATION_NAME + '/personnel',
-    path: ':organizationId/personnel',
+    name: MODULE_ORGANIZATION_NAME + '/member',
+    path: ':organizationId/member',
     component: () => import("../views/organization/member/index.vue"),
     props: true,
     meta: {tag: {title: '成员'}, permissions: []}
