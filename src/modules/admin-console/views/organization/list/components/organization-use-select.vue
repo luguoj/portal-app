@@ -1,5 +1,5 @@
 <template>
-  <el-select>
+  <el-select placeholder="请选择组织用途">
     <el-option
         v-for="use in useItems"
         :key="use.id"
