@@ -1,5 +1,6 @@
 import {AxiosInstance} from "axios";
 import {UserPersonnelEntity} from "@/services/organization/types";
+import {handleErrorMessage, handleRespData} from "@/libs/commons/psr/utils/Axios";
 
 export class UserService {
     private readonly _client: AxiosInstance;
@@ -9,22 +10,10 @@ export class UserService {
     }
 
     findPersonnel(): Promise<UserPersonnelEntity | null> {
-        return this._client.get('/user/personnel')
-            .then((resp) => {
-                if (resp && resp.data) {
-                    return resp.data
-                }
-                return null
-            })
+        return this._client.get('/user/personnel').then(handleRespData).catch(handleErrorMessage)
     }
 
     updatePersonnel(userPersonnelEntity: UserPersonnelEntity): Promise<UserPersonnelEntity> {
-        return this._client.put('/user/personnel', userPersonnelEntity)
-            .then((resp) => {
-                if (resp && resp.data) {
-                    return resp.data
-                }
-                return null
-            })
+        return this._client.put('/user/personnel', userPersonnelEntity).then(handleRespData).catch(handleErrorMessage)
     }
 }
