@@ -10,7 +10,7 @@ export const applications = [{
 }, {
     name: 'organization', title: '组织'
 }, {
-    name: 'data-integration', title: '数据集成'
+    name: 'sap-connector', title: 'SAP连接器'
 }]
 
 export interface DomainSchema {
