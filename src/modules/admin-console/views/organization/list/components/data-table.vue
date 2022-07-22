@@ -51,7 +51,7 @@
     </p-column>
     <p-column
         header="左值"
-        :style="{width:'360px'}"
+        :style="{width:'42px'}"
     >
       <template #body="{node:{key,data}}">
         <div class="psr-text-nowrap">{{ data.organization.left }}</div>
@@ -59,7 +59,7 @@
     </p-column>
     <p-column
         header="右值"
-        :style="{width:'360px'}"
+        :style="{width:'42px'}"
     >
       <template #body="{node:{key,data}}">
         <div class="psr-text-nowrap">{{ data.organization.right }}</div>
