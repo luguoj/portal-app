@@ -72,7 +72,7 @@ export default defineComponent({
 }
 
 .ct-header-bar {
-  background-color: var(--el-color-white);
+  background-color: var(--el-bg-color);
   padding: 0;
   height: fit-content;
 }
@@ -84,7 +84,7 @@ export default defineComponent({
 }
 
 .ct-main-inner {
-  background-color: var(--el-color-white);
+  background-color: var(--el-bg-color);
   height: 100%;
   box-shadow: 3px 3px 3px 0 rgb(0 0 0 / 12%);
 }
@@ -93,14 +93,14 @@ export default defineComponent({
   height: 100%;
 
   .ct-title {
-    background-color: var(--el-color-white);
+    background-color: var(--el-bg-color);
     padding: 0;
     border-bottom: var(--psr-border);
     height: fit-content;
   }
 
   .ct-menu {
-    background-color: var(--el-color-white);
+    background-color: var(--el-bg-color);
     padding: 0;
   }
 }

@@ -54,7 +54,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .ct-tags {
-  background-color: var(--el-color-white);
+  background-color: var(--el-bg-color);
   height: auto;
   padding: 2px 0;
 }

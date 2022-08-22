@@ -45,6 +45,13 @@
         </template>
       </el-button>
     </el-tooltip>
+    <el-tooltip content="夜间模式" effect="light">
+      <el-button link @click="toggleDark()" class="button icon-only">
+        <template #icon>
+          <el-icon class="pi" :class="isDark?'pi-moon':'pi-sun'"/>
+        </template>
+      </el-button>
+    </el-tooltip>
     <avatar-dropdown v-if="username" class="avatar"/>
     <router-link v-else :to="{name:'sign-in'}" custom v-slot="{navigate}">
       <el-tooltip content="登入" effect="light">
@@ -74,6 +81,10 @@ import {useLayoutStoreProxy} from "@/libs/commons/psr/app-context/LayoutStorePro
 import {PsrLayoutDesktopConsoleState} from "@/libs/layouts/psr/desktop-console/store";
 import {useStore} from "vuex";
 import AvatarDropdown from "@/libs/layouts/psr/desktop-console/components/header-bar/avatar-dropdown.vue";
+import { useDark, useToggle } from '@vueuse/core'
+
+export const isDark = useDark()
+export const toggleDark = useToggle(isDark)
 
 export default defineComponent({
   name: "header-bar",
@@ -136,6 +147,8 @@ export default defineComponent({
       toggleNavigationExpansion,
       toggleTagBarExpansion,
       toggleImmersive,
+      toggleDark,
+      isDark,
       handleShowSearcher,
       userPopoverVisible: ref(false),
       showSearcher,
@@ -174,7 +187,7 @@ export default defineComponent({
   .ct-middle {
     display: inline-block;
     vertical-align: middle;
-    width: calc(100% - var(--button-width) * 3 - 60px);
+    width: calc(100% - var(--button-width) * 4 - 60px);
 
     .view-path {
       display: inline-block;
