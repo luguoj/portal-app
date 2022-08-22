@@ -22,5 +22,5 @@ export function buildLayoutChildRoute(routeRecordRaw: PsrAppRouteRecordRaw, layo
             children.push(buildLayoutChildRoute(child, layoutName, path))
         }
     }
-    return {...routeRecordRaw, name, path, meta, children}
+    return {...routeRecordRaw, name, path, meta, children} as PsrAppRouteRecord
 }

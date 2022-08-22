@@ -34,7 +34,7 @@ export class PsrAppRouteCache extends PsrAppPlugin {
             for (const {name, path, components, meta} of affixRoutes) {
                 const cachedRoute = this.cachedRouteByName[name!] = reactive({
                     name: name!,
-                    componentName: components['default'].name!,
+                    componentName: components!['default'].name!,
                     tag: meta.tag as PsrAppRouteMetaTag,
                     path
                 })
