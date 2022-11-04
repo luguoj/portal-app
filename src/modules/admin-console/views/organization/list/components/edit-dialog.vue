@@ -33,7 +33,6 @@
 
 <script lang="ts">
 import {computed, defineComponent, PropType} from "vue";
-import DashboardTemplateTypeSelect from "@/modules/admin-console/views/portal/dashboard/list/components/dashboard-template-type-select.vue";
 import PsrCreateUpdateFormDialog from "@/libs/components/psr/dialogs/create-update-form/index.vue";
 import {PsrCreateUpdateFormDialogModel} from "@/libs/components/psr/dialogs/create-update-form/PsrCreateUpdateFormDialogModel";
 import {OrganizationEntity} from "@/services/organization/types";
@@ -44,7 +43,6 @@ import {filterFromRoot} from "@/libs/commons/psr/utils/array-tree";
 export default defineComponent({
   name: "edit-dialog",
   components: {
-    DashboardTemplateTypeSelect,
     PsrCreateUpdateFormDialog,
     OrganizationHierarchySelect
   },
