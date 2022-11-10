@@ -34,7 +34,7 @@ export function extractMenuOptions(layouts: PsrAppLayoutOptions[]): {
             for (const module of layout.modules) {
                 if (module.menus) {
                     for (const menuUsage in module.menus) {
-                        menuItemsRaw[layout.name][menuUsage] = []
+                        menuItemsRaw[layout.name][menuUsage] = menuItemsRaw[layout.name][menuUsage] || []
                         for (const menu of module.menus[menuUsage]) {
                             menuItemsRaw[layout.name][menuUsage].push(buildMenuItem(menu, layout.name))
                         }
