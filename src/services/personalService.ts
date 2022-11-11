@@ -19,7 +19,7 @@ function updatePersonnel(userPersonnelEntity: UserPersonnelEntity): Promise<User
     return ApiClient.put('/user/personnel', userPersonnelEntity).then(handleRespData).catch(handleErrorMessage)
 }
 
-export const appPersonalService: PsrAppPersonalService = (username: string) => {
+export const personalService: PsrAppPersonalService = (username: string) => {
     return findPersonnel().then(userPersonnel => {
         if (userPersonnel) {
             return {

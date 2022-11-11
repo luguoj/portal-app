@@ -9,7 +9,7 @@ import {routeCache} from "./routeCache";
 import {App} from "@vue/runtime-core";
 import {widgets} from "@/config/psr-app-context/widget";
 import {PersonalCenter} from "@/modules/personal-center";
-import {appPersonalService} from "@/services/appPersonalService";
+import {personalService} from "@/services/personalService";
 import {permissionService} from "@/services/permissionService";
 import {userProfileService} from "@/services/userProfileService";
 
@@ -41,7 +41,7 @@ export const appContext = createAppContext({
         errorNotFound: PsrErrorNotFound
     },
     widgets,
-    personalService: appPersonalService
+    personalService
 }).useToken(tokenContext).use(routeCache)
 
 export function applyPsrAppContext(app: App) {
