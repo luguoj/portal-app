@@ -8,7 +8,7 @@ import {PsrAppPersonalService} from "../personal";
 
 export interface PsrAppContextOptions {
     layouts: PsrAppLayoutOptions[]
-    permission: PsrAppPermissionService,
+    permissionService: PsrAppPermissionService,
     userProfileService?: PsrAppUserProfileService,
     storePlugins?: StorePlugin<any>[],
     pages: PsrAppPageOptions,

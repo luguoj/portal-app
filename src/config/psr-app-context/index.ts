@@ -1,7 +1,6 @@
 import {PsrLayoutDesktopConsoleOptions} from "@/libs/layouts/psr/desktop-console/options";
 import {SamplePage} from "@/modules/sample-page";
 import {Admin} from "@/modules/admin-console";
-import {portalService} from "@/services/portal";
 import PsrErrorNotFound from "@/libs/components/psr/views/PsrErrorNotFound.vue";
 import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClientSignIn.vue";
 import {createAppContext} from "@/libs/commons/psr/app-context";
@@ -11,6 +10,8 @@ import {App} from "@vue/runtime-core";
 import {widgets} from "@/config/psr-app-context/widget";
 import {PersonalCenter} from "@/modules/personal-center";
 import {appPersonalService} from "@/services/appPersonalService";
+import {permissionService} from "@/services/permissionService";
+import {userProfileService} from "@/services/userProfileService";
 
 export const appContext = createAppContext({
     layouts: [{
@@ -33,21 +34,8 @@ export const appContext = createAppContext({
         ],
         permissions: []
     }],
-    permission: (username: string) => {
-        if (username === 'platform_admin') {
-            return Promise.resolve('permit-all')
-        } else {
-            return portalService.user.findPermissionByPortalId()
-        }
-    },
-    userProfileService: {
-        find: () => {
-            return portalService.user.findProfileByPortalId()
-        },
-        update: (content: any) => {
-            return portalService.user.updateProfileByPortalId(content)
-        }
-    },
+    permissionService,
+    userProfileService,
     pages: {
         signIn: PsrOAuthSSOClientSignIn,
         errorNotFound: PsrErrorNotFound

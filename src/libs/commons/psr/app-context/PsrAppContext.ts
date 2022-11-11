@@ -42,7 +42,7 @@ export class PsrAppContext {
         // 初始化navigation-menu
         this.navigationMenu = new PsrAppNavigationMenu(extractMenuOptions(options.layouts))
         // 初始化permission
-        this.permission = new PsrAppPermission(options.permission)
+        this.permission = new PsrAppPermission(options.permissionService)
         // 初始化widgetManager
         this.widget = new PsrAppWidgetManager(options.widgets)
         // 初始化personal
