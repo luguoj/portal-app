@@ -13,5 +13,5 @@ export interface PsrAppContextOptions {
     storePlugins?: StorePlugin<any>[],
     pages: PsrAppPageOptions,
     widgets: PsrAppWidgetCatalogRaw[],
-    personalService: PsrAppPersonalService
+    personalService?: PsrAppPersonalService
 }

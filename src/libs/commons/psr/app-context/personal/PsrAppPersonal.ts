@@ -3,9 +3,14 @@ import {PsrAppPersonalRaw} from "@/libs/commons/psr/app-context/personal/types/P
 import {ref, Ref} from "vue";
 
 export class PsrAppPersonal {
-    service: PsrAppPersonalService
     username: string = ''
     personal: Ref<PsrAppPersonalRaw> = ref(PsrAppPersonal.noname())
+
+    constructor(service?: PsrAppPersonalService) {
+        if (service) {
+            this.service = service;
+        }
+    }
 
     static noname(): PsrAppPersonalRaw {
         return {
@@ -14,8 +19,8 @@ export class PsrAppPersonal {
         }
     }
 
-    constructor(service: PsrAppPersonalService) {
-        this.service = service;
+    service: PsrAppPersonalService = (username) => {
+        return Promise.resolve({fullName: username, avatar: {iconCls: 'pi pi-user'}})
     }
 
     changeUser(newUsername: string) {
