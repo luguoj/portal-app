@@ -1,4 +1,4 @@
-import {ROUTE_PORTAL_DASHBOARD, ROUTE_PORTAL_PERMISSION, ROUTE_PORTAL_USER} from "./route";
+import {ROUTE_PORTAL_DASHBOARD} from "./route";
 import {PsrAppNavigationMenuItemsRaw} from "@/libs/commons/psr/app-context/navigation-menu";
 
 export const menus: PsrAppNavigationMenuItemsRaw = {
@@ -7,10 +7,6 @@ export const menus: PsrAppNavigationMenuItemsRaw = {
         title: '门户管理',
         iconCls: 'pi pi-cog',
         children: [{
-            route: ROUTE_PORTAL_USER
-        }, {
-            route: ROUTE_PORTAL_PERMISSION
-        }, {
             route: ROUTE_PORTAL_DASHBOARD
         }]
     }]
