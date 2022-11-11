@@ -1,6 +1,5 @@
 import {EntityCRUDService} from "@/libs/services/psr-entity-crud";
 import {AxiosInstance} from "axios";
-import {GroupEntity} from "@/services/portal/types";
 import {JcoDestinationEntity} from "./types";
 
 const DOMAIN_TYPES = {
@@ -13,7 +12,7 @@ export class CRUDService {
 
     constructor(client: AxiosInstance) {
         this._client = client
-        this.jcoDestination = new EntityCRUDService<GroupEntity>(this._client, DOMAIN_TYPES.JCO_DESTINATION)
+        this.jcoDestination = new EntityCRUDService<JcoDestinationEntity>(this._client, DOMAIN_TYPES.JCO_DESTINATION)
     }
 }
 
