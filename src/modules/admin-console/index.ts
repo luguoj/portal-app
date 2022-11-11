@@ -1,6 +1,6 @@
 import {PsrAppModuleOptions} from "@/libs/commons/psr/app-context/";
 import {routes} from "./route";
-import {menus} from "@/modules/admin-console/menus";
+import {menus} from "./menus";
 
 export const ADMIN_CONSOLE_MODULE_NAME = "admin-console"
 export const Admin: PsrAppModuleOptions = {
