@@ -1,4 +1,5 @@
 import {Component} from "vue";
+import {ItemUseDataSupplier} from "../../types";
 
 export type BreakpointKey = 'lg' | 'md' | 'sm' | 'xs' | 'xxs'
 export const BREAKPOINT_KEYS: BreakpointKey[] = ['lg', 'md', 'sm', 'xs', 'xxs']
@@ -23,7 +24,7 @@ export function BlankLayoutOptions(): LayoutOptions {
     }
 }
 
-export interface ItemOptions {
+export interface ItemOptions extends ItemUseDataSupplier {
     i: string,
     x: number,
     y: number,
@@ -32,12 +33,4 @@ export interface ItemOptions {
     name: string,
     title: string,
     component: Component
-    dataProvider?: string
-    dataTransform?: string
-}
-
-export interface DataSupplierRaw {
-    name: string,
-    supplier: () => Promise<any>
-    timeout?: number
 }

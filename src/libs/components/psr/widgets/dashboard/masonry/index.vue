@@ -31,7 +31,7 @@
           <component
               v-if="layoutCompleted"
               :is="item.component"
-              :item-data="dataProviderFactory.computeData(item)"
+              :screen-item-data="dataProviderFactory.computeData(item)"
           />
         </div>
         <div class="vue-draggable-handle" v-show="designing">
@@ -45,8 +45,9 @@
 
 <script lang="ts">
 import {computed, defineComponent, nextTick, onActivated, onDeactivated, onMounted, PropType, ref, watchEffect} from "vue";
-import {DataProviderFactory} from "./services/DataProvider";
-import {BlankLayoutOptions, BREAKPOINT_KEYS, BreakpointKey, colNumByBreakpoint, DataSupplierRaw, ItemOptions, LayoutOptions, widthByBreakpoint} from "./types/LayoutOptions";
+import {DataProviderFactory, useDataProvider} from "../services/DataProvider";
+import {BlankLayoutOptions, BREAKPOINT_KEYS, BreakpointKey, colNumByBreakpoint, ItemOptions, LayoutOptions, widthByBreakpoint} from "./types/LayoutOptions";
+import {DataSupplierRaw} from "../types";
 
 const VueGridLayout = require('vue3-grid-layout/dist/vue-grid-layout.common.js')
 
@@ -165,7 +166,7 @@ export default defineComponent({
       layout.value.splice(layout.value.indexOf(item), 1)
     }
 
-    const dataProviderFactory = new DataProviderFactory(props.dataSuppliers)
+    const dataProviderFactory = new DataProviderFactory(useDataProvider() || [])
 
     return {
       gridLayoutRef,
