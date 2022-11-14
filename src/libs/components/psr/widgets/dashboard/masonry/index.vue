@@ -69,7 +69,7 @@ export default defineComponent({
     const preparing = ref(false)
     const activated = ref(false)
     const layoutCompleted = ref(false)
-    let layoutTimer: NodeJS.Timeout | null = null
+    let layoutTimer: number | null = null
     const gridLayoutRef = ref()
     const width = ref(0)
     onMounted(() => {
