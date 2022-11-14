@@ -28,7 +28,11 @@
         <div class="vue-draggable-handle-background" v-show="designing">
         </div>
         <div class="no-drag" :style="{height:'100%',width:'100%',opacity:designing?0.3:1}">
-          <component v-if="layoutCompleted" :is="item.component"></component>
+          <component
+              v-if="layoutCompleted"
+              :is="item.component"
+              :item-data="dataProviderFactory.computeData(item)"
+          />
         </div>
         <div class="vue-draggable-handle" v-show="designing">
           {{ item.i }}.{{ item.title }}
@@ -41,7 +45,8 @@
 
 <script lang="ts">
 import {computed, defineComponent, nextTick, onActivated, onDeactivated, onMounted, PropType, ref, watchEffect} from "vue";
-import {BlankLayoutOptions, BREAKPOINT_KEYS, BreakpointKey, colNumByBreakpoint, ItemOptions, LayoutOptions, widthByBreakpoint} from "./types/LayoutOptions";
+import {DataProviderFactory} from "./services/DataProvider";
+import {BlankLayoutOptions, BREAKPOINT_KEYS, BreakpointKey, colNumByBreakpoint, DataSupplierRaw, ItemOptions, LayoutOptions, widthByBreakpoint} from "./types/LayoutOptions";
 
 const VueGridLayout = require('vue3-grid-layout/dist/vue-grid-layout.common.js')
 
@@ -63,6 +68,10 @@ export default defineComponent({
     responsive: {
       type: Boolean,
       default: true
+    },
+    dataSuppliers: {
+      type: Object as PropType<DataSupplierRaw[]>,
+      required: true
     }
   },
   setup(props) {
@@ -156,6 +165,8 @@ export default defineComponent({
       layout.value.splice(layout.value.indexOf(item), 1)
     }
 
+    const dataProviderFactory = new DataProviderFactory(props.dataSuppliers)
+
     return {
       gridLayoutRef,
       activated,
@@ -165,7 +176,8 @@ export default defineComponent({
       layout,
       breakpointCol: colNumByBreakpoint,
       designerHeight,
-      handleRemove
+      handleRemove,
+      dataProviderFactory
     }
   }
 })
@@ -186,6 +198,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   padding: 5px;
+
   &:hover {
     color: var(--el-color-primary);
   }
