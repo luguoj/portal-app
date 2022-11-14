@@ -1,5 +1,6 @@
-import {computed, ref, Ref} from "vue";
-import {DataSupplierRaw, ItemOptions} from "../types/LayoutOptions";
+import {computed, inject, ref, Ref} from "vue";
+import {DataSupplierRaw, ItemUseDataSupplier} from "../types";
+import {App} from "@vue/runtime-core";
 
 export class DataProvider {
     supplierRaw: DataSupplierRaw
@@ -31,7 +32,7 @@ export class DataProviderFactory {
         }
     }
 
-    computeData(itemOptions: ItemOptions) {
+    computeData(itemOptions: ItemUseDataSupplier) {
         const dataProvider = this.getObject(itemOptions.dataProvider)
         if (dataProvider) {
             return computed(() => getTransformFn(itemOptions.dataTransform)(dataProvider.data.value))
@@ -61,4 +62,14 @@ function getTransformFn(transform?: string): (data: any) => any {
         }
     }
     return (data: any) => data
+}
+
+export const dashboardDataProviderKey = Symbol()
+
+export function applyDataProvider(app: App, dataSupplierRaws: DataSupplierRaw[]) {
+    app.provide(dashboardDataProviderKey, dataSupplierRaws)
+}
+
+export function useDataProvider(): DataSupplierRaw[] {
+    return inject(dashboardDataProviderKey) || []
 }
