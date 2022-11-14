@@ -27,5 +27,10 @@ export const SamplePageWidgets: PsrAppWidgetCatalogRaw[] = [{
         component: markRaw(defineAsyncComponent(() => import("@/modules/sample-page/widgets/charts/radar/index.vue"))),
         thumbnailCls: 'psr-sample-page-widget-chart-radar',
         permissions: []
+    }, {
+        name: 'text-block',
+        title: '文本块',
+        component: markRaw(defineAsyncComponent(() => import("@/modules/sample-page/widgets/TextBlock.vue"))),
+        permissions: []
     }]
 }]
