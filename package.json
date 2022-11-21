@@ -12,7 +12,7 @@
     "@antv/g2plot": "^2.4.20",
     "@bpmn-io/element-template-chooser": "^0.0.5",
     "@element-plus/icons-vue": "^2.0.9",
-    "@psr-framework/vue3-plugin-dashboard": "git+https://gitee.com/psr-platform/vue3-plugin-dashboard.git",
+    "@psr-framework/vue3-plugin-dashboard": "git+https://gitee.com/psr-platform/vue3-plugin-dashboard.git#1.4.1",
     "@psr-framework/vue3-plugin-visual": "^0.0.3",
     "@types/file-saver": "^2.0.5",
     "@types/pinyin": "^2.10.0",
