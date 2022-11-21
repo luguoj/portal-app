@@ -1,6 +1,6 @@
-import {DataSupplierRaw} from "@/libs/components/psr/widgets/dashboard/types";
+import {DataSupplierRaw} from "@psr-framework/vue3-plugin-dashboard";
 
-export const dataProviders: DataSupplierRaw[] = [{
+export const dataProviders: DataSupplierRaw<any>[] = [{
     name: 'now',
     supplier: () => {
         return Promise.resolve(new Date())
