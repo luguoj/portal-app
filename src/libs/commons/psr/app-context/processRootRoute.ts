@@ -10,7 +10,7 @@ export function processRootRoute(event: PsrAppRouteChangeEvent, context: PsrAppC
         if (layoutItems.length > 0 && (userProfileSynchronized !== null || context.token == null || !context.token.getPrincipal().username)) {
             let defaultLayoutPath = layoutItems[0].path
             if (context.store.store.state.defaultLayout) {
-                let defaultLayoutItem = layoutItems.filter(item => item.name === context.store.store.state.defaultLayout)
+                const defaultLayoutItem = layoutItems.filter(item => item.name === context.store.store.state.defaultLayout)
                 if (defaultLayoutItem.length > 0) {
                     defaultLayoutPath = defaultLayoutItem[0].path
                 }
@@ -35,7 +35,7 @@ export function processRootRoute(event: PsrAppRouteChangeEvent, context: PsrAppC
                                     unWatch()
                                     let defaultLayoutPath = layoutItems[0].path
                                     if (context.store.store.state.defaultLayout) {
-                                        let defaultLayoutItem = layoutItems.filter(item => item.name === context.store.store.state.defaultLayout)
+                                        const defaultLayoutItem = layoutItems.filter(item => item.name === context.store.store.state.defaultLayout)
                                         if (defaultLayoutItem.length > 0) {
                                             defaultLayoutPath = defaultLayoutItem[0].path
                                         }
