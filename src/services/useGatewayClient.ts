@@ -7,7 +7,7 @@ export function useGatewayClient(contextPath: string) {
     const client = axios.create({
         baseURL: `${process.env.VUE_APP_PSR_GATEWAY_URL}${contextPath}`,
         paramsSerializer: {
-            encode: (params: any) => stringify(params, {arrayFormat: 'comma'})
+            serialize: (params: any) => stringify(params, {arrayFormat: 'comma'})
         },
     })
     applyTokenInterceptor(client, tokenContext)
