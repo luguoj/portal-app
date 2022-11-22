@@ -1,6 +1,6 @@
 import {computed, inject, provide} from "vue";
 import {useAppContext} from "./PsrAppContextProvider";
-import {ComputedRef} from "@vue/reactivity";
+import {ComputedRef} from "vue";
 
 const KEY = 'psr-app-context-layout-store-proxy'
 

@@ -1,4 +1,4 @@
-import {App} from "@vue/runtime-core";
+import {App} from "vue";
 import {applyElementPlus} from "./element-plus";
 import {applyPrimeVue} from "./prime-vue";
 import {applyPsrAppContext} from "@/config/psr-app-context";

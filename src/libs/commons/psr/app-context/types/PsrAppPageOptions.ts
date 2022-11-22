@@ -1,4 +1,4 @@
-import {Component} from "@vue/runtime-core";
+import {Component} from "vue";
 
 export interface PsrAppPageOptions {
     signIn: Component
