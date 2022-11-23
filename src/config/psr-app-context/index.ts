@@ -6,7 +6,7 @@ import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClie
 import {createAppContext} from "@/libs/commons/psr/app-context";
 import {platformClient} from "@/config/psr-app-context/platformClient";
 import {routeCache} from "./routeCache";
-import {App} from "@vue/runtime-core";
+import {App} from "vue";
 import {widgets} from "@/config/psr-app-context/widget";
 import {PersonalCenter} from "@/modules/personal-center";
 import {personalService} from "@/services/personalService";
