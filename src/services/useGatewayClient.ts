@@ -1,15 +1,5 @@
-import axios from "axios";
-import {stringify} from "qs";
-import {tokenContext} from "@/config/psr-app-context/token";
-import {applyTokenInterceptor} from "@/libs/commons/psr/app-context/plugins/token";
+import {platformClient} from "@/config/psr-app-context/platformClient";
 
 export function useGatewayClient(contextPath: string) {
-    const client = axios.create({
-        baseURL: `${process.env.VUE_APP_PSR_GATEWAY_URL}${contextPath}`,
-        paramsSerializer: {
-            serialize: (params: any) => stringify(params, {arrayFormat: 'comma'})
-        },
-    })
-    applyTokenInterceptor(client, tokenContext)
-    return client
+    return platformClient.apiClientFactory.getApiClient(contextPath)
 }

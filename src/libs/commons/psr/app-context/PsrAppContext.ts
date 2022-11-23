@@ -5,11 +5,11 @@ import {PsrAppPermission} from "./permission";
 import {PsrAppRouter} from "./route";
 import {PsrAppContextOptions} from "./types/PsrAppContextOptions";
 import {PsrAppStore} from "./store/PsrAppStore";
-import {PsrAppToken, PsrAppTokenService} from "@/libs/commons/psr/app-context/plugins/token";
+import {PsrVue3PlatformClientPlugin} from "@psr-framework/vue3-plugin-platform-client";
 import {extractStoreOptions} from "./extractStoreOptions";
 import {extractRouterOptions} from "./extractRouterOptions";
 import {extractMenuOptions} from "./extractMenuOptions";
-import {initToken} from "./initToken";
+import {handleAuthorizationPrincipalChange} from "@/libs/commons/psr/app-context/handleAuthorizationPrincipalChange";
 import {checkRoutePermission} from "./checkRoutePermission";
 import {processRootRoute} from "./processRootRoute";
 import {processSignInRoute} from "./processSignInRoute";
@@ -23,7 +23,7 @@ export class PsrAppContext {
     readonly navigationMenu: PsrAppNavigationMenu
     readonly permission: PsrAppPermission
     readonly widget: PsrAppWidgetManager
-    token?: PsrAppToken<PsrAppTokenService>
+    platformClient?: PsrVue3PlatformClientPlugin
     readonly plugins: Record<string, PsrAppPlugin> = {}
     readonly personal: PsrAppPersonal
 
@@ -49,8 +49,8 @@ export class PsrAppContext {
         this.personal = new PsrAppPersonal(options.personalService)
     }
 
-    useToken(token: PsrAppToken<PsrAppTokenService>) {
-        this.token = token
+    usePlatformClient(platformClient: PsrVue3PlatformClientPlugin) {
+        this.platformClient = platformClient
         return this
     }
 
@@ -60,7 +60,11 @@ export class PsrAppContext {
     }
 
     install(app: App) {
-        initToken(this)
+        if (this.platformClient) {
+            this.platformClient.authorizationContext.watchPrincipal((newValue, oldValue) => {
+                handleAuthorizationPrincipalChange(this, newValue, oldValue)
+            }, {immediate: true})
+        }
         this.router.beforeLayoutChange(event => {
             // 处理登录路由，路由名为sign-in
             // 1. 如果token认证状态为AUTHENTICATED，进行拦截
@@ -82,8 +86,8 @@ export class PsrAppContext {
         app.provide(this._injectKey, this)
         app.use(this.store.store)
         app.use(this.router.router)
-        if (this.token != undefined) {
-            app.use(this.token)
+        if (this.platformClient != undefined) {
+            app.use(this.platformClient)
         }
         for (const pluginsKey in this.plugins) {
             app.use(this.plugins[pluginsKey], this)

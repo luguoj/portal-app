@@ -36,7 +36,7 @@ import {PsrAppRouteRecord} from "@/libs/commons/psr/app-context/route";
 export default defineComponent({
   name: "avatar-dropdown",
   setup() {
-    const tokenContext = useAppContext().token!
+    const platformClient = useAppContext().platformClient!
     const appContext = useAppContext();
     const menuItems: Ref<PsrAppNavigationMenuItem[]> = computed(() => appContext.navigationMenu.currentLayoutMenuItems.value?.userPopover || [])
     return {
@@ -53,7 +53,7 @@ export default defineComponent({
               type: 'warning',
             }
         ).then(() => {
-          tokenContext.signOut()
+          platformClient.authorizationContext.signOut()
         })
       }
     }

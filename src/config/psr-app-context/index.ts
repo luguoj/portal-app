@@ -4,7 +4,7 @@ import {Admin} from "@/modules/admin-console";
 import PsrErrorNotFound from "@/libs/components/psr/views/PsrErrorNotFound.vue";
 import PsrOAuthSSOClientSignIn from "@/libs/components/psr/views/PsrOAuthSSOClientSignIn.vue";
 import {createAppContext} from "@/libs/commons/psr/app-context";
-import {tokenContext} from "./token";
+import {platformClient} from "@/config/psr-app-context/platformClient";
 import {routeCache} from "./routeCache";
 import {App} from "@vue/runtime-core";
 import {widgets} from "@/config/psr-app-context/widget";
@@ -42,7 +42,7 @@ export const appContext = createAppContext({
     },
     widgets,
     personalService
-}).useToken(tokenContext).use(routeCache)
+}).use(routeCache).usePlatformClient(platformClient)
 
 export function applyPsrAppContext(app: App) {
     app.use(appContext)

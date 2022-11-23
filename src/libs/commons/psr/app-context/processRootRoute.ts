@@ -7,7 +7,7 @@ export function processRootRoute(event: PsrAppRouteChangeEvent, context: PsrAppC
         const msg: string[] = ['路由到根路径', '跳转到默认布局']
         const layoutItems = context.navigationMenu.layoutItems.value
         const userProfileSynchronized = context.store.userProfileSynchronized.value
-        if (layoutItems.length > 0 && (userProfileSynchronized !== null || context.token == null || !context.token.getPrincipal().username)) {
+        if (layoutItems.length > 0 && (userProfileSynchronized !== null || context.platformClient == null || !context.platformClient.authorizationContext.principal().username)) {
             let defaultLayoutPath = layoutItems[0].path
             if (context.store.store.state.defaultLayout) {
                 const defaultLayoutItem = layoutItems.filter(item => item.name === context.store.store.state.defaultLayout)
@@ -20,12 +20,12 @@ export function processRootRoute(event: PsrAppRouteChangeEvent, context: PsrAppC
             throw new PsrAppRouteError(msg.join('=>'), {path: defaultLayoutPath})
         } else {
             msg.push('尝试加载布局导航信息')
-            if (context.token) {
+            if (context.platformClient) {
                 msg.push('刷新令牌')
                 console.log(msg.join('=>'))
                 throw new PsrAppRouteError(
                     '等待令牌刷新',
-                    context.token.refreshToken().then(() => {
+                    context.platformClient.authorizationContext.refreshToken().then(() => {
                         console.log('令刷新成功，添加监听(加载导航布局项目后跳转到默认布局)')
                         return new Promise<{ path: string }>(resolve => {
                             const unWatch = watchEffect(() => {
