@@ -1,8 +1,8 @@
-import {PsrVue3PlatformClientPlugin} from "@psr-framework/vue3-plugin-platform-client"
+import {PsrPlatformClient} from "@psr-framework/vue3-plugin-platform-client"
 
-export const platformClient: PsrVue3PlatformClientPlugin = new PsrVue3PlatformClientPlugin({
+export const platformClient: PsrPlatformClient = new PsrPlatformClient({
     appName: process.env.VUE_APP_NAME,
-    authorization: {
+    tokenService: {
         type: 'sso',
         ssoHost: process.env.VUE_APP_PSR_AUTH_SSO_HOST,
     },

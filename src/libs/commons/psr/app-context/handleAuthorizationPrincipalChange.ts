@@ -1,18 +1,12 @@
 import {ElMessage} from "element-plus/es";
 import {PsrAppContext} from "@/libs/commons/psr/app-context";
 import {initPermission} from "@/libs/commons/psr/app-context/initPermission";
-import {PsrAppTokenState} from "@psr-framework/vue3-plugin-platform-client/src/package/services/authorization/AuthorizationContext";
-
-interface Principal {
-    state: PsrAppTokenState
-    username?: string
-    access_token?: string
-}
+import {PsrPlatformClientTypes} from "@psr-framework/vue3-plugin-platform-client";
 
 export function handleAuthorizationPrincipalChange(
     context: PsrAppContext,
-    newValue: Principal,
-    oldValue?: Principal
+    newValue: PsrPlatformClientTypes.Principal,
+    oldValue?: PsrPlatformClientTypes.Principal
 ) {
     const {router, platformClient} = context
     const state = newValue.state

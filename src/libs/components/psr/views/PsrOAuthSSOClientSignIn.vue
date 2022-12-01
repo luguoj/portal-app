@@ -7,13 +7,13 @@
 </template>
 
 <script lang="ts">
-import {useSSOSignInFrame} from "@psr-framework/vue3-plugin-platform-client";
+import {PsrPlatformClient} from "@psr-framework/vue3-plugin-platform-client";
 import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "psr-oauth-sso-client-sign-in",
   setup() {
-    const signInFrame = useSSOSignInFrame()
+    const signInFrame = PsrPlatformClient.useSSOSignInFrame()
     return {
       signInFrame,
     }

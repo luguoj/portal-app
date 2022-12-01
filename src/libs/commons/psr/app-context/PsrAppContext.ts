@@ -1,11 +1,11 @@
 import {PsrAppPlugin} from "./types/PsrAppPlugin";
-import {App} from "vue";
+import {App, watch} from "vue";
 import {PsrAppNavigationMenu} from "./navigation-menu";
 import {PsrAppPermission} from "./permission";
 import {PsrAppRouter} from "./route";
 import {PsrAppContextOptions} from "./types/PsrAppContextOptions";
 import {PsrAppStore} from "./store/PsrAppStore";
-import {PsrVue3PlatformClientPlugin} from "@psr-framework/vue3-plugin-platform-client";
+import {PsrPlatformClient} from "@psr-framework/vue3-plugin-platform-client";
 import {extractStoreOptions} from "./extractStoreOptions";
 import {extractRouterOptions} from "./extractRouterOptions";
 import {extractMenuOptions} from "./extractMenuOptions";
@@ -17,18 +17,17 @@ import {PsrAppWidgetManager} from "@/libs/commons/psr/app-context/widget-manager
 import {PsrAppPersonal} from "@/libs/commons/psr/app-context/personal";
 
 export class PsrAppContext {
-    private readonly _injectKey: string
     readonly store: PsrAppStore
     readonly router: PsrAppRouter
     readonly navigationMenu: PsrAppNavigationMenu
     readonly permission: PsrAppPermission
     readonly widget: PsrAppWidgetManager
-    platformClient?: PsrVue3PlatformClientPlugin
+    platformClient?: PsrPlatformClient
     readonly plugins: Record<string, PsrAppPlugin> = {}
     readonly personal: PsrAppPersonal
-
     // 被登录路由挂起的路由路径
     routePathHangupBySignIn: string = '/'
+    private readonly _injectKey: string
 
     constructor(
         injectKey: string,
@@ -49,7 +48,7 @@ export class PsrAppContext {
         this.personal = new PsrAppPersonal(options.personalService)
     }
 
-    usePlatformClient(platformClient: PsrVue3PlatformClientPlugin) {
+    usePlatformClient(platformClient: PsrPlatformClient) {
         this.platformClient = platformClient
         return this
     }
@@ -61,7 +60,7 @@ export class PsrAppContext {
 
     install(app: App) {
         if (this.platformClient) {
-            this.platformClient.authorizationContext.watchPrincipal((newValue, oldValue) => {
+            watch(this.platformClient.authorizationContext.principal, (newValue, oldValue) => {
                 handleAuthorizationPrincipalChange(this, newValue, oldValue)
             }, {immediate: true})
         }
