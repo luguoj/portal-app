@@ -1,6 +1,6 @@
-import deepmerge from "deepmerge";
-import {Queue, RejectCallback, ResolveCallback} from "@/libs/commons/psr/promise-queue";
 import {Plugin, Store} from "vuex";
+import deepmerge from "deepmerge";
+import {PromiseQueue} from "@psr-framework/typescript-utils"
 
 function load(key: string, storage: any) {
     const value = storage.getItem(key)
@@ -12,8 +12,8 @@ function load(key: string, storage: any) {
     return undefined
 }
 
-function save(key: string, state: any, storage: any, queue: Queue) {
-    queue.enqueue<any>((resolve: ResolveCallback<any>, reject: RejectCallback) => {
+function save(key: string, state: any, storage: any, queue: PromiseQueue.Queue) {
+    queue.enqueue<any>((resolve: PromiseQueue.ResolveCallback<any>, reject: PromiseQueue.RejectCallback) => {
         try {
             storage.setItem(key, JSON.stringify(state))
             if (process.env.VUE_APP_LOG === 'debug') {
@@ -24,11 +24,11 @@ function save(key: string, state: any, storage: any, queue: Queue) {
             console.error('vuex.plugin.state-persist.save', err)
             reject(err)
         }
-    })
+    }).then()
 }
 
 export function createStatePersistPlugin(storage: any = localStorage, key = "vuex"): Plugin<any> {
-    const queue: Queue = new Queue()
+    const queue: PromiseQueue.Queue = new PromiseQueue.Queue()
     return (store: Store<any>) => {
         const data = load(key, storage)
         if (data) {

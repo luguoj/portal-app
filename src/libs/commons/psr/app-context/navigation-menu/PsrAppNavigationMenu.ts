@@ -1,7 +1,7 @@
 import {PsrAppNavigationMenuItem, PsrAppNavigationMenuItems} from "./types/PsrAppNavigationMenuItem";
 import {computed, reactive, ref} from "vue";
-import {filterFromBottom, filterFromRoot} from "@/libs/commons/psr/utils/array-tree";
 import {PsrAppNavigationLayoutItem} from "./types/PsrAppNavigationLayoutItem";
+import {TreeFilter} from "@psr-framework/typescript-utils"
 
 export class PsrAppNavigationMenu {
     readonly layoutItemsRaw: PsrAppNavigationLayoutItem[]
@@ -30,10 +30,10 @@ export class PsrAppNavigationMenu {
         for (const layoutName in this.menuItemsRaw) {
             this.menuItems[layoutName] = {}
             for (const menuUsage in this.menuItemsRaw[layoutName]) {
-                const filteredMenu = filterFromRoot(this.menuItemsRaw[layoutName][menuUsage], item => {
+                const filteredMenu = TreeFilter.fromRoot(this.menuItemsRaw[layoutName][menuUsage], item => {
                     return !item.permissions || filterMenuItemFn(item)
                 })
-                this.menuItems[layoutName][menuUsage] = filterFromBottom(
+                this.menuItems[layoutName][menuUsage] = TreeFilter.fromBottom(
                     filteredMenu,
                     item => {
                         return !!item.route || item.children?.length > 0

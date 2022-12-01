@@ -1,5 +1,5 @@
 import {RouteLocationRaw} from "vue-router";
-import {BaseError} from "@/libs/commons/psr/utils/BaseError";
+import {BaseError} from "@psr-framework/typescript-utils";
 
 export class PsrAppRouteError extends BaseError {
     redirect?: RouteLocationRaw | Promise<RouteLocationRaw | boolean>
