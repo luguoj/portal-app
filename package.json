@@ -16,7 +16,7 @@
     "@psr-framework/typescript-utils": "git+https://gitee.com/psr-platform/typescript-utils.git#1.3.0",
     "@psr-framework/vue3-plugin-dashboard": "git+https://gitee.com/psr-platform/vue3-plugin-dashboard.git#1.4.1",
     "@psr-framework/vue3-plugin-element-plus-extension": "git+https://gitee.com/psr-platform/vue3-plugin-element-plus-extension.git#1.1.0",
-    "@psr-framework/vue3-plugin-platform-client": "git+https://gitee.com/psr-platform/vue3-plugin-platform-client.git#1.1.2",
+    "@psr-framework/vue3-plugin-platform-client": "git+https://gitee.com/psr-platform/vue3-plugin-platform-client.git#1.6.0",
     "@psr-framework/vue3-plugin-visual": "^0.0.3",
     "@types/file-saver": "^2.0.5",
     "@types/pinyin": "^2.10.0",
